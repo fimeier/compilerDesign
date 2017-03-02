@@ -34,6 +34,9 @@ import cd.util.debug.AstDump;
 public class Main {
 	
 	// Set to non-null to write debug info out
+	
+	// test fimeier
+	
 	public Writer debug = null;
 	
 	// Set to non-null to write dump of control flow graph (Advanced Compiler Design)
