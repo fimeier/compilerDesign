@@ -48,8 +48,15 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 	public Register methodDecl(MethodDecl ast, Void arg) {
 		{
 			// Because we only handle very simple programs in HW1,
-			// you can just emit the prologue here!
-			throw new ToDoException();
+			// you can just emit the prologue here!			
+			
+			cg.rm.initRegisters();
+			
+			visit(ast.decls(),arg);
+			return visit(ast.body(), arg);
+			
+			
+			//throw new ToDoException();
 		}
 	}
 
@@ -72,21 +79,40 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 		{
 			// Because we only handle very simple programs in HW1,
 			// you can just emit the prologue here!
-			throw new ToDoException();
+			visit(ast.left(), arg);
+			return visit(ast.right(), arg);
+			//throw new ToDoException();
 		}
 	}
 
 	@Override
 	public Register builtInWrite(BuiltInWrite ast, Void arg) {
-		{
-			throw new ToDoException();
+		{			
+			Register reg = cg.eg.visit(ast.arg(), arg);
+			
+			cg.emit.emit("sub", "$16", "%esp");
+			cg.emit.emitRaw("movl "+reg.name()+" 4(%esp)");
+			cg.emit.emit("movl", "$STR_D", "0(%esp)");
+			cg.emit.emit("call", "printf");
+			cg.emit.emit("add", "$16", "%esp");
+			
+			return null;
+			
+			//throw new ToDoException();
 		}
 	}
 
 	@Override
 	public Register builtInWriteln(BuiltInWriteln ast, Void arg) {
 		{
-			throw new ToDoException();
+			cg.emit.emit("sub", "$16", "%esp");
+			//cg.emit.emit("movl", "%edi", "4(%esp)");
+			cg.emit.emit("movl", "$STR_D", "0(%esp)");
+			cg.emit.emit("call", "printf");
+			cg.emit.emit("add", "$16", "%esp");
+			return cg.rm.getRegister();
+						
+			//throw new ToDoException();
 		}
 	}
 

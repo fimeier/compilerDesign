@@ -35,12 +35,15 @@ public class Main {
 	
 	// Set to non-null to write debug info out
 	
+<<<<<<< Updated upstream
 	// test fimeier
 	// test tobiahol
 	
 	
 	//asdasdsa
 	
+=======
+>>>>>>> Stashed changes
 	public Writer debug = null;
 	
 	// Set to non-null to write dump of control flow graph (Advanced Compiler Design)
