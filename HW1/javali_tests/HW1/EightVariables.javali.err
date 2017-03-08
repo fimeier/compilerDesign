@@ -103,28 +103,32 @@ ClassDecl (name: Main, superClass: Object)
 Test failed because an exception was thrown:
     Executing assembler failed.
 Output:
-/Users/tobiasholenstein/homei/HW1/javali_tests/HW1/EightVariables.javali.s:143:18: error: unexpected token in argument list
-        movl EDI 4(%esp)
-                 ^
-/Users/tobiasholenstein/homei/HW1/javali_tests/HW1/EightVariables.javali.s:159:18: error: unexpected token in argument list
-        movl EDX 4(%esp)
-                 ^
-/Users/tobiasholenstein/homei/HW1/javali_tests/HW1/EightVariables.javali.s:175:18: error: unexpected token in argument list
-        movl EBX 4(%esp)
-                 ^
+Undefined symbols for architecture i386:
+  "_main", referenced from:
+     implicit entry/start for main executable
+  "r1", referenced from:
+      anon in EightVariables-0f3d38.o
+  "r2", referenced from:
+      anon in EightVariables-0f3d38.o
+  "r3", referenced from:
+      anon in EightVariables-0f3d38.o
+ld: symbol(s) not found for architecture i386
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
 Stack trace:
 cd.backend.codegen.AssemblyFailedException: Executing assembler failed.
 Output:
-/Users/tobiasholenstein/homei/HW1/javali_tests/HW1/EightVariables.javali.s:143:18: error: unexpected token in argument list
-        movl EDI 4(%esp)
-                 ^
-/Users/tobiasholenstein/homei/HW1/javali_tests/HW1/EightVariables.javali.s:159:18: error: unexpected token in argument list
-        movl EDX 4(%esp)
-                 ^
-/Users/tobiasholenstein/homei/HW1/javali_tests/HW1/EightVariables.javali.s:175:18: error: unexpected token in argument list
-        movl EBX 4(%esp)
-                 ^
+Undefined symbols for architecture i386:
+  "_main", referenced from:
+     implicit entry/start for main executable
+  "r1", referenced from:
+      anon in EightVariables-0f3d38.o
+  "r2", referenced from:
+      anon in EightVariables-0f3d38.o
+  "r3", referenced from:
+      anon in EightVariables-0f3d38.o
+ld: symbol(s) not found for architecture i386
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
 	at cd.test.AbstractTestAgainstFrozenReference.testCodeGenerator(AbstractTestAgainstFrozenReference.java:160)
 	at cd.test.AbstractTestAgainstFrozenReference.test(AbstractTestAgainstFrozenReference.java:51)

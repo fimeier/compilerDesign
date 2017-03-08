@@ -133,7 +133,7 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	public Register var(Var ast, Void arg) {
 		{
 			Register reg = cg.rm.getRegister();
-			cg.emit.emit("movl", ast.name, reg);
+			cg.emit.emit("movl", reg, ast.name);
 			return reg;
 			//throw new ToDoException();
 		}

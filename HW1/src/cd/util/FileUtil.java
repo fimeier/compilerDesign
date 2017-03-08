@@ -48,6 +48,8 @@ public class FileUtil {
 			for (int j = 0; j < substs.length; j++)
 				newItem = newItem.replace("$" + j, substs[j]);
 			newCommand[i] = newItem;
+			System.out.println(newItem);
+
 		}
 
 		// Run the command in the specified directory
@@ -69,6 +71,7 @@ public class FileUtil {
 				public void run() {
 					try {
 						result.append(readAll(new InputStreamReader(p.getInputStream())));
+
 					} catch (IOException e) {
 					}
 				}

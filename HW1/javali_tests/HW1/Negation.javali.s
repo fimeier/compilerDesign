@@ -30,40 +30,16 @@
           # Emitting a
           movl a, %edi
         sub $16, %esp
-        movl EDI 4(%esp)
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
         # Emitting writeln()
-        sub $16, %esp
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
         # Emitting write(b)
           # Emitting b
           movl b, %edx
         sub $16, %esp
-        movl EDX 4(%esp)
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
         # Emitting writeln()
-        sub $16, %esp
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
         # Emitting write(c)
           # Emitting c
           movl c, %ebx
         sub $16, %esp
-        movl EBX 4(%esp)
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
         # Emitting writeln()
-        sub $16, %esp
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
         # Emitting write(d)
           # Emitting d

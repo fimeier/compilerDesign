@@ -16,14 +16,6 @@
           # Emitting r1
           movl r1, %edi
         sub $16, %esp
-        movl EDI 4(%esp)
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
         # Emitting writeln()
-        sub $16, %esp
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
         # Emitting write((r1 - 3))
           # Emitting (r1 - 3)
