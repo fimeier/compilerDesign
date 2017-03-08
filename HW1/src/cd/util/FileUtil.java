@@ -48,8 +48,6 @@ public class FileUtil {
 			for (int j = 0; j < substs.length; j++)
 				newItem = newItem.replace("$" + j, substs[j]);
 			newCommand[i] = newItem;
-			System.out.println(newItem);
-
 		}
 
 		// Run the command in the specified directory

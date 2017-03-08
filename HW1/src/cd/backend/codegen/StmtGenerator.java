@@ -52,7 +52,16 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			// you can just emit the prologue here!			
 			
 			cg.rm.initRegisters();
-			cg.emit.emitLabel("_"+ast.name);
+			//cg.emit.emitLabel("_"+ast.name);
+			cg.emit.emitRaw(".section .data");
+			cg.emit.emitRaw("STR_D:");
+			cg.emit.emitRaw("	.string \"%d\"");
+			cg.emit.emitRaw("	.section .data");
+			cg.emit.emitRaw("var_a:");
+			cg.emit.emitRaw("	.int 0");
+			cg.emit.emitRaw("	.section .text");
+			cg.emit.emitRaw("	.globl main");
+			cg.emit.emitRaw("main:");
 			
 			//super.varDecl((VarDecl) ast.decls().children().get(0), arg);
 			//super.varDecl(ast.decls().children(), arg);

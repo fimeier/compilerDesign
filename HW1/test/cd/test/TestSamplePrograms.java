@@ -22,14 +22,12 @@ public class TestSamplePrograms extends AbstractTestAgainstFrozenReference {
 	 * variable like:
 	 * {@code justFile = new File("javali_tests/HW2/Inheritance.javali")}.
 	 */
-<<<<<<< Updated upstream
-	public static final File justFile = new File("javali_tests/HW1/HelloWorld.javali");
+	
 	//public static final File justFile = null;
-=======
+
 //	public static final File justFile = new File("javali_tests/HW1/HelloWorld.javali");
 	public static final File justFile = new File("javali_tests/HW1/SimpleTest.javali");
 //	public static final File justFile = null;
->>>>>>> Stashed changes
 
 	/**
 	 * Directory in which to search for test files. If null, then the default is
