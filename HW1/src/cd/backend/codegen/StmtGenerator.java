@@ -31,6 +31,11 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 	@Override
 	public Register visit(Ast ast, Void arg) {
 		try {
+			if (ast instanceof VarDecl){
+				cg.emit.increaseIndent("EmittingVardecl " + AstOneLine.toString(ast));
+				cg.emit.emitLabel("var_"+((VarDecl)ast).name);
+				cg.emit.emitRaw("	.int 0");
+			} else
 			cg.emit.increaseIndent("Emitting " + AstOneLine.toString(ast));
 			return super.visit(ast, arg);
 		} finally {
@@ -54,20 +59,21 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			cg.rm.initRegisters();
 			//cg.emit.emitLabel("_"+ast.name);
 			cg.emit.emitRaw(".section .data");
-			cg.emit.emitRaw("STR_D:");
-			cg.emit.emitRaw("	.string \"%d\"");
-			cg.emit.emitRaw("	.section .data");
-			cg.emit.emitRaw("var_a:");
-			cg.emit.emitRaw("	.int 0");
+			
+			cg.emit.emitLabel("STR_D");
+			cg.emit.emitRaw(".string \"%d\"");
+		
+			super.visit(ast.decls(),arg);
+			//cg.emit.emitRaw("STR_D:");
+			//cg.emit.emitRaw("	.string \"%d\"");
+			//cg.emit.emitRaw("	.section .data");
+			//cg.emit.emitRaw("var_a:");
+			//cg.emit.emitRaw("	.int 0");
 			cg.emit.emitRaw("	.section .text");
 			cg.emit.emitRaw("	.globl main");
 			cg.emit.emitRaw("main:");
 			
-			//super.varDecl((VarDecl) ast.decls().children().get(0), arg);
-			//super.varDecl(ast.decls().children(), arg);
-			super.visit(ast.decls(),arg);
 			return super.visit(ast.body(), arg);
-			
 			
 			//throw new ToDoException();
 		}
@@ -107,11 +113,11 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			Register reg = cg.eg.visit(ast.arg(), arg);
 			
 			cg.emit.emit("sub", "$16", "%esp");
-			//cg.emit.registerOffset(4, cg.rm.STACK_REG);
-			//cg.emit.emit("movl", reg.name(), "%esp");//4(%esp)");
-			//cg.emit.emit("movl", "$STR_D", "0(%esp)");
-			//cg.emit.emit("call", "printf");
-			//cg.emit.emit("add", "$16", "%esp");
+			cg.emit.emit("movl",  reg, "4(%esp)"); 
+			cg.emit.emit("movl","$STR_D", "0(%esp)");
+			cg.emit.emit("call", "printf");
+			cg.emit.emit("add", "$16", "%esp");
+			
 			
 			return reg;
 			
@@ -122,11 +128,11 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 	@Override
 	public Register builtInWriteln(BuiltInWriteln ast, Void arg) {
 		{
-			//cg.emit.emit("sub", "$16", "%esp");
-			//cg.emit.emit("movl", "%edi", "4(%esp)");
-			//cg.emit.emit("movl", "$STR_D", "0(%esp)");
-			//cg.emit.emit("call", "printf");
-			//cg.emit.emit("add", "$16", "%esp");
+			cg.emit.emit("sub", "$12", "%esp");
+			cg.emit.emit("pushl", "$10");
+			cg.emit.emit("call", "putchar");
+			cg.emit.emit("add", "$16", "%esp");
+
 			return cg.rm.getRegister();
 						
 			//throw new ToDoException();

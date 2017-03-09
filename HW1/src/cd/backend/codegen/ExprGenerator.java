@@ -37,7 +37,7 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	@Override
 	public Register visit(Expr ast, Void arg) {
 		try {
-			cg.emit.increaseIndent("Emitting " + AstOneLine.toString(ast));
+			cg.emit.increaseIndent("Emitting "+ AstOneLine.toString(ast));
 			return super.visit(ast, null);
 		} finally {
 			cg.emit.decreaseIndent();
@@ -83,7 +83,10 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	@Override
 	public Register intConst(IntConst ast, Void arg) {
 		{
-			throw new ToDoException();
+				Register reg = cg.rm.getRegister();
+				cg.emit.emit("movl", "$"+Integer.toString(((IntConst)ast).value), reg.toString());
+				return reg;
+			//throw new ToDoException();
 		}
 	}
 
