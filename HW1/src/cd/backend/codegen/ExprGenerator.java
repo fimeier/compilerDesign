@@ -1,5 +1,6 @@
 package cd.backend.codegen;
 
+import cd.Config;
 import cd.ToDoException;
 import cd.backend.codegen.RegisterManager.Register;
 import cd.ir.Ast;
@@ -106,10 +107,14 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 			//cg.emit.emit("subl", "$20", "%esp");
 			//cg.emit.emit("call", "getchar");
 			//cg.emit.emit("movl", "%eax", reg);
-			//cg.emit.emit("subl", "$8", "%esp");
-			//cg.emit.emit("leal", "-20(", "%esp");
-			//cg.emit.emit("call", "readln");
-			//cg.emit.emit("movl", "%eax", reg);
+			
+			cg.emit.emit("subl", "$8", "%esp");
+			cg.emit.emit("leal", "0(%esp)", "%eax");
+			cg.emit.emit("pushl", "%eax");
+			cg.emit.emit("pushl", "$STR_D");
+			cg.emit.emit("call" , Config.SCANF);
+			cg.emit.emit("addl", "$16","%esp");
+			cg.emit.emit("movl", "0(%esp)", reg);
 
 			return reg;
 			//throw new ToDoException();

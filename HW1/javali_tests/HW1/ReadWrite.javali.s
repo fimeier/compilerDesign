@@ -27,9 +27,13 @@ var_i2:
       movl %edi, var_i0
       # Emitting i1 = read()
         # Emitting read()
-        subl $20, %esp
-        call readln
-        movl %eax, %edi
+        subl $8, %esp
+        leal 0(%esp), %eax
+        pushl %eax
+        pushl $STR_D
+        call scanf
+        addl $16, %esp
+        movl 0(%esp), %edi
       movl %edi, var_i1
       # Emitting r1 = (i0 + i1)
         # Emitting (i0 + i1)
