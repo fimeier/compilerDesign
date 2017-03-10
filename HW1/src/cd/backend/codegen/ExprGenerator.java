@@ -2,7 +2,9 @@ package cd.backend.codegen;
 
 import cd.ToDoException;
 import cd.backend.codegen.RegisterManager.Register;
+import cd.ir.Ast;
 import cd.ir.Ast.BinaryOp;
+import cd.ir.Ast.BinaryOp.BOp;
 import cd.ir.Ast.BooleanConst;
 import cd.ir.Ast.BuiltInRead;
 import cd.ir.Ast.Cast;
@@ -48,7 +50,36 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	@Override
 	public Register binaryOp(BinaryOp ast, Void arg) {
 		{
-			throw new ToDoException();
+			Register regL = cg.eg.visit(ast.left(), arg);
+			Register regR = cg.eg.visit(ast.right(), arg);
+
+			//System.out.println("left "+ast.left().toString());
+			//System.out.println("right "+ast.right().toString());
+			
+			BOp op = ast.operator;
+			switch (op){
+				case B_TIMES: {
+					cg.emit.emit("imul", regL, regR);
+					//System.out.println("*");
+				} break;
+				case B_DIV: {
+					cg.emit.emit("idiv", regL, regR);
+					//System.out.println("/");
+				} break;
+				case B_PLUS: {
+					cg.emit.emit("add", regL, regR);
+					//System.out.println("+");
+				} break;
+				case B_MINUS: {
+					cg.emit.emit("sub", regL, regR);
+					//System.out.println("-");
+				} break;
+				default:break;
+			}
+			
+			cg.rm.releaseRegister(regL);
+			return regR;
+			//throw new ToDoException();
 		}
 	}
 
@@ -136,7 +167,6 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	public Register var(Var ast, Void arg) {
 		{
 			Register reg = cg.rm.getRegister();
-			//cg.emit.emit("movl", reg, ast.name);
 			return reg;
 			//throw new ToDoException();
 		}
