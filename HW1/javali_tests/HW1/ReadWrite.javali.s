@@ -32,8 +32,8 @@ var_i2:
         pushl %eax
         pushl $STR_D
         call scanf
+        movl 8(%esp), %edi
         addl $16, %esp
-        movl 0(%esp), %edi
       movl %edi, var_i1
       # Emitting r1 = (i0 + i1)
         # Emitting (i0 + i1)
@@ -62,9 +62,9 @@ var_i2:
           movl $3, %edi
           # Emitting r1
           movl var_r1, %esi
-        sub %esi, %edi
+        sub %edi, %esi
       sub $16, %esp
-      movl %edi, 4(%esp)
+      movl %esi, 4(%esp)
       movl $STR_D, 0(%esp)
       call printf
       add $16, %esp

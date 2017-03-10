@@ -79,10 +79,13 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 					cg.emit.emit("add", regL, regR);
 					//System.out.println("+");
 				} break;
-				case B_MINUS: {
-					cg.emit.emit("sub", regL, regR);
+				case B_MINUS: 
+					cg.emit.emit("sub", regR, regL);
+					cg.rm.releaseRegister(regR);
+					return regL;
 					//System.out.println("-");
-				} break;
+					
+				
 				default:break;
 			}
 			
@@ -113,8 +116,9 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 			cg.emit.emit("pushl", "%eax");
 			cg.emit.emit("pushl", "$STR_D");
 			cg.emit.emit("call" , Config.SCANF);
+			cg.emit.emit("movl", "8(%esp)", reg);
 			cg.emit.emit("addl", "$16","%esp");
-			cg.emit.emit("movl", "0(%esp)", reg);
+
 
 			return reg;
 			//throw new ToDoException();
