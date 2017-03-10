@@ -17,6 +17,7 @@ import cd.ir.Ast.NewObject;
 import cd.ir.Ast.NullConst;
 import cd.ir.Ast.ThisRef;
 import cd.ir.Ast.UnaryOp;
+import cd.ir.Ast.UnaryOp.UOp;
 import cd.ir.Ast.Var;
 import cd.ir.ExprVisitor;
 import cd.util.debug.AstOneLine;
@@ -50,11 +51,18 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	@Override
 	public Register binaryOp(BinaryOp ast, Void arg) {
 		{
-			Register regL = cg.eg.visit(ast.left(), arg);
-			Register regR = cg.eg.visit(ast.right(), arg);
+			Integer calcL = cg.ecrv.visit(ast.left(), arg);
+			Integer calcR = cg.ecrv.visit(ast.right(), arg);
 
-			//System.out.println("left "+ast.left().toString());
-			//System.out.println("right "+ast.right().toString());
+			Register regR, regL;
+			if (calcL <= calcR){
+				regR = cg.eg.visit(ast.right(), arg);
+				regL = cg.eg.visit(ast.left(), arg);
+
+			} else {
+				regL = cg.eg.visit(ast.left(), arg);
+				regR = cg.eg.visit(ast.right(), arg);
+			}
 			
 			BOp op = ast.operator;
 			switch (op){
@@ -93,7 +101,18 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	@Override
 	public Register builtInRead(BuiltInRead ast, Void arg) {
 		{
-			throw new ToDoException();
+			Register reg = cg.rm.getRegister();
+
+			//cg.emit.emit("subl", "$20", "%esp");
+			//cg.emit.emit("call", "getchar");
+			//cg.emit.emit("movl", "%eax", reg);
+			//cg.emit.emit("subl", "$8", "%esp");
+			//cg.emit.emit("leal", "-20(", "%esp");
+			//cg.emit.emit("call", "readln");
+			//cg.emit.emit("movl", "%eax", reg);
+
+			return reg;
+			//throw new ToDoException();
 		}
 	}
 
@@ -114,9 +133,9 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	@Override
 	public Register intConst(IntConst ast, Void arg) {
 		{
-				Register reg = cg.rm.getRegister();
-				cg.emit.emit("movl", "$"+Integer.toString(((IntConst)ast).value), reg.toString());
-				return reg;
+			Register reg = cg.rm.getRegister();
+			cg.emit.emit("movl", "$"+Integer.toString(((IntConst)ast).value), reg.toString());
+			return reg;
 			//throw new ToDoException();
 		}
 	}
@@ -159,7 +178,17 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	@Override
 	public Register unaryOp(UnaryOp ast, Void arg) {
 		{
-			throw new ToDoException();
+			UOp op = ast.operator;
+			Register reg = cg.eg.visit(ast.arg(), arg);
+			switch (op){
+				case U_PLUS: break;
+				case U_MINUS: {
+					cg.emit.emit("neg", reg);
+				} break;
+				default: break;
+			}
+			return reg;
+			//throw new ToDoException();
 		}
 	}
 	
@@ -167,6 +196,7 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	public Register var(Var ast, Void arg) {
 		{
 			Register reg = cg.rm.getRegister();
+			cg.emit.emit("movl", "var_"+ast.name, reg);
 			return reg;
 			//throw new ToDoException();
 		}

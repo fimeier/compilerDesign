@@ -10,6 +10,7 @@ public class AstCodeGenerator {
 
 	protected ExprGenerator eg;
 	protected StmtGenerator sg;
+	protected ExprCalcRegVisitor ecrv;
 	
 	protected final Main main;
 	
@@ -21,6 +22,7 @@ public class AstCodeGenerator {
 		this.main = main;
 		this.eg = new ExprGenerator(this);
 		this.sg = new StmtGenerator(this);
+		this.ecrv = new ExprCalcRegVisitor(this);
 	}
 
 	protected void debug(String format, Object... args) {

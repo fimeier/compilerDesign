@@ -100,8 +100,6 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			String var = "var_"+((Var)ast.left()).name;
 			Register reg = cg.eg.visit(ast.right(), arg);
 			
-		
-			
 			cg.emit.emit("movl", reg, var);
 						
 			cg.rm.releaseRegister(reg);

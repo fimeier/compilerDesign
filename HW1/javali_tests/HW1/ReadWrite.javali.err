@@ -30,48 +30,25 @@ ClassDecl (name: Main, superClass: Object)
 | | | BuiltInWriteln ()
 
 Test failed because an exception was thrown:
-    null
+    Executing assembler failed.
+Output:
+/tmp/ccBBIDGR.o: In function `main':
+(.text+0xf): undefined reference to `readln'
+collect2: error: ld returned 1 exit status
+
 Stack trace:
-cd.ToDoException
-	at cd.backend.codegen.ExprGenerator.binaryOp(ExprGenerator.java:51)
-	at cd.backend.codegen.ExprGenerator.binaryOp(ExprGenerator.java:1)
-	at cd.ir.Ast$BinaryOp.accept(Ast.java:193)
-	at cd.ir.ExprVisitor.visit(ExprVisitor.java:15)
-	at cd.backend.codegen.ExprGenerator.visit(ExprGenerator.java:41)
-	at cd.backend.codegen.StmtGenerator.builtInWrite(StmtGenerator.java:91)
-	at cd.backend.codegen.StmtGenerator.builtInWrite(StmtGenerator.java:1)
-	at cd.ir.Ast$BuiltInWrite.accept(Ast.java:520)
-	at cd.ir.AstVisitor.visit(AstVisitor.java:16)
-	at cd.backend.codegen.StmtGenerator.visit(StmtGenerator.java:34)
-	at cd.backend.codegen.StmtGenerator.visit(StmtGenerator.java:1)
-	at cd.ir.AstVisitor.visitChildren(AstVisitor.java:28)
-	at cd.ir.AstVisitor.dflt(AstVisitor.java:37)
-	at cd.ir.AstVisitor.seq(AstVisitor.java:100)
-	at cd.ir.Ast$Seq.accept(Ast.java:624)
-	at cd.ir.AstVisitor.visit(AstVisitor.java:16)
-	at cd.backend.codegen.StmtGenerator.visit(StmtGenerator.java:34)
-	at cd.backend.codegen.StmtGenerator.methodDecl(StmtGenerator.java:56)
-	at cd.backend.codegen.StmtGenerator.methodDecl(StmtGenerator.java:1)
-	at cd.ir.Ast$MethodDecl.accept(Ast.java:666)
-	at cd.ir.AstVisitor.visit(AstVisitor.java:16)
-	at cd.backend.codegen.StmtGenerator.visit(StmtGenerator.java:34)
-	at cd.backend.codegen.StmtGenerator.visit(StmtGenerator.java:1)
-	at cd.ir.AstVisitor.visitChildren(AstVisitor.java:28)
-	at cd.ir.AstVisitor.dflt(AstVisitor.java:37)
-	at cd.ir.AstVisitor.dfltDecl(AstVisitor.java:56)
-	at cd.ir.AstVisitor.classDecl(AstVisitor.java:72)
-	at cd.ir.Ast$ClassDecl.accept(Ast.java:699)
-	at cd.ir.AstVisitor.visit(AstVisitor.java:16)
-	at cd.backend.codegen.StmtGenerator.visit(StmtGenerator.java:34)
-	at cd.backend.codegen.StmtGenerator.gen(StmtGenerator.java:27)
-	at cd.backend.codegen.AstCodeGenerator.go(AstCodeGenerator.java:51)
-	at cd.Main.generateCode(Main.java:118)
-	at cd.test.AbstractTestAgainstFrozenReference.testCodeGenerator(AbstractTestAgainstFrozenReference.java:144)
+cd.backend.codegen.AssemblyFailedException: Executing assembler failed.
+Output:
+/tmp/ccBBIDGR.o: In function `main':
+(.text+0xf): undefined reference to `readln'
+collect2: error: ld returned 1 exit status
+
+	at cd.test.AbstractTestAgainstFrozenReference.testCodeGenerator(AbstractTestAgainstFrozenReference.java:160)
 	at cd.test.AbstractTestAgainstFrozenReference.test(AbstractTestAgainstFrozenReference.java:51)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
+	at java.lang.reflect.Method.invoke(Method.java:497)
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
