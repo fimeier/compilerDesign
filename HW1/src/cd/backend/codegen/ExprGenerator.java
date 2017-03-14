@@ -69,29 +69,27 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 			switch (op){
 				case B_TIMES: {
 					cg.emit.emit("imul", regL, regR);
-					//System.out.println("*");
 				} break;
 				case B_DIV: {
-					cg.emit.emit("idiv", regL, regR);
-					//System.out.println("/");
+					//System.out.println(regR);
+					cg.emit.emit("movl", regL, "%eax");
+					cg.emit.emitRaw("cltd");
+					cg.emit.emit("idivl", regR);
+					cg.emit.emit("movl", "%eax", regR);
 				} break;
 				case B_PLUS: {
 					cg.emit.emit("add", regL, regR);
-					//System.out.println("+");
 				} break;
 				case B_MINUS: 
 					cg.emit.emit("sub", regR, regL);
 					cg.rm.releaseRegister(regR);
 					return regL;
-					//System.out.println("-");
 					
-				
 				default:break;
 			}
 			
 			cg.rm.releaseRegister(regL);
 			return regR;
-			//throw new ToDoException();
 		}
 	}
 
@@ -106,10 +104,6 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	public Register builtInRead(BuiltInRead ast, Void arg) {
 		{
 			Register reg = cg.rm.getRegister();
-
-			//cg.emit.emit("subl", "$20", "%esp");
-			//cg.emit.emit("call", "getchar");
-			//cg.emit.emit("movl", "%eax", reg);
 			
 			cg.emit.emit("subl", "$8", "%esp");
 			cg.emit.emit("leal", "0(%esp)", "%eax");
@@ -118,7 +112,6 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 			cg.emit.emit("call" , Config.SCANF);
 			cg.emit.emit("movl", "8(%esp)", reg);
 			cg.emit.emit("addl", "$16","%esp");
-
 
 			return reg;
 			//throw new ToDoException();

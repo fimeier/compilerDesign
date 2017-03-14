@@ -96,7 +96,6 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			// Because we only handle very simple programs in HW1,
 			// you can just emit the prologue here!
 						
-			//if (ast.right() instanceof BinaryOp){return null;}
 			String var = "var_"+((Var)ast.left()).name;
 			Register reg = cg.eg.visit(ast.right(), arg);
 			
