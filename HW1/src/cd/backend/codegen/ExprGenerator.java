@@ -56,7 +56,7 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 			Integer calcR = cg.ecrv.visit(ast.right(), arg);
 
 			Register regR, regL;
-			if (calcL <= calcR){
+			if (calcL < calcR){
 				regR = cg.eg.visit(ast.right(), arg);
 				regL = cg.eg.visit(ast.left(), arg);
 
@@ -64,6 +64,8 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 				regL = cg.eg.visit(ast.left(), arg);
 				regR = cg.eg.visit(ast.right(), arg);
 			}
+
+			
 			
 			BOp op = ast.operator;
 			switch (op){
@@ -71,11 +73,44 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 					cg.emit.emit("imul", regL, regR);
 				} break;
 				case B_DIV: {
-					//System.out.println(regR);
-					cg.emit.emit("movl", regL, "%eax");
+					cg.emit.emit("subl", "$12", "%esp");
+					
+					Register regDiv;
+					String tempEbx = null;
+					if (regR.equals(Register.EAX) || regR.equals(Register.EDX)) {
+						regDiv = Register.EBX;
+						tempEbx = "0(%esp)";
+						cg.emit.emit("movl",Register.EBX.toString(),tempEbx);
+						
+						cg.emit.emit("movl", regR.toString(), regDiv.toString());
+					} else {
+						regDiv = regR;
+					}
+					
+					String tempEax = "8(%esp)";
+					String tempEdx = "4(%esp)";
+					
+					cg.emit.emit("movl", Register.EAX.toString(), tempEax);
+					cg.emit.emit("movl", Register.EDX.toString(), tempEdx);
+					
+					if (regL.equals(Register.EBX) && tempEbx != null) {
+						cg.emit.emit("movl",tempEbx, Register.EAX.toString());
+					} else {
+						cg.emit.emit("movl", regL.toString(), Register.EAX.toString());
+					}
 					cg.emit.emitRaw("cltd");
-					cg.emit.emit("idivl", regR);
-					cg.emit.emit("movl", "%eax", regR);
+					
+					cg.emit.emit("idiv", regDiv.toString());
+					cg.emit.emit("movl", Register.EAX.toString(), regDiv.toString());
+					cg.emit.emit("movl", tempEax, Register.EAX.toString());
+					cg.emit.emit("movl", tempEdx, Register.EDX.toString());
+					
+					if(tempEbx != null) {
+						cg.emit.emit("movl", regDiv.toString(), regR.toString());
+						cg.emit.emit("movl", tempEbx, Register.EBX.toString());
+					}
+					cg.emit.emit("movl", regR.toString(), regL.toString());
+					cg.emit.emit("addl", "$12", "%esp");
 				} break;
 				case B_PLUS: {
 					cg.emit.emit("add", regL, regR);

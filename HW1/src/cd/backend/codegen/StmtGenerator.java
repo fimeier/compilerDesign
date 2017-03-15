@@ -59,6 +59,7 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			// you can just emit the prologue here!			
 			
 			cg.rm.initRegisters();
+
 			cg.emit.emitRaw(".section .data");
 			
 			cg.emit.emitLabel("STR_D");
@@ -68,11 +69,19 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 
 			cg.emit.emitRaw("	.section .text");
 			cg.emit.emitRaw("	.globl main");
-			cg.emit.emitRaw("main:");
+			cg.emit.emitLabel("main");
 			
-			return super.visit(ast.body(), arg);
+			cg.emit.emit("pushl", "%ebp");
+			cg.emit.emit("movl", "%esp", "%ebp");
+
+			super.visit(ast.body(), arg);
+
+			cg.emit.emit("movl", "$0", "%eax");
+			cg.emit.emitRaw("leave");
+			cg.emit.emitRaw("ret");
+
+			return null;
 			
-			//throw new ToDoException();
 		}
 	}
 
@@ -109,7 +118,7 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 
 	@Override
 	public Register builtInWrite(BuiltInWrite ast, Void arg) {
-		{			
+		{		
 			Register reg = cg.eg.visit(ast.arg(), arg);
 			
 			cg.emit.emit("sub", "$16", "%esp");
@@ -119,6 +128,7 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			cg.emit.emit("add", "$16", "%esp");
 			
 			cg.rm.releaseRegister(reg);
+			
 			return null;
 			
 			//throw new ToDoException();
@@ -132,7 +142,7 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			cg.emit.emit("pushl", "$10");
 			cg.emit.emit("call", "putchar");
 			cg.emit.emit("add", "$16", "%esp");
-
+			
 			return null;
 						
 			//throw new ToDoException();
