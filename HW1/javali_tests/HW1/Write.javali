@@ -1,7 +1,7 @@
 class Main {
   void main() {
-  
+    write(0);
+    write(-1);
     write(2+4);
-    
   }
 }

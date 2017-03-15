@@ -126,6 +126,33 @@ main:
           neg %edi
         neg %edi
       movl %edi, var_e
+      # Emitting write(-(-(0)))
+        # Emitting -(-(0))
+          # Emitting -(0)
+            # Emitting 0
+            movl $0, %edi
+          neg %edi
+        neg %edi
+      sub $16, %esp
+      movl %edi, 4(%esp)
+      movl $STR_D, 0(%esp)
+      call printf
+      add $16, %esp
+      # Emitting writeln()
+      sub $12, %esp
+      pushl $10
+      call putchar
+      add $16, %esp
+      # Emitting write(-(0))
+        # Emitting -(0)
+          # Emitting 0
+          movl $0, %edi
+        neg %edi
+      sub $16, %esp
+      movl %edi, 4(%esp)
+      movl $STR_D, 0(%esp)
+      call printf
+      add $16, %esp
     movl $0, %eax
     leave
     ret

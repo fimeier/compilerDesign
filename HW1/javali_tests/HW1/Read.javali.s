@@ -23,9 +23,9 @@ var_i2:
 main:
     pushl %ebp
     movl %esp, %ebp
-      # Emitting i0 = 5
-        # Emitting 5
-        movl $5, %edi
+      # Emitting i0 = 6
+        # Emitting 6
+        movl $6, %edi
       movl %edi, var_i0
       # Emitting i1 = read()
         # Emitting read()

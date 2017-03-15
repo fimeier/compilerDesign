@@ -27,8 +27,10 @@ public class TestSamplePrograms extends AbstractTestAgainstFrozenReference {
 
 	//public static final File justFile = new File("javali_tests/HW1/Divide.javali");
 	//public static final File justFile = new File("javali_tests/HW1/EightVariables.javali");
-	//public static final File justFile = new File("javali_tests/HW1/SimpleTest.javali");
+	//public static final File justFile = new File("javali_tests/HW1/MaxReg.javali");
+	//public static final File justFile = new File("javali_tests/HW1/MostReg.javali");
 
+	
 		public static final File justFile = null;
 
 	/**

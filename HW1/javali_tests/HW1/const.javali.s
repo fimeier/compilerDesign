@@ -20,14 +20,14 @@ var_d:
 main:
     pushl %ebp
     movl %esp, %ebp
-      # Emitting a = 10
-        # Emitting 10
-        movl $10, %edi
+      # Emitting a = 30
+        # Emitting 30
+        movl $30, %edi
       movl %edi, var_a
-      # Emitting b = -(10)
-        # Emitting -(10)
-          # Emitting 10
-          movl $10, %edi
+      # Emitting b = -(20)
+        # Emitting -(20)
+          # Emitting 20
+          movl $20, %edi
         neg %edi
       movl %edi, var_b
       # Emitting c = 2147483647
@@ -73,6 +73,26 @@ main:
       movl %edi, 4(%esp)
       movl $STR_D, 0(%esp)
       call printf
+      add $16, %esp
+      # Emitting writeln()
+      sub $12, %esp
+      pushl $10
+      call putchar
+      add $16, %esp
+      # Emitting write(-(2147483645))
+        # Emitting -(2147483645)
+          # Emitting 2147483645
+          movl $2147483645, %edi
+        neg %edi
+      sub $16, %esp
+      movl %edi, 4(%esp)
+      movl $STR_D, 0(%esp)
+      call printf
+      add $16, %esp
+      # Emitting writeln()
+      sub $12, %esp
+      pushl $10
+      call putchar
       add $16, %esp
     movl $0, %eax
     leave

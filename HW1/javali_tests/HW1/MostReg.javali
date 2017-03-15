@@ -1,3 +1,4 @@
+// another test for many registers
 class Main {
 	void main() {
 	int a;
@@ -5,8 +6,17 @@ class Main {
 	int c;
 	int d;
 	
-	write((((((1000*a+b)+(c+d)) * ((a+b)+(c+d))) + (((a+b)+(c+d)) * ((a+b)+(c+d)))) * ((((a+b)+(c+d)) * ((a+b)+(c+d))) + (((a+b)+(c+d)) * ((a+b)+(c+d))))) / (((((a+b)+(c+d)) * ((a+b)+(c+d))) + (((a+b)+(c+d)) * ((a+b)+(c+d)))) * ((((a+b)+(c+d)) * ((a+b)+(c+d))) + (((a+b)+(c+d)) * ((a+b)+(c+d))))));
+
+	a = (((((1000*a+b)+(c+d)) * ((a+b)+(c+d))) + (((a+b)+(c+d)) * ((a+b)+(c+d))))); 
+	b = ((((a+b)+(c+d)) * ((a+b)+(c+d))) + (((a+b)+(c+d)) * ((a+b)+(c+d))));
+	c = (((((a+b)+(c+d)) * ((a+b)+(c+d))) + (((a+b)+(c+d)) * ((a+b)+(c+d)))));
+	d = ((((a+b)+(c+d)) * ((a+b)+(c+d))) + (((a+b)+(c+d)) * ((a+b)+(c+d))));
+
+	write(a*b+c*d);
 	writeln();
-	
+
+	write(c*0);
+  writeln();
+
 	}
-}  
+}

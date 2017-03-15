@@ -8,6 +8,24 @@ STR_D:
 main:
     pushl %ebp
     movl %esp, %ebp
+      # Emitting write(0)
+        # Emitting 0
+        movl $0, %edi
+      sub $16, %esp
+      movl %edi, 4(%esp)
+      movl $STR_D, 0(%esp)
+      call printf
+      add $16, %esp
+      # Emitting write(-(1))
+        # Emitting -(1)
+          # Emitting 1
+          movl $1, %edi
+        neg %edi
+      sub $16, %esp
+      movl %edi, 4(%esp)
+      movl $STR_D, 0(%esp)
+      call printf
+      add $16, %esp
       # Emitting write((2 + 4))
         # Emitting (2 + 4)
           # Emitting 2

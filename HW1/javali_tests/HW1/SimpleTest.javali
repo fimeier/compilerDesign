@@ -1,4 +1,4 @@
-/* Test expression evaluation with 8 variables */
+// a very simple program
 class Main {
 	void main() {
 		int a;
