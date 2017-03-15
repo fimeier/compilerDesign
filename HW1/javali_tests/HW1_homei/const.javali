@@ -1,0 +1,19 @@
+//constants, negatation and write
+class Main {
+	void main() {
+		int a, b, c, d;
+		a = 30;
+		b = -20;
+		c = 2147483647;
+		d = -c;
+		c = +c;
+		d = d - 2;
+		write(d);
+		writeln();
+		write(b);
+		writeln();
+		write(-2147483645);
+		writeln();
+
+	}
+}

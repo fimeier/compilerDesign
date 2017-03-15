@@ -1,0 +1,8 @@
+// a very simple program
+class Main {
+	void main() {
+		int a;
+		a = 10;
+		write(a);
+	}
+}

@@ -1,0 +1,29 @@
+class Main {
+	void main() {
+		int a;
+		int b;
+		int c;
+		int d;
+
+		// assignemnt and output
+		a = 100;
+		write(a); writeln();
+
+		// expression and assignment
+		b = read();
+		c = 0;
+		c = c + (a / b) * -(-64);
+		write(c); writeln();
+
+		// direct expression evaluation inside of write()
+		c = 0;
+		write(c + (a / b) * -(-64)); writeln();
+
+		// large integers and negative numbers division
+		d = -1000000000;
+		write (d / -3 ); writeln();
+
+
+
+	}
+}
