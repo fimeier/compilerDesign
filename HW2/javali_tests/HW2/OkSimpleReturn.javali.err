@@ -1,16 +1,17 @@
 Debug information for file: javali_tests/HW2/OkSimpleReturn.javali
 
 Test failed because an exception was thrown:
-    Unresolved compilation problems: 
-	UnitContext cannot be resolved to a type
-	The method unit() is undefined for the type JavaliParser
-
+    null
 Stack trace:
-java.lang.Error: Unresolved compilation problems: 
-	UnitContext cannot be resolved to a type
-	The method unit() is undefined for the type JavaliParser
-
-	at cd.Main.parse(Main.java:89)
+cd.ToDoException
+	at cd.frontend.parser.JavaliAstVisitor.visitClassDecl(JavaliAstVisitor.java:17)
+	at cd.frontend.parser.JavaliAstVisitor.visitClassDecl(JavaliAstVisitor.java:1)
+	at cd.frontend.parser.JavaliParser$ClassDeclContext.accept(JavaliParser.java:113)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:72)
+	at cd.frontend.parser.JavaliBaseVisitor.visitUnit(JavaliBaseVisitor.java:24)
+	at cd.frontend.parser.JavaliParser$UnitContext.accept(JavaliParser.java:66)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visit(AbstractParseTreeVisitor.java:44)
+	at cd.Main.parse(Main.java:92)
 	at cd.test.AbstractTestAgainstFrozenReference.testParser(AbstractTestAgainstFrozenReference.java:98)
 	at cd.test.AbstractTestAgainstFrozenReference.test(AbstractTestAgainstFrozenReference.java:46)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)

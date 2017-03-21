@@ -6,26 +6,53 @@ grammar Javali; // parser grammar, parses streams of tokens
 }
 
 
-// parser rules:
 
-// starting rule matching EOF
-start : exp EOF ;
+// PARSER RULES
 
-exp : exp '*' exp # A
-	| exp '+' exp # A
-	| ID #B
+//* // TODO: declare appropriate parser rules
+//* // NOTE: Remove //* from the beginning of each line.
+//* 
+unit
+ 	: classDecl+ EOF
+ 	;
+ 	
+classDecl
+	: Identifier;
+
+
+        
+
+
+// LEXER RULES
+// TODO: provide appropriate lexer rules for numbers and boolean literals
+
+
+
+// Java(li) identifiers:
+Identifier 
+	:	Letter (Letter|Digit)*
 	;
-	
-// left recursion example:
-list : ID (',' ID)*;
 
-list2 : list2 ',' ID
-	| ID ;
+fragment
+Letter
+	:	'A'..'Z'
+	|	'a'..'z'
+	;
 
-//list3 : ID | longlist3 ;
-//longlist3 : list3 ',' ID;
+fragment
+Digit
+	:	'0'..'9'
+	;
 
+// comments and white space does not produce tokens:
+COMMENT
+	:	'/*' .*? '*/' -> skip
+	;
 
-// lexer rules
-ID : [a-zA-Z] [a-zA-Z0-9]* ;
-WS : (' '|'\n'|'\r'|'\t') -> skip;
+LINE_COMMENT
+	:	'//' ~('\n'|'\r')* -> skip
+	;
+
+WS
+	:	(' '|'\r'|'\t'|'\n') -> skip
+	;

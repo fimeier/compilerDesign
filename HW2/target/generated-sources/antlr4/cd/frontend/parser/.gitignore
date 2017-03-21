@@ -4,3 +4,9 @@
 /JavaliLexer.tokens
 /JavaliListener.java
 /JavaliParser.java
+/Javali_example.tokens
+/Javali_exampleBaseListener.java
+/Javali_exampleLexer.java
+/Javali_exampleLexer.tokens
+/Javali_exampleListener.java
+/Javali_exampleParser.java
