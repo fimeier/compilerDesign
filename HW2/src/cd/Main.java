@@ -87,10 +87,11 @@ public class Main {
 			JavaliParser parser = new JavaliParser(new CommonTokenStream(lexer));
 			parser.setErrorHandler(new BailErrorStrategy());
 			UnitContext unit = parser.unit();
-			
+
 			JavaliAstVisitor visitor = new JavaliAstVisitor();
 			visitor.visit(unit);
 			result = visitor.classDecls; 
+
 		} catch (ParseCancellationException e) {
 			ParseFailure pf = new ParseFailure(0, "?");
 			pf.initCause(e);

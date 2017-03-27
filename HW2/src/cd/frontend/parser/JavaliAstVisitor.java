@@ -13,9 +13,10 @@ public final class JavaliAstVisitor extends JavaliBaseVisitor<Void> {
 	@Override
 	public Void visitClassDecl(ClassDeclContext ctx) {
 		{
-			// classDecls = ...;
-			throw new ToDoException();
+			//classDecls = ctx.;
+			System.out.println("hello");
+			//throw new ToDoException();
 		}
-		//return null;
+		return null;
 	}
 }
