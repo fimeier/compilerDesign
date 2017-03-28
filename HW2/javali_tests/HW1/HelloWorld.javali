@@ -8,12 +8,15 @@ class Main {
   	 String [] d;
   	 int z;
   	 
-  	 a = false;
+  	 a = !false;
   	 x = true;
-  	 
   	 z = 0;
+  	 a = (String) 1;
+  	 z = -1;
+  	 z = 1*2/3%4+1-2;
+  	 a = 1 < 2 >= 3 > 4 <= 1;
+  	 //a = 1 == 2 != 3;
   	 
-  	 a = null;
   	 
      //write(53110);
      //writeln();  

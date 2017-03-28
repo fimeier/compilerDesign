@@ -13,15 +13,20 @@ import cd.ToDoException;
 import cd.frontend.parser.JavaliParser.*;
 import cd.ir.Ast;
 import cd.ir.Ast.Assign;
+import cd.ir.Ast.BinaryOp;
 import cd.ir.Ast.BooleanConst;
+import cd.ir.Ast.Cast;
 import cd.ir.Ast.ClassDecl;
 import cd.ir.Ast.Expr;
 import cd.ir.Ast.IntConst;
 import cd.ir.Ast.MethodDecl;
 import cd.ir.Ast.NullConst;
 import cd.ir.Ast.Seq;
+import cd.ir.Ast.UnaryOp;
 import cd.ir.Ast.Var;
 import cd.ir.Ast.VarDecl;
+import cd.ir.Ast.BinaryOp.BOp;
+import cd.ir.Ast.UnaryOp.UOp;
 
 public final class JavaliAstVisitor extends JavaliBaseVisitor<List<Ast>> {
 	
@@ -245,54 +250,138 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	}
 
 	@Override
-	public List<Ast> visitEXPR(EXPRContext ctx) {
+	public List<Ast> visitEXPR(EXPRContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		ret.add(visitExpr(ctx.expr()).get(0));
 		return ret;
 	}
 	@Override
-	public List<Ast> visitSIGNEXPR(SIGNEXPRContext ctx) {
+	public List<Ast> visitSIGNEXPR(SIGNEXPRContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		
+		UOp operator = null; 
+		switch (ctx.getChild(0).toString()) {
+    		case "-":  
+    			operator = UOp.U_MINUS;
+    			break;
+    		case "+":  
+    			operator = UOp.U_PLUS;
+    			break;
+    		case "!":  
+    			operator = UOp.U_BOOL_NOT;
+    			break;
+		}
+		Expr arg = (Expr) visitExpr(ctx.expr()).get(0);
+		UnaryOp uop = new UnaryOp(operator, arg);
+		
+		ret.add(uop);
 		return ret;
 	}
-	@Override
-	public List<Ast> visitCASTEXPR(CASTEXPRContext ctx) {
+	@Override // '(' referenceType ')' expr
+	public List<Ast> visitCASTEXPR(CASTEXPRContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		
+		// TODO: change to referenceType visitor
+		String typeName = ctx.referenceType().getText();
+		Expr arg = (Expr) visitExpr(ctx.expr()).get(0);		
+		Cast cast = new Cast(arg, typeName);
+		ret.add(cast);
+		
 		return ret;
 	}
 
 
 	@Override
-	public List<Ast> visitBINOPSTRONG(BINOPSTRONGContext ctx) {
+	public List<Ast> visitBINOPSTRONG(BINOPSTRONGContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		
+		BOp operator = null; 
+		switch (ctx.getChild(1).toString()) {
+    		case "*":  
+    			operator = BOp.B_TIMES;
+    			break;
+    		case "/":  
+    			operator = BOp.B_DIV;
+    			break;
+    		case "%":  
+    			operator = BOp.B_MOD;
+    			break;
+		}
+		Expr left = (Expr) visitExpr(ctx.expr(0)).get(0);
+		Expr right = (Expr) visitExpr(ctx.expr(1)).get(0);
+		BinaryOp binop = new BinaryOp(left, operator, right);
+		ret.add(binop);
 		return ret;
 	}
 
 	@Override
-	public List<Ast> visitBINOPWEAK(BINOPWEAKContext ctx) {
+	public List<Ast> visitBINOPWEAK(BINOPWEAKContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		
+		BOp operator = null; 
+		switch (ctx.getChild(1).toString()) {
+    		case "+":  
+    			operator = BOp.B_PLUS;
+    			break;
+    		case "-":  
+    			operator = BOp.B_MINUS;
+    			break;
+		}
+		Expr left = (Expr) visitExpr(ctx.expr(0)).get(0);
+		Expr right = (Expr) visitExpr(ctx.expr(1)).get(0);
+		BinaryOp binop = new BinaryOp(left, operator, right);
+		ret.add(binop);
 		return ret;
 	}
 	@Override
-	public List<Ast> visitORDERPEXPR(ORDERPEXPRContext ctx) {
+	public List<Ast> visitORDERPEXPR(ORDERPEXPRContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		
+		BOp operator = null; 
+		switch (ctx.getChild(1).toString()) {
+    		case "<":  
+    			operator = BOp.B_LESS_THAN;
+    			break;
+    		case "<=":  
+    			operator = BOp.B_LESS_OR_EQUAL;
+    			break;
+    		case ">":  
+    			operator = BOp.B_GREATER_THAN;
+    			break;
+    		case ">=":  
+    			operator = BOp.B_GREATER_OR_EQUAL;
+    			break;
+		}
+		Expr left = (Expr) visitExpr(ctx.expr(0)).get(0);
+		Expr right = (Expr) visitExpr(ctx.expr(1)).get(0);
+		BinaryOp binop = new BinaryOp(left, operator, right);
+		ret.add(binop);
 		return ret;
 	}
 	@Override
 	public List<Ast> visitEQEXPR(EQEXPRContext ctx) {
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		
+		BOp operator = null; 
+		switch (ctx.getChild(1).toString()) {
+    		case "==":  
+    			operator = BOp.B_EQUAL;
+    			break;
+    		case "!=":  
+    			operator = BOp.B_NOT_EQUAL;
+    			break;
+		}
+		Expr left = (Expr) visitExpr(ctx.expr(0)).get(0);
+		Expr right = (Expr) visitExpr(ctx.expr(1)).get(0);
+		BinaryOp binop = new BinaryOp(left, operator, right);
+		ret.add(binop);
 		return ret;
 	}
 	@Override
 	public List<Ast> visitANDEXPR(ANDEXPRContext ctx) {
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		
+
 		return ret;
 	}
 
