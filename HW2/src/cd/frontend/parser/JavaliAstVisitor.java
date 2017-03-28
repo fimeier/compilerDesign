@@ -27,17 +27,8 @@ public final class JavaliAstVisitor extends JavaliBaseVisitor<List<Ast>> {
 	
 public List<ClassDecl> classDecls = new ArrayList<>();
 	
-
-	//@Override
-	//public List<? extends Ast> visitUnit(UnitContext ctx) {
-		
-		//System.out.println(ctx.getText().toString());
-		//ctx.getText()
-	//	return null;
-	//}
-	
 	@Override
-	public List<Ast> visitClassDecl(ClassDeclContext ctx) {
+	public List<Ast> visitClassDecl(ClassDeclContext ctx) {//ok
 		
 		String name = ctx.Identifier(0).toString();
 		String superClass = null;
@@ -56,7 +47,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	}
 	
 	@Override // (varDecl | methodDecl)*
-	public List<Ast> visitMemberList(MemberListContext ctx) {
+	public List<Ast> visitMemberList(MemberListContext ctx) {//ok
 		List<Ast> members = new ArrayList<>();
 		
 		List<VarDeclContext> varDeclList = ctx.varDecl();
@@ -71,7 +62,33 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		return members;
 	}
-
+	@Override
+	public List<Ast> visitVarDecl(VarDeclContext ctx) { //ok
+		List<Ast> members = new ArrayList<>();
+		
+		String type = ctx.type().getText();
+		
+		//TODO: types nicer?
+		/*
+		if (ctx.type().primitiveType() != null)
+			type = ctx.type().primitiveType().getText();
+		else if (ctx.type().referenceType() != null){
+			//ctx.type().referenceType()
+			if (ctx.type().referenceType().Identifier() != null)
+				type = ctx.type().referenceType().Identifier().toString();
+			else if (ctx.type().referenceType().arrayType() != null){
+				ArrayTypeContext arrCtx = ctx.type().referenceType().arrayType();
+				...
+			}
+		}*/
+		
+		for (TerminalNode n : ctx.Identifier()){
+			VarDecl varDecl = new VarDecl(type, n.toString());
+			members.add(varDecl);
+		}
+		
+		return members;
+	}	
 	@Override 
 	public List<Ast> visitMethodDecl(MethodDeclContext ctx) { //ok
 		List<Ast> members = new ArrayList<>();
@@ -110,20 +127,28 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 
 	//STMT:
 	@Override
-	public List<Ast> visitStmt(StmtContext ctx) {
+	public List<Ast> visitStmt(StmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
 		switch (ctx.getChild(0).getClass().getSimpleName()) {
         	case "AssignmentStmtContext":  
         		ret.addAll(visitAssignmentStmt(ctx.assignmentStmt())); break;
-		// TODO: all cases...
+        	case "MethodCallStmtContext":  
+        		ret.addAll(visitMethodCallStmt(ctx.methodCallStmt())); break;
+        	case "IfStmtContext":  
+        		ret.addAll(visitIfStmt(ctx.ifStmt())); break;
+        	case "WhileStmtContext":  
+        		ret.addAll(visitWhileStmt(ctx.whileStmt())); break;
+        	case "ReturnStmtContext":  
+        		ret.addAll(visitReturnStmt(ctx.returnStmt())); break;
+        	case "WriteStmtContext":  
+        		ret.addAll(visitWriteStmt(ctx.writeStmt())); break;
 		}
 
 		return ret;
 	}
-	
 	@Override // identAccess '=' ( expr | newExpr | readExpr ) ';'
-	public List<Ast> visitAssignmentStmt(AssignmentStmtContext ctx) {
+	public List<Ast> visitAssignmentStmt(AssignmentStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
 		// TODO: change to visitIdentaccess
@@ -139,7 +164,38 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		ret.add(assign);
 		return ret;
 	}
-	
+	@Override
+	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+	@Override
+	public List<Ast> visitIfStmt(IfStmtContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+	@Override
+	public List<Ast> visitWhileStmt(WhileStmtContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+	@Override
+	public List<Ast> visitReturnStmt(ReturnStmtContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+	@Override
+	public List<Ast> visitWriteStmt(WriteStmtContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+
+	//EXPR:
 	public List<Ast> visitExpr(ExprContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 				
@@ -181,7 +237,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		return ret;
 	}
-	
 	@Override
 	public List<Ast> visitIDENTACCESS(IDENTACCESSContext ctx) {
 		List<Ast> ret = new ArrayList<>();
@@ -249,116 +304,9 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	}
 
 
-	
 
-	
-
-	@Override
-	public List<Ast> visitWriteStmt(WriteStmtContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitWriteStmt(ctx);
-	}
-
-	@Override
-	public List<Ast> visitReturnStmt(ReturnStmtContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitReturnStmt(ctx);
-	}
-
-	@Override
-	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitMethodCallStmt(ctx);
-	}
-
-	@Override
-	public List<Ast> visitStmtBlock(StmtBlockContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitStmtBlock(ctx);
-	}
-	@Override
-	public List<Ast> visitWhileStmt(WhileStmtContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitWhileStmt(ctx);
-	}
-
-	@Override
-	public List<Ast> visitIfStmt(IfStmtContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitIfStmt(ctx);
-	}
-
-	@Override
-	public List<Ast> visitNewExpr(NewExprContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitNewExpr(ctx);
-	}
-
-	@Override
-	public List<Ast> visitFormalParamList(FormalParamListContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitFormalParamList(ctx);
-	}
-
-	@Override
-	public List<Ast> visitMethodCallExpression(MethodCallExpressionContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitMethodCallExpression(ctx);
-	}
-
-	@Override
-	public List<Ast> visitMethodCallExpr(MethodCallExprContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitMethodCallExpr(ctx);
-	}
-
-	@Override
-	public List<Ast> visitActualParamList(ActualParamListContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitActualParamList(ctx);
-	}
-
-	@Override
-	public List<Ast> visitReadExpr(ReadExprContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitReadExpr(ctx);
-	}
-
-	@Override
-	public List<Ast> visitIdentAccess(IdentAccessContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitIdentAccess(ctx);
-	}
-	
-	@Override
-	public List<Ast> visitVarDecl(VarDeclContext ctx) { //ok
-		List<Ast> members = new ArrayList<>();
-		
-		String type = ctx.type().getText();
-		
-		//TODO: types nicer?
-		/*
-		if (ctx.type().primitiveType() != null)
-			type = ctx.type().primitiveType().getText();
-		else if (ctx.type().referenceType() != null){
-			//ctx.type().referenceType()
-			if (ctx.type().referenceType().Identifier() != null)
-				type = ctx.type().referenceType().Identifier().toString();
-			else if (ctx.type().referenceType().arrayType() != null){
-				ArrayTypeContext arrCtx = ctx.type().referenceType().arrayType();
-				...
-			}
-		}*/
-		
-		for (TerminalNode n : ctx.Identifier()){
-			VarDecl varDecl = new VarDecl(type, n.toString());
-			members.add(varDecl);
-		}
-		
-		return members;
-	}	
 	//Literal:
-	@Override
+		@Override
 	public List<Ast> visitLITERAL(LITERALContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
@@ -401,4 +349,44 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 
+	@Override
+	public List<Ast> visitStmtBlock(StmtBlockContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitStmtBlock(ctx);
+	}
+	@Override
+	public List<Ast> visitNewExpr(NewExprContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitNewExpr(ctx);
+	}
+	@Override
+	public List<Ast> visitFormalParamList(FormalParamListContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitFormalParamList(ctx);
+	}
+	@Override
+	public List<Ast> visitMethodCallExpression(MethodCallExpressionContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitMethodCallExpression(ctx);
+	}
+	@Override
+	public List<Ast> visitMethodCallExpr(MethodCallExprContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitMethodCallExpr(ctx);
+	}
+	@Override
+	public List<Ast> visitActualParamList(ActualParamListContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitActualParamList(ctx);
+	}
+	@Override
+	public List<Ast> visitReadExpr(ReadExprContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitReadExpr(ctx);
+	}
+	@Override
+	public List<Ast> visitIdentAccess(IdentAccessContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitIdentAccess(ctx);
+	}
 }

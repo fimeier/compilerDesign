@@ -5,19 +5,11 @@ grammar Javali; // parser grammar, parses streams of tokens
 	package cd.frontend.parser;
 }
 
-
-
-// PARSER RULES
-
-//* // TODO: declare appropriate parser rules
-//* // NOTE: Remove //* from the beginning of each line.
-
 //*		x? = [..] == 0..1 
-
 //* 	x* = {..} = 0..n
-
 //* 	x+ = a {a} = 1..n
 
+// PARSER RULES
 
 // program structure
 
@@ -99,7 +91,6 @@ type
 	: primitiveType | referenceType
 	;
 
-
 primitiveType
 	: 'boolean'|'int'
 	;
@@ -108,7 +99,6 @@ referenceType
 	: Identifier | arrayType
 	;
 	
-
 arrayType
 	: Identifier '[' ']' | primitiveType '[' ']'
 	;
@@ -121,21 +111,6 @@ identAccess
 	: (Identifier | 'this' | methodCallExpression)
 		(('.' (Identifier | methodCallExpression)) | '[' expr ']')*
 	;
-	
-	/* 
-expr
-	: Literal #LITERAL
-	| identAccess #IDENTACCESS
-	| '(' expr ')' #EXPR
-	| ('+' | '-' | '!') expr #SIGNEXPR
-	| '(' referenceType ')' expr #CASTEXPR
-	| expr ('*' | '/' | '%') expr #MULEXPR
-	| expr ('+' | '-') expr #PLUSEXPR
-	| expr ('<' | '<=' | '>'| '>=') expr #ORDERPEXPR
-	| expr ('==' | '!=') expr #EQEXPR
-	| expr '&&' expr #ANDEXPR
-	| expr '||' expr #OREXPR
-	;*/
 
 expr
 	: literal #LITERAL 
@@ -164,18 +139,6 @@ newExpr
 	)
 	;
 	
-	
-	 /* 
-literal
-	: 'null' #LITERAL_NULL
-	| bool #LITERAL_BOOL
-	| (HEX=Hex | DEC=Decimal) #LITERAL_INT
-	;
-	
-Hex
-	: ('0x'| '0X') HexDigit+
-	;*/
-	
 literal
 	: 'null' #LIT_NULL
 	| bool #LIT_BOOL
@@ -190,6 +153,9 @@ bool
 integer
 	: Hex | Decimal
 	;
+	
+// LEXER RULES
+
 Hex
 	: ('0x'| '0X') HexDigit+
 	;
@@ -204,11 +170,6 @@ Decimal
 	| '1'..'9' Digit* 
 	;
    
-
-
-// LEXER RULES
-
-// Java(li) identifiers:
 Identifier 
 	:	Letter (Letter|Digit)*
 	;
@@ -223,9 +184,6 @@ fragment
 Digit
 	:	'0'..'9'
 	;
-
-
-
 
 
 // comments and white space does not produce tokens:
