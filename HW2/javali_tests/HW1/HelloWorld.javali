@@ -1,5 +1,6 @@
 /* Kind of like hello world */
 class Main {
+
    void main() {
    	 boolean a;
   	 
