@@ -138,17 +138,17 @@ expr
 	;*/
 
 expr
-	: LITERAL = Literal 
-	| IDENTACCESS = identAccess 
-	| EXPR = '(' expr ')' 
-	| SIGNEXPR = ('+' | '-' | '!') expr 
-	| CASTEXPR = '(' referenceType ')' expr 
-	| MULEXPR = expr ('*' | '/' | '%') expr 
-	| PLUSEXPR = expr ('+' | '-') expr 
-	| ORDERPEXPR = expr ('<' | '<=' | '>'| '>=') expr 
-	| EQEXPR = expr ('==' | '!= ') expr
-	| ANDEXPR = expr '&&' expr 
-	| OREXPR = expr '||' expr 
+	: Literal #LITERAL 
+	| identAccess #IDENTACCESS 
+	| '(' expr ')' #EXPR
+	| (PLUS= '+' |MINUS= '-' |NOT= '!') expr #SIGNEXPR
+	| '(' referenceType ')' expr #CASTEXPR
+	| expr (PLUS='*' |DIV= '/' |MOD= '%') expr #BINOPSTRONG
+	| expr ('+' | '-') expr #BINOPWEAK
+	| expr (LT='<' | LTE='<=' |GT= '>'|GTE= '>=') expr #ORDERPEXPR
+	| expr (EQ='==' |NEQ= '!= ') expr #EQEXPR
+	| expr '&&' expr #ANDEXPR
+	| expr '||' expr #OREXPR
 	;
 
 	

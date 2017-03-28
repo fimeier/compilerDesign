@@ -129,6 +129,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		Expr right = null;
 				
+		
 		if (ctx.expr() != null){
 			right = (Expr )visitExpr(ctx.expr()).get(0);
 		}
@@ -138,32 +139,35 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		return ret;
 	}
-
-	@Override
+	
 	public List<Ast> visitExpr(ExprContext ctx) {
 		List<Ast> ret = new ArrayList<>();
-		//test:
-		ret.add(new Var("test"));
-		
-		
-		System.out.println(ctx.Literal());
-		
-		//TODO: working here..
-		
-		
-		
+
+		switch (ctx.getClass().getSimpleName()) {
+    	case "LITERALContext":  
+    		System.out.println("here");; break;
+    		// TODO: all cases...
+		}
 		
 		
 		
 		
 		return ret;
 	}
-
+	
+	@Override
+	public List<Ast> visitLITERAL(LITERALContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitLITERAL(ctx);
+	}
+	
+	
 	@Override
 	public List<Ast> visitWriteStmt(WriteStmtContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitWriteStmt(ctx);
 	}
+
 
 	@Override
 	public List<Ast> visitReturnStmt(ReturnStmtContext ctx) {
