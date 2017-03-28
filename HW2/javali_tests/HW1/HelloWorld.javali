@@ -2,10 +2,10 @@
 class Main {
 
    void main() {
-   	 boolean a;
+   	 //boolean a;
   	 
-  	 a = false;
-     write(53110);
-     writeln();  
+  	 //a = false;
+     //write(53110);
+     //writeln();  
    }
 }
