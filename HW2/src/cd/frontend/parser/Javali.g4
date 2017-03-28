@@ -99,21 +99,20 @@ type
 	: primitiveType | referenceType
 	;
 
+
 primitiveType
-	: 'boolean'
-	| 'int'
+	: 'boolean'|'int'
 	;
 
 referenceType
 	: Identifier | arrayType
 	;
+	
+
 arrayType
 	: Identifier '[' ']' | primitiveType '[' ']'
 	;
 	
-
-
-
 
 
 //*IdentAccess
