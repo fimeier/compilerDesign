@@ -49,7 +49,7 @@ stmtBlock
 	;
 	
 methodCallStmt	
-	: methodCallExpr ';'
+	: methodCallExpression ';'
 	;
 	
 assignmentStmt
@@ -77,11 +77,6 @@ returnStmt
 	;
 
 // expressions
-
-methodCallExpr
-	: Identifier '(' actualParamList? ')'
-	| identAccess '.' Identifier '(' actualParamList? ')'
-	;
 	
 readExpr
 	: 'read' '(' ')'
@@ -106,12 +101,35 @@ arrayType
 methodCallExpression
 	: Identifier '(' (expr (',' expr)*)? ')'
 	;
+	
+	/* 
+actualParamList
+	: expr (',' expr)*
+	;
 
+methodCallExpr
+	: Identifier '(' actualParamList? ')'
+	| identAccess '.' Identifier '(' actualParamList? ')'
+	;
+	* 
+	*/
+
+identAccess 
+	: Identifier 
+	| 'this' 
+	| identAccess '.' Identifier
+    | identAccess '[' expr ']' 
+    | methodCallExpression 
+    ;
+
+/* 
 identAccess
 	: (Identifier | 'this' | methodCallExpression)
 		(('.' (Identifier | methodCallExpression)) | '[' expr ']')*
 	;
 
+* 
+*/
 expr
 	: literal #LITERAL 
 	| identAccess #IDENTACCESS 
@@ -126,10 +144,6 @@ expr
 	| expr '||' expr #OREXPR
 	;
 
-	
-actualParamList
-	: expr (',' expr)*
-	;
 
 newExpr
 	: 'new'

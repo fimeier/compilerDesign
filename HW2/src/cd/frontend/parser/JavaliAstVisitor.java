@@ -243,9 +243,9 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 	@Override
-	public List<Ast> visitIDENTACCESS(IDENTACCESSContext ctx) {
+	public List<Ast> visitIDENTACCESS(IDENTACCESSContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		ret.addAll(visitIdentAccess(ctx.identAccess()));
 		return ret;
 	}
 
@@ -359,17 +359,15 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 	@Override
-	public List<Ast> visitEQEXPR(EQEXPRContext ctx) {
+	public List<Ast> visitEQEXPR(EQEXPRContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
 		BOp operator = null; 
-		switch (ctx.getChild(1).toString()) {
-    		case "==":  
-    			operator = BOp.B_EQUAL;
-    			break;
-    		case "!=":  
-    			operator = BOp.B_NOT_EQUAL;
-    			break;
+		if(ctx.NEQ != null){
+			operator = BOp.B_NOT_EQUAL;
+		} else if (ctx.EQ != null) {
+			operator = BOp.B_EQUAL;
+
 		}
 		Expr left = (Expr) visitExpr(ctx.expr(0)).get(0);
 		Expr right = (Expr) visitExpr(ctx.expr(1)).get(0);
@@ -378,21 +376,25 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 	@Override
-	public List<Ast> visitANDEXPR(ANDEXPRContext ctx) {
+	public List<Ast> visitANDEXPR(ANDEXPRContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		
-
+		BOp operator = BOp.B_AND; 
+		Expr left = (Expr) visitExpr(ctx.expr(0)).get(0);
+		Expr right = (Expr) visitExpr(ctx.expr(1)).get(0);
+		BinaryOp binop = new BinaryOp(left, operator, right);
+		ret.add(binop);
 		return ret;
 	}
-
 	@Override
-	public List<Ast> visitOREXPR(OREXPRContext ctx) {
+	public List<Ast> visitOREXPR(OREXPRContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		BOp operator = BOp.B_OR; 
+		Expr left = (Expr) visitExpr(ctx.expr(0)).get(0);
+		Expr right = (Expr) visitExpr(ctx.expr(1)).get(0);
+		BinaryOp binop = new BinaryOp(left, operator, right);
+		ret.add(binop);
 		return ret;
 	}
-
-
 
 	//Literal:
 		@Override
@@ -459,23 +461,24 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return super.visitMethodCallExpression(ctx);
 	}
 	@Override
-	public List<Ast> visitMethodCallExpr(MethodCallExprContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitMethodCallExpr(ctx);
-	}
-	@Override
-	public List<Ast> visitActualParamList(ActualParamListContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitActualParamList(ctx);
-	}
-	@Override
 	public List<Ast> visitReadExpr(ReadExprContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitReadExpr(ctx);
 	}
 	@Override
 	public List<Ast> visitIdentAccess(IdentAccessContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitIdentAccess(ctx);
+		List<Ast> ret = new ArrayList<>();
+		
+		return ret;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
