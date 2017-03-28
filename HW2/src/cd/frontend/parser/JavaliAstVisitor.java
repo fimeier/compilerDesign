@@ -245,7 +245,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	@Override
 	public List<Ast> visitIDENTACCESS(IDENTACCESSContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		ret.addAll(visitIdentAccess(ctx.identAccess()));
+		//ret.addAll(visitIdentAccess(ctx.identAccess()));
 		return ret;
 	}
 
@@ -457,7 +457,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	}
 	@Override
 	public List<Ast> visitMethodCallExpression(MethodCallExpressionContext ctx) {
-		// TODO Auto-generated method stub
+		System.out.println("methodcall");
 		return super.visitMethodCallExpression(ctx);
 	}
 	@Override
@@ -465,12 +465,51 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		// TODO Auto-generated method stub
 		return super.visitReadExpr(ctx);
 	}
+
+	
+	
+	
+	@Override
+	public List<Ast> visitACCESSID(ACCESSIDContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO;
+		return ret;
+	}
+	@Override
+	public List<Ast> visitACCESSTHIS(ACCESSTHISContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitACCESSTHIS(ctx);
+	}
+	@Override
+	public List<Ast> visitACCESSDOTID(ACCESSDOTIDContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitACCESSDOTID(ctx);
+	}
+
+	@Override
+	public List<Ast> visitACCECSS_BR_EXPR(ACCECSS_BR_EXPRContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitACCECSS_BR_EXPR(ctx);
+	}
+
+
+
+	@Override
+	public List<Ast> visitACCESS_METHODCALL(ACCESS_METHODCALLContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitACCESS_METHODCALL(ctx);
+	}
+	
+	
+	
+	
+	/*
 	@Override
 	public List<Ast> visitIdentAccess(IdentAccessContext ctx) {
 		List<Ast> ret = new ArrayList<>();
 		
 		return ret;
-	}
+	}*/
 	
 	
 	

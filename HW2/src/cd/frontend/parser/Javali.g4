@@ -115,11 +115,11 @@ methodCallExpr
 	*/
 
 identAccess 
-	: Identifier 
-	| 'this' 
-	| identAccess '.' Identifier
-    | identAccess '[' expr ']' 
-    | methodCallExpression 
+	: Identifier #ACCESSID
+	| 'this'    #ACCESSTHIS
+	| identAccess '.' Identifier #ACCESSDOTID
+    | identAccess '[' expr ']'  #ACCECSS_BR_EXPR
+    | methodCallExpression   #ACCESS_METHODCALL
     ;
 
 /* 

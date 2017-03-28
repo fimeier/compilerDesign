@@ -18,8 +18,12 @@ class Main {
   	 a = 1 != 2 == 3;
   	 b = true && false || false;
   	 //x = b;
+  	 //x = test();
+  	 
   	 
      //write(53110);
      //writeln();  
    }
+   
+   //int test(){return 0;}
 }
