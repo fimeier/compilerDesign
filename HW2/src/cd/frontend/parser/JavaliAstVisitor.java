@@ -16,7 +16,9 @@ import cd.ir.Ast.Assign;
 import cd.ir.Ast.BooleanConst;
 import cd.ir.Ast.ClassDecl;
 import cd.ir.Ast.Expr;
+import cd.ir.Ast.IntConst;
 import cd.ir.Ast.MethodDecl;
+import cd.ir.Ast.NullConst;
 import cd.ir.Ast.Seq;
 import cd.ir.Ast.Var;
 import cd.ir.Ast.VarDecl;
@@ -71,9 +73,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	}
 
 	@Override 
-	// ( type | 'void' ) Identifier '('  formalParamList? ')'
-	//'{' varDecl* stmt* '}'
-	public List<Ast> visitMethodDecl(MethodDeclContext ctx) {
+	public List<Ast> visitMethodDecl(MethodDeclContext ctx) { //ok
 		List<Ast> members = new ArrayList<>();
 		
  		String returnType;
@@ -140,61 +140,124 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 	
-	// add cases
-	public List<Ast> visitExpr(ExprContext ctx) {
+	public List<Ast> visitExpr(ExprContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 				
 		switch (ctx.getClass().getSimpleName()) {
     	case "LITERALContext":  
     		ret.addAll(visitLITERAL((LITERALContext) ctx));
     		break;
-    		// TODO: all cases...
+    	case "IDENTACCESSContext":  
+    		ret.addAll(visitIDENTACCESS((IDENTACCESSContext) ctx));
+    		break;
+    	case "EXPRContext":  
+    		ret.addAll(visitEXPR((EXPRContext) ctx));
+    		break;
+    	case "SIGNEXPRContext":  
+    		ret.addAll(visitSIGNEXPR((SIGNEXPRContext) ctx));
+    		break;
+    	case "CASTEXPRContext":  
+    		ret.addAll(visitCASTEXPR((CASTEXPRContext) ctx));
+    		break;
+    	case "BINOPSTRONGContext":  
+    		ret.addAll(visitBINOPSTRONG((BINOPSTRONGContext) ctx));
+    		break;
+    	case "BINOPWEAKContext":  
+    		ret.addAll(visitBINOPWEAK((BINOPWEAKContext) ctx));
+    		break;
+    	case "ORDERPEXPRContext":  
+    		ret.addAll(visitORDERPEXPR((ORDERPEXPRContext) ctx));
+    		break;
+    	case "EQEXPRContext":  
+    		ret.addAll(visitEQEXPR((EQEXPRContext) ctx));
+    		break;
+    	case "ANDEXPRContext":  
+    		ret.addAll(visitANDEXPR((ANDEXPRContext) ctx));
+    		break;
+    	case "OREXPRContext":  
+    		ret.addAll(visitOREXPR((OREXPRContext) ctx));
+    		break;
 		}		
 		
 		return ret;
 	}
 	
-	@Override //add cases
-	public List<Ast> visitLITERAL(LITERALContext ctx) {
+	@Override
+	public List<Ast> visitIDENTACCESS(IDENTACCESSContext ctx) {
 		List<Ast> ret = new ArrayList<>();
-		
-		switch (ctx.getChild(0).getClass().getSimpleName()) {
-    	case "LIT_BOOLContext":  
-    		ret.addAll(visitLIT_BOOL((LIT_BOOLContext) ctx.getChild(0)));
-    		break;
-    		// TODO: all cases...
-		}
-		return ret;
-	}
-	
-	
-
-	@Override //ok
-	public List<Ast> visitLIT_BOOL(LIT_BOOLContext ctx) {
-		List<Ast> ret = new ArrayList<>();
-		BooleanConst b = new BooleanConst(Boolean.parseBoolean(ctx.getText()));
-		ret.add(b);
+		//TODO: implement
 		return ret;
 	}
 
 	@Override
-	public List<Ast> visitLIT_INT(LIT_INTContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitLIT_INT(ctx);
+	public List<Ast> visitEXPR(EXPRContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+	@Override
+	public List<Ast> visitSIGNEXPR(SIGNEXPRContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+	@Override
+	public List<Ast> visitCASTEXPR(CASTEXPRContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+
+
+	@Override
+	public List<Ast> visitBINOPSTRONG(BINOPSTRONGContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
 	}
 
 	@Override
-	public List<Ast> visitLIT_NULL(LIT_NULLContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitLIT_NULL(ctx);
+	public List<Ast> visitBINOPWEAK(BINOPWEAKContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
 	}
+	@Override
+	public List<Ast> visitORDERPEXPR(ORDERPEXPRContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+	@Override
+	public List<Ast> visitEQEXPR(EQEXPRContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+	@Override
+	public List<Ast> visitANDEXPR(ANDEXPRContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+
+	@Override
+	public List<Ast> visitOREXPR(OREXPRContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		//TODO: implement
+		return ret;
+	}
+
+
+	
+
+	
 
 	@Override
 	public List<Ast> visitWriteStmt(WriteStmtContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitWriteStmt(ctx);
 	}
-
 
 	@Override
 	public List<Ast> visitReturnStmt(ReturnStmtContext ctx) {
@@ -225,7 +288,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return super.visitIfStmt(ctx);
 	}
 
-	
 	@Override
 	public List<Ast> visitNewExpr(NewExprContext ctx) {
 		// TODO Auto-generated method stub
@@ -237,7 +299,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		// TODO Auto-generated method stub
 		return super.visitFormalParamList(ctx);
 	}
-
 
 	@Override
 	public List<Ast> visitMethodCallExpression(MethodCallExpressionContext ctx) {
@@ -251,16 +312,11 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return super.visitMethodCallExpr(ctx);
 	}
 
-
-
-
 	@Override
 	public List<Ast> visitActualParamList(ActualParamListContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitActualParamList(ctx);
 	}
-
-
 
 	@Override
 	public List<Ast> visitReadExpr(ReadExprContext ctx) {
@@ -274,13 +330,13 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return super.visitIdentAccess(ctx);
 	}
 	
-	@Override //DONE
-	// type Identifier (',' Identifier)* ';'
-	public List<Ast> visitVarDecl(VarDeclContext ctx) {
+	@Override
+	public List<Ast> visitVarDecl(VarDeclContext ctx) { //ok
 		List<Ast> members = new ArrayList<>();
 		
 		String type = ctx.type().getText();
 		
+		//TODO: types nicer?
 		/*
 		if (ctx.type().primitiveType() != null)
 			type = ctx.type().primitiveType().getText();
@@ -301,5 +357,48 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		return members;
 	}	
-	
+	//Literal:
+	@Override
+	public List<Ast> visitLITERAL(LITERALContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		
+		switch (ctx.getChild(0).getClass().getSimpleName()) {
+    	case "LIT_BOOLContext":  
+    		ret.addAll(visitLIT_BOOL((LIT_BOOLContext) ctx.getChild(0)));
+    		break;
+    	case "LIT_INTContext":  
+    		ret.addAll(visitLIT_INT((LIT_INTContext) ctx.getChild(0)));
+    		break;
+    	case "LIT_NULLContext":  
+    		ret.addAll(visitLIT_NULL((LIT_NULLContext) ctx.getChild(0)));
+    		break;
+		}
+		return ret;
+	}
+	@Override 
+	public List<Ast> visitLIT_BOOL(LIT_BOOLContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		BooleanConst b = new BooleanConst(Boolean.parseBoolean(ctx.getText()));
+		ret.add(b);
+		return ret;
+	}
+	@Override
+	public List<Ast> visitLIT_INT(LIT_INTContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+
+		IntConst i = new IntConst(Integer.parseInt(ctx.getText()));
+		ret.add(i);
+		
+		return ret;
+	}
+	@Override
+	public List<Ast> visitLIT_NULL(LIT_NULLContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+
+		NullConst i = new NullConst();
+		ret.add(i);
+		
+		return ret;
+	}
+
 }

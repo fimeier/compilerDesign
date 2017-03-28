@@ -6,9 +6,14 @@ class Main {
   	 boolean b, x;
   	 int[] c;
   	 String [] d;
+  	 int z;
   	 
   	 a = false;
   	 x = true;
+  	 
+  	 z = 0;
+  	 
+  	 a = null;
   	 
      //write(53110);
      //writeln();  
