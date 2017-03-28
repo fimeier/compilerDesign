@@ -3,10 +3,13 @@ class Main {
 
    void main() {
    	 String a;
-  	 boolean b;
+  	 boolean b, x;
   	 int[] c;
   	 String [] d;
-  	 //a = false;
+  	 
+  	 a = false;
+  	 x = true;
+  	 
      //write(53110);
      //writeln();  
    }

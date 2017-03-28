@@ -112,43 +112,44 @@ referenceType
 arrayType
 	: Identifier '[' ']' | primitiveType '[' ']'
 	;
-	
-
-
-//*IdentAccess
-//*	: Identifier | 'this' | IdentAccess '.' Identifier 
-//*	| IdentAccess '[' Expr ']' | MethodCallExpr
-//*	;
-
-//identAccess:;
 
 methodCallExpression
 	: Identifier '(' (expr (',' expr)*)? ')'
 	;
-
-
-
 
 identAccess
 	: (Identifier | 'this' | methodCallExpression)
 		(('.' (Identifier | methodCallExpression)) | '[' expr ']')*
 	;
 	
+	/* 
 expr
-	: Literal
-	| identAccess
-	| '(' expr ')'
-	| ('+' | '-' | '!') expr
-	| '(' referenceType ')' expr
-	| expr ('*' | '/' | '%') expr
-	| expr ('+' | '-') expr
-	| expr ('<' | '<=' | '>'| '>=') expr
-	| expr ('==' | '!=') expr
-	| expr '&&' expr
-	| expr '||' expr	
+	: Literal #LITERAL
+	| identAccess #IDENTACCESS
+	| '(' expr ')' #EXPR
+	| ('+' | '-' | '!') expr #SIGNEXPR
+	| '(' referenceType ')' expr #CASTEXPR
+	| expr ('*' | '/' | '%') expr #MULEXPR
+	| expr ('+' | '-') expr #PLUSEXPR
+	| expr ('<' | '<=' | '>'| '>=') expr #ORDERPEXPR
+	| expr ('==' | '!=') expr #EQEXPR
+	| expr '&&' expr #ANDEXPR
+	| expr '||' expr #OREXPR
+	;*/
+
+expr
+	: LITERAL = Literal 
+	| IDENTACCESS = identAccess 
+	| EXPR = '(' expr ')' 
+	| SIGNEXPR = ('+' | '-' | '!') expr 
+	| CASTEXPR = '(' referenceType ')' expr 
+	| MULEXPR = expr ('*' | '/' | '%') expr 
+	| PLUSEXPR = expr ('+' | '-') expr 
+	| ORDERPEXPR = expr ('<' | '<=' | '>'| '>=') expr 
+	| EQEXPR = expr ('==' | '!= ') expr
+	| ANDEXPR = expr '&&' expr 
+	| OREXPR = expr '||' expr 
 	;
-
-
 
 	
 actualParamList
