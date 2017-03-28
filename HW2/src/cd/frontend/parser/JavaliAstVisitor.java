@@ -13,6 +13,7 @@ import cd.ToDoException;
 import cd.frontend.parser.JavaliParser.*;
 import cd.ir.Ast;
 import cd.ir.Ast.Assign;
+import cd.ir.Ast.BooleanConst;
 import cd.ir.Ast.ClassDecl;
 import cd.ir.Ast.Expr;
 import cd.ir.Ast.MethodDecl;
@@ -98,7 +99,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		for (int i = 0; i<stmtBodyList.size();i++){
 			stmtBody.addAll(visitStmt(ctx.stmt(i)));
 		}
-		Seq body = new Seq(new ArrayList<Ast>());
+		Seq body = new Seq(stmtBody);
 		
 		MethodDecl methodDecl = 
 				new MethodDecl(returnType, name, argumentTypes, argumentNames, decls, body);
@@ -117,6 +118,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
         		ret.addAll(visitAssignmentStmt(ctx.assignmentStmt())); break;
 		// TODO: all cases...
 		}
+
 		return ret;
 	}
 	
@@ -125,43 +127,68 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		List<Ast> ret = new ArrayList<>();
 		
 		// TODO: change to visitIdentaccess
-		Var var = new Var(ctx.identAccess().toString());
+		Var var = new Var(ctx.identAccess().getText());
 		
 		Expr right = null;
 				
-		
 		if (ctx.expr() != null){
 			right = (Expr )visitExpr(ctx.expr()).get(0);
 		}
 		
 		Assign assign = new Assign(var, right);
 		ret.add(assign);
-		
 		return ret;
 	}
 	
+	// add cases
 	public List<Ast> visitExpr(ExprContext ctx) {
 		List<Ast> ret = new ArrayList<>();
-
+				
 		switch (ctx.getClass().getSimpleName()) {
     	case "LITERALContext":  
-    		System.out.println("here");; break;
+    		ret.addAll(visitLITERAL((LITERALContext) ctx));
+    		break;
     		// TODO: all cases...
-		}
-		
-		
-		
+		}		
 		
 		return ret;
 	}
 	
-	@Override
+	@Override //add cases
 	public List<Ast> visitLITERAL(LITERALContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitLITERAL(ctx);
+		List<Ast> ret = new ArrayList<>();
+		
+		switch (ctx.getChild(0).getClass().getSimpleName()) {
+    	case "LIT_BOOLContext":  
+    		ret.addAll(visitLIT_BOOL((LIT_BOOLContext) ctx.getChild(0)));
+    		break;
+    		// TODO: all cases...
+		}
+		return ret;
 	}
 	
 	
+
+	@Override //ok
+	public List<Ast> visitLIT_BOOL(LIT_BOOLContext ctx) {
+		List<Ast> ret = new ArrayList<>();
+		BooleanConst b = new BooleanConst(Boolean.parseBoolean(ctx.getText()));
+		ret.add(b);
+		return ret;
+	}
+
+	@Override
+	public List<Ast> visitLIT_INT(LIT_INTContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitLIT_INT(ctx);
+	}
+
+	@Override
+	public List<Ast> visitLIT_NULL(LIT_NULLContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitLIT_NULL(ctx);
+	}
+
 	@Override
 	public List<Ast> visitWriteStmt(WriteStmtContext ctx) {
 		// TODO Auto-generated method stub

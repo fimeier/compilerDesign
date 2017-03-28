@@ -138,7 +138,7 @@ expr
 	;*/
 
 expr
-	: Literal #LITERAL 
+	: literal #LITERAL 
 	| identAccess #IDENTACCESS 
 	| '(' expr ')' #EXPR
 	| (PLUS= '+' |MINUS= '-' |NOT= '!') expr #SIGNEXPR
@@ -156,12 +156,38 @@ actualParamList
 	: expr (',' expr)*
 	;
 
+newExpr
+	: 'new'
+	( Identifier '(' ')' 
+		| Identifier '[' expr ']'
+		| primitiveType '[' expr ']'
+	)
+	;
+	
+	
+	 /* 
+literal
+	: 'null' #LITERAL_NULL
+	| bool #LITERAL_BOOL
+	| (HEX=Hex | DEC=Decimal) #LITERAL_INT
+	;
+	
+Hex
+	: ('0x'| '0X') HexDigit+
+	;*/
+	
+literal
+	: 'null' #LIT_NULL
+	| bool #LIT_BOOL
+	| integer #LIT_INT
+	;
 
-
-
-Literal
-	: 'null' | Boolean | Integer;
-Integer
+bool
+	:	'false'
+	|	'true'
+	;
+	
+integer
 	: Hex | Decimal
 	;
 Hex
@@ -177,23 +203,10 @@ Decimal
 	: '0'
 	| '1'..'9' Digit* 
 	;
-
-
-
-newExpr
-	: 'new'
-	( Identifier '(' ')' 
-		| Identifier '[' expr ']'
-		| primitiveType '[' expr ']'
-	)
-	;
    
 
 
 // LEXER RULES
-// TODO: provide appropriate lexer rules for numbers and boolean literals
-
-
 
 // Java(li) identifiers:
 Identifier 
@@ -211,10 +224,8 @@ Digit
 	:	'0'..'9'
 	;
 
-Boolean
-	:	'false'
-	|	'true'
-	;
+
+
 
 
 // comments and white space does not produce tokens:
