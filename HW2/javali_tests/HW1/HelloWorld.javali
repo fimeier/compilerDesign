@@ -4,11 +4,13 @@ class Main {
 	int in;
 
    void main() {
+   
    	 String a;
   	 boolean b, x;
   	 int[] c;
   	 String [] d;
   	 int z;
+  	 
   	 
   	 a = !false;
   	 x = true;
@@ -22,12 +24,27 @@ class Main {
   	 x = b;
   	 a = this.in;
   	 c = b[2+3];
-  	 x = test();
+  	 //x = test();
+  	 //st();
   	 
+  	 if (true) {
+  	 	z = 1;
+  	 	z = 1+0;
+  	 }
+  	 if (true)
+  	 	z = 0;
+  	 else {}
+  	 if (i == 1)
+  	 	z = 0;
+  	 else {
+  	 z = 1;
+  	 	
+  	 }
   	 
-     //write(53110);
-     //writeln();  
+
+ 
    }
+   //void st(){}
    
-   int test(){return 0;}
+   //int test(){return 0;}
 }

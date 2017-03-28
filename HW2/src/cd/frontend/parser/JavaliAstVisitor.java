@@ -20,9 +20,11 @@ import cd.ir.Ast.Cast;
 import cd.ir.Ast.ClassDecl;
 import cd.ir.Ast.Expr;
 import cd.ir.Ast.Field;
+import cd.ir.Ast.IfElse;
 import cd.ir.Ast.Index;
 import cd.ir.Ast.IntConst;
 import cd.ir.Ast.MethodDecl;
+import cd.ir.Ast.Nop;
 import cd.ir.Ast.NullConst;
 import cd.ir.Ast.Seq;
 import cd.ir.Ast.ThisRef;
@@ -156,7 +158,23 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 
 		return ret;
 	}
-	@Override // identAccess '=' ( expr | newExpr | readExpr ) ';'
+	@Override // '{' stmt* '}'
+	public List<Ast> visitStmtBlock(StmtBlockContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		List<Ast> nodes = new ArrayList<>();
+		int count = ctx.stmt().size();
+		for (int i = 0; i<count; i++){
+			System.out.println(ctx.stmt(i).getText());
+			nodes.addAll(visitStmt(ctx.stmt(i)));
+		}
+		if (nodes.isEmpty()){
+			nodes.add(new Nop());
+		}
+		Seq seq = new Seq(nodes);
+		ret.add(seq);
+		return ret;
+	}
+	@Override
 	public List<Ast> visitAssignmentStmt(AssignmentStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
@@ -174,15 +192,27 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 	@Override
-	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) {
+	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		ret.addAll(visitMethodCallExpression(ctx.methodCallExpression()));
 		return ret;
 	}
-	@Override
-	public List<Ast> visitIfStmt(IfStmtContext ctx) {
+	@Override // 'if' '(' expr ')' stmtBlock ('else' stmtBlock)?
+	public List<Ast> visitIfStmt(IfStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		System.out.println("if");
+		
+		Expr cond = (Expr) visitExpr(ctx.expr()).get(0);
+		Ast then = visitStmtBlock(ctx.stmtBlock(0)).get(0);
+		
+		Ast otherwise;
+		if (ctx.stmtBlock(1) != null){
+			otherwise = (Ast) visitStmtBlock(ctx.stmtBlock(1));
+		} else {
+			otherwise = new Nop();
+		}
+		IfElse ifelse = new IfElse(cond, then, otherwise);
+		ret.add(ifelse);
 		return ret;
 	}
 	@Override
@@ -446,11 +476,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	}
 
 	@Override
-	public List<Ast> visitStmtBlock(StmtBlockContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitStmtBlock(ctx);
-	}
-	@Override
 	public List<Ast> visitNewExpr(NewExprContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitNewExpr(ctx);
@@ -471,7 +496,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return super.visitReadExpr(ctx);
 	}
 
-	
 	//IdentifierAccess
 	public List<Ast> visitIdentAccess(IdentAccessContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
@@ -520,7 +544,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		return ret;
 	}
-
 	@Override
 	public List<Ast> visitACCECSS_BR_EXPR(ACCECSS_BR_EXPRContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
@@ -532,14 +555,11 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		return ret;
 	}
-
-
 	@Override
 	public List<Ast> visitACCESS_METHODCALL(ACCESS_METHODCALLContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		ret.addAll(visitMethodCallExpression(ctx.methodCallExpression()));
 		return ret;
 	}
-
-		
+	
 }
