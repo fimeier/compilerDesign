@@ -58,7 +58,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 			
 		return members;
 	}
-	
 	@Override // (varDecl | methodDecl)*
 	public List<Ast> visitMemberList(MemberListContext ctx) {//ok
 		List<Ast> members = new ArrayList<>();
@@ -75,14 +74,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		return members;
 	}
-	
-	@Override
-	public List<Ast> visitType(TypeContext ctx) {
-		//TODO
-		return super.visitChildren(ctx);
-	}
-
-	
 	@Override
 	public List<Ast> visitVarDecl(VarDeclContext ctx) { //ok
 		List<Ast> members = new ArrayList<>();
@@ -208,7 +199,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		//Var var = new Var(ctx.identAccess().getText());
 		Expr var = (Expr) visitIdentAccess(ctx.identAccess()).get(0);
 		
-		
 		Expr right = null;
 				
 		if (ctx.expr() != null){
@@ -220,17 +210,20 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 	@Override
-	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) { //ok
+	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) { //ok?
 		List<Ast> ret = new ArrayList<>();
+		
         MethodCallExpr mce = (MethodCallExpr) visitMethodCallExpression(ctx.methodCallExpression()).get(0);
-         
+       
+        if (ctx.identAccess() != null){
+            mce.setReceiver((Expr) visitIdentAccess(ctx.identAccess()).get(0));
+        }
         MethodCall mc = new MethodCall(mce);
         ret.add(mc);
-        //TODO: implement
         return ret;
     }
 	@Override // 'if' '(' expr ')' stmtBlock ('else' stmtBlock)?
-	public List<Ast> visitIfStmt(IfStmtContext ctx) { //ok
+	public List<Ast> visitIfStmt(IfStmtContext ctx) { //TODO
 		List<Ast> ret = new ArrayList<>();
 		System.out.println("if");
 		
@@ -314,8 +307,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		ret.addAll(visitIdentAccess(ctx.identAccess()));
 		return ret;
 	}
-
-
 	@Override
 	public List<Ast> visitEXPR(EXPRContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
@@ -356,8 +347,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		return ret;
 	}
-
-
 	@Override
 	public List<Ast> visitBINOPSTRONG(BINOPSTRONGContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
@@ -380,7 +369,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		ret.add(binop);
 		return ret;
 	}
-
 	@Override
 	public List<Ast> visitBINOPWEAK(BINOPWEAKContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
@@ -508,35 +496,27 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	}
 
 	@Override
-	public List<Ast> visitNewExpr(NewExprContext ctx) {
+	public List<Ast> visitNewExpr(NewExprContext ctx) { //ok
 		// TODO Auto-generated method stub
 		return super.visitNewExpr(ctx);
 	}
-	
-	@Override
-	public List<Ast> visitMethodCallExpression(MethodCallExpressionContext ctx) {
+	@Override // Identifier '(' (expr (',' expr)*)? ')'
+	public List<Ast> visitMethodCallExpression(MethodCallExpressionContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		 
-        System.out.println(ctx.getText());
-        // TODO Auto-generated method stub
-        //hardcoded ident()
-        
-        /*
-         * (Expr) visitExpr((ExprContext) ctx.expr(0).children.get(0)),ctx.children.get(0).getText(),ctx.
-         */
-       System.out.println(ctx.Identifier());
-        
-        //Expr rcvr = (Expr) visitExpr(ctx.expr(0)).get(0);
-      // Expr rcvr = (Expr) visitACCESSTHIS(ctx).get(0);
-       Expr rcvr = null; 
-       String methodName = ctx.Identifier().getText();
-        List<Expr> arguments = null;
-        MethodCallExpr mce = new MethodCallExpr(rcvr, methodName, arguments);
+
+		Expr rcvr = new ThisRef(); 
+	    String methodName = ctx.Identifier().getText();
+	    List<Expr> arguments = new ArrayList<>();
+	    int count = ctx.expr().size();
+	    for (int i = 0; i < count; i++){
+	    	arguments.add((Expr) visitExpr(ctx.expr(i)).get(0));
+	    }
+
+	    MethodCallExpr mce = new MethodCallExpr(rcvr, methodName, arguments);
         ret.add(mce);
          
         return ret;
  
-//      return super.visitMethodCallExpr(ctx);
     }
 	@Override
 	public List<Ast> visitReadExpr(ReadExprContext ctx) {
@@ -547,7 +527,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	//IdentifierAccess
 	public List<Ast> visitIdentAccess(IdentAccessContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-				
+						
 		switch (ctx.getClass().getSimpleName()) {
     		case "ACCESSIDContext":  
     			ret.addAll(visitACCESSID((ACCESSIDContext) ctx));
@@ -563,6 +543,9 @@ public List<ClassDecl> classDecls = new ArrayList<>();
     			break;
     		case "ACCESS_METHODCALLContext":  
     			ret.addAll(visitACCESS_METHODCALL((ACCESS_METHODCALLContext) ctx));
+    			break;
+    		case "ACCESS_METHODCALL_SEQContext":  
+    			ret.addAll(visitACCESS_METHODCALL_SEQ((ACCESS_METHODCALL_SEQContext) ctx));
     			break;
 		}
 		return ret;
@@ -603,10 +586,27 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		return ret;
 	}
-	@Override
-	public List<Ast> visitACCESS_METHODCALL(ACCESS_METHODCALLContext ctx) { //ok
+	@Override // methodCallExpression
+	public List<Ast> visitACCESS_METHODCALL(ACCESS_METHODCALLContext ctx) { //ok?
 		List<Ast> ret = new ArrayList<>();
-		ret.addAll(visitMethodCallExpression(ctx.methodCallExpression()));
+		System.out.println(ctx.getText());
+		
+		MethodCallExpr mce = (MethodCallExpr) visitMethodCallExpression(ctx.methodCallExpression()).get(0);
+
+		ret.add(mce);		
+		return ret;
+	}
+	@Override //identAccess '.' methodCallExpression
+	public List<Ast> visitACCESS_METHODCALL_SEQ(ACCESS_METHODCALL_SEQContext ctx) { //ok?
+		List<Ast> ret = new ArrayList<>();
+		
+		MethodCallExpr mce = (MethodCallExpr) visitMethodCallExpression(ctx.methodCallExpression()).get(0);
+	       
+	    if (!ctx.identAccess().isEmpty()){
+	    	mce.setReceiver((Expr) visitIdentAccess(ctx.identAccess()).get(0));
+	    }
+		
+		ret.add(mce);
 		return ret;
 	}
 	

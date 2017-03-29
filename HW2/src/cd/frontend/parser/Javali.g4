@@ -48,10 +48,6 @@ stmtBlock
 	: '{' stmt* '}'
 	;
 	
-methodCallStmt	
-	: methodCallExpression ';'
-	;
-	
 assignmentStmt
 	: identAccess '=' ( expr | newExpr | readExpr ) ';'
 	;
@@ -98,38 +94,23 @@ arrayType
 	: Identifier '[' ']' | primitiveType '[' ']'
 	;
 
+methodCallStmt	
+	: (identAccess '.')? methodCallExpression ';'
+	;
+
 methodCallExpression
 	: Identifier '(' (expr (',' expr)*)? ')'
 	;
-	
-	/* 
-actualParamList
-	: expr (',' expr)*
-	;
-
-methodCallExpr
-	: Identifier '(' actualParamList? ')'
-	| identAccess '.' Identifier '(' actualParamList? ')'
-	;
-	* 
-	*/
 
 identAccess 
 	: Identifier #ACCESSID
 	| 'this'    #ACCESSTHIS
 	| identAccess '.' Identifier #ACCESSDOTID
     | identAccess '[' expr ']'  #ACCECSS_BR_EXPR
-    | methodCallExpression   #ACCESS_METHODCALL
+    | methodCallExpression #ACCESS_METHODCALL
+	| identAccess '.' methodCallExpression #ACCESS_METHODCALL_SEQ
     ;
 
-/* 
-identAccess
-	: (Identifier | 'this' | methodCallExpression)
-		(('.' (Identifier | methodCallExpression)) | '[' expr ']')*
-	;
-
-* 
-*/
 expr
 	: literal #LITERAL 
 	| identAccess #IDENTACCESS 

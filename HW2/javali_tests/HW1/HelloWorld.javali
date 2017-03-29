@@ -1,29 +1,40 @@
 /* Kind of like hello world */
 class Main {
 
-	void print(int x, int y){
-	
-		//write(x);
-		int c;
-		c = x + y;
-		c = this;
-		
-		}
-	
-
    void main() {
+   	 int y;
+   	 int x;
    
-   	 String a;
-  	 boolean b, x;
-  	 int[] c;
-  	 String [] d;
-  	 int z;
-	 String b;
-	 
-	 //print();
-
-  	 //a.append(b);
+   	 main();
+   	 c = main();
+   	 a.main();
+   	 a.b.main();
+   	 c = c.main();
+   	 c = a.b.main();
+   	 main().main();
+   	 main().c.main();
+   	 d = main().c.main();
+   	 
+   	 main(1);
+   	 c = main(1, a);
+   	 a.main(c+3);
+   	 a.b.main(true);
+   	 c = c.main(a, b, c, a+1);
+   	 c = a.b.main(3);
+   	 main(5).main(3);
+   	 main(3, 4, 5).c.main(a, 1, a);
+   	 d = main(as).c.main(true, false, 1+2*4);
+   	 
+   	 
+   	 y=3;
+   	 x = 3;
+   	 
+   	 x.print(x, y);
+  }
   	 
-  	 
-  	 }
+  void print(int x, int y){
+  	 int c;
+  	 c = x+y;
+  	 c = this;	
+  }
 }
