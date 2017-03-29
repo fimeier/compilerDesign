@@ -1,5 +1,43 @@
 /* Kind of like hello world */
 class Main {
+	
+	void main() {
+	
+		a = read();
+		
+	
+		//a = new test();
+		//a = new intb[5];
+		//c = new int[10];
+	
+	
+		//write(a);
+		//writeln();
+	
+		//return 0;
+		//return;
+		//return main();
+	}
+
+/*
+
+	void main() {
+		while(true){}
+		
+		while(x == 2){}
+		while(x > 2+3*4/7%9){
+			x = 2;
+		}
+		while(true){
+			while(x > 2+3*4/7%9){
+			x = 2;
+			}
+		}
+		while(true){
+			main();
+		}
+		
+	}
 
 	void main() {
 	
@@ -45,15 +83,9 @@ class Main {
 			
 		}
 		
-		
-		
-		
 	}
 
 
-
-
-/*
    void main() {
    	 int y;
    	 int x;

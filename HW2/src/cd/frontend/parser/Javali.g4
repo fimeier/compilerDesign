@@ -49,11 +49,8 @@ assignmentStmt
 	;
 	
 writeStmt	
-	: (
-		'write' '(' expr ')'
-		|
-		'writeln' '(' ')'
-	  ) ';'
+	: 'write' '(' expr ')' ';' #WRITE
+	| 'writeln' '(' ')' ';' #WRITELN
 	; 
 	
 ifStmt	
@@ -121,12 +118,15 @@ expr
 
 
 newExpr
-	: 'new'
-	( Identifier '(' ')' 
-		| Identifier '[' expr ']'
-		| primitiveType '[' expr ']'
-	)
+	: 'new' newBody
 	;
+	
+newBody
+	: Identifier '(' ')'  		#CONSTRCT_OBJECT
+	| Identifier '[' expr ']' 	#ARRAY_OBJECT
+	| primitiveType '[' expr ']' #PRIMITIVE_ARRAY_OBJECT
+	;
+
 	
 literal
 	: 'null' #LIT_NULL

@@ -1,21 +1,17 @@
 package cd.frontend.parser;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.antlr.v4.runtime.misc.NotNull;
-import org.antlr.v4.runtime.tree.ErrorNode;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import cd.ToDoException;
 import cd.frontend.parser.JavaliParser.*;
 import cd.ir.Ast;
 import cd.ir.Ast.Assign;
 import cd.ir.Ast.BinaryOp;
 import cd.ir.Ast.BooleanConst;
+import cd.ir.Ast.BuiltInWrite;
+import cd.ir.Ast.BuiltInWriteln;
 import cd.ir.Ast.Cast;
 import cd.ir.Ast.ClassDecl;
 import cd.ir.Ast.Expr;
@@ -26,13 +22,17 @@ import cd.ir.Ast.IntConst;
 import cd.ir.Ast.MethodCall;
 import cd.ir.Ast.MethodCallExpr;
 import cd.ir.Ast.MethodDecl;
+import cd.ir.Ast.NewArray;
+import cd.ir.Ast.NewObject;
 import cd.ir.Ast.Nop;
 import cd.ir.Ast.NullConst;
+import cd.ir.Ast.ReturnStmt;
 import cd.ir.Ast.Seq;
 import cd.ir.Ast.ThisRef;
 import cd.ir.Ast.UnaryOp;
 import cd.ir.Ast.Var;
 import cd.ir.Ast.VarDecl;
+import cd.ir.Ast.WhileLoop;
 import cd.ir.Ast.BinaryOp.BOp;
 import cd.ir.Ast.UnaryOp.UOp;
 
@@ -80,20 +80,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		String type = ctx.type().getText();
 		
-		//TODO: types nicer?
-		/*
-		if (ctx.type().primitiveType() != null)
-			type = ctx.type().primitiveType().getText();
-		else if (ctx.type().referenceType() != null){
-			//ctx.type().referenceType()
-			if (ctx.type().referenceType().Identifier() != null)
-				type = ctx.type().referenceType().Identifier().toString();
-			else if (ctx.type().referenceType().arrayType() != null){
-				ArrayTypeContext arrCtx = ctx.type().referenceType().arrayType();
-				...
-			}
-		}*/
-		
 		for (TerminalNode n : ctx.Identifier()){
 			VarDecl varDecl = new VarDecl(type, n.toString());
 			members.add(varDecl);
@@ -109,12 +95,11 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		if (ctx.type() == null)
  			returnType = "void";
  		else 
- 			returnType = ctx.type().toString();
+ 			returnType = ctx.type().getText();
 		String name = ctx.Identifier().toString();
 		List<String> argumentTypes = new ArrayList<>();
 		List<String> argumentNames = new ArrayList<>();
 		
-		//TODO: type?
 		if (ctx.formalParamList()!=null){
 			FormalParamListContext fp = ctx.formalParamList();
 			for (int i = 0; i<fp.getChildCount();i=i+3){
@@ -127,7 +112,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 				System.out.println((i+1)+"="+argName);
 			}
 		}
-		//TODO kann varDecl() null sein????
 		// varDecl*
 		List<Ast> varDecls = new ArrayList<>();
 		List<VarDeclContext> varDeclList = ctx.varDecl();
@@ -167,8 +151,10 @@ public List<ClassDecl> classDecls = new ArrayList<>();
         		ret.addAll(visitWhileStmt(ctx.whileStmt())); break;
         	case "ReturnStmtContext":  
         		ret.addAll(visitReturnStmt(ctx.returnStmt())); break;
-        	case "WriteStmtContext":  
-        		ret.addAll(visitWriteStmt(ctx.writeStmt())); break;
+        	case "WRITEContext":  
+        		ret.addAll(visitWRITE((WRITEContext) ctx.writeStmt())); break;
+        	case "WRITELNContext":  
+        		ret.addAll(visitWRITELN((WRITELNContext) ctx.writeStmt())); break;
 		}
 
 		return ret;
@@ -189,14 +175,18 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	public List<Ast> visitAssignmentStmt(AssignmentStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
-		// TODO: change to visitIdentaccess: bitte prüfen ob i.O.
-		//Var var = new Var(ctx.identAccess().getText());
 		Expr var = (Expr) visitIdentAccess(ctx.identAccess()).get(0);
 		
 		Expr right = null;
-				
+						
 		if (ctx.expr() != null){
 			right = (Expr )visitExpr(ctx.expr()).get(0);
+		}
+		else if (ctx.newExpr() != null){
+			right = (Expr )visitNewExpr(ctx.newExpr()).get(0);
+		}
+		else if (ctx.readExpr() != null){
+			right = (Expr )visitReadExpr(ctx.readExpr()).get(0);
 		}
 		
 		Assign assign = new Assign(var, right);
@@ -233,29 +223,53 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		ret.add(ifelse);
 		return ret;
 	}
-	@Override
-	public List<Ast> visitWhileStmt(WhileStmtContext ctx) {
+	@Override // 'while' '(' expr ')' stmtBlock
+	public List<Ast> visitWhileStmt(WhileStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		
+		Expr condition = (Expr) visitExpr(ctx.expr()).get(0) ;
+		Ast body = visitStmtBlock(ctx.stmtBlock()).get(0);
+		WhileLoop wl = new WhileLoop(condition, body);
+		ret.add(wl);
 		return ret;
 	}
-	@Override
-	public List<Ast> visitReturnStmt(ReturnStmtContext ctx) {
+	@Override // 'return' expr? ';'
+	public List<Ast> visitReturnStmt(ReturnStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		
+		Expr arg;
+		if (ctx.expr() != null){
+			arg = (Expr) visitExpr(ctx.expr()).get(0);
+		} else {
+			arg = null;
+		}
+		
+		ReturnStmt rs = new ReturnStmt(arg);
+		ret.add(rs);
 		return ret;
 	}
-	@Override
-	public List<Ast> visitWriteStmt(WriteStmtContext ctx) {
+	@Override // 'write' '(' expr ')' ';'
+	public List<Ast> visitWRITE(WRITEContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
-		return ret;
-	}
 
+		Expr arg = (Expr) visitExpr(ctx.expr()).get(0);
+		BuiltInWrite w = new BuiltInWrite(arg);
+		ret.add(w);
+		
+		return ret;
+	} // 'writeln' '(' ')' ';'
+	@Override
+	public List<Ast> visitWRITELN(WRITELNContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		BuiltInWriteln w = new BuiltInWriteln();
+		ret.add(w);
+		return ret;
+	}
 	//EXPR:
 	public List<Ast> visitExpr(ExprContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 				
+		
 		switch (ctx.getClass().getSimpleName()) {
     	case "LITERALContext":  
     		ret.addAll(visitLITERAL((LITERALContext) ctx));
@@ -332,7 +346,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	public List<Ast> visitCASTEXPR(CASTEXPRContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
-		// TODO: change to referenceType visitor
 		String typeName = ctx.referenceType().getText();
 		Expr arg = (Expr) visitExpr(ctx.expr()).get(0);		
 		Cast cast = new Cast(arg, typeName);
@@ -488,10 +501,57 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 
+	@Override //'new' newBody
+	public List<Ast> visitNewExpr(NewExprContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		
+		switch (ctx.newBody().getClass().getSimpleName()){
+			case "CONSTRCT_OBJECTContext":  
+				ret.addAll(visitCONSTRCT_OBJECT((CONSTRCT_OBJECTContext) ctx.newBody()));
+				break;
+			case "ARRAY_OBJECTContext":  
+				ret.addAll(visitARRAY_OBJECT((ARRAY_OBJECTContext) ctx.newBody()));
+				break;
+			case "PRIMITIVE_ARRAY_OBJECTContext":  
+				ret.addAll(visitPRIMITIVE_ARRAY_OBJECT((PRIMITIVE_ARRAY_OBJECTContext) ctx.newBody()));
+				break;
+		}
+			
+		return ret;
+	}
+	
 	@Override
-	public List<Ast> visitNewExpr(NewExprContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitNewExpr(ctx);
+	public List<Ast> visitARRAY_OBJECT(ARRAY_OBJECTContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		
+		String typeName = ctx.Identifier().getText()+"[]";
+		Expr capacity = (Expr) visitExpr(ctx.expr()).get(0);
+		
+		NewArray na = new NewArray(typeName, capacity);
+		ret.add(na);
+		
+		return ret;
+	}
+	@Override
+	public List<Ast> visitPRIMITIVE_ARRAY_OBJECT(PRIMITIVE_ARRAY_OBJECTContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		
+		String typeName =  ctx.primitiveType().getText() +"[]";
+		Expr capacity = (Expr) visitExpr(ctx.expr()).get(0);
+		
+		NewArray na = new NewArray(typeName, capacity);
+		ret.add(na);
+		
+		return ret;
+	}
+	@Override
+	public List<Ast> visitCONSTRCT_OBJECT(CONSTRCT_OBJECTContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+					
+		String typeName = ctx.Identifier().getText();
+		NewObject no = new NewObject(typeName);
+		ret.add(no);
+		return ret;
 	}
 	@Override // Identifier '(' (expr (',' expr)*)? ')'
 	public List<Ast> visitMethodCallExpression(MethodCallExpressionContext ctx) { //ok
@@ -511,10 +571,12 @@ public List<ClassDecl> classDecls = new ArrayList<>();
         return ret;
  
     }
-	@Override
+	@Override //'read' '(' ')'
 	public List<Ast> visitReadExpr(ReadExprContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitReadExpr(ctx);
+		List<Ast> ret = new ArrayList<>();
+		Ast.BuiltInRead b = new Ast.BuiltInRead();
+		ret.add(b);
+		return ret;
 	}
 
 	//IdentifierAccess
