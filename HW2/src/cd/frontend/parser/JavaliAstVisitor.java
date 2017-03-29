@@ -196,7 +196,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	@Override
 	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-<<<<<<< HEAD
         MethodCallExpr mce = (MethodCallExpr) visitMethodCallExpression(ctx.methodCallExpression()).get(0);
          
         MethodCall mc = new MethodCall(mce);
@@ -204,15 +203,8 @@ public List<ClassDecl> classDecls = new ArrayList<>();
         //TODO: implement
         return ret;
     }
-	@Override
-	public List<Ast> visitIfStmt(IfStmtContext ctx) {
-=======
-		ret.addAll(visitMethodCallExpression(ctx.methodCallExpression()));
-		return ret;
-	}
 	@Override // 'if' '(' expr ')' stmtBlock ('else' stmtBlock)?
 	public List<Ast> visitIfStmt(IfStmtContext ctx) { //ok
->>>>>>> origin/master
 		List<Ast> ret = new ArrayList<>();
 		System.out.println("if");
 		

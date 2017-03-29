@@ -41,14 +41,8 @@ class Main {
   	 	
   	 }
   	 
-<<<<<<< HEAD
-     //write(53110);
-     //writeln();
-		bubabiba();
-=======
 
- 
->>>>>>> origin/master
+
    }
    //void st(){}
    
