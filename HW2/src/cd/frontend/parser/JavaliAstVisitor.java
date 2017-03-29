@@ -19,6 +19,8 @@ import cd.ir.Ast.Cast;
 import cd.ir.Ast.ClassDecl;
 import cd.ir.Ast.Expr;
 import cd.ir.Ast.IntConst;
+import cd.ir.Ast.MethodCall;
+import cd.ir.Ast.MethodCallExpr;
 import cd.ir.Ast.MethodDecl;
 import cd.ir.Ast.NullConst;
 import cd.ir.Ast.Seq;
@@ -172,9 +174,13 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	@Override
 	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) {
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
-		return ret;
-	}
+        MethodCallExpr mce = (MethodCallExpr) visitMethodCallExpression(ctx.methodCallExpression()).get(0);
+         
+        MethodCall mc = new MethodCall(mce);
+        ret.add(mc);
+        //TODO: implement
+        return ret;
+    }
 	@Override
 	public List<Ast> visitIfStmt(IfStmtContext ctx) {
 		List<Ast> ret = new ArrayList<>();
@@ -457,9 +463,20 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	}
 	@Override
 	public List<Ast> visitMethodCallExpression(MethodCallExpressionContext ctx) {
-		System.out.println("methodcall");
-		return super.visitMethodCallExpression(ctx);
-	}
+		List<Ast> ret = new ArrayList<>();
+		 
+        System.out.println(ctx.getText());
+        // TODO Auto-generated method stub
+        //hardcoded ident()
+        
+         MethodCallExpr mce = null;
+ //       MethodCallExpr mce = new MethodCallExpr((Expr) visitExpr((ExprContext) ctx.expr(0).children.get(0)),ctx.children.get(0).getText(),ctx.);
+        ret.add(mce);
+         
+        return ret;
+ 
+//      return super.visitMethodCallExpr(ctx);
+    }
 	@Override
 	public List<Ast> visitReadExpr(ReadExprContext ctx) {
 		// TODO Auto-generated method stub

@@ -22,7 +22,8 @@ class Main {
   	 
   	 
      //write(53110);
-     //writeln();  
+     //writeln();
+		bubabiba();
    }
    
    //int test(){return 0;}
