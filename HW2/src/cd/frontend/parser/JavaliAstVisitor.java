@@ -62,17 +62,37 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	public List<Ast> visitMemberList(MemberListContext ctx) {//ok
 		List<Ast> members = new ArrayList<>();
 		
-		List<VarDeclContext> varDeclList = ctx.varDecl();
-		for (int i = 0; i<varDeclList.size();i++){
-			members.addAll(visitVarDecl(ctx.varDecl(i)));
+		int count = ctx.memberListBody().size();
+		for (int i = 0;i < count; i++){
+			members.addAll(visitMemberListBody(ctx.memberListBody(i)));
 		}
-		
-		List<MethodDeclContext> methodDeclList = ctx.methodDecl();
-		for (int i = 0; i<methodDeclList.size();i++){
-			members.addAll(visitMethodDecl(ctx.methodDecl(i)));
-		}
-		
+				
 		return members;
+	}
+	public List<Ast> visitMemberListBody(MemberListBodyContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+	
+		switch (ctx.getClass().getSimpleName()) {
+    		case "VarDContext":  
+    			ret.addAll(visitVarD((VarDContext) ctx));
+    			break;
+    		case "MethodDContext":  
+    			ret.addAll(visitMethodD((MethodDContext) ctx));
+    			break;
+		}
+		return ret;
+	}
+	@Override
+	public List<Ast> visitVarD(VarDContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		ret.addAll(visitVarDecl(ctx.varDecl()));
+		return ret;
+	}
+	@Override
+	public List<Ast> visitMethodD(MethodDContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		ret.addAll(visitMethodDecl(ctx.methodDecl()));
+		return ret;
 	}
 	@Override
 	public List<Ast> visitVarDecl(VarDeclContext ctx) { //ok
@@ -107,9 +127,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 				String argName = fp.getChild(i+1).getText();
 				argumentTypes.add(argType);
 				argumentNames.add(argName);
-				
-				System.out.println(i+"="+argType);
-				System.out.println((i+1)+"="+argName);
 			}
 		}
 		// varDecl*
@@ -519,7 +536,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 			
 		return ret;
 	}
-	
 	@Override
 	public List<Ast> visitARRAY_OBJECT(ARRAY_OBJECTContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
@@ -644,7 +660,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	@Override // methodCallExpression
 	public List<Ast> visitACCESS_METHODCALL(ACCESS_METHODCALLContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		System.out.println(ctx.getText());
 		
 		MethodCallExpr mce = (MethodCallExpr) visitMethodCallExpression(ctx.methodCallExpression()).get(0);
 

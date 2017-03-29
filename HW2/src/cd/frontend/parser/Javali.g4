@@ -20,7 +20,12 @@ classDecl
 	;
 
 memberList
-	: (varDecl | methodDecl)*
+	: (memberListBody)*
+	;
+	
+memberListBody
+	:	varDecl #varD 
+	|  	methodDecl #methodD
 	;
 
 varDecl
