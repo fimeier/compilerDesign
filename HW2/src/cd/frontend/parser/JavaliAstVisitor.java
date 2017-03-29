@@ -123,7 +123,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		List<String> argumentTypes = new ArrayList<>();
 		List<String> argumentNames = new ArrayList<>();
 		
-		//TODO nach formalParamList/type verschieben
+		//TODO type???
 		if (ctx.formalParamList()!=null){
 			//System.out.println(ctx.formalParamList().children.size());
 			FormalParamListContext fp = ctx.formalParamList();
@@ -137,8 +137,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 				System.out.println((i+1)+"="+argName);
 				//fp.children.
 			}
-			
-
 		}
 		//TODO kann varDecl() null sein????
 		// varDecl*
@@ -206,8 +204,10 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	public List<Ast> visitAssignmentStmt(AssignmentStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
-		// TODO: change to visitIdentaccess
-		Var var = new Var(ctx.identAccess().getText());
+		// TODO: change to visitIdentaccess: bitte prüfen ob i.O.
+		//Var var = new Var(ctx.identAccess().getText());
+		Expr var = (Expr) visitIdentAccess(ctx.identAccess()).get(0);
+		
 		
 		Expr right = null;
 				
@@ -512,11 +512,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		// TODO Auto-generated method stub
 		return super.visitNewExpr(ctx);
 	}
-	@Override
-	public List<Ast> visitFormalParamList(FormalParamListContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitFormalParamList(ctx);
-	}
+	
 	@Override
 	public List<Ast> visitMethodCallExpression(MethodCallExpressionContext ctx) {
 		List<Ast> ret = new ArrayList<>();
@@ -528,8 +524,12 @@ public List<ClassDecl> classDecls = new ArrayList<>();
         /*
          * (Expr) visitExpr((ExprContext) ctx.expr(0).children.get(0)),ctx.children.get(0).getText(),ctx.
          */
-        Expr rcvr = (Expr) visitExpr(ctx.expr(0)).get(0);
-        String methodName = ctx.children.get(0).getText();
+       System.out.println(ctx.Identifier());
+        
+        //Expr rcvr = (Expr) visitExpr(ctx.expr(0)).get(0);
+      // Expr rcvr = (Expr) visitACCESSTHIS(ctx).get(0);
+       Expr rcvr = null; 
+       String methodName = ctx.Identifier().getText();
         List<Expr> arguments = null;
         MethodCallExpr mce = new MethodCallExpr(rcvr, methodName, arguments);
         ret.add(mce);

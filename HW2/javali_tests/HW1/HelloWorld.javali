@@ -2,7 +2,12 @@
 class Main {
 
 	void print(int x, int y){
-		write(x);
+	
+		//write(x);
+		int c;
+		c = x + y;
+		c = this;
+		
 		}
 	
 
@@ -14,6 +19,8 @@ class Main {
   	 String [] d;
   	 int z;
 	 String b;
+	 
+	 //print();
 
   	 //a.append(b);
   	 
