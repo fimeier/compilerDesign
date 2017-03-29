@@ -114,9 +114,8 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		List<String> argumentTypes = new ArrayList<>();
 		List<String> argumentNames = new ArrayList<>();
 		
-		//TODO type???
+		//TODO: type?
 		if (ctx.formalParamList()!=null){
-			//System.out.println(ctx.formalParamList().children.size());
 			FormalParamListContext fp = ctx.formalParamList();
 			for (int i = 0; i<fp.getChildCount();i=i+3){
 				String argType = fp.getChild(i).getText();
@@ -126,7 +125,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 				
 				System.out.println(i+"="+argType);
 				System.out.println((i+1)+"="+argName);
-				//fp.children.
 			}
 		}
 		//TODO kann varDecl() null sein????
@@ -181,11 +179,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		List<Ast> nodes = new ArrayList<>();
 		int count = ctx.stmt().size();
 		for (int i = 0; i<count; i++){
-			System.out.println(ctx.stmt(i).getText());
 			nodes.addAll(visitStmt(ctx.stmt(i)));
-		}
-		if (nodes.isEmpty()){
-			nodes.add(new Nop());
 		}
 		Seq seq = new Seq(nodes);
 		ret.add(seq);
@@ -210,7 +204,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 	@Override
-	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) { //ok?
+	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
         MethodCallExpr mce = (MethodCallExpr) visitMethodCallExpression(ctx.methodCallExpression()).get(0);
@@ -223,16 +217,15 @@ public List<ClassDecl> classDecls = new ArrayList<>();
         return ret;
     }
 	@Override // 'if' '(' expr ')' stmtBlock ('else' stmtBlock)?
-	public List<Ast> visitIfStmt(IfStmtContext ctx) { //TODO
+	public List<Ast> visitIfStmt(IfStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		System.out.println("if");
 		
 		Expr cond = (Expr) visitExpr(ctx.expr()).get(0);
 		Ast then = visitStmtBlock(ctx.stmtBlock(0)).get(0);
 		
 		Ast otherwise;
 		if (ctx.stmtBlock(1) != null){
-			otherwise = (Ast) visitStmtBlock(ctx.stmtBlock(1));
+			otherwise = visitStmtBlock(ctx.stmtBlock(1)).get(0);
 		} else {
 			otherwise = new Nop();
 		}
@@ -496,7 +489,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	}
 
 	@Override
-	public List<Ast> visitNewExpr(NewExprContext ctx) { //ok
+	public List<Ast> visitNewExpr(NewExprContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitNewExpr(ctx);
 	}
@@ -587,7 +580,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 	@Override // methodCallExpression
-	public List<Ast> visitACCESS_METHODCALL(ACCESS_METHODCALLContext ctx) { //ok?
+	public List<Ast> visitACCESS_METHODCALL(ACCESS_METHODCALLContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		System.out.println(ctx.getText());
 		
@@ -597,7 +590,7 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 	@Override //identAccess '.' methodCallExpression
-	public List<Ast> visitACCESS_METHODCALL_SEQ(ACCESS_METHODCALL_SEQContext ctx) { //ok?
+	public List<Ast> visitACCESS_METHODCALL_SEQ(ACCESS_METHODCALL_SEQContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
 		MethodCallExpr mce = (MethodCallExpr) visitMethodCallExpression(ctx.methodCallExpression()).get(0);

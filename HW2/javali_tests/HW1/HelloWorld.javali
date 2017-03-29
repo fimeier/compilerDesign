@@ -1,6 +1,59 @@
 /* Kind of like hello world */
 class Main {
 
+	void main() {
+	
+		if (true) {
+			a = 1;
+		} else {
+			a = 0;
+		}
+		
+		if (true) {
+			a = 1;
+			b = 2;
+		} else {
+			a = 0;
+			b = 3;
+		}
+		
+		if (true) {} else {}
+		
+		if (b == 1+2) {}
+		
+		if (b == true) {
+			a = 2;
+		}
+		
+		if (b == true) {
+			a = 2;
+			b = 2;
+		}
+		
+	
+		if (true) {
+			
+		} else {
+			a = 0;
+			b = 3;
+		}
+		
+		if (true) {
+			a = 1;
+			b = 2;
+		} else {
+			
+		}
+		
+		
+		
+		
+	}
+
+
+
+
+/*
    void main() {
    	 int y;
    	 int x;
@@ -37,4 +90,5 @@ class Main {
   	 c = x+y;
   	 c = this;	
   }
+  */
 }

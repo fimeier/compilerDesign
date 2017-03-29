@@ -11,8 +11,6 @@ grammar Javali; // parser grammar, parses streams of tokens
 
 // PARSER RULES
 
-// program structure
-
 unit
  	: classDecl+ EOF
  	;
@@ -38,8 +36,6 @@ formalParamList
 	: type Identifier (',' type Identifier)*
 	;
 	
-// statements
-
 stmt
 	: assignmentStmt | methodCallStmt | ifStmt | whileStmt | returnStmt | writeStmt
 	;
@@ -71,8 +67,6 @@ whileStmt
 returnStmt	
 	: 'return' expr? ';'
 	;
-
-// expressions
 	
 readExpr
 	: 'read' '(' ')'
