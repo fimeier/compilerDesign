@@ -116,7 +116,7 @@ expr
 	| expr (PLUS='*' |DIV= '/' |MOD= '%') expr #BINOPSTRONG
 	| expr ('+' | '-') expr #BINOPWEAK
 	| expr (LT='<' | LTE='<=' |GT= '>'|GTE= '>=') expr #ORDERPEXPR
-	| expr (EQ='==' |NEQ= '!= ') expr #EQEXPR
+	| expr (EQ='==' |NEQ= '!=') expr #EQEXPR
 	| expr '&&' expr #ANDEXPR
 	| expr '||' expr #OREXPR
 	;
