@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ClassDecl (name: Main, superClass: Object)
 | MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
 | | Seq ()
@@ -67,3 +68,6 @@ ClassDecl (name: Main, superClass: Object)
 | | | MethodCall ()
 | | | | MethodCallExpr (methodName: bubabiba)
 | | | | | ThisRef ()
+=======
+ParseFailure
+>>>>>>> origin/master

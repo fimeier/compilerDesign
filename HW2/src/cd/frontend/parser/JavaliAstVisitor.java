@@ -1,6 +1,7 @@
 package cd.frontend.parser;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.antlr.v4.runtime.misc.NotNull;
@@ -18,12 +19,17 @@ import cd.ir.Ast.BooleanConst;
 import cd.ir.Ast.Cast;
 import cd.ir.Ast.ClassDecl;
 import cd.ir.Ast.Expr;
+import cd.ir.Ast.Field;
+import cd.ir.Ast.IfElse;
+import cd.ir.Ast.Index;
 import cd.ir.Ast.IntConst;
 import cd.ir.Ast.MethodCall;
 import cd.ir.Ast.MethodCallExpr;
 import cd.ir.Ast.MethodDecl;
+import cd.ir.Ast.Nop;
 import cd.ir.Ast.NullConst;
 import cd.ir.Ast.Seq;
+import cd.ir.Ast.ThisRef;
 import cd.ir.Ast.UnaryOp;
 import cd.ir.Ast.Var;
 import cd.ir.Ast.VarDecl;
@@ -154,7 +160,23 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 
 		return ret;
 	}
-	@Override // identAccess '=' ( expr | newExpr | readExpr ) ';'
+	@Override // '{' stmt* '}'
+	public List<Ast> visitStmtBlock(StmtBlockContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		List<Ast> nodes = new ArrayList<>();
+		int count = ctx.stmt().size();
+		for (int i = 0; i<count; i++){
+			System.out.println(ctx.stmt(i).getText());
+			nodes.addAll(visitStmt(ctx.stmt(i)));
+		}
+		if (nodes.isEmpty()){
+			nodes.add(new Nop());
+		}
+		Seq seq = new Seq(nodes);
+		ret.add(seq);
+		return ret;
+	}
+	@Override
 	public List<Ast> visitAssignmentStmt(AssignmentStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
@@ -172,8 +194,9 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return ret;
 	}
 	@Override
-	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) {
+	public List<Ast> visitMethodCallStmt(MethodCallStmtContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
+<<<<<<< HEAD
         MethodCallExpr mce = (MethodCallExpr) visitMethodCallExpression(ctx.methodCallExpression()).get(0);
          
         MethodCall mc = new MethodCall(mce);
@@ -183,8 +206,27 @@ public List<ClassDecl> classDecls = new ArrayList<>();
     }
 	@Override
 	public List<Ast> visitIfStmt(IfStmtContext ctx) {
+=======
+		ret.addAll(visitMethodCallExpression(ctx.methodCallExpression()));
+		return ret;
+	}
+	@Override // 'if' '(' expr ')' stmtBlock ('else' stmtBlock)?
+	public List<Ast> visitIfStmt(IfStmtContext ctx) { //ok
+>>>>>>> origin/master
 		List<Ast> ret = new ArrayList<>();
-		//TODO: implement
+		System.out.println("if");
+		
+		Expr cond = (Expr) visitExpr(ctx.expr()).get(0);
+		Ast then = visitStmtBlock(ctx.stmtBlock(0)).get(0);
+		
+		Ast otherwise;
+		if (ctx.stmtBlock(1) != null){
+			otherwise = (Ast) visitStmtBlock(ctx.stmtBlock(1));
+		} else {
+			otherwise = new Nop();
+		}
+		IfElse ifelse = new IfElse(cond, then, otherwise);
+		ret.add(ifelse);
 		return ret;
 	}
 	@Override
@@ -251,9 +293,10 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	@Override
 	public List<Ast> visitIDENTACCESS(IDENTACCESSContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//ret.addAll(visitIdentAccess(ctx.identAccess()));
+		ret.addAll(visitIdentAccess(ctx.identAccess()));
 		return ret;
 	}
+
 
 	@Override
 	public List<Ast> visitEXPR(EXPRContext ctx) { //ok
@@ -447,11 +490,6 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	}
 
 	@Override
-	public List<Ast> visitStmtBlock(StmtBlockContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitStmtBlock(ctx);
-	}
-	@Override
 	public List<Ast> visitNewExpr(NewExprContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitNewExpr(ctx);
@@ -483,58 +521,70 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		return super.visitReadExpr(ctx);
 	}
 
-	
-	
-	
-	@Override
-	public List<Ast> visitACCESSID(ACCESSIDContext ctx) {
+	//IdentifierAccess
+	public List<Ast> visitIdentAccess(IdentAccessContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
-		//TODO;
+				
+		switch (ctx.getClass().getSimpleName()) {
+    		case "ACCESSIDContext":  
+    			ret.addAll(visitACCESSID((ACCESSIDContext) ctx));
+    			break;
+    		case "ACCESSTHISContext":  
+    			ret.addAll(visitACCESSTHIS((ACCESSTHISContext) ctx));
+    			break;
+    		case "ACCESSDOTIDContext":  
+    			ret.addAll(visitACCESSDOTID((ACCESSDOTIDContext) ctx));
+    			break;
+    		case "ACCECSS_BR_EXPRContext":  
+    			ret.addAll(visitACCECSS_BR_EXPR((ACCECSS_BR_EXPRContext) ctx));
+    			break;
+    		case "ACCESS_METHODCALLContext":  
+    			ret.addAll(visitACCESS_METHODCALL((ACCESS_METHODCALLContext) ctx));
+    			break;
+		}
 		return ret;
 	}
 	@Override
-	public List<Ast> visitACCESSTHIS(ACCESSTHISContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitACCESSTHIS(ctx);
+	public List<Ast> visitACCESSID(ACCESSIDContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		Var v = new Var(ctx.getText());
+		ret.add(v);
+		return ret;
 	}
 	@Override
-	public List<Ast> visitACCESSDOTID(ACCESSDOTIDContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitACCESSDOTID(ctx);
+	public List<Ast> visitACCESSTHIS(ACCESSTHISContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		ThisRef r = new ThisRef();
+		ret.add(r);
+		return ret;
 	}
-
 	@Override
-	public List<Ast> visitACCECSS_BR_EXPR(ACCECSS_BR_EXPRContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitACCECSS_BR_EXPR(ctx);
-	}
-
-
-
-	@Override
-	public List<Ast> visitACCESS_METHODCALL(ACCESS_METHODCALLContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitACCESS_METHODCALL(ctx);
-	}
-	
-	
-	
-	
-	/*
-	@Override
-	public List<Ast> visitIdentAccess(IdentAccessContext ctx) {
+	public List<Ast> visitACCESSDOTID(ACCESSDOTIDContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 		
+		Expr arg = (Expr) visitIdentAccess(ctx.identAccess()).get(0);
+		String fieldName = ctx.Identifier().getText();
+		Field f = new Field(arg, fieldName);
+		ret.add(f);
+		
 		return ret;
-	}*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}
+	@Override
+	public List<Ast> visitACCECSS_BR_EXPR(ACCECSS_BR_EXPRContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		
+		Expr array = (Expr) visitIdentAccess(ctx.identAccess()).get(0);
+		Expr index = (Expr) visitExpr(ctx.expr()).get(0);
+		Index ind = new Index(array, index);
+		ret.add(ind);
+		
+		return ret;
+	}
+	@Override
+	public List<Ast> visitACCESS_METHODCALL(ACCESS_METHODCALLContext ctx) { //ok
+		List<Ast> ret = new ArrayList<>();
+		ret.addAll(visitMethodCallExpression(ctx.methodCallExpression()));
+		return ret;
+	}
 	
 }
