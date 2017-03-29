@@ -75,6 +75,14 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		
 		return members;
 	}
+	
+	@Override
+	public List<Ast> visitType(TypeContext ctx) {
+		//TODO
+		return super.visitChildren(ctx);
+	}
+
+	
 	@Override
 	public List<Ast> visitVarDecl(VarDeclContext ctx) { //ok
 		List<Ast> members = new ArrayList<>();
@@ -115,6 +123,24 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 		List<String> argumentTypes = new ArrayList<>();
 		List<String> argumentNames = new ArrayList<>();
 		
+		//TODO nach formalParamList/type verschieben
+		if (ctx.formalParamList()!=null){
+			//System.out.println(ctx.formalParamList().children.size());
+			FormalParamListContext fp = ctx.formalParamList();
+			for (int i = 0; i<fp.getChildCount();i=i+3){
+				String argType = fp.getChild(i).getText();
+				String argName = fp.getChild(i+1).getText();
+				argumentTypes.add(argType);
+				argumentNames.add(argName);
+				
+				System.out.println(i+"="+argType);
+				System.out.println((i+1)+"="+argName);
+				//fp.children.
+			}
+			
+
+		}
+		//TODO kann varDecl() null sein????
 		// varDecl*
 		List<Ast> varDecls = new ArrayList<>();
 		List<VarDeclContext> varDeclList = ctx.varDecl();
@@ -499,8 +525,13 @@ public List<ClassDecl> classDecls = new ArrayList<>();
         // TODO Auto-generated method stub
         //hardcoded ident()
         
-         MethodCallExpr mce = null;
- //       MethodCallExpr mce = new MethodCallExpr((Expr) visitExpr((ExprContext) ctx.expr(0).children.get(0)),ctx.children.get(0).getText(),ctx.);
+        /*
+         * (Expr) visitExpr((ExprContext) ctx.expr(0).children.get(0)),ctx.children.get(0).getText(),ctx.
+         */
+        Expr rcvr = (Expr) visitExpr(ctx.expr(0)).get(0);
+        String methodName = ctx.children.get(0).getText();
+        List<Expr> arguments = null;
+        MethodCallExpr mce = new MethodCallExpr(rcvr, methodName, arguments);
         ret.add(mce);
          
         return ret;

@@ -1,7 +1,10 @@
 /* Kind of like hello world */
 class Main {
+
+	void print(int x, int y){
+		write(x);
+		}
 	
-	int in;
 
    void main() {
    
@@ -10,41 +13,10 @@ class Main {
   	 int[] c;
   	 String [] d;
   	 int z;
-  	 
-  	 
-  	 a = !false;
-  	 x = true;
-  	 z = 0;
-  	 a = (String) 1;
-  	 z = -1;
-  	 z = 1*2/3%4+1-2;
-  	 a = 1 < 2 >= 3 > 4 <= 1;
-  	 a = 1 != 2 == 3;
-  	 b = true && false || false;
-  	 x = b;
-  	 a = this.in;
-  	 c = b[2+3];
-  	 //x = test();
-  	 //st();
-  	 
-  	 if (true) {
-  	 	z = 1;
-  	 	z = 1+0;
-  	 }
-  	 if (true)
-  	 	z = 0;
-  	 else {}
-  	 if (i == 1)
-  	 	z = 0;
-  	 else {
-  	 z = 1;
-  	 	
-  	 }
-  	 
+	 String b;
 
-
-   }
-   //void st(){}
-   
-   //int test(){return 0;}
+  	 //a.append(b);
+  	 
+  	 
+  	 }
 }
