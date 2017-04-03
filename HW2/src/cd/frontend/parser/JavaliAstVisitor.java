@@ -503,7 +503,10 @@ public List<ClassDecl> classDecls = new ArrayList<>();
 	public List<Ast> visitLIT_INT(LIT_INTContext ctx) { //ok
 		List<Ast> ret = new ArrayList<>();
 
+		//TODO: catch hex and convert to int
 		IntConst i = new IntConst(Integer.parseInt(ctx.getText()));
+		
+		
 		ret.add(i);
 		
 		return ret;

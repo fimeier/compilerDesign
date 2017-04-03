@@ -1,0 +1,13 @@
+// foo method doesn't have a return
+
+class Main {
+    void main() {
+        int x;
+        x = foo();
+    }
+    
+    int foo() {
+        int a;
+        a = 2;
+    }
+}

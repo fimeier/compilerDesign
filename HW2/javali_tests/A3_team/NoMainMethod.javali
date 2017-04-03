@@ -1,0 +1,8 @@
+// there is no main method
+
+class Main {
+    void m() {
+        write(1);
+        writeln();
+    }
+}
