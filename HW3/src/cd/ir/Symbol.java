@@ -107,6 +107,7 @@ public abstract class Symbol {
 			new ArrayList<VariableSymbol>();
 		
 		public TypeSymbol returnType;
+		public ClassSymbol inClass;
 		
 		public MethodSymbol(Ast.MethodDecl ast) {
 			super(ast.name);

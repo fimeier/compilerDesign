@@ -1,2 +1,2 @@
-NO_SUCH_TYPE
-No type 'Bk' was found
+TYPE_ERROR
+Expected operand types to be equal but found int, boolean

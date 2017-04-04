@@ -1,36 +1,33 @@
 /* Kind of like hello world */
 
-class A {
-   int foo;
-}
+
 
 
 class Main {
 
    void main(){
+   		int a;
    		int b;
-   		//boolean b;
-   		A a;
-   		//B b;
-   }
-   
-   void foo(int c){
-   		boolean d;
-   }
-   
-   B foo2(int c){
+   		boolean c;
+   		write(-a+1*b/true);
    		
-   		B b;
-   		return b;
    }
-   
-   int a;
-   
+}
+/*
+class A extends B {
+
+	//boolean foo;
+	void print(){
+		write(1);
+	}
 }
 
-class B {
-   int foo;
+class B extends C{
+	int foo0;
 }
 
-
+class C {
+	int foo;
+}
+*/
 

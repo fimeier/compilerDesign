@@ -7,6 +7,7 @@ import java.util.Map;
 import cd.Main;
 import cd.frontend.semantic.SemanticFailure.Cause;
 import cd.ir.Ast.ClassDecl;
+import cd.ir.Ast.VarDecl;
 import cd.ir.Symbol;
 import cd.ir.Symbol.ClassSymbol;
 import cd.ir.Symbol.PrimitiveTypeSymbol;
@@ -51,10 +52,26 @@ public class SemanticAnalyzer {
 		{	
 			for (ClassDecl cd : classDecls){
 				ClassSymbol classSymbol = new ClassSymbol(cd);
-				if (!globalClassTable.containsKey(cd.name))
+				if (!globalClassTable.containsKey(cd.name)) {
 					globalClassTable.put(cd.name, classSymbol);
-				else 
-					throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
+				}
+			}
+			for (ClassDecl cd : classDecls){
+				ClassSymbol classSymbol = this.globalClassTable.get(cd.name);
+				if (globalClassTable.get(cd.superClass) != null){
+					classSymbol.superClass = globalClassTable.get(cd.superClass);
+				}
+				else
+					throw new SemanticFailure(Cause.NO_SUCH_TYPE);
+				
+				for (VarDecl vd : cd.fields()){
+					VariableSymbol kindSym = new VariableSymbol("kind", null, VariableSymbol.Kind.FIELD);
+					VariableSymbol varSym = tableCreator.varDecl(vd,kindSym);
+					if (!classSymbol.fields.containsKey(varSym.name))
+						classSymbol.fields.put(varSym.name, varSym);
+					else
+						throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
+				}
 			}
 
 			for (ClassDecl cd : classDecls){
