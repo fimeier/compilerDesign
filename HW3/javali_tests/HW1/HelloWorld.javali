@@ -1,16 +1,29 @@
 /* Kind of like hello world */
 
+class A {
+   int foo;
+}
+
+
 class Main {
-   
-   boolean c;
+
    void main(){
-   		int b;
+   		//int b;
+   		//boolean b;
+   		A a;
+   		B b;
    }
    
-   boolean foo(int c){}
+   void foo(int c){
+   		boolean c;
+   }
    
-   String a;
+   //String a;
    
+}
+
+class B {
+   int foo;
 }
 
 

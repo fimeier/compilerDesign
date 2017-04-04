@@ -26,11 +26,18 @@ public class SemanticAnalyzer {
 		this.builtInTypeTable = new HashMap<String, TypeSymbol>();
 		this.tableCreator = new TableCreator(this);
 		
-		builtInTypeTable.put("int", PrimitiveTypeSymbol.intType);
-		builtInTypeTable.put("boolean", PrimitiveTypeSymbol.booleanType);
-		builtInTypeTable.put("void", PrimitiveTypeSymbol.voidType);
+		builtInTypeTable.put(PrimitiveTypeSymbol.intType.name, PrimitiveTypeSymbol.intType);
+		builtInTypeTable.put(PrimitiveTypeSymbol.booleanType.name, PrimitiveTypeSymbol.booleanType);
+		builtInTypeTable.put(PrimitiveTypeSymbol.voidType.name, PrimitiveTypeSymbol.voidType);
+		
+		globalClassTable.put(ClassSymbol.objectType.name, ClassSymbol.objectType);
+		globalClassTable.put(ClassSymbol.nullType.name, ClassSymbol.nullType);
 	}
 	
+	/*
+	 * looks up 'type' in global class- and type table 
+	 * returns TypeSymbol or 'null' if not found
+	 */
 	public TypeSymbol getType(String type){
 		if (builtInTypeTable.containsKey(type))
 			return builtInTypeTable.get(type);
@@ -43,10 +50,15 @@ public class SemanticAnalyzer {
 	public void check(List<ClassDecl> classDecls) throws SemanticFailure {
 		{	
 			for (ClassDecl cd : classDecls){
+				ClassSymbol classSymbol = new ClassSymbol(cd);
 				if (!globalClassTable.containsKey(cd.name))
-					globalClassTable.put(cd.name, tableCreator.classDecl(cd, null));
+					globalClassTable.put(cd.name, classSymbol);
 				else 
 					throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
+			}
+
+			for (ClassDecl cd : classDecls){
+				tableCreator.classDecl(cd, null);
 			}
 		}
 	}
