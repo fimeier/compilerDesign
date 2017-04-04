@@ -8,17 +8,23 @@ class A {
 class Main {
 
    void main(){
-   		//int b;
+   		int b;
    		//boolean b;
    		A a;
-   		B b;
+   		//B b;
    }
    
    void foo(int c){
-   		boolean c;
+   		boolean d;
    }
    
-   //String a;
+   B foo2(int c){
+   		
+   		B b;
+   		return b;
+   }
+   
+   int a;
    
 }
 

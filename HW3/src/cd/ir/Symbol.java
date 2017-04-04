@@ -113,6 +113,8 @@ public abstract class Symbol {
 			this.ast = ast;
 		}
 		
+		
+		
 		public String toString() {
 			return name + "(...)";
 		}

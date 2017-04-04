@@ -6,9 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import cd.frontend.semantic.SemanticFailure.Cause;
+import cd.ir.Ast.Assign;
+import cd.ir.Ast.BuiltInWrite;
+import cd.ir.Ast.BuiltInWriteln;
 import cd.ir.Ast.ClassDecl;
+import cd.ir.Ast.IfElse;
+import cd.ir.Ast.MethodCall;
 import cd.ir.Ast.MethodDecl;
+import cd.ir.Ast.ReturnStmt;
 import cd.ir.Ast.VarDecl;
+import cd.ir.Ast.WhileLoop;
 import cd.ir.Ast;
 import cd.ir.AstVisitor;
 import cd.ir.Symbol;
@@ -28,7 +35,7 @@ public class TableCreator extends AstVisitor<Symbol, Integer>{
 	}
 
 	@Override
-	public ClassSymbol classDecl(ClassDecl ast, Integer arg) {
+	public ClassSymbol classDecl(ClassDecl ast, Integer arg) { //ok
 		ClassSymbol classSymbol = sa.globalClassTable.get(ast.name);
 		for (VarDecl vd : ast.fields()){
 			VariableSymbol varSym = varDecl(vd,2);
@@ -51,9 +58,6 @@ public class TableCreator extends AstVisitor<Symbol, Integer>{
 		ast.sym = classSymbol;
 		return classSymbol;
 	}
-
-	
-	
 	@Override
 	public MethodSymbol methodDecl(MethodDecl ast, Integer arg) {
 		MethodSymbol methodSymbol = new MethodSymbol(ast);
@@ -75,6 +79,7 @@ public class TableCreator extends AstVisitor<Symbol, Integer>{
 			
 		}
 		
+		// add local variables
 		for (int i = 0; i<ast.decls().children().size(); i++){
 			VarDecl vd = (VarDecl )ast.decls().children().get(i);
 			VariableSymbol varSym = varDecl(vd,1);
@@ -85,14 +90,29 @@ public class TableCreator extends AstVisitor<Symbol, Integer>{
 				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
 		}
 		
-		// TODO: check null ..
 		methodSymbol.returnType = checkType(ast.returnType);
+		
+		visit(ast.body(), null);
 		
 		return methodSymbol;
 		
 	}
-
-	TypeSymbol checkType(String typeName){
+	@Override
+	public VariableSymbol varDecl(VarDecl ast, Integer kindArg) { //ok
+		VariableSymbol variableSymbol;
+		
+		String name = ast.name;
+		
+		TypeSymbol type = checkType(ast.type);
+		
+		// 0: PARAM, 1: LOCAL, 2: FIELD
+		Kind kind = Kind.values()[kindArg];
+		
+		variableSymbol = new VariableSymbol(name, type, kind);
+		ast.sym = variableSymbol;
+		return variableSymbol;
+	}
+	TypeSymbol checkType(String typeName){ //ok
 		// Type of the variable: Primitive- , Array- or Classtype
 		TypeSymbol type = null;
 		if (typeName.endsWith("[]")){
@@ -111,23 +131,50 @@ public class TableCreator extends AstVisitor<Symbol, Integer>{
 		}
 		return type;
 	}
-	
+
 	@Override
-	public VariableSymbol varDecl(VarDecl ast, Integer kindArg) { //ok
-		VariableSymbol variableSymbol;
-		
-		String name = ast.name;
-		
-		TypeSymbol type = checkType(ast.type);
-		
-		// 0: PARAM, 1: LOCAL, 2: FIELD
-		Kind kind = Kind.values()[kindArg];
-		
-		variableSymbol = new VariableSymbol(name, type, kind);
-		ast.sym = variableSymbol;
-		return variableSymbol;
+	public Symbol assign(Assign ast, Integer arg) {
+		// TODO Auto-generated method stub
+		return super.assign(ast, arg);
 	}
 
+	@Override
+	public Symbol builtInWrite(BuiltInWrite ast, Integer arg) {
+		// TODO Auto-generated method stub
+		return super.builtInWrite(ast, arg);
+	}
+
+	@Override
+	public Symbol builtInWriteln(BuiltInWriteln ast, Integer arg) {
+		// TODO Auto-generated method stub
+		return super.builtInWriteln(ast, arg);
+	}
+
+	@Override
+	public Symbol ifElse(IfElse ast, Integer arg) {
+		// TODO Auto-generated method stub
+		return super.ifElse(ast, arg);
+	}
+
+	@Override
+	public Symbol returnStmt(ReturnStmt ast, Integer arg) {
+		// TODO Auto-generated method stub
+		return super.returnStmt(ast, arg);
+	}
+
+	@Override
+	public Symbol methodCall(MethodCall ast, Integer arg) {
+		// TODO Auto-generated method stub
+		return super.methodCall(ast, arg);
+	}
+
+	@Override
+	public Symbol whileLoop(WhileLoop ast, Integer arg) {
+		// TODO Auto-generated method stub
+		return super.whileLoop(ast, arg);
+	}
+
+	
 	
 	
 }
