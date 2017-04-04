@@ -1,19 +1,23 @@
 /* Kind of like hello world */
 
 
+class D {
+	int a;
+}
 
 
-class Main {
+class Main extends D{
 
+	int b;
+	
    void main(){
-   		int a;
-   		int b;
-   		boolean c;
-   		write(-a+1*b/true);
+      	int a;
+   		this.a = 1;
+   		write(this.a);
    		
    }
 }
-/*
+
 class A extends B {
 
 	//boolean foo;
@@ -29,5 +33,5 @@ class B extends C{
 class C {
 	int foo;
 }
-*/
+
 

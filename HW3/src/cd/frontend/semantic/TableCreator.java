@@ -123,7 +123,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	// Statements:
 	@Override
 	public Symbol builtInWrite(BuiltInWrite ast, Symbol arg) { //ok
-		TypeSymbol typeSymbol = (TypeSymbol) visit(ast.arg(), arg);
+		TypeSymbol typeSymbol = (TypeSymbol) visit(ast.arg(), (MethodSymbol)arg);
 		if (typeSymbol == null)
 			throw new SemanticFailure(Cause.NO_SUCH_VARIABLE);
 		if (typeSymbol.name != PrimitiveTypeSymbol.intType.name)
@@ -136,6 +136,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		// TODO Auto-generated method stub
 		return super.assign(ast, arg);
 	}
+	
 	
 	// Expression:
 
@@ -256,7 +257,14 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	@Override
 	public Symbol field(Field ast, Symbol arg) {
-		// TODO Auto-generated method stub
+		// this.a -> fieldname = a, arg -> this
+		
+		//TODO:
+		/*
+		if (ast.arg() == "this"){
+			getField(ast.fieldName, arg);
+		}
+		getField()*/
 		return super.field(ast, arg);
 	}
 
@@ -298,8 +306,8 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	@Override
 	public Symbol thisRef(ThisRef ast, Symbol arg) {
-		// TODO Auto-generated method stub
-		return super.thisRef(ast, arg);
+		
+		return null;
 	}
 
 
@@ -333,23 +341,35 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 				return it;
 			}
 		}
+		
+		varSym = getField(varName, methodSym);
+
+		return varSym;
+	}
+
+	/*
+	 * searches for field in the possible scope
+	 * returns VariableSymbol if found, 'null' if not found
+	 */
+	VariableSymbol getField(String fieldName, MethodSymbol methodSym){
+		VariableSymbol varSym = null;
+
 		//search class fields
-		varSym = methodSym.inClass.fields.get(varName);
+		varSym = methodSym.inClass.fields.get(fieldName);
 		if (varSym != null)
 			return varSym;
 		
 		// recursive search fields in superClass
 		ClassSymbol superC = methodSym.inClass.superClass;
 		while (superC.name != ClassSymbol.objectType.name){
-			varSym = superC.fields.get(varName);
+			varSym = superC.fields.get(fieldName);
 			if (varSym != null)
 				return varSym;
 			superC = superC.superClass;
 		}
-
 		return varSym;
 	}
-
+	
 	/*
 	 * checks if 'typeName' is a valid type
 	 * returns the corresponding TypeSymbol, 'null' if type undefined
