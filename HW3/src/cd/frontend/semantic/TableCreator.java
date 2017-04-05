@@ -30,6 +30,7 @@ import cd.ir.Ast.UnaryOp.UOp;
 import cd.ir.Ast.Var;
 import cd.ir.Ast.VarDecl;
 import cd.ir.Ast.WhileLoop;
+import cd.ir.Ast;
 import cd.ir.AstVisitor;
 import cd.ir.Symbol;
 import cd.ir.Symbol.ArrayTypeSymbol;
@@ -64,9 +65,9 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	@Override
 	public MethodSymbol methodDecl(MethodDecl ast, Symbol inClass) { //ok
 		MethodSymbol methodSymbol = new MethodSymbol(ast);
-		
+
 		Map<String, Void> parameters = new HashMap<String, Void>();
-			
+
 		// add Parameter variables
 		for (int i = 0; i<ast.argumentNames.size(); i++){
 			String type = ast.argumentTypes.get(i);
@@ -80,9 +81,9 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			}
 			else
 				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
-			
+
 		}
-		
+
 		// add local variables
 		for (int i = 0; i<ast.decls().children().size(); i++){
 			VarDecl vd = (VarDecl )ast.decls().children().get(i);
@@ -93,33 +94,33 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			else
 				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
 		}
-		
+
 		methodSymbol.returnType = checkType(ast.returnType);
 		methodSymbol.inClass = (ClassSymbol)inClass;
-		
+
 		visit(ast.body(), methodSymbol);
-		
+
 		return methodSymbol;
-		
+
 	}
 	@Override
 	public VariableSymbol varDecl(VarDecl ast, Symbol kindArg) { //ok
 		VariableSymbol variableSymbol;
-		
+
 		String name = ast.name;
-		
+
 		TypeSymbol type = checkType(ast.type);
-		
+
 		// 0: PARAM, 1: LOCAL, 2: FIELD
 		Kind kind =  ((VariableSymbol)kindArg).kind;
-		
+
 		variableSymbol = new VariableSymbol(name, type, kind);
 		ast.sym = variableSymbol;
 		return variableSymbol;
 	}
 
 
-	
+
 	// Statements:
 	@Override
 	public Symbol builtInWrite(BuiltInWrite ast, Symbol arg) { //ok
@@ -136,8 +137,8 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		// TODO Auto-generated method stub
 		return super.assign(ast, arg);
 	}
-	
-	
+
+
 	// Expression:
 
 	@Override
@@ -154,8 +155,8 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	@Override
 	public Symbol methodCall(MethodCall ast, Symbol arg) {
-		
-		
+
+
 		return super.methodCall(ast, arg);
 	}
 
@@ -167,7 +168,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	@Override
 	public Symbol visit(Expr ast, Symbol arg) {
-		
+
 		return super.visit(ast, arg);
 	}
 
@@ -179,41 +180,41 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	@Override
 	public TypeSymbol binaryOp(BinaryOp ast, Symbol arg) { //ok?
-		
+
 		TypeSymbol leftType = (TypeSymbol) visit(ast.left(), arg);
 		TypeSymbol rightType = (TypeSymbol) visit(ast.right(), arg);
 		BOp op = ast.operator;
-		
+
 		// binary arithmetic ops with integers
 		if ((op==BOp.B_TIMES)||(op==BOp.B_DIV)||(op==BOp.B_MOD)||(op==BOp.B_PLUS)||(op==BOp.B_MINUS)){
 			if ((leftType.name == PrimitiveTypeSymbol.intType.name) 
-				&& (rightType.name == PrimitiveTypeSymbol.intType.name)){
+					&& (rightType.name == PrimitiveTypeSymbol.intType.name)){
 				ast.type = PrimitiveTypeSymbol.intType;
 				return PrimitiveTypeSymbol.intType;
 			} else {
 				throw new SemanticFailure(Cause.TYPE_ERROR);
 			}
 		}
-		
+
 		// binary ops with boolean
 		if ((op==BOp.B_AND)||(op==BOp.B_OR)||(op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)||(op==BOp.B_LESS_THAN)
 				||(op==BOp.B_LESS_OR_EQUAL)||(op==BOp.B_GREATER_THAN)||(op==BOp.B_GREATER_OR_EQUAL)){
 			if ((leftType.name == PrimitiveTypeSymbol.booleanType.name) 
-				&& (rightType.name == PrimitiveTypeSymbol.booleanType.name)){
+					&& (rightType.name == PrimitiveTypeSymbol.booleanType.name)){
 				ast.type = PrimitiveTypeSymbol.booleanType;
 				return PrimitiveTypeSymbol.booleanType;
 			} else {
 				throw new SemanticFailure(Cause.TYPE_ERROR);
 			}
 		}
-		
+
 		return null;
 	}
 	@Override
 	public TypeSymbol unaryOp(UnaryOp ast, Symbol arg) { //ok?
 		TypeSymbol expr = (TypeSymbol) visit(ast.arg(), arg);
 		UOp op = ast.operator;
-		
+
 		// unary arithmetic ops with integers
 		if ((op==UOp.U_MINUS)||(op==UOp.U_PLUS)){
 			if (expr.name == PrimitiveTypeSymbol.intType.name){
@@ -223,7 +224,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 				throw new SemanticFailure(Cause.TYPE_ERROR);
 			}
 		}
-		
+
 		// unary ops with boolean
 		if (op==UOp.U_BOOL_NOT){
 			if (expr.name == PrimitiveTypeSymbol.booleanType.name){
@@ -233,7 +234,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 				throw new SemanticFailure(Cause.TYPE_ERROR);
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -256,16 +257,38 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	}
 
 	@Override
-	public Symbol field(Field ast, Symbol arg) {
+	public TypeSymbol field(Field ast, Symbol arg) {
 		// this.a -> fieldname = a, arg -> this
-		
 		//TODO:
 		/*
+		 * 
 		if (ast.arg() == "this"){
 			getField(ast.fieldName, arg);
 		}
 		getField()*/
-		return super.field(ast, arg);
+		Symbol lastValue = null;
+		/*for (Ast child : ast.children()){
+			lastValue = visit(child, arg);
+		}*/
+		lastValue = visit(ast.arg(),arg);
+		
+		String fName = ast.fieldName;
+		
+		TypeSymbol asd = ast.arg().type;
+		
+		VariableSymbol varSym = null;
+		
+		if (lastValue.name == "this"){
+			varSym = getField(fName, ((MethodSymbol)arg).inClass);
+		} else {
+			varSym = getField(fName, (ClassSymbol) lastValue);
+		}
+		
+		
+		
+		return varSym.type;
+		
+		//return super.field(ast, arg);
 	}
 
 	@Override
@@ -281,9 +304,23 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	}
 
 	@Override
-	public Symbol methodCall(MethodCallExpr ast, Symbol arg) {
+	public TypeSymbol methodCall(MethodCallExpr ast, Symbol arg) {
 		// TODO Auto-generated method stub
-		return super.methodCall(ast, arg);
+		
+		String mName = ast.methodName;
+		Symbol lastValue = null;
+		
+		//TODO null check...
+		lastValue = visit(ast.receiver(),arg);
+		
+		//bekommt TypeSymbol von field
+		TypeSymbol mReturnType = null;
+
+		//TODO check null...
+		mReturnType = getMethod(mName, (ClassSymbol) lastValue).returnType;
+
+		
+		return mReturnType;
 	}
 
 	@Override
@@ -307,7 +344,9 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	@Override
 	public Symbol thisRef(ThisRef ast, Symbol arg) {
 		
-		return null;
+		VariableSymbol tRef = ((MethodSymbol)arg).inClass.thisSymbol;
+
+		return tRef;
 	}
 
 
@@ -324,12 +363,35 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	}
 	
 	/*
+	 * searches for method in the possible scope
+	 * returns VariableSymbol if found, 'null' if not found
+	 */
+	MethodSymbol getMethod(String mName, ClassSymbol classSym){
+		MethodSymbol mSym = null;
+
+		//search class fields
+		mSym = classSym.methods.get(mName);
+		if (mSym != null)
+			return mSym;
+
+		// recursive search fields in superClass
+		ClassSymbol superC = classSym.superClass;
+		while (superC.name != ClassSymbol.objectType.name){
+			mSym = superC.methods.get(mName);
+			if (mSym != null)
+				return mSym;
+			superC = superC.superClass;
+		}
+		return mSym;
+	}
+
+	/*
 	 * searches for variable in the possible scope
 	 * returns VariableSymbol if found, 'null' if not found
 	 */
 	VariableSymbol getVariable(String varName, MethodSymbol methodSym){ //ok
 		VariableSymbol varSym = null;
-		
+
 		// search local vars
 		varSym = methodSym.locals.get(varName);
 		if (varSym != null){
@@ -341,8 +403,8 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 				return it;
 			}
 		}
-		
-		varSym = getField(varName, methodSym);
+
+		varSym = getField(varName, methodSym.inClass);
 
 		return varSym;
 	}
@@ -351,16 +413,16 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	 * searches for field in the possible scope
 	 * returns VariableSymbol if found, 'null' if not found
 	 */
-	VariableSymbol getField(String fieldName, MethodSymbol methodSym){
+	VariableSymbol getField(String fieldName, ClassSymbol classSym){
 		VariableSymbol varSym = null;
 
 		//search class fields
-		varSym = methodSym.inClass.fields.get(fieldName);
+		varSym = classSym.fields.get(fieldName);
 		if (varSym != null)
 			return varSym;
-		
+
 		// recursive search fields in superClass
-		ClassSymbol superC = methodSym.inClass.superClass;
+		ClassSymbol superC = classSym.superClass;
 		while (superC.name != ClassSymbol.objectType.name){
 			varSym = superC.fields.get(fieldName);
 			if (varSym != null)
@@ -370,6 +432,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return varSym;
 	}
 	
+
 	/*
 	 * checks if 'typeName' is a valid type
 	 * returns the corresponding TypeSymbol, 'null' if type undefined
@@ -393,5 +456,5 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		}
 		return type;
 	}
-	
+
 }
