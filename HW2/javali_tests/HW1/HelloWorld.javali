@@ -4,7 +4,7 @@ class Main {
 	void main() {
 	
 
-		b = 0x23452345;
+		//b = 0x23452345;
 		
 		a = read();
 		
