@@ -44,7 +44,7 @@ local.properties
 
 # Build results
 
-[Dd]ebug/
+#[Dd]ebug/ ---added because off cd.util.debug/
 [Rr]elease/
 x64/
 build/
