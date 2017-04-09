@@ -1,6 +1,8 @@
 package cd.frontend.semantic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cd.frontend.semantic.SemanticFailure.Cause;
@@ -52,20 +54,28 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	@Override
 	public ClassSymbol classDecl(ClassDecl ast, Symbol arg) { //ok
 		ClassSymbol classSymbol = sa.globalClassTable.get(ast.name);
+
+		//TODO: change structure?????
 		for (MethodDecl md : ast.methods()){
 			MethodSymbol methSym =  methodDecl(md, classSymbol);
-			if (!classSymbol.fields.containsKey(methSym.name))
+			/*
+			 * already checked in SemanticAnalyzer round three
+			if (!classSymbol.methods.containsKey(methSym.name))
 				classSymbol.methods.put(methSym.name, methSym);
 			else
 				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
+			 */
 		}
 		ast.sym = classSymbol;
 		return classSymbol;
 	}
 	@Override
 	public MethodSymbol methodDecl(MethodDecl ast, Symbol inClass) { //ok
-		MethodSymbol methodSymbol = new MethodSymbol(ast);
+		//MethodSymbol methodSymbol = new MethodSymbol(ast);
+		MethodSymbol methodSymbol = getMethod(ast.name, (ClassSymbol) inClass);
 
+		/*
+		 * already "checked" in SemanticAnalyzer round three
 		Map<String, Void> parameters = new HashMap<String, Void>();
 
 		// add Parameter variables
@@ -82,7 +92,11 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			else
 				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
 
-		}
+		}*/
+
+		//TODO getParameterList????
+		//Map<String, Void> parameters = methodSymbol.parameters
+		Map<String, VariableSymbol> parameters = getParametersMap(methodSymbol);
 
 		// add local variables
 		for (int i = 0; i<ast.decls().children().size(); i++){
@@ -95,8 +109,11 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
 		}
 
+		/*
+		already set in SemanticAnalyzer round three
 		methodSymbol.returnType = checkType(ast.returnType);
 		methodSymbol.inClass = (ClassSymbol)inClass;
+		 */
 
 		visit(ast.body(), methodSymbol);
 
@@ -120,11 +137,12 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	}
 
 
-
+	//TODO: builtInWrite ist falsch.... was ist mit einer expr??? was ist mit write() vs writeln()
 	// Statements:
 	@Override
 	public Symbol builtInWrite(BuiltInWrite ast, Symbol arg) { //ok
 		TypeSymbol typeSymbol = (TypeSymbol) visit(ast.arg(), (MethodSymbol)arg);
+		//TODO: kann das jemals null sein??? expr hat immer typ... sonst Fehler an anderem Ort
 		if (typeSymbol == null)
 			throw new SemanticFailure(Cause.NO_SUCH_VARIABLE);
 		if (typeSymbol.name != PrimitiveTypeSymbol.intType.name)
@@ -143,6 +161,10 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	@Override
 	public Symbol ifElse(IfElse ast, Symbol arg) {
+		TypeSymbol tExpr = (TypeSymbol) visit(ast.condition(),arg);
+		if (!tExpr.name.equals(PrimitiveTypeSymbol.booleanType)){
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+		}
 		// TODO Auto-generated method stub
 		return super.ifElse(ast, arg);
 	}
@@ -153,12 +175,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return super.returnStmt(ast, arg);
 	}
 
-	@Override
-	public Symbol methodCall(MethodCall ast, Symbol arg) {
 
-
-		return super.methodCall(ast, arg);
-	}
 
 	@Override
 	public Symbol whileLoop(WhileLoop ast, Symbol arg) {
@@ -271,23 +288,27 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			lastValue = visit(child, arg);
 		}*/
 		lastValue = visit(ast.arg(),arg);
-		
+
 		String fName = ast.fieldName;
-		
+
 		TypeSymbol asd = ast.arg().type;
-		
+
 		VariableSymbol varSym = null;
-		
+
 		if (lastValue.name == "this"){
 			varSym = getField(fName, ((MethodSymbol)arg).inClass);
 		} else {
 			varSym = getField(fName, (ClassSymbol) lastValue);
 		}
-		
-		
-		
+
+		if (varSym==null){
+			throw new SemanticFailure(Cause.NO_SUCH_FIELD);
+		}
+
+
+
 		return varSym.type;
-		
+
 		//return super.field(ast, arg);
 	}
 
@@ -303,23 +324,65 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return PrimitiveTypeSymbol.intType;
 	}
 
+	//TODO brauchts diese method wirklich...????
+	/*
+	@Override
+	public Symbol methodCall(MethodCall ast, Symbol arg) {
+
+
+		return super.methodCall(ast, arg);
+	}*/
+
 	@Override
 	public TypeSymbol methodCall(MethodCallExpr ast, Symbol arg) {
 		// TODO Auto-generated method stub
-		
+
 		String mName = ast.methodName;
 		Symbol lastValue = null;
-		
+
 		//TODO null check...
+		//kann das jemals null sein????
+		/*was macht das genau...???
+		 * class in der methode aufgerufen wird????
+		 * was ist wenn this zuirück gegeben wird????
+		 * */
 		lastValue = visit(ast.receiver(),arg);
-		
+
+		if (lastValue.name.equals("this")){
+			System.out.println("###################333search local class...");
+			lastValue = ((MethodSymbol) arg).inClass;
+		}
+		//TODO check if lastValue is of class type
+		//	PrimitiveTypeSymbol, ArrayTypeSymbol,
+		String lvType = lastValue.getClass().getSimpleName();
+		if (lvType.equals("PrimitiveTypeSymbol")){
+			System.out.println(lastValue.getClass().getSimpleName());
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+		}
+
 		//bekommt TypeSymbol von field
 		TypeSymbol mReturnType = null;
 
 		//TODO check null...
-		mReturnType = getMethod(mName, (ClassSymbol) lastValue).returnType;
+		MethodSymbol mSym = getMethod(mName, (ClassSymbol) lastValue);
 
-		
+		//TODO check arguments
+		int i = 0;
+		for (Expr expr: ast.argumentsWithoutReceiver()){
+			System.out.println("Method "+mName+" args: " +expr.toString());
+			TypeSymbol tArg = (TypeSymbol) visit(expr,arg);
+			TypeSymbol tParam = mSym.parameters.get(i).type;
+			if (!tArg.name.equals(tParam.name)){
+				throw new SemanticFailure(Cause.TYPE_ERROR);
+			}
+			System.out.println("Method "+mName+" args: " +expr.toString()+ " tArg="+tArg.name + " and param="+tParam);
+
+			i++;
+		}
+		//TODO check null...
+		mReturnType = mSym.returnType;
+
+
 		return mReturnType;
 	}
 
@@ -343,7 +406,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	@Override
 	public Symbol thisRef(ThisRef ast, Symbol arg) {
-		
+
 		VariableSymbol tRef = ((MethodSymbol)arg).inClass.thisSymbol;
 
 		return tRef;
@@ -361,10 +424,23 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			return varSym.type;
 		}
 	}
-	
+
+	/*
+	 * TODO: needed because of: Symbol ::public final List<VariableSymbol> parameters ...;
+	 */
+	Map<String, VariableSymbol> getParametersMap(MethodSymbol mSym){
+		Map<String, VariableSymbol> parameters = new HashMap<String, VariableSymbol>();
+		for (VariableSymbol var: mSym.parameters){
+			parameters.put(var.name, var);
+		}
+		return parameters;		
+	}
+
+
+
 	/*
 	 * searches for method in the possible scope
-	 * returns VariableSymbol if found, 'null' if not found
+	 * returns MethodSymbol if found, 'null' if not found
 	 */
 	MethodSymbol getMethod(String mName, ClassSymbol classSym){
 		MethodSymbol mSym = null;
@@ -398,12 +474,12 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			return varSym;
 		}
 		// search method parameters
-		for (VariableSymbol it : methodSym.parameters){
-			if (it.name == varName){
-				return it;
-			}
+		varSym = getParametersMap(methodSym).get(varName);
+		if (varSym != null){
+			return varSym;
 		}
 
+		//search fields
 		varSym = getField(varName, methodSym.inClass);
 
 		return varSym;
@@ -431,8 +507,8 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		}
 		return varSym;
 	}
-	
 
+	//TODO anpassen.... funktioniert so nicht... ERROR
 	/*
 	 * checks if 'typeName' is a valid type
 	 * returns the corresponding TypeSymbol, 'null' if type undefined
@@ -441,7 +517,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		// Type of the variable: Primitive- , Array- or Classtype
 		TypeSymbol type = null;
 		if (typeName.endsWith("[]")){
-			String arrayType = typeName.split("[]")[0];
+			String arrayType = typeName.split("\\[\\]")[0];
 			type = sa.getType(arrayType);
 			if (type == null){
 				throw new SemanticFailure(Cause.NO_SUCH_TYPE);

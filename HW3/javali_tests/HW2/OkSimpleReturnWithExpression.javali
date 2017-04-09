@@ -5,11 +5,11 @@ class Main {
    }
 	
 	void main() {
-	
+		int a;
 	   int res;
 	   res = -1;
 
-      res = m(1, 2);
+      res = m(a, a);
       write(res);
       writeln();
       

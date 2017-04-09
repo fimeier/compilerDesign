@@ -6,6 +6,11 @@ class D {
 		A a;
 		return a;
 	}
+	
+	void xMethod(int k, int x){
+		write(k);
+	}
+	
 }
 
 
@@ -15,8 +20,15 @@ class Main extends D{
 	
    void main(){
    		A a;
-   		a = this.d.fun();
-   		write(this.d.fun().foo);
+   		int z;
+   		
+   		xMethod(z,z);
+   		
+   		a.print(a);
+   		
+   		//a = this.d.fun();
+   		//write(this.d.fun().foo);
+   		//z = true;
    		
    }
 }
@@ -24,7 +36,7 @@ class Main extends D{
 class A extends B {
 
 	//boolean foo;
-	void print(){
+	void print(int z){
 		write(1);
 	}
 }
@@ -34,7 +46,7 @@ class B extends C{
 }
 
 class C {
-	boolean foo;
+	int foo;
 }
 
 

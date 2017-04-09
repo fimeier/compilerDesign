@@ -22,7 +22,6 @@ public abstract class Symbol {
 		}
 		
 	}
-	
 	public static class PrimitiveTypeSymbol extends TypeSymbol {
 		
 		/** Symbols for the built-in primitive types */

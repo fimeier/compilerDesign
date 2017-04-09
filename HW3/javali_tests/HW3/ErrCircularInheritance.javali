@@ -4,6 +4,8 @@ class Bar extends Foo { }
 
 class Main {
    void main() {
+   //int a;
       writeln();
+   //  write(a);
    }
 }
