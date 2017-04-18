@@ -1,0 +1,12 @@
+// in a method return stmt the expr type must be a subtype of the corresponding formal return type
+
+class Main {
+    void main() {
+        int x;
+        x = foo();
+    }
+    
+    int foo() {
+        return 5.0;
+    }
+}

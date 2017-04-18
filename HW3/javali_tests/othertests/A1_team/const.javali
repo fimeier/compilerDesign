@@ -1,0 +1,16 @@
+//constants and negetation
+class Main {
+	void main() {
+		int a, b, c, d;
+		a = 10;
+		b = -10;
+		c = 2147483647;
+		d = -c;
+		c = +c;
+		d = d - 2;
+		write(d);
+		writeln();
+		write(b);
+		
+	}
+}

@@ -1,0 +1,11 @@
+
+class Record {
+    int b;
+}
+
+class Main {
+    Record a;
+    void main() {
+        a = new Rekord();
+    }
+}

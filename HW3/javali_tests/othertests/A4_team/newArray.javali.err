@@ -1,0 +1,23 @@
+Debug information for file: javali_tests/othertests/A4_team/newArray.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: A, superClass: Object)
+ClassDecl (name: Main, superClass: Object)
+| VarDecl (name: a, type: A[])
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: a)
+| | | | NewArray (typeName: A[])
+| | | | | IntConst (value: 3)
+Error message: TYPE_ERROR
+
+Phase semantic failed because we expected to see:
+OK
+But we actually saw:
+TYPE_ERROR
+The difference is:
+At line   1 /   1:
+< OK
+> TYPE_ERROR
+

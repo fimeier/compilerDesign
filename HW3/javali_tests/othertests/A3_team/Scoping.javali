@@ -1,0 +1,8 @@
+//
+
+class Main {
+    int x;
+    void main() {
+        x = 5;
+    }
+}

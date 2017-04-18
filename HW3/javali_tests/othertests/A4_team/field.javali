@@ -1,0 +1,21 @@
+class Main {
+    int a,b;
+    void main() {
+        int c;
+        this.a = 7;
+        b = 8;
+        c = this.b;
+        c = a;
+        a = foo(this.b);
+        
+        write(a);
+        writeln();
+        write(this.b);
+    }
+    
+    int foo(int a) {
+        this.a = a;
+        return 2*a;
+    }
+}
+    

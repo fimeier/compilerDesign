@@ -1,0 +1,10 @@
+// there is no Main class
+
+class Foo {
+    int x;
+    
+    void bar() {
+        write(17);
+        writeln();
+    }
+}

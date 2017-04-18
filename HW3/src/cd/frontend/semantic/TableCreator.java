@@ -98,6 +98,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		//Map<String, Void> parameters = methodSymbol.parameters
 		Map<String, VariableSymbol> parameters = getParametersMap(methodSymbol);
 
+		//TODO: stimmt das so? wie sieht es mit Hidding aus....???
 		// add local variables
 		for (int i = 0; i<ast.decls().children().size(); i++){
 			VarDecl vd = (VarDecl )ast.decls().children().get(i);
@@ -109,16 +110,18 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
 		}
 
-		/*
-		already set in SemanticAnalyzer round three
-		methodSymbol.returnType = checkType(ast.returnType);
-		methodSymbol.inClass = (ClassSymbol)inClass;
-		 */
-
-		visit(ast.body(), methodSymbol);
-
+		//TODO: MISSING_RETURN check
+		//type is void || "return-statement on method-level"
+		if (methodSymbol.returnType.name.equals(PrimitiveTypeSymbol.voidType.name) || ast.body().childrenOfType(Ast.ReturnStmt.class).size()!=0){
+			System.out.println("MISSING_RETURN check ("+methodSymbol.name+"): type is void || \"return-statement on method-level\"");
+			visit(ast.body(), methodSymbol);
+		} else {
+			System.out.println("MISSING_RETURN check ("+methodSymbol.name+"): Each statement needs a return-stm...");
+			if (missingReturnStatement(ast.body(),methodSymbol)){
+				throw new SemanticFailure(Cause.MISSING_RETURN);
+			}
+		};
 		return methodSymbol;
-
 	}
 	@Override
 	public VariableSymbol varDecl(VarDecl ast, Symbol kindArg) { //ok
@@ -150,29 +153,44 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 		return null;
 	}
+
 	@Override
 	public Symbol assign(Assign ast, Symbol arg) {
-		// TODO Auto-generated method stub
-		return super.assign(ast, arg);
+		TypeSymbol typeLeft = (TypeSymbol) visit(ast.left(),arg);
+		TypeSymbol typeRight = (TypeSymbol) visit(ast.right(),arg);
+		if (!typeLeft.name.equals(typeRight.name))
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+
+		return null;
+		//return super.assign(ast, arg);
 	}
 
 
 	// Expression:
 
+	/* TODO löschen
 	@Override
 	public Symbol ifElse(IfElse ast, Symbol arg) {
 		TypeSymbol tExpr = (TypeSymbol) visit(ast.condition(),arg);
-		if (!tExpr.name.equals(PrimitiveTypeSymbol.booleanType)){
+		if (!tExpr.name.equals(PrimitiveTypeSymbol.booleanType.name)){
 			throw new SemanticFailure(Cause.TYPE_ERROR);
 		}
-		// TODO Auto-generated method stub
 		return super.ifElse(ast, arg);
-	}
+	}*/
 
+	//TODO Type check....
 	@Override
 	public Symbol returnStmt(ReturnStmt ast, Symbol arg) {
-		// TODO Auto-generated method stub
-		return super.returnStmt(ast, arg);
+
+		if (ast.arg()==null)
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+
+		TypeSymbol typeRExpr = (TypeSymbol) visit(ast.arg(),arg);
+		if (!typeRExpr.name.equals(((MethodSymbol) arg).returnType.name))
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+
+		//return super.returnStmt(ast, arg); 31;23
+		return null;
 	}
 
 
@@ -195,6 +213,12 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return super.visitChildren(ast, arg);
 	}
 
+
+	/*TODO: Fehler.... int <= int ..... => boolean	 * (non-Javadoc)
+	 * ||,&& mit integern??? != etc... int/bool?
+	 */
+
+
 	@Override
 	public TypeSymbol binaryOp(BinaryOp ast, Symbol arg) { //ok?
 
@@ -202,7 +226,9 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		TypeSymbol rightType = (TypeSymbol) visit(ast.right(), arg);
 		BOp op = ast.operator;
 
-		// binary arithmetic ops with integers
+		/* binary arithmetic ops with integer arguments and return type integer
+		 * *, /, %, +, -
+		 */
 		if ((op==BOp.B_TIMES)||(op==BOp.B_DIV)||(op==BOp.B_MOD)||(op==BOp.B_PLUS)||(op==BOp.B_MINUS)){
 			if ((leftType.name == PrimitiveTypeSymbol.intType.name) 
 					&& (rightType.name == PrimitiveTypeSymbol.intType.name)){
@@ -213,9 +239,24 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			}
 		}
 
-		// binary ops with boolean
-		if ((op==BOp.B_AND)||(op==BOp.B_OR)||(op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)||(op==BOp.B_LESS_THAN)
+		/* binary ops with integer arguments and return type boolean
+		 * ==, !=, <, <=, >, >=
+		 */
+		if ((op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)||(op==BOp.B_LESS_THAN)
 				||(op==BOp.B_LESS_OR_EQUAL)||(op==BOp.B_GREATER_THAN)||(op==BOp.B_GREATER_OR_EQUAL)){
+			if ((leftType.name == PrimitiveTypeSymbol.intType.name) 
+					&& (rightType.name == PrimitiveTypeSymbol.intType.name)){
+				ast.type = PrimitiveTypeSymbol.booleanType;
+				return PrimitiveTypeSymbol.booleanType;
+			} else {
+				throw new SemanticFailure(Cause.TYPE_ERROR);
+			}
+		}
+
+		/* binary ops with boolean arguments and return type boolean
+		 * &&, ||, ==, !=
+		 */
+		if ((op==BOp.B_AND)||(op==BOp.B_OR)||(op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)){
 			if ((leftType.name == PrimitiveTypeSymbol.booleanType.name) 
 					&& (rightType.name == PrimitiveTypeSymbol.booleanType.name)){
 				ast.type = PrimitiveTypeSymbol.booleanType;
@@ -261,10 +302,10 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return PrimitiveTypeSymbol.booleanType;
 	}
 
+	//TODO arg check??? bzw no arg check???
 	@Override
-	public Symbol builtInRead(BuiltInRead ast, Symbol arg) {
-		// TODO Auto-generated method stub
-		return super.builtInRead(ast, arg);
+	public TypeSymbol builtInRead(BuiltInRead ast, Symbol arg) {
+		return PrimitiveTypeSymbol.intType;
 	}
 
 	@Override
@@ -344,7 +385,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		//kann das jemals null sein????
 		/*was macht das genau...???
 		 * class in der methode aufgerufen wird????
-		 * was ist wenn this zuirück gegeben wird????
+		 * was ist wenn this zurück gegeben wird????
 		 * */
 		lastValue = visit(ast.receiver(),arg);
 
@@ -365,8 +406,13 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 		//TODO check null...
 		MethodSymbol mSym = getMethod(mName, (ClassSymbol) lastValue);
+		if (mSym==null)
+			throw new SemanticFailure(Cause.NO_SUCH_METHOD);
 
-		//TODO check arguments
+
+		if (ast.argumentsWithoutReceiver().size()!=mSym.parameters.size())
+			throw new SemanticFailure(Cause.WRONG_NUMBER_OF_ARGUMENTS);
+
 		int i = 0;
 		for (Expr expr: ast.argumentsWithoutReceiver()){
 			System.out.println("Method "+mName+" args: " +expr.toString());
@@ -379,17 +425,34 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 			i++;
 		}
-		//TODO check null...
+
 		mReturnType = mSym.returnType;
 
 
 		return mReturnType;
 	}
 
+	//TODO diverse Checks fehlen......!!!!!!!!!! oder auch ob[jexpr]????
 	@Override
-	public Symbol newObject(NewObject ast, Symbol arg) {
-		// TODO Auto-generated method stub
-		return super.newObject(ast, arg);
+	public Symbol newObject(NewObject ast, Symbol arg) {	
+		TypeSymbol typeNewObject = sa.getType(ast.typeName);
+		if (typeNewObject==null)
+			throw new SemanticFailure(Cause.NO_SUCH_TYPE);
+		return typeNewObject;
+
+		//		return super.newObject(ast, arg);
+
+		/*
+		 * f (ast.arg()==null)
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+
+		TypeSymbol typeRExpr = (TypeSymbol) visit(ast.arg(),arg);
+		if (!typeRExpr.name.equals(((MethodSymbol) arg).returnType.name))
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+
+		//return super.returnStmt(ast, arg); 31;23
+		return null;
+		 */
 	}
 
 	@Override
@@ -531,6 +594,80 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			} 
 		}
 		return type;
+	}
+
+	/**
+	 * 
+	 * @return true IFF there is a missing return statement
+	 */
+	boolean missingReturnStatement(Ast ast, MethodSymbol arg){
+		boolean check = true;
+		/* alle möglichen Stmt testen....
+		 * testen bis false (return gefunden) oder letztes statement
+		 * Regeln: (true==missingReturnStatement)
+		 * assign = true
+		 * MethodCallStmt = true
+		 * ifStmt, While => rekursiv???
+		 * returnStmt = false
+		 * writeStmt = true
+		 */
+		
+		//TODO: empty Body????
+		
+		for (Ast child: ast.rwChildren){
+			System.out.println(child.getClass().getSimpleName() + ": "+child.toString());
+			switch (child.getClass().getSimpleName()){
+				case("Assign"): {
+					check = true;
+					break;
+				}
+				case("MethodCall"): {
+					check = true;
+					break;
+				}
+				case("IfElse"): {
+					/*
+					 * Regel:
+					 * if (tautology) => false (wird in der Referenzimplementation nicht geprüft (int meth(){if(true){return 1;} else{write(2)}}
+					 * if und else block und jeweils return statement => false
+					 * sonst true == missing return statement
+					 * while(true){return true;} wird nicht geprüft in refertenz impl
+					 */
+					// .size()==0 <=> "if and else block"
+					if (child.childrenOfType(Ast.Nop.class).size()==0){
+						boolean thenCheck = missingReturnStatement(((Ast.IfElse) child).then(), arg);
+						boolean elseCheck = missingReturnStatement(((Ast.IfElse) child).otherwise(), arg);
+						check = thenCheck || elseCheck;
+					} else {
+						check = true;
+					}
+					break;
+				}
+				case("WhileLoop"): {
+					//while(true){return true;} wird nicht geprüft in refertenz impl => immer missing...!!!
+					check = true;
+					break;
+				}
+				case("ReturnStmt"): {
+					check = false;
+					break;
+				}
+				case("BuiltInWrite"): {
+					check = true;
+					break;
+				}
+				default:
+					System.out.println("ERROR: missing case");
+					check = true;
+			}
+			//return found (the rest of the code is not reachable)
+			if(!check){
+				return check;
+			}
+		}
+
+
+		return check;
 	}
 
 }

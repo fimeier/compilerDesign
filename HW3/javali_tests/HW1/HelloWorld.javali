@@ -1,5 +1,57 @@
 /* Kind of like hello world */
 
+class Main {
+
+	boolean bla(int a){
+		if (a<2){
+			return true;
+		}
+		return false;
+	}
+
+	boolean ok(int a){
+		int b;
+		bla(a);
+		
+		write(a);
+		if (a < 5) {
+			b = 3;
+			return true; //missing return
+		} else {
+			if(a<2) {
+		 		//return false; //2. missing return
+		 	}
+		 	else {
+		 		a=4;
+		 		//return false; //2. missing return;
+		 	}
+		 	
+		 	//return true;//2. missing return;
+		}
+		
+		while(true){
+			return true;
+		}
+		
+		return true;
+		
+		//a=a+1; //irrelevant
+	}
+
+	
+   void main(){
+   	int a;
+   	boolean b;
+ 	a = 6;
+   	b=ok(6);
+   		
+   }
+}
+
+
+
+
+/*
 class D {
 	
 	A fun(){
@@ -48,7 +100,7 @@ class B extends C{
 class C {
 	int foo;
 }
-
+*/
 
 
 

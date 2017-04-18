@@ -1,0 +1,25 @@
+Debug information for file: javali_tests/othertests/A3_team/OverrideFunc.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: Main, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | Seq ()
+ClassDecl (name: A, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: foo, returnType: void)
+| | Seq ()
+| | Seq ()
+ClassDecl (name: B, superClass: A)
+| MethodDecl (argumentNames: [x], argumentTypes: [int], name: foo, returnType: void)
+| | Seq ()
+| | Seq ()
+Error message from reference is: Overridden method foo has 1 parameters, but original has 0
+
+Phase semantic failed because we expected to see:
+INVALID_OVERRIDE
+But we actually saw:
+OK
+The difference is:
+At line   1 /   1:
+< INVALID_OVERRIDE
+> OK
+

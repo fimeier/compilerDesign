@@ -1,0 +1,61 @@
+Debug information for file: javali_tests/othertests/A4/FieldInArray.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: A, superClass: Object)
+| VarDecl (name: field, type: int)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: foo, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | BuiltInWrite ()
+| | | | IntConst (value: 1)
+| | | BuiltInWrite ()
+| | | | Var (name: field)
+| | | BuiltInWriteln ()
+ClassDecl (name: Main, superClass: Object)
+| VarDecl (name: x, type: A[])
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | | VarDecl (name: i, type: int)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: x)
+| | | | NewArray (typeName: A[])
+| | | | | IntConst (value: 2)
+| | | Assign ()
+| | | | Var (name: i)
+| | | | IntConst (value: 1)
+| | | BuiltInWrite ()
+| | | | Var (name: i)
+| | | BuiltInWriteln ()
+| | | Assign ()
+| | | | Index ()
+| | | | | Var (name: x)
+| | | | | Var (name: i)
+| | | | NewObject (typeName: A)
+| | | Assign ()
+| | | | Field (fieldName: field)
+| | | | | Index ()
+| | | | | | Var (name: x)
+| | | | | | Var (name: i)
+| | | | BinaryOp (operator: B_PLUS)
+| | | | | Var (name: i)
+| | | | | IntConst (value: 1)
+| | | Assign ()
+| | | | Var (name: i)
+| | | | Field (fieldName: field)
+| | | | | Index ()
+| | | | | | Var (name: x)
+| | | | | | IntConst (value: 1)
+| | | BuiltInWrite ()
+| | | | Var (name: i)
+| | | BuiltInWriteln ()
+Error message: TYPE_ERROR
+
+Phase semantic failed because we expected to see:
+OK
+But we actually saw:
+TYPE_ERROR
+The difference is:
+At line   1 /   1:
+< OK
+> TYPE_ERROR
+

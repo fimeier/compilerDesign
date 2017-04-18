@@ -1,0 +1,11 @@
+class Main {
+    void main() {
+        int a,b,c;
+        a = 1;  // eliminate a = 1
+        b = 3;
+        c = b + 1;
+        
+        write(c);
+        writeln();
+    }
+}

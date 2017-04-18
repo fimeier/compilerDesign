@@ -1,0 +1,10 @@
+class Main {
+    void main() {
+        boolean a;
+        boolean b;
+        a = true;
+        b = false;
+        a = a && b;
+        a = a || b;
+    }
+}

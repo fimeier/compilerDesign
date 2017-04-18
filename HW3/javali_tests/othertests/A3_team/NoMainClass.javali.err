@@ -1,0 +1,21 @@
+Debug information for file: javali_tests/othertests/A3_team/NoMainClass.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: Foo, superClass: Object)
+| VarDecl (name: x, type: int)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: bar, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | BuiltInWrite ()
+| | | | IntConst (value: 17)
+| | | BuiltInWriteln ()
+Error message from reference is: No Main class found
+
+Phase semantic failed because we expected to see:
+INVALID_START_POINT
+But we actually saw:
+OK
+The difference is:
+At line   1 /   1:
+< INVALID_START_POINT
+> OK
+

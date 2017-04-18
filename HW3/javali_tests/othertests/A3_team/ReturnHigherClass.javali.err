@@ -1,0 +1,30 @@
+Debug information for file: javali_tests/othertests/A3_team/ReturnHigherClass.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: A, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: foo, returnType: B1)
+| | Seq ()
+| | | VarDecl (name: a, type: A1)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: a)
+| | | | NewObject (typeName: A1)
+| | | ReturnStmt ()
+| | | | Var (name: a)
+ClassDecl (name: A1, superClass: B1)
+ClassDecl (name: B1, superClass: Object)
+ClassDecl (name: Main, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | | VarDecl (name: a, type: A)
+| | Seq ()
+Error message: TYPE_ERROR
+
+Phase semantic failed because we expected to see:
+OK
+But we actually saw:
+TYPE_ERROR
+The difference is:
+At line   1 /   1:
+< OK
+> TYPE_ERROR
+

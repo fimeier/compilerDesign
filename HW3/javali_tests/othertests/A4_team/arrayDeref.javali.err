@@ -1,0 +1,43 @@
+Debug information for file: javali_tests/othertests/A4_team/arrayDeref.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: Main, superClass: Object)
+| VarDecl (name: a, type: int[])
+| VarDecl (name: b, type: int)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: a)
+| | | | NewArray (typeName: int[])
+| | | | | IntConst (value: 3)
+| | | Assign ()
+| | | | Index ()
+| | | | | Var (name: a)
+| | | | | IntConst (value: 0)
+| | | | IntConst (value: 1)
+| | | Assign ()
+| | | | Index ()
+| | | | | Var (name: a)
+| | | | | IntConst (value: 1)
+| | | | IntConst (value: 3)
+| | | Assign ()
+| | | | Index ()
+| | | | | Var (name: a)
+| | | | | IntConst (value: 2)
+| | | | IntConst (value: 7)
+| | | Assign ()
+| | | | Var (name: b)
+| | | | Index ()
+| | | | | Var (name: a)
+| | | | | IntConst (value: 1)
+Error message: TYPE_ERROR
+
+Phase semantic failed because we expected to see:
+OK
+But we actually saw:
+TYPE_ERROR
+The difference is:
+At line   1 /   1:
+< OK
+> TYPE_ERROR
+

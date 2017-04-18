@@ -1,0 +1,17 @@
+class Main {
+    void main() {
+        boolean k;
+        int a;
+        int b;
+        int c;
+        a = 2;
+        b = 1;
+        c = 6;
+        k = (b < a) && (a < c);
+        if (k) {
+            write(1);
+        } else {
+            write(0);
+        }
+    }
+}

@@ -1,0 +1,35 @@
+Debug information for file: javali_tests/othertests/A3_team/ParamHigherType.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: Main, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | | VarDecl (name: a1, type: A1)
+| | | VarDecl (name: b, type: B)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: b)
+| | | | NewObject (typeName: B)
+| | | Assign ()
+| | | | Var (name: a1)
+| | | | NewObject (typeName: A1)
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: foo)
+| | | | | Var (name: a1)
+| | | | | Var (name: b)
+ClassDecl (name: A1, superClass: Object)
+| MethodDecl (argumentNames: [x], argumentTypes: [A], name: foo, returnType: void)
+| | Seq ()
+| | Seq ()
+ClassDecl (name: A, superClass: Object)
+ClassDecl (name: B, superClass: A)
+Error message: TYPE_ERROR
+
+Phase semantic failed because we expected to see:
+OK
+But we actually saw:
+TYPE_ERROR
+The difference is:
+At line   1 /   1:
+< OK
+> TYPE_ERROR
+
