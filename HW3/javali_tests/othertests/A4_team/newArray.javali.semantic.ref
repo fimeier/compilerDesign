@@ -1,1 +1,2 @@
-OK
+TYPE_ERROR
+Type B[] cannot be assigned to A[]

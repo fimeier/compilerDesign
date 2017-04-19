@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.lang.model.type.PrimitiveType;
+
 import cd.frontend.semantic.SemanticFailure.Cause;
 import cd.ir.Ast.Assign;
 import cd.ir.Ast.BinaryOp;
@@ -154,12 +156,90 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return null;
 	}
 
+
+
+	/**
+	 * 
+	 * @param typeLeft
+	 * @param typeRight
+	 * @return returns true if it is a subtype
+	 */
+	public boolean checkSubtype(TypeSymbol typeLeft, TypeSymbol typeRight){
+		boolean isSubtype = false;
+
+		//simple check iff types exists
+		if (typeLeft==null||typeRight==null)
+			return false;
+
+		String tLeftClass = typeLeft.getClass().getSimpleName();
+		String tRightClass = typeRight.getClass().getSimpleName();
+
+		//TODO: ist das korrekt???
+		if (!tLeftClass.equals(tRightClass))
+			return false;
+
+		switch(tLeftClass){
+		case("ArrayTypeSymbol"): {
+			typeLeft = ((ArrayTypeSymbol) typeLeft).elementType;
+			typeRight = ((ArrayTypeSymbol) typeRight).elementType;
+			if (typeLeft.getClass().getSimpleName().equals("PrimitiveTypeSymbol")){
+				if (typeLeft.name.equals(typeRight.name)){
+					isSubtype = true;
+				}
+			} else {
+				/* so wie ich das verstehe, ist das in Javali nie erlaubt, würde aber in dieser Implemenation funktionieren
+				 * isSubtype = sa.isSubtype((ClassSymbol)typeLeft,(ClassSymbol)typeRight);
+				 */
+				if (typeLeft.name.equals(typeRight.name)){
+					isSubtype = true;
+				}
+			}
+			break;
+		}
+		//TODO: int, boolean, void
+		case("PrimitiveTypeSymbol"): {
+			if (typeLeft.name.equals(typeRight.name)){
+				isSubtype = true;
+			}
+			break;
+		}
+		case("ClassSymbol"):{
+			System.out.println("already a ClassSymbol (subtyping)");
+			isSubtype = sa.isSubtype((ClassSymbol)typeLeft,(ClassSymbol)typeRight);
+			break;
+		}
+		default: {
+			System.out.println("!!!!!!!!!!!!!!!!!: Missing-Case (subtyping) for "+typeLeft.getClass().getSimpleName());
+			break;	
+		}
+		}
+		return isSubtype;
+	}
+
+	//TODO: SUBTYPING!!!!!!!
 	@Override
 	public Symbol assign(Assign ast, Symbol arg) {
+		/* TODO: Check: left-hand side must be assignable, can be:
+		 * (varx), field.x, array[index]
+		 * class A {
+				void test(B a){
+					a = new B();
+				}
+			} //referenz Impl lässt das zu... sollte doch NOT_ASSIGNABLE werfen..???
+		 */
+
+		//TODO []=[], asdsad=ob(), =int[]... infos gehen verloren bei typeLeft/Right
+
 		TypeSymbol typeLeft = (TypeSymbol) visit(ast.left(),arg);
 		TypeSymbol typeRight = (TypeSymbol) visit(ast.right(),arg);
-		if (!typeLeft.name.equals(typeRight.name))
+
+		boolean isSubtype = false;
+		isSubtype = checkSubtype(typeLeft, typeRight);
+
+		if (!isSubtype)
 			throw new SemanticFailure(Cause.TYPE_ERROR);
+
+
 
 		return null;
 		//return super.assign(ast, arg);
@@ -310,8 +390,28 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	@Override
 	public Symbol cast(Cast ast, Symbol arg) {
-		// TODO Auto-generated method stub
-		return super.cast(ast, arg);
+		TypeSymbol cType = checkType(ast.typeName);
+		//Check Null nicht nötig, da checkType das bereits tut
+		ast.type = cType;
+
+		TypeSymbol typeRight = (TypeSymbol) visit(ast.arg(),arg);
+
+		boolean isSubtype = false;
+		/*
+		 * two possible cases for casting: (a) b
+		 * 1. b subtype of a
+		 * 2. a subtype of b
+		 */
+		//1. b subtype of a
+		isSubtype = checkSubtype(cType, typeRight);
+		//2. a subtype of b
+		isSubtype = isSubtype || checkSubtype(typeRight, cType);
+
+		if (!isSubtype)
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+
+		return cType;	
+		//return super.cast(ast, arg);
 	}
 
 	@Override
@@ -353,10 +453,18 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		//return super.field(ast, arg);
 	}
 
+	//TODO check length???
 	@Override
 	public Symbol index(Index ast, Symbol arg) {
-		// TODO Auto-generated method stub
-		return super.index(ast, arg);
+		TypeSymbol lT = (TypeSymbol) visit(ast.left(),arg);
+		TypeSymbol rT = (TypeSymbol) visit(ast.right(),arg);
+
+		//Check: indexing expr must be of type int
+		if (!rT.name.equals(Symbol.PrimitiveTypeSymbol.intType.name))
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+
+		return ((ArrayTypeSymbol)lT).elementType;
+		//return super.index(ast, arg);
 	}
 
 	@Override
@@ -432,10 +540,10 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return mReturnType;
 	}
 
-	//TODO diverse Checks fehlen......!!!!!!!!!! oder auch ob[jexpr]????
+	//TODO Subtype checking... ev bei assign
 	@Override
 	public Symbol newObject(NewObject ast, Symbol arg) {	
-		TypeSymbol typeNewObject = sa.getType(ast.typeName);
+		TypeSymbol typeNewObject = checkType(ast.typeName);
 		if (typeNewObject==null)
 			throw new SemanticFailure(Cause.NO_SUCH_TYPE);
 		return typeNewObject;
@@ -457,8 +565,23 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	@Override
 	public Symbol newArray(NewArray ast, Symbol arg) {
-		// TODO Auto-generated method stub
-		return super.newArray(ast, arg);
+
+		//Check iff type exists
+		ArrayTypeSymbol typeNewArray = (ArrayTypeSymbol) checkType(ast.typeName);
+		if (typeNewArray==null)
+			throw new SemanticFailure(Cause.NO_SUCH_TYPE);
+
+
+		TypeSymbol length = (TypeSymbol) visit(ast.arg(),arg);
+		//check: the type of length must be int
+		if (!length.name.equals(PrimitiveTypeSymbol.intType.name))
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+
+
+		//??return type without [] (for further type checking in assign
+		//TypeSymbol elementType = typeNewArray.elementType;
+		//return elementType;
+		return typeNewArray;
 	}
 
 	@Override
@@ -572,9 +695,10 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	}
 
 	//TODO anpassen.... funktioniert so nicht... ERROR
-	/*
+	/* wrong...
 	 * checks if 'typeName' is a valid type
 	 * returns the corresponding TypeSymbol, 'null' if type undefined
+	 * throws SemanticFailure => no null return values!!!!!!
 	 */
 	TypeSymbol checkType(String typeName){ //ok
 		// Type of the variable: Primitive- , Array- or Classtype
@@ -611,56 +735,56 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		 * returnStmt = false
 		 * writeStmt = true
 		 */
-		
+
 		//TODO: empty Body????
-		
+
 		for (Ast child: ast.rwChildren){
 			System.out.println(child.getClass().getSimpleName() + ": "+child.toString());
 			switch (child.getClass().getSimpleName()){
-				case("Assign"): {
-					check = true;
-					break;
-				}
-				case("MethodCall"): {
-					check = true;
-					break;
-				}
-				case("IfElse"): {
-					/*
-					 * Regel:
-					 * if (tautology) => false (wird in der Referenzimplementation nicht geprüft (int meth(){if(true){return 1;} else{write(2)}}
-					 * if und else block und jeweils return statement => false
-					 * sonst true == missing return statement
-					 * while(true){return true;} wird nicht geprüft in refertenz impl
-					 */
-					// .size()==0 <=> "if and else block"
-					if (child.childrenOfType(Ast.Nop.class).size()==0){
-						boolean thenCheck = missingReturnStatement(((Ast.IfElse) child).then(), arg);
-						boolean elseCheck = missingReturnStatement(((Ast.IfElse) child).otherwise(), arg);
-						check = thenCheck || elseCheck;
-					} else {
-						check = true;
-					}
-					break;
-				}
-				case("WhileLoop"): {
-					//while(true){return true;} wird nicht geprüft in refertenz impl => immer missing...!!!
-					check = true;
-					break;
-				}
-				case("ReturnStmt"): {
-					check = false;
-					break;
-				}
-				case("BuiltInWrite"): {
-					check = true;
-					break;
-				}
-				default:
-					System.out.println("ERROR: missing case");
-					check = true;
+			case("Assign"): {
+				check = true;
+				break;
 			}
-			//return found (the rest of the code is not reachable)
+			case("MethodCall"): {
+				check = true;
+				break;
+			}
+			case("IfElse"): {
+				/*
+				 * Regel:
+				 * if (tautology) => false (wird in der Referenzimplementation nicht geprüft (int meth(){if(true){return 1;} else{write(2)}}
+				 * if und else block und jeweils return statement => false
+				 * sonst true == missing return statement
+				 * while(true){return true;} wird nicht geprüft in refertenz impl
+				 */
+				// .size()==0 <=> "if and else block"
+				if (child.childrenOfType(Ast.Nop.class).size()==0){
+					boolean thenCheck = missingReturnStatement(((Ast.IfElse) child).then(), arg);
+					boolean elseCheck = missingReturnStatement(((Ast.IfElse) child).otherwise(), arg);
+					check = thenCheck || elseCheck;
+				} else {
+					check = true;
+				}
+				break;
+			}
+			case("WhileLoop"): {
+				//while(true){return true;} wird nicht geprüft in refertenz impl => immer missing...!!!
+				check = true;
+				break;
+			}
+			case("ReturnStmt"): {
+				check = false;
+				break;
+			}
+			case("BuiltInWrite"): {
+				check = true;
+				break;
+			}
+			default:
+				System.out.println("ERROR: missing case");
+				check = true;
+			}
+			//return found (the rest of the code is not reachable=> ignore it)
 			if(!check){
 				return check;
 			}

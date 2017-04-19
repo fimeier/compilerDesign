@@ -13,7 +13,7 @@ Test failed because an exception was thrown:
     cd.ir.Symbol$VariableSymbol cannot be cast to cd.ir.Symbol$TypeSymbol
 Stack trace:
 java.lang.ClassCastException: cd.ir.Symbol$VariableSymbol cannot be cast to cd.ir.Symbol$TypeSymbol
-	at cd.frontend.semantic.TableCreator.assign(TableCreator.java:159)
+	at cd.frontend.semantic.TableCreator.assign(TableCreator.java:233)
 	at cd.frontend.semantic.TableCreator.assign(TableCreator.java:1)
 	at cd.ir.Ast$Assign.accept(Ast.java:509)
 	at cd.ir.AstVisitor.visit(AstVisitor.java:16)
@@ -22,9 +22,9 @@ java.lang.ClassCastException: cd.ir.Symbol$VariableSymbol cannot be cast to cd.i
 	at cd.ir.AstVisitor.seq(AstVisitor.java:100)
 	at cd.ir.Ast$Seq.accept(Ast.java:677)
 	at cd.ir.AstVisitor.visit(AstVisitor.java:16)
-	at cd.frontend.semantic.TableCreator.methodDecl(TableCreator.java:117)
-	at cd.frontend.semantic.TableCreator.classDecl(TableCreator.java:60)
-	at cd.frontend.semantic.SemanticAnalyzer.check(SemanticAnalyzer.java:154)
+	at cd.frontend.semantic.TableCreator.methodDecl(TableCreator.java:119)
+	at cd.frontend.semantic.TableCreator.classDecl(TableCreator.java:62)
+	at cd.frontend.semantic.SemanticAnalyzer.check(SemanticAnalyzer.java:168)
 	at cd.Main.semanticCheck(Main.java:111)
 	at cd.test.AbstractTestAgainstFrozenReference.testSemanticAnalyzer(AbstractTestAgainstFrozenReference.java:146)
 	at cd.test.AbstractTestAgainstFrozenReference.test(AbstractTestAgainstFrozenReference.java:50)

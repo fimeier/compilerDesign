@@ -64,6 +64,20 @@ public class SemanticAnalyzer {
 		}
 		return hasInheritanceCircle(superClass.superClass,startClass);
 	}
+	
+	/**finds subclasses
+	 * @return true if subClass is a subtype of superClass
+	 */
+	public boolean isSubtype(ClassSymbol superClass, ClassSymbol subClass) {
+		if (superClass == subClass){
+			return true;
+		}
+		if (subClass == globalClassTable.get(ClassSymbol.objectType.name)){
+			return false;
+		}
+		return isSubtype(superClass,subClass.superClass);
+	}
+
 
 
 	public void check(List<ClassDecl> classDecls) throws SemanticFailure {

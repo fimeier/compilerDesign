@@ -22,7 +22,7 @@ Test failed because an exception was thrown:
     null
 Stack trace:
 java.lang.NullPointerException
-	at cd.frontend.semantic.TableCreator.methodCall(TableCreator.java:421)
+	at cd.frontend.semantic.TableCreator.methodCall(TableCreator.java:529)
 	at cd.frontend.semantic.TableCreator.methodCall(TableCreator.java:1)
 	at cd.ir.Ast$MethodCallExpr.accept(Ast.java:460)
 	at cd.ir.Ast$Expr.accept(Ast.java:85)
@@ -38,9 +38,9 @@ java.lang.NullPointerException
 	at cd.ir.AstVisitor.seq(AstVisitor.java:100)
 	at cd.ir.Ast$Seq.accept(Ast.java:677)
 	at cd.ir.AstVisitor.visit(AstVisitor.java:16)
-	at cd.frontend.semantic.TableCreator.methodDecl(TableCreator.java:117)
-	at cd.frontend.semantic.TableCreator.classDecl(TableCreator.java:60)
-	at cd.frontend.semantic.SemanticAnalyzer.check(SemanticAnalyzer.java:154)
+	at cd.frontend.semantic.TableCreator.methodDecl(TableCreator.java:119)
+	at cd.frontend.semantic.TableCreator.classDecl(TableCreator.java:62)
+	at cd.frontend.semantic.SemanticAnalyzer.check(SemanticAnalyzer.java:168)
 	at cd.Main.semanticCheck(Main.java:111)
 	at cd.test.AbstractTestAgainstFrozenReference.testSemanticAnalyzer(AbstractTestAgainstFrozenReference.java:146)
 	at cd.test.AbstractTestAgainstFrozenReference.test(AbstractTestAgainstFrozenReference.java:50)
