@@ -2,8 +2,11 @@
 
 class Main {
 	void main() {
-		if (84 / 2) {
-			write(1); writeln();
+		//if (84 / 2) {
+		if (true){
+			//write(1); writeln();
+			write(true); writeln();
+			
 		}
 		write(2); writeln();
 	}

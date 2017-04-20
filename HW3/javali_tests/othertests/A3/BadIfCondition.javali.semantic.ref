@@ -1,2 +1,2 @@
 TYPE_ERROR
-Expected boolean but type was int
+Expected int but type was boolean

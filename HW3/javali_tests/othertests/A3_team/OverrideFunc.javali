@@ -7,7 +7,10 @@ class Main {
 }
        
 class A {
-     void foo(){}
+    // void foo(){} //wrong arg count
+   // void foo(boolean x){} //wrong parameter type
+   int foo(int x){return 3;} //wrong return type
+    
 }
 
 class B extends A {

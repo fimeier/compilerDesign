@@ -51,7 +51,7 @@ public class SemanticAnalyzer {
 		else
 			return null;
 	}
-	
+
 	/**finds circles in inheritances
 	 * @return true if a circle has been found
 	 */
@@ -64,7 +64,7 @@ public class SemanticAnalyzer {
 		}
 		return hasInheritanceCircle(superClass.superClass,startClass);
 	}
-	
+
 	/**finds subclasses
 	 * @return true if subClass is a subtype of superClass
 	 */
@@ -75,6 +75,10 @@ public class SemanticAnalyzer {
 		if (subClass == globalClassTable.get(ClassSymbol.objectType.name)){
 			return false;
 		}
+		if (subClass == globalClassTable.get(ClassSymbol.nullType.name)){
+			return true;
+		}
+		
 		return isSubtype(superClass,subClass.superClass);
 	}
 
@@ -88,6 +92,13 @@ public class SemanticAnalyzer {
 		//TODO: create Map globalClassTable and add all "class names" (for lookup) 
 		for (ClassDecl cd : classDecls){
 			ClassSymbol classSymbol = new ClassSymbol(cd);
+			
+			/*
+			 * Check: OBJECT_CLASS_DEFINED
+			 */
+			if (cd.name.equals("Object"))
+					throw new SemanticFailure(Cause.OBJECT_CLASS_DEFINED);
+			
 			if (!globalClassTable.containsKey(cd.name)) {
 				globalClassTable.put(cd.name, classSymbol);
 			}
@@ -106,7 +117,7 @@ public class SemanticAnalyzer {
 
 			//TODO: add all field names for each class
 			for (VarDecl vd : cd.fields()){
-				System.out.println("found field: "+vd.name+" in class="+cd.name );
+				//System.out.println("found field: "+vd.name+" in class="+cd.name );
 				VariableSymbol kindSym = new VariableSymbol("kind", null, VariableSymbol.Kind.FIELD);
 				VariableSymbol varSym = tableCreator.varDecl(vd,kindSym);
 				if (!classSymbol.fields.containsKey(varSym.name))
@@ -129,7 +140,7 @@ public class SemanticAnalyzer {
 			 * argument types
 			 */
 			for (MethodDecl md : cd.methods()){
-				System.out.println("found medhod: "+md.name+" in class="+cd.name );
+				//System.out.println("found medhod: "+md.name+" in class="+cd.name );
 				MethodSymbol mSym = new MethodSymbol(md);
 				if (!classSymbol.methods.containsKey(mSym.name))
 					classSymbol.methods.put(mSym.name, mSym);
@@ -139,7 +150,7 @@ public class SemanticAnalyzer {
 				mSym.inClass=classSymbol;
 				//set and check method return type
 				mSym.returnType = tableCreator.checkType(md.returnType);
-				System.out.println("return type: "+mSym.returnType.name +" "+mSym.name+"(..)");
+				//System.out.println("return type: "+mSym.returnType.name +" "+mSym.name+"(..)");
 
 				Map<String, Void> parameters = new HashMap<String, Void>();
 				// add Parameter variables
@@ -160,21 +171,19 @@ public class SemanticAnalyzer {
 
 			}
 		}
-		
+
 		/*
 		 * Fourth round: fill in rest of symbol table
 		 */
 		for (ClassDecl cd : classDecls){
 			tableCreator.classDecl(cd, null);
 		}
-		
-		/*TODO: allenfalls können die Tests auch früher ausgeführt werden...
-		 * jedoch wird es dann unübersichtlicher
-		 *
-		 * Fifth round: do all other checks
+
+		/*
+		 * Fifth round: other checks
 		 */
 		for (ClassDecl cd : classDecls){
-			
+
 			/*
 			 * Check: CIRCULAR_INHERITANCE
 			 */
@@ -182,10 +191,69 @@ public class SemanticAnalyzer {
 			if (this.hasInheritanceCircle(startClass.superClass,startClass)){
 				throw new SemanticFailure(Cause.CIRCULAR_INHERITANCE);
 			}
+			
+			/*
+			 * Check: INVALID_OVERRIDE
+			 */
+			//call all parent
+
 		}
+		
+		/*
+		 * Sixth round: other checks
+		 */
+		for (ClassDecl cd : classDecls){
+			
+			/*
+			 * Check: INVALID_OVERRIDE
+			 */
+			ClassSymbol classSymbol = this.globalClassTable.get(cd.name);
+			//TODO frage Methode ab in Superclass... wenn gefunden vergeleiche Signatur
+			//=> getMethod mit SuperCalss aufrufewn
+			for (MethodDecl md : cd.methods()){
+				MethodSymbol mSym = classSymbol.getMethod(md.name);
+				MethodSymbol mSymSuperClass = tableCreator.getMethod(mSym.name, classSymbol.superClass);
+				if (mSymSuperClass!=null){
+					
+					//compare return-type
+					if(mSym.returnType.name!=mSymSuperClass.returnType.name)
+						throw new SemanticFailure(Cause.INVALID_OVERRIDE);	
+					//compare arg-count
+					if(mSym.parameters.size()!=mSymSuperClass.parameters.size())
+						throw new SemanticFailure(Cause.INVALID_OVERRIDE);
+					//compare parameter-type
+					int i = 0;
+					for(VariableSymbol varSym: mSym.parameters){
+						if(!varSym.type.name.equals(mSymSuperClass.parameters.get(i).type.name))
+							throw new SemanticFailure(Cause.INVALID_OVERRIDE);
+					}
+				}
+			}
+
+
+		}
+		
+		/*
+		 * Check: INVALID_START_POINT
+		 */
+		//class main?
+		ClassSymbol classSymbol = this.globalClassTable.get("Main");		
+		if (classSymbol==null){
+			throw new SemanticFailure(Cause.INVALID_START_POINT);
+		}
+		//Main.main()?
+		MethodSymbol methodSymbol = classSymbol.methods.get("main");
+		if (methodSymbol==null)
+			throw new SemanticFailure(Cause.INVALID_START_POINT);
+		//return-type void?
+		if (!methodSymbol.returnType.name.equals(PrimitiveTypeSymbol.voidType.name))
+			throw new SemanticFailure(Cause.INVALID_START_POINT);
+		//no args
+		if(methodSymbol.parameters.size()!=0)
+			throw new SemanticFailure(Cause.INVALID_START_POINT);
+
 
 	}
 
 }
 
-	

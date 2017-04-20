@@ -4,7 +4,8 @@ class Main {
     
       // Note: In Javali, while() loops must have braces ({}) after them,
       // so this is an expected syntax error.
-      while(true)
+      while(true){ //updated: added braces => error in the parsing stage...
          i = 1;
+         }
   }
 }
