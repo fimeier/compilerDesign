@@ -78,7 +78,7 @@ public class SemanticAnalyzer {
 		if (subClass == globalClassTable.get(ClassSymbol.nullType.name)){
 			return true;
 		}
-		
+
 		return isSubtype(superClass,subClass.superClass);
 	}
 
@@ -89,16 +89,15 @@ public class SemanticAnalyzer {
 		/*
 		 * First round: find all classes
 		 */
-		//TODO: create Map globalClassTable and add all "class names" (for lookup) 
 		for (ClassDecl cd : classDecls){
 			ClassSymbol classSymbol = new ClassSymbol(cd);
-			
+
 			/*
 			 * Check: OBJECT_CLASS_DEFINED
 			 */
 			if (cd.name.equals("Object"))
-					throw new SemanticFailure(Cause.OBJECT_CLASS_DEFINED);
-			
+				throw new SemanticFailure(Cause.OBJECT_CLASS_DEFINED);
+
 			if (!globalClassTable.containsKey(cd.name)) {
 				globalClassTable.put(cd.name, classSymbol);
 			}
@@ -115,7 +114,7 @@ public class SemanticAnalyzer {
 			else
 				throw new SemanticFailure(Cause.NO_SUCH_TYPE);
 
-			//TODO: add all field names for each class
+			//add all field names for each class
 			for (VarDecl vd : cd.fields()){
 				//System.out.println("found field: "+vd.name+" in class="+cd.name );
 				VariableSymbol kindSym = new VariableSymbol("kind", null, VariableSymbol.Kind.FIELD);
@@ -135,10 +134,6 @@ public class SemanticAnalyzer {
 		for (ClassDecl cd : classDecls){
 			ClassSymbol classSymbol = this.globalClassTable.get(cd.name);		
 			//add all method names for each class
-			/* TODO: 
-			 * check return type
-			 * argument types
-			 */
 			for (MethodDecl md : cd.methods()){
 				//System.out.println("found medhod: "+md.name+" in class="+cd.name );
 				MethodSymbol mSym = new MethodSymbol(md);
@@ -146,6 +141,7 @@ public class SemanticAnalyzer {
 					classSymbol.methods.put(mSym.name, mSym);
 				else
 					throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
+
 				//set class field
 				mSym.inClass=classSymbol;
 				//set and check method return type
@@ -191,30 +187,23 @@ public class SemanticAnalyzer {
 			if (this.hasInheritanceCircle(startClass.superClass,startClass)){
 				throw new SemanticFailure(Cause.CIRCULAR_INHERITANCE);
 			}
-			
-			/*
-			 * Check: INVALID_OVERRIDE
-			 */
-			//call all parent
 
 		}
-		
+
 		/*
 		 * Sixth round: other checks
 		 */
 		for (ClassDecl cd : classDecls){
-			
+
 			/*
 			 * Check: INVALID_OVERRIDE
 			 */
 			ClassSymbol classSymbol = this.globalClassTable.get(cd.name);
-			//TODO frage Methode ab in Superclass... wenn gefunden vergeleiche Signatur
-			//=> getMethod mit SuperCalss aufrufewn
 			for (MethodDecl md : cd.methods()){
 				MethodSymbol mSym = classSymbol.getMethod(md.name);
 				MethodSymbol mSymSuperClass = tableCreator.getMethod(mSym.name, classSymbol.superClass);
 				if (mSymSuperClass!=null){
-					
+
 					//compare return-type
 					if(mSym.returnType.name!=mSymSuperClass.returnType.name)
 						throw new SemanticFailure(Cause.INVALID_OVERRIDE);	
@@ -232,7 +221,7 @@ public class SemanticAnalyzer {
 
 
 		}
-		
+
 		/*
 		 * Check: INVALID_START_POINT
 		 */

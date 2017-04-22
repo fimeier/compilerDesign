@@ -57,47 +57,16 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	public ClassSymbol classDecl(ClassDecl ast, Symbol arg) { //ok
 		ClassSymbol classSymbol = sa.globalClassTable.get(ast.name);
 
-		//TODO: change structure?????
 		for (MethodDecl md : ast.methods()){
 			MethodSymbol methSym =  methodDecl(md, classSymbol);
-			/*
-			 * already checked in SemanticAnalyzer round three
-			if (!classSymbol.methods.containsKey(methSym.name))
-				classSymbol.methods.put(methSym.name, methSym);
-			else
-				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
-			 */
 		}
 		ast.sym = classSymbol;
 		return classSymbol;
 	}
 	@Override
 	public MethodSymbol methodDecl(MethodDecl ast, Symbol inClass) { //ok
-		//MethodSymbol methodSymbol = new MethodSymbol(ast);
 		MethodSymbol methodSymbol = getMethod(ast.name, (ClassSymbol) inClass);
 
-		/*
-		 * already "checked" in SemanticAnalyzer round three
-		Map<String, Void> parameters = new HashMap<String, Void>();
-
-		// add Parameter variables
-		for (int i = 0; i<ast.argumentNames.size(); i++){
-			String type = ast.argumentTypes.get(i);
-			String name = ast.argumentNames.get(i);
-			VarDecl vd = new VarDecl(type, name);
-			VariableSymbol kindSym = new VariableSymbol("kind", null, VariableSymbol.Kind.PARAM);
-			VariableSymbol varSym = varDecl(vd, kindSym);
-			if (!parameters.containsKey(varSym.name)) {
-				methodSymbol.parameters.add(i, varSym);
-				parameters.put(varSym.name, null);
-			}
-			else
-				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
-
-		}*/
-
-		//TODO getParameterList????
-		//Map<String, Void> parameters = methodSymbol.parameters
 		Map<String, VariableSymbol> parameters = getParametersMap(methodSymbol);
 
 		//TODO: stimmt das so? wie sieht es mit Hidding aus....???
@@ -112,8 +81,10 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
 		}
 
-		//TODO: MISSING_RETURN check
-		//type is void || "return-statement on method-level"
+		/*
+		 * Check: MISSING_RETURN
+		 */
+		//these two cases don't need the "missingReturnStatement()-check": type is void || "return-statement on method-level"
 		if (methodSymbol.returnType.name.equals(PrimitiveTypeSymbol.voidType.name) || ast.body().childrenOfType(Ast.ReturnStmt.class).size()!=0){
 			//System.out.println("MISSING_RETURN check ("+methodSymbol.name+"): type is void || \"return-statement on method-level\"");
 			visit(ast.body(), methodSymbol);
@@ -142,7 +113,6 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	}
 
 
-	//TODO: builtInWrite ist falsch.... was ist mit einer expr??? was ist mit write() vs writeln()
 	// Statements:
 	@Override
 	public Symbol builtInWrite(BuiltInWrite ast, Symbol arg) { //ok
@@ -160,8 +130,8 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	/**
 	 * 
-	 * @param typeLeft sollte superType sein..
-	 * @param typeRight sollte subType sein..
+	 * @param typeLeft superType?
+	 * @param typeRight subType?
 	 * @return returns true if it is a subtype
 	 */
 	public boolean checkSubtype(TypeSymbol typeLeft, TypeSymbol typeRight){
@@ -173,17 +143,17 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 		String tLeftClass = typeLeft.getClass().getSimpleName();
 		String tRightClass = typeRight.getClass().getSimpleName();
-		
+
 		//prüfe ob ref typ
 		//special case for null
 		if(typeLeft.isReferenceType() && typeRight.equals(sa.globalClassTable.get(ClassSymbol.nullType.name)))
 			return true;
 
-		//TODO: ist das korrekt??? Für special case for null funktioniert das z.B. nicht
+		//TODO: ist das korrekt??? Für special case for null funktioniert das z.B. nicht (daher das if Zeile oben)
 		if (!tLeftClass.equals(tRightClass))
 			return false;
-		
-	
+
+
 		switch(tLeftClass){
 		case("ArrayTypeSymbol"): {
 			typeLeft = ((ArrayTypeSymbol) typeLeft).elementType;
@@ -202,7 +172,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			}
 			break;
 		}
-		//TODO: int, boolean, void
+		//int, boolean, void
 		case("PrimitiveTypeSymbol"): {
 			if (typeLeft.name.equals(typeRight.name)){
 				isSubtype = true;
@@ -215,17 +185,17 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			break;
 		}
 		default: {
-			System.out.println("!!!!!!!!!!!!!!!!!: Missing-Case (subtyping) for "+typeLeft.getClass().getSimpleName());
+			//debug: 
+			System.out.println("Error: Missing-Case (subtyping) for "+typeLeft.getClass().getSimpleName());
 			break;	
 		}
 		}
 		return isSubtype;
 	}
 
-	//TODO: SUBTYPING!!!!!!!
 	@Override
 	public Symbol assign(Assign ast, Symbol arg) {
-		/* TODO: Check: left-hand side must be assignable, can be:
+		/* Check: left-hand side must be assignable, can be:
 		 * (varx), field.x, array[index]
 		 * class A {
 				void test(B a){
@@ -234,7 +204,6 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			} //referenz Impl lässt das zu... sollte doch NOT_ASSIGNABLE werfen..???
 		 */
 
-		//TODO []=[], asdsad=ob(), =int[]... infos gehen verloren bei typeLeft/Right
 		/*
 		 * Check: NOT_ASSIGNABLE
 		 * ok: Var, Index, Field
@@ -242,36 +211,22 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		String lType = ast.left().getClass().getSimpleName();
 		if ( !lType.equals("Var") && !lType.equals("Index") && !lType.equals("Field"))
 			throw new SemanticFailure(Cause.NOT_ASSIGNABLE);
-		
+
 		TypeSymbol typeLeft = (TypeSymbol) visit(ast.left(),arg);
 		TypeSymbol typeRight = (TypeSymbol) visit(ast.right(),arg);
-		
+
 		boolean isSubtype = false;
 		isSubtype = checkSubtype(typeLeft, typeRight);
 
 		if (!isSubtype)
 			throw new SemanticFailure(Cause.TYPE_ERROR);
 
-
-
 		return null;
-		//return super.assign(ast, arg);
 	}
 
 
 	// Expression:
 
-	/* TODO löschen
-	@Override
-	public Symbol ifElse(IfElse ast, Symbol arg) {
-		TypeSymbol tExpr = (TypeSymbol) visit(ast.condition(),arg);
-		if (!tExpr.name.equals(PrimitiveTypeSymbol.booleanType.name)){
-			throw new SemanticFailure(Cause.TYPE_ERROR);
-		}
-		return super.ifElse(ast, arg);
-	}*/
-
-	//TODO Type check....
 	@Override
 	public Symbol returnStmt(ReturnStmt ast, Symbol arg) {
 
@@ -286,10 +241,9 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		TypeSymbol typeRExpr = (TypeSymbol) visit(ast.arg(),arg);
 		//habe diese Zeile angepasst....stimmt das mit dem subtype??
 		if (!typeRExpr.name.equals(((MethodSymbol) arg).returnType.name) && !checkSubtype(((MethodSymbol) arg).returnType,typeRExpr))
-		//if (!typeRExpr.name.equals(((MethodSymbol) arg).returnType.name))
+			//if (!typeRExpr.name.equals(((MethodSymbol) arg).returnType.name))
 			throw new SemanticFailure(Cause.TYPE_ERROR);
 
-		//return super.returnStmt(ast, arg); 31;23
 		return null;
 	}
 
@@ -304,29 +258,24 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			throw new SemanticFailure(Cause.TYPE_ERROR);	
 		return super.ifElse(ast, arg);
 	}
-	
+
+	/*
 	@Override
 	public Symbol whileLoop(WhileLoop ast, Symbol arg) {
-		// TODO Auto-generated method stub
 		return super.whileLoop(ast, arg);
-	}
+	}*/
 
+	/*
 	@Override
 	public Symbol visit(Expr ast, Symbol arg) {
-
 		return super.visit(ast, arg);
-	}
+	}*/
 
+	/*
 	@Override
 	public Symbol visitChildren(Expr ast, Symbol arg) {
-		// TODO Auto-generated method stub
 		return super.visitChildren(ast, arg);
-	}
-
-
-	/*TODO: Fehler.... int <= int ..... => boolean	 * (non-Javadoc)
-	 * ||,&& mit integern??? != etc... int/bool?
-	 */
+	}*/
 
 
 	@Override
@@ -335,7 +284,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		TypeSymbol leftType = (TypeSymbol) visit(ast.left(), arg);
 		TypeSymbol rightType = (TypeSymbol) visit(ast.right(), arg);
 		BOp op = ast.operator;
-		
+
 		/* binary arithmetic ops with integer arguments and return type integer
 		 * *, /, %, +, -
 		 */
@@ -378,6 +327,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 		return null;
 	}
+
 	@Override
 	public TypeSymbol unaryOp(UnaryOp ast, Symbol arg) { //ok?
 		TypeSymbol expr = (TypeSymbol) visit(ast.arg(), arg);
@@ -412,7 +362,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return PrimitiveTypeSymbol.booleanType;
 	}
 
-	//TODO arg check??? bzw no arg check???
+	//TODO arg check??? bzw no arg check??? oder ist das Parser Problem????
 	@Override
 	public TypeSymbol builtInRead(BuiltInRead ast, Symbol arg) {
 		return PrimitiveTypeSymbol.intType;
@@ -441,46 +391,30 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			throw new SemanticFailure(Cause.TYPE_ERROR);
 
 		return cType;	
-		//return super.cast(ast, arg);
 	}
 
 	@Override
 	public TypeSymbol field(Field ast, Symbol arg) {
 		// this.a -> fieldname = a, arg -> this
-		//TODO:
-		/*
-		 * 
-		if (ast.arg() == "this"){
-			getField(ast.fieldName, arg);
-		}
-		getField()*/
-		Symbol lastValue = null;
-		/*for (Ast child : ast.children()){
-			lastValue = visit(child, arg);
-		}*/
-		lastValue = visit(ast.arg(),arg);
+
+		Symbol inClass = null;
+		inClass = visit(ast.arg(),arg);
 
 		String fName = ast.fieldName;
 
-		TypeSymbol asd = ast.arg().type;
-
 		VariableSymbol varSym = null;
 
-		if (lastValue.name == "this"){
+		if (inClass.name == "this"){
 			varSym = getField(fName, ((MethodSymbol)arg).inClass);
 		} else {
-			varSym = getField(fName, (ClassSymbol) lastValue);
+			varSym = getField(fName, (ClassSymbol) inClass);
 		}
 
 		if (varSym==null){
 			throw new SemanticFailure(Cause.NO_SUCH_FIELD);
 		}
 
-
-
 		return varSym.type;
-
-		//return super.field(ast, arg);
 	}
 
 	//TODO check length???
@@ -494,64 +428,56 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			throw new SemanticFailure(Cause.TYPE_ERROR);
 
 		return ((ArrayTypeSymbol)lT).elementType;
-		//return super.index(ast, arg);
 	}
 
+	//TODO Check int-range????
 	@Override
 	public Symbol intConst(IntConst ast, Symbol arg) { //ok
 		ast.type = PrimitiveTypeSymbol.intType;
 		return PrimitiveTypeSymbol.intType;
 	}
 
-	//TODO brauchts diese method wirklich...????
-	/*
-	@Override
-	public Symbol methodCall(MethodCall ast, Symbol arg) {
-
-
-		return super.methodCall(ast, arg);
-	}*/
-
 	@Override
 	public TypeSymbol methodCall(MethodCallExpr ast, Symbol arg) {
 
 		String mName = ast.methodName;
-		Symbol lastValue = null;
+		Symbol inClass = null;
 
 		//TODO null check...
-		//kann das jemals null sein????
-		/*was macht das genau...???
-		 * class in der methode aufgerufen wird????
-		 * was ist wenn this zurück gegeben wird????
-		 * */
-		lastValue = visit(ast.receiver(),arg);
+		//kann das jemals null sein???? Ich denke nicht....
+		inClass = visit(ast.receiver(),arg);
 
-		if (lastValue.name.equals("this")){
-			//System.out.println("###################333search local class...");
-			lastValue = ((MethodSymbol) arg).inClass;
+		if (inClass.name.equals("this")){
+			//System.out.println("search local class...");
+			inClass = ((MethodSymbol) arg).inClass;
 		}
-		//TODO check if lastValue is of class type
-		//	PrimitiveTypeSymbol, ArrayTypeSymbol,
-		String lvType = lastValue.getClass().getSimpleName();
-		//666666666666666666666666666
-		//if (lvType.equals("PrimitiveTypeSymbol")){
+
+		/*
+		 * Check: if inClass is of class type
+		 */
+		String lvType = inClass.getClass().getSimpleName();
 		if (!lvType.equals("ClassSymbol")){
 			//System.out.println(lastValue.getClass().getSimpleName());
 			throw new SemanticFailure(Cause.TYPE_ERROR);
 		}
 
-		//bekommt TypeSymbol von field
-		TypeSymbol mReturnType = null;
-
-		//TODO check null...
-		MethodSymbol mSym = getMethod(mName, (ClassSymbol) lastValue);
+		/*
+		 * Check: if method exists
+		 */
+		MethodSymbol mSym = getMethod(mName, (ClassSymbol) inClass);
 		if (mSym==null)
 			throw new SemanticFailure(Cause.NO_SUCH_METHOD);
 
 
+		/*
+		 * Check: if arg count == param count
+		 */
 		if (ast.argumentsWithoutReceiver().size()!=mSym.parameters.size())
 			throw new SemanticFailure(Cause.WRONG_NUMBER_OF_ARGUMENTS);
 
+		/*
+		 * Check: compare arg/param types
+		 */
 		int i = 0;
 		for (Expr expr: ast.argumentsWithoutReceiver()){
 			//System.out.println("Method "+mName+" args: " +expr.toString());
@@ -569,39 +495,21 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			i++;
 		}
 
-		mReturnType = mSym.returnType;
-
-
-		return mReturnType;
+		return mSym.returnType;
 	}
 
-	//TODO Subtype checking... ev bei assign
 	@Override
 	public Symbol newObject(NewObject ast, Symbol arg) {	
 		TypeSymbol typeNewObject = checkType(ast.typeName);
 		if (typeNewObject==null)
 			throw new SemanticFailure(Cause.NO_SUCH_TYPE);
 		return typeNewObject;
-
-		//		return super.newObject(ast, arg);
-
-		/*
-		 * f (ast.arg()==null)
-			throw new SemanticFailure(Cause.TYPE_ERROR);
-
-		TypeSymbol typeRExpr = (TypeSymbol) visit(ast.arg(),arg);
-		if (!typeRExpr.name.equals(((MethodSymbol) arg).returnType.name))
-			throw new SemanticFailure(Cause.TYPE_ERROR);
-
-		//return super.returnStmt(ast, arg); 31;23
-		return null;
-		 */
 	}
 
 	@Override
 	public Symbol newArray(NewArray ast, Symbol arg) {
 
-		//Check iff type exists
+		//Check if type exists
 		ArrayTypeSymbol typeNewArray = (ArrayTypeSymbol) checkType(ast.typeName);
 		if (typeNewArray==null)
 			throw new SemanticFailure(Cause.NO_SUCH_TYPE);
@@ -612,28 +520,19 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		if (!length.name.equals(PrimitiveTypeSymbol.intType.name))
 			throw new SemanticFailure(Cause.TYPE_ERROR);
 
-
-		//??return type without [] (for further type checking in assign
-		//TypeSymbol elementType = typeNewArray.elementType;
-		//return elementType;
 		return typeNewArray;
 	}
 
+
 	@Override
 	public ClassSymbol nullConst(NullConst ast, Symbol arg) {
-		//return super.nullConst(ast, arg);
 		return ClassSymbol.nullType;
 	}
 
 	@Override
 	public Symbol thisRef(ThisRef ast, Symbol arg) {
-		
-		///666
-		TypeSymbol tRef = ((MethodSymbol)arg).inClass;
-
-		//TypeSymbol tRef = ((MethodSymbol)arg).inClass.thisSymbol;
-
-		return tRef;
+		//TypeSymbol tRef = ((MethodSymbol)arg).inClass;
+		return ((MethodSymbol)arg).inClass;
 	}
 
 	//TODO: check if ok now...
@@ -667,10 +566,10 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	 * returns MethodSymbol if found, 'null' if not found
 	 */
 	MethodSymbol getMethod(String mName, ClassSymbol classSym){
-		
+
 		if (classSym.name.equals(ClassSymbol.objectType.name))
 			return null;
-					
+
 		MethodSymbol mSym = null;
 
 		//search class fields
@@ -736,8 +635,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return varSym;
 	}
 
-	//TODO anpassen.... funktioniert so nicht... ERROR
-	/* wrong...
+	/* 
 	 * checks if 'typeName' is a valid type
 	 * returns the corresponding TypeSymbol, 'null' if type undefined
 	 * throws SemanticFailure => no null return values!!!!!!
@@ -764,7 +662,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 	/**
 	 * 
-	 * @return true IFF there is a missing return statement
+	 * @return true if there is a missing return statement (have a look at the call in methodDecl())
 	 */
 	boolean missingReturnStatement(Ast ast, MethodSymbol arg){
 		boolean check = true;
@@ -778,7 +676,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		 * writeStmt = true
 		 */
 
-		//TODO: empty Body????
+		//TODO: empty Body???? => müsste eigentlich true zurückgeben, da oben so definiert, d.h. korrekt funbktionieren
 
 		for (Ast child: ast.rwChildren){
 			//System.out.println(child.getClass().getSimpleName() + ": "+child.toString());
@@ -826,13 +724,12 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 				System.out.println("ERROR: missing case");
 				check = true;
 			}
+
 			//return found (the rest of the code is not reachable=> ignore it)
 			if(!check){
 				return check;
 			}
 		}
-
-
 		return check;
 	}
 
