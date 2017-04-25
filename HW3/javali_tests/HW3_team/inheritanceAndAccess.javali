@@ -1,0 +1,1 @@
+// TEST: some inheritance and field accessclass Main {	A a;	B b;	C c;	int i;	void main() {			}	void foo(int i){		int x;		c = new C();		x = c.b.i;		x = i;		i = this.i;		b = (B)a;		this.i = b.x;	}}class A {	B b;	int i;}class B extends A {	int x;	}class C extends B {}
