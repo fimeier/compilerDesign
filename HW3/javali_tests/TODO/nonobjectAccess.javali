@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // TEST: no access to non-object type
 class Main {
 	int[] a;
@@ -5,4 +6,15 @@ class Main {
 		// TODO: TYPE_ERROR expected
 		x = a.c;
 	}
+=======
+// TEST: no access to non-object type
+class Main {
+	int x, i;
+	int[] a;
+	void main() {
+		// TODO: TYPE_ERROR expected
+		x = a.c;
+
+	}
+>>>>>>> 03837ab9a363d9781b1e509236ca846ddd58d960
 }
