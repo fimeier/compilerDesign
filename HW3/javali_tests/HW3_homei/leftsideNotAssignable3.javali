@@ -1,0 +1,30 @@
+// TEST: leftside is var, field or array de-ref, not this; NOT_ASSIGNABLE
+class Main {
+	int i1, i2;
+	boolean b;
+	A a;
+	int[] arr;
+	void main() {
+		i1 = i2;
+		i1 = a.a;
+		i2 = arr[1];
+		i1 = a.fun();
+		i1 = foo();
+		write(i2);
+		write(a.a);
+		write(arr[1]);
+		write(a.fun());
+		write(foo());
+		a.a = i1;
+		arr[1] = i2;
+		//NOT_ASSIGNABLE
+		//this = b2;
+		//a.fun() = i1;
+		foo() = i2;
+	}
+	int foo(){return 1;}
+}
+class A{
+	int a;
+	int fun(){return 1;}
+}

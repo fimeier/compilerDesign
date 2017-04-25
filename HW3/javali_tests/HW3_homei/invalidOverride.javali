@@ -1,0 +1,21 @@
+// TEST: INVALID_OVERRIDE return and parameters same as superclass
+class Main {
+	void main() {
+
+	}
+}
+class A {
+	N foo(int a){
+		N n;
+		return n;
+	}
+}
+class B extends A{
+	// INVALID_OVERRIDE
+	N foo(boolean x){N n;
+		return n;
+	}
+	//M foo(int x){M m; return m;}
+}
+class N{}
+class M extends N{}

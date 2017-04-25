@@ -1,0 +1,17 @@
+// TEST: Cast R to C iff R subtype of C; TYPE_ERROR
+class Main {
+	C c;
+	R r;
+	void main() {
+		// ok
+		c = r;
+		r = (R)c;
+		c = (C)r;
+		// TYPE_ERROR
+		//c = (A)r;
+		r = c;
+	}
+}
+class A {}
+class C {}
+class R extends C{}

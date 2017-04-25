@@ -1,0 +1,11 @@
+// TEST: DOUBLE_DECLARATION no local var or param with same name
+class Main {
+	void main() {
+		int i;
+		// DOUBLE_DECLARATION
+		//int i;
+	}
+
+	// DOUBLE_DECLARATION
+	void foo(int i, boolean i){}
+}

@@ -1,0 +1,21 @@
+// TEST: arguments must be correct type or subtype; TYPE_ERROR
+class Main {
+	A a;
+	B b;
+	C c;
+	void main() {
+		a = new A();
+		// TYPE_ERROR
+		//a.prim(1,1);
+		//a.fun(c, b);
+		a.fun(b, b);
+		//a.fun(c, c);
+
+	}
+}
+class A {
+	void prim(int a, boolean b){}
+	void fun(C c, B b){}
+}
+class B extends C{}
+class C {}

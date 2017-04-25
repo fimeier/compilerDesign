@@ -1,0 +1,15 @@
+//TEST: boolean operators all boolean type, TYPE_ERROR
+class Main {
+	int i;
+	boolean b1, b2;
+	void main() {
+		// Case1: all boolean
+		b2 = false;
+		b1 = true || b2;
+		b1 = !true;
+		b1 = !(b2 && b1);
+		// Case2: TYPE_ERROR
+		
+		b1 = i && true;
+	}
+}

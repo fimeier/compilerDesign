@@ -1,0 +1,9 @@
+// TEST: unique class names; DOUBLE_DECLARATION
+class Main {
+	void main() {
+
+	}
+}
+//TODO
+class A {}
+class A {}

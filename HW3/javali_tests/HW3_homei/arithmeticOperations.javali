@@ -1,0 +1,15 @@
+// TEST: arithmetic operations all integer type, TYPE_ERROR
+class Main {
+	int a, b, c, res;
+	boolean e;
+	void main() {
+		a = 1;
+		b = 2;
+		c = 3;
+		res = (-a) + (+b) - ((c*a) % (b / 1)); // Case1: all int
+		// Case2: TYPE_ERROR
+		//e = 1;
+		//a = e;
+		//a = (true) + 1;
+	}
+}

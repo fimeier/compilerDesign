@@ -1,0 +1,14 @@
+// TEST: index is int, array is of type array
+class Main {
+	int[] a;
+	int b;
+	void main() {
+		// OK
+		a[1] = 0;
+		// TYPE_ERROR
+		//a[true] = 1;
+		// TODO:
+		//b[0] = 1;
+		a = 0;
+	}
+}

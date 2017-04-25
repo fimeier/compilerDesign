@@ -1,0 +1,28 @@
+// TEST: return must be subtype; TYPE_ERROR
+class Main {
+	void main() {
+
+	}
+	// OK
+	A foo1(){
+		S s;
+		return s;
+	}
+
+	A foo2(){
+		S s;
+		return s;
+	}
+	S foo3(){
+		return null;
+	}
+	void foo4(){return;}
+
+	// TYPE_ERROR
+	//A foo5(){B b;return b;}
+	//S foo6(){A a;return a;}
+	//void foo7(){return null;}
+}
+class A{}
+class B{}
+class S extends A{}

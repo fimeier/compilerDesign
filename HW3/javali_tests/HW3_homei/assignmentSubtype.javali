@@ -1,0 +1,13 @@
+// TEST: right side subtype of left side, TYPE_ERROR
+class Main {
+	A a;
+	B b;
+	void main() {
+		b = new B();
+		a = b; // Case1: b is subtype of a
+		a = new A();
+		b = a; // Case2: TYPE_ERROR
+	}
+}
+class A {}
+class B extends A {}
