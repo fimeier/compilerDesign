@@ -6,7 +6,8 @@ class Main {
 	void main() {
 		boolean b;
 		// TODO: Expected ok, was TYPE_ERROR
-		b = (a != s);
+		b = (s == a);
+
 	}
 }
 class C {}

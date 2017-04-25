@@ -1,16 +1,10 @@
-Debug information for file: javali_tests/HW3_homei/arrayIndex2.javali
+Debug information for file: javali_tests/HW3_team/arrayIndex2.javali
 AST Resulting From Parsing Stage:
 ClassDecl (name: Main, superClass: Object)
-| VarDecl (name: a, type: int[])
 | VarDecl (name: b, type: int)
 | MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
 | | Seq ()
 | | Seq ()
-| | | Assign ()
-| | | | Index ()
-| | | | | Var (name: a)
-| | | | | IntConst (value: 1)
-| | | | IntConst (value: 0)
 | | | Assign ()
 | | | | Index ()
 | | | | | Var (name: b)

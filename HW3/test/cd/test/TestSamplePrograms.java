@@ -25,7 +25,7 @@ public class TestSamplePrograms extends AbstractTestAgainstFrozenReference {
 
 	
 //	public static final File justFile = new File("javali_tests/HW1/HelloWorld.javali");
-//	public static final File justFile = new File("javali_tests/SimpeTest.javali");
+//	public static final File justFile = new File("javali_tests/HW3_team/arrayIndex2.javali");
 
 	public static final File justFile = null;
 
@@ -36,7 +36,7 @@ public class TestSamplePrograms extends AbstractTestAgainstFrozenReference {
 	 * {@code testDir = new File("javali_tests/HW2/")}.
 	 */
 //	public static final File testDir = new File("javali_tests/HW1");
-	public static final File testDir = new File("javali_tests/HW3_homei");
+	public static final File testDir = new File("javali_tests/TODO");
 	
 	@Parameters(name="{index}:{0}")
 	public static Collection<Object[]> testFiles() {

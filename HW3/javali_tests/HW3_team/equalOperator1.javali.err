@@ -1,4 +1,4 @@
-Debug information for file: javali_tests/HW3_homei/equalOperator1.javali
+Debug information for file: javali_tests/HW3_team/equalOperator1.javali
 AST Resulting From Parsing Stage:
 ClassDecl (name: Main, superClass: Object)
 | VarDecl (name: a, type: A)

@@ -1,4 +1,4 @@
-Debug information for file: javali_tests/HW3_team/equalOperator4.javali
+Debug information for file: javali_tests/TODO/equalOperator1.javali
 AST Resulting From Parsing Stage:
 ClassDecl (name: Main, superClass: Object)
 | VarDecl (name: a, type: A)
@@ -10,9 +10,9 @@ ClassDecl (name: Main, superClass: Object)
 | | Seq ()
 | | | Assign ()
 | | | | Var (name: b)
-| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | BinaryOp (operator: B_EQUAL)
 | | | | | Var (name: s)
-| | | | | Var (name: s)
+| | | | | Var (name: a)
 ClassDecl (name: C, superClass: Object)
 ClassDecl (name: A, superClass: Object)
 ClassDecl (name: S, superClass: A)

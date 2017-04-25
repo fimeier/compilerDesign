@@ -1,5 +1,3 @@
-Debug information for file: javali_tests/HW3_team/equalOperator4.javali
-AST Resulting From Parsing Stage:
 ClassDecl (name: Main, superClass: Object)
 | VarDecl (name: a, type: A)
 | VarDecl (name: s, type: S)
@@ -10,20 +8,9 @@ ClassDecl (name: Main, superClass: Object)
 | | Seq ()
 | | | Assign ()
 | | | | Var (name: b)
-| | | | BinaryOp (operator: B_NOT_EQUAL)
-| | | | | Var (name: s)
+| | | | BinaryOp (operator: B_EQUAL)
+| | | | | Var (name: a)
 | | | | | Var (name: s)
 ClassDecl (name: C, superClass: Object)
 ClassDecl (name: A, superClass: Object)
 ClassDecl (name: S, superClass: A)
-Error message: TYPE_ERROR
-
-Phase semantic failed because we expected to see:
-OK
-But we actually saw:
-TYPE_ERROR
-The difference is:
-At line   1 /   1:
-< OK
-> TYPE_ERROR
-
