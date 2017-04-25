@@ -259,11 +259,15 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return super.ifElse(ast, arg);
 	}
 
-	/*
+
 	@Override
 	public Symbol whileLoop(WhileLoop ast, Symbol arg) {
+		TypeSymbol conditionType = (TypeSymbol) visit(ast.condition(),arg);
+		//Check: condition expr must be of type boolean
+		if (!conditionType.name.equals(Symbol.PrimitiveTypeSymbol.booleanType.name))
+			throw new SemanticFailure(Cause.TYPE_ERROR);	
 		return super.whileLoop(ast, arg);
-	}*/
+	}
 
 	/*
 	@Override
@@ -299,10 +303,9 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		}
 
 		/* binary ops with integer arguments and return type boolean
-		 * ==, !=, <, <=, >, >=
+		 * <, <=, >, >=
 		 */
-		if ((op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)||(op==BOp.B_LESS_THAN)
-				||(op==BOp.B_LESS_OR_EQUAL)||(op==BOp.B_GREATER_THAN)||(op==BOp.B_GREATER_OR_EQUAL)){
+		if ((op==BOp.B_LESS_THAN)||(op==BOp.B_LESS_OR_EQUAL)||(op==BOp.B_GREATER_THAN)||(op==BOp.B_GREATER_OR_EQUAL)){
 			if ((leftType.name == PrimitiveTypeSymbol.intType.name) 
 					&& (rightType.name == PrimitiveTypeSymbol.intType.name)){
 				ast.type = PrimitiveTypeSymbol.booleanType;
@@ -313,9 +316,9 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		}
 
 		/* binary ops with boolean arguments and return type boolean
-		 * &&, ||, ==, !=
+		 * &&, ||
 		 */
-		if ((op==BOp.B_AND)||(op==BOp.B_OR)||(op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)){
+		if ((op==BOp.B_AND)||(op==BOp.B_OR)){
 			if ((leftType.name == PrimitiveTypeSymbol.booleanType.name) 
 					&& (rightType.name == PrimitiveTypeSymbol.booleanType.name)){
 				ast.type = PrimitiveTypeSymbol.booleanType;
@@ -325,6 +328,26 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			}
 		}
 
+		/* binary ops with L subtype R or R subtype L and return type boolean
+		 * &&, ||
+		 */
+		if ((op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)){
+			boolean isSubtype = false;
+			/*
+			 * two possible cases : a OP b
+			 * 1. b subtype of a
+			 * 2. a subtype of b
+			 */
+			//1. b subtype of a
+			isSubtype = checkSubtype(leftType, rightType);
+			//2. a subtype of b
+			isSubtype = isSubtype || checkSubtype(rightType, leftType);
+			if (isSubtype){
+				return PrimitiveTypeSymbol.booleanType;
+			} else {
+				throw new SemanticFailure(Cause.TYPE_ERROR);
+			}			
+		}
 		return null;
 	}
 
@@ -400,6 +423,13 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		Symbol inClass = null;
 		inClass = visit(ast.arg(),arg);
 
+		/*
+		 * Check: if inClass is of class type
+		 */
+		if (!inClass.getClass().getSimpleName().equals("ClassSymbol")){
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+		}
+
 		String fName = ast.fieldName;
 
 		VariableSymbol varSym = null;
@@ -421,6 +451,11 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	@Override
 	public Symbol index(Index ast, Symbol arg) {
 		TypeSymbol lT = (TypeSymbol) visit(ast.left(),arg);
+
+		//Check: lt must be of type "ArrayTypeSymbol"
+		if (!lT.getClass().getSimpleName().equals("ArrayTypeSymbol"))
+			throw new SemanticFailure(Cause.TYPE_ERROR);
+
 		TypeSymbol rT = (TypeSymbol) visit(ast.right(),arg);
 
 		//Check: indexing expr must be of type int

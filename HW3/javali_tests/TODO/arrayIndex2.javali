@@ -1,7 +1,9 @@
 // TEST: index is int, array is of type array
 class Main {
 	int b;
+	int[] c;
 	void main() {
+		c[0] = 1;
 		// TYPE_ERROR
 		b[0] = 1;
 	}

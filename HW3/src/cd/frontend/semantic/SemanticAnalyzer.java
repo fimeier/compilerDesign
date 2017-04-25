@@ -98,9 +98,10 @@ public class SemanticAnalyzer {
 			if (cd.name.equals("Object"))
 				throw new SemanticFailure(Cause.OBJECT_CLASS_DEFINED);
 
-			if (!globalClassTable.containsKey(cd.name)) {
+			if (!globalClassTable.containsKey(cd.name)) 
 				globalClassTable.put(cd.name, classSymbol);
-			}
+			else 
+				throw new SemanticFailure(Cause.DOUBLE_DECLARATION);
 		}
 		/*
 		 * Second round: find all fields && set super classes

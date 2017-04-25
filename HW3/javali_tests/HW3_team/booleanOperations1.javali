@@ -1,3 +1,4 @@
+/*
 //TEST: boolean operators all boolean type, TYPE_ERROR
 class Main {
 	int i;
@@ -11,4 +12,4 @@ class Main {
 		// Case2: TYPE_ERROR
 		b1 = true || i;
 	}
-}
+}*/

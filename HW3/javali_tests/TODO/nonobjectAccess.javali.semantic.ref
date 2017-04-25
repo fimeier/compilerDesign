@@ -1,2 +1,2 @@
-TYPE_ERROR
-A class type was required, but int[] was found
+NO_SUCH_VARIABLE
+No variable x was found
