@@ -69,7 +69,6 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 
 		Map<String, VariableSymbol> parameters = getParametersMap(methodSymbol);
 
-		//TODO: stimmt das so? wie sieht es mit Hidding aus....???
 		// add local variables
 		for (int i = 0; i<ast.decls().children().size(); i++){
 			VarDecl vd = (VarDecl )ast.decls().children().get(i);
@@ -225,7 +224,6 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	}
 
 
-	// Expression:
 
 	@Override
 	public Symbol returnStmt(ReturnStmt ast, Symbol arg) {
@@ -268,18 +266,6 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 			throw new SemanticFailure(Cause.TYPE_ERROR);	
 		return super.whileLoop(ast, arg);
 	}
-
-	/*
-	@Override
-	public Symbol visit(Expr ast, Symbol arg) {
-		return super.visit(ast, arg);
-	}*/
-
-	/*
-	@Override
-	public Symbol visitChildren(Expr ast, Symbol arg) {
-		return super.visitChildren(ast, arg);
-	}*/
 
 
 	@Override
@@ -465,7 +451,6 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return ((ArrayTypeSymbol)lT).elementType;
 	}
 
-	//TODO Check int-range????
 	@Override
 	public Symbol intConst(IntConst ast, Symbol arg) { //ok
 		ast.type = PrimitiveTypeSymbol.intType;
@@ -570,7 +555,6 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		return ((MethodSymbol)arg).inClass;
 	}
 
-	//TODO: check if ok now...
 	@Override
 	public TypeSymbol var(Var ast, Symbol arg) { //ok?
 		VariableSymbol varSym = getVariable(ast.name, (MethodSymbol)arg);
@@ -584,7 +568,8 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 	}
 
 	/*
-	 * TODO: needed because of: Symbol ::public final List<VariableSymbol> parameters ...;
+	 * needed because of: Symbol ::public final List<VariableSymbol> parameters ...;
+	 * there is probably a better solution....
 	 */
 	Map<String, VariableSymbol> getParametersMap(MethodSymbol mSym){
 		Map<String, VariableSymbol> parameters = new HashMap<String, VariableSymbol>();

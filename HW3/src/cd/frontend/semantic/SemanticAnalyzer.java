@@ -34,7 +34,6 @@ public class SemanticAnalyzer {
 		builtInTypeTable.put(PrimitiveTypeSymbol.booleanType.name, PrimitiveTypeSymbol.booleanType);
 		builtInTypeTable.put(PrimitiveTypeSymbol.voidType.name, PrimitiveTypeSymbol.voidType);
 
-		//TODO: special "classes"
 		globalClassTable.put(ClassSymbol.objectType.name, ClassSymbol.objectType);
 		globalClassTable.put(ClassSymbol.nullType.name, ClassSymbol.nullType);
 	}
