@@ -1,6 +1,0 @@
-// TEST: while condition must be boolean type, TYPE_ERROR
-class Main {
-	void main() {
-		while(1){}
-	}
-}

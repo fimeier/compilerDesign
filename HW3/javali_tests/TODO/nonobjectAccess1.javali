@@ -1,8 +1,0 @@
-// TEST: no access to non-object type
-class Main {
-	int x, i;
-	int[] a;
-	void main() {
-		// TODO: TYPE_ERROR expected
-		x = i.c;
-	}

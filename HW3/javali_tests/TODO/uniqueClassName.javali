@@ -1,9 +1,0 @@
-// TEST: unique class names; DOUBLE_DECLARATION
-class Main {
-	void main() {
-		write(1);
-	}
-}
-//TODO
-class A {}
-class A {}

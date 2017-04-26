@@ -1,8 +1,0 @@
-// TEST: DOUBLE_DECLARATION variable and functions
-class Main {
-	int i;
-	boolean i
-	void main() {
-
-	}
-}
