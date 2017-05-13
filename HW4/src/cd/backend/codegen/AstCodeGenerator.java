@@ -3,6 +3,7 @@ package cd.backend.codegen;
 import java.io.Writer;
 import java.util.List;
 
+import cd.Config;
 import cd.Main;
 import cd.backend.codegen.RegisterManager.Register;
 import cd.ir.Ast.ClassDecl;
@@ -57,13 +58,50 @@ public class AstCodeGenerator {
 	 * method definitions.
 	 * </ol>
 	 */
+	VTableManager vtableManager;		
+	ObjectShapeManager objShapeManager;
 	public void go(List<? extends ClassDecl> astRoots) {
+		
+		// TODO: rewrite these 2 classes
+		vtableManager = new VTableManager(astRoots, this);		
+		objShapeManager = new ObjectShapeManager(astRoots, vtableManager);
+		
+		emit.emitRaw(Config.DATA_INT_SECTION);
+		vtableManager.emit();
+		
+		// Emit some useful string constants:
+		emit.emitLabel("\tSTR_NL");
+		emit.emitRaw("\t\t" + Config.DOT_STRING + " \"\\n\"");
+		emit.emitLabel("\tSTR_D");
+		emit.emitRaw("\t\t" + Config.DOT_STRING + " \"%d\"");
+		
+		emit.emitRaw(Config.TEXT_SECTION);
+		emit.emit(".global", Config.MAIN);
+		emit.emitRaw("");
+		emit.emitLabel(Config.MAIN);
+		
+		//get the vtable
+		VTable table = vtableManager.get("Main");
+		
+		//get the size and layout
+		ObjectShape objShape = objShapeManager.get("Main");
+				
+		emit.emit("pushl", "$"+objShape.sizeInByte());
+		emit.emit("call", "malloc");
+		emit.emit("movl", "$"+objShape.getAddr(), "(%eax)");
+		
+		String label = table.getLabel("main").toString();
+		
+		emit.emit("movl", "%eax", "(%esp)");	//set the receiver of main
+		emit.emit("call", label);			//call main
+		emit.emit("addl", "$4", "%esp");
+		emit.emitRaw("ret");
+		
 		for (ClassDecl ast : astRoots) {
 			sg.gen(ast);
 		}
 	}
-
-
+	
 	protected void initMethodData() {
 		{
 			rm.initRegisters();

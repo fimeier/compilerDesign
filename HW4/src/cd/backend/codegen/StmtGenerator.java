@@ -3,6 +3,9 @@ package cd.backend.codegen;
 import static cd.Config.MAIN;
 import static cd.backend.codegen.AssemblyEmitter.constant;
 import static cd.backend.codegen.RegisterManager.STACK_REG;
+import static cd.backend.codegen.RegisterManager.BASE_REG;
+
+
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ import cd.ir.Ast.VarDecl;
 import cd.ir.Ast.WhileLoop;
 import cd.ir.AstVisitor;
 import cd.ir.Symbol.MethodSymbol;
+import cd.ir.Symbol.TypeSymbol;
 import cd.util.debug.AstOneLine;
 
 /**
@@ -31,15 +35,14 @@ import cd.util.debug.AstOneLine;
  */
 class StmtGenerator extends AstVisitor<Register, Void> {
 	protected final AstCodeGenerator cg;
+	private VTable currentClass;
 
 	StmtGenerator(AstCodeGenerator astCodeGenerator) {
 		cg = astCodeGenerator;
 	}
-
 	public void gen(Ast ast) {
 		visit(ast, null);
 	}
-
 	@Override
 	public Register visit(Ast ast, Void arg) {
 		try {
@@ -58,6 +61,7 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 	}
 
 	public Register methodCall(MethodSymbol sym, List<Expr> allArguments) {
+		
 		throw new RuntimeException("Not required");
 	}
 
@@ -65,9 +69,7 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 	@Override
 	public Register classDecl(ClassDecl ast, Void arg) {
 		{
-			if (!ast.name.equals("Main"))
-				throw new RuntimeException(
-						"Only expected one class, named 'main'");
+			currentClass = cg.vtableManager.get(ast.name);
 			return visitChildren(ast, arg);
 		}
 	}
@@ -75,43 +77,13 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 	@Override
 	public Register methodDecl(MethodDecl ast, Void arg) {
 		{
-			// ------------------------------------------------------------
-			// Homework 1 Prologue Generation:
-			// Rather simplistic due to limited requirements!
-
-			if (!ast.name.equals("main"))
-				throw new RuntimeException(
-						"Only expected one method named 'main'");
-
-			// Emit some useful string constants:
-			cg.emit.emitRaw(Config.DATA_STR_SECTION);
-			cg.emit.emitLabel("STR_NL");
-			cg.emit.emitRaw(Config.DOT_STRING + " \"\\n\"");
-			cg.emit.emitLabel("STR_D");
-			cg.emit.emitRaw(Config.DOT_STRING + " \"%d\"");
-
-			// Emit a label for each variable:
-			// Let the AST Visitor do the iteration for us.
-			cg.emit.emitRaw(Config.DATA_INT_SECTION);
-			ast.decls().accept(new AstVisitor<Void, Void>() {
-				@Override
-				public Void varDecl(VarDecl ast, Void arg) {
-					if (!ast.type.equals("int"))
-						throw new RuntimeException(
-								"Only int variables expected");
-					cg.emit.emitLabel(AstCodeGenerator.VAR_PREFIX + ast.name);
-					cg.emit.emitConstantData("0");
-					return null;
-				}
-			}, null);
-
-			// Emit the main() method:
-			cg.emit.emitRaw(Config.TEXT_SECTION);
-			cg.emit.emitRaw(".globl " + MAIN);
-			cg.emit.emitLabel(MAIN);
-
-			cg.emit.emit("enter", "$8", "$0");
-			cg.emit.emit("and", -16, STACK_REG);
+			VTable table = cg.vtableManager.get(currentClass.classDecl.name);
+			String label = table.getLabel(ast.name).toString();
+			
+			cg.emit.emitLabel(label);
+			
+			cg.emit.emit("pushl", BASE_REG);
+			cg.emit.emit("movl", STACK_REG, BASE_REG);
 			gen(ast.body());
 			cg.emitMethodSuffix(true);
 			return null;
@@ -144,7 +116,6 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			return null;
 		}
 	}
-
 	@Override
 	public Register builtInWrite(BuiltInWrite ast, Void arg) {
 		{
@@ -158,7 +129,6 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			return null;
 		}
 	}
-
 	@Override
 	public Register builtInWriteln(BuiltInWriteln ast, Void arg) {
 		{
@@ -169,7 +139,6 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 			return null;
 		}
 	}
-
 	@Override
 	public Register returnStmt(ReturnStmt ast, Void arg) {
 		{

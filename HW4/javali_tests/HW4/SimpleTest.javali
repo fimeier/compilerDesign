@@ -1,0 +1,17 @@
+/* test */
+
+class A { 
+	void foo(){}
+}
+class B extends A { 
+	void fooB(){}
+}
+
+class Main { 
+	A a;
+	B b;  
+   	void main() {   		
+ 		write(10);
+		writeln();
+	}
+}
