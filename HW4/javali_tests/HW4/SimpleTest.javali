@@ -2,9 +2,11 @@
 
 class A { 
 	void foo(){}
+	void funA(){}
 }
 class B extends A { 
-	void fooB(){}
+	void funB(){}
+	void foo(){}
 }
 
 class Main { 

@@ -2,10 +2,12 @@
 	vtable_A:
 		.int vtable_Object
 		.int A_foo
+		.int A_funA
 	vtable_B:
 		.int vtable_A
-		.int A_foo
-		.int B_fooB
+		.int B_foo
+		.int A_funA
+		.int B_funB
 	vtable_Object:
 		.int 0
 	vtable_Main:
@@ -35,9 +37,25 @@ A_foo:
     movl $0, %eax
     leave
     ret
+    # Emitting void funA(...) {...}
+A_funA:
+    pushl %ebp
+    movl %esp, %ebp
+      # Emitting (...)
+    movl $0, %eax
+    leave
+    ret
   # Emitting class B {...}
-    # Emitting void fooB(...) {...}
-B_fooB:
+    # Emitting void funB(...) {...}
+B_funB:
+    pushl %ebp
+    movl %esp, %ebp
+      # Emitting (...)
+    movl $0, %eax
+    leave
+    ret
+    # Emitting void foo(...) {...}
+B_foo:
     pushl %ebp
     movl %esp, %ebp
       # Emitting (...)
