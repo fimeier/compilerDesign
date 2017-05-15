@@ -26,6 +26,11 @@ import java.util.Map;
 
 // local variables get and set
 
+// ebp + 4 = return address
+// ebp + 8 = target address
+// ebp +12 = arg 1
+// ebp +16 = arg 2 ...
+
 
 public class StackFrame {
 	

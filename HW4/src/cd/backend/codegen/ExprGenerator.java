@@ -134,7 +134,6 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			}
 			cg.emit.emit("movl", "$" + val, reg);
 			return reg;
-			//throw new ToDoException();
 		}
 	}
 
