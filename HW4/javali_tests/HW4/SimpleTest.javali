@@ -20,12 +20,10 @@ class Main {
    		boolean b;
    		int a, c;
    		
+   		b = true;
    	    a = 1;
-   	
-   		//int [] b;
-   		//int x;
-		//a = 10;
-		//b = new int[1000];
-		//write(a);
+   	    c = a;
+
+		write(a);
 	}
 }

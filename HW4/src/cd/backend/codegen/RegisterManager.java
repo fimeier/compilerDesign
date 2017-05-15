@@ -32,11 +32,17 @@ public class RegisterManager {
 		EAX("%eax", ByteRegister.EAX), EBX("%ebx", ByteRegister.EBX), ECX(
 				"%ecx", ByteRegister.ECX), EDX("%edx", ByteRegister.EDX), ESI(
 				"%esi", null), EDI("%edi", null), EBP("%ebp", null), ESP(
-				"%esp", null), MEM("mem", null);
+				"%esp", null);
+		//, MEM("mem", null);
 
 		private final String repr;
 		private final ByteRegister lowByteVersion;
 		
+		public String getRepr(){
+			//if (isMem()){return getMem();}
+			return repr;
+		}
+		/*
 		public boolean isMem(){
 			if (repr.equals("mem")){
 				return true;
@@ -45,12 +51,7 @@ public class RegisterManager {
 			
 		}
 		
-		public String getRepr(){
-			if (isMem()){
-				return getMem();
-			}
-			return repr;
-		}
+		
 		
 		public String base;
 		public String offset;
@@ -68,7 +69,7 @@ public class RegisterManager {
 				addr = offset + "(" + base + ")";
 			}
 			return addr;
-		}
+		}*/
 
 		private Register(String repr, ByteRegister bv) {
 			this.repr = repr;
@@ -127,8 +128,8 @@ public class RegisterManager {
 		int last = registers.size() - 1;
 		if (last < 0){
 			System.out.println("no more free registers");
-			Register mem = Register.MEM;
-			return mem;
+			//Register mem = Register.MEM;
+			return null;
 		}
 		return registers.remove(last);
 	}
@@ -137,8 +138,7 @@ public class RegisterManager {
 	 * marks a currently used register as free
 	 */
 	public void releaseRegister(Register reg) {
-		if (reg.isMem())
-			return;
+		//if (reg.isMem())return;
 		assert !registers.contains(reg);
 		registers.add(reg);
 	}

@@ -31,7 +31,7 @@ import cd.util.debug.AstOneLine;
  * Generates code to evaluate expressions. After emitting the code, returns a
  * String which indicates the register where the result can be found.
  */
-class ExprGenerator extends ExprVisitor<Register, Void> {
+class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	protected final AstCodeGenerator cg;
 
 	ExprGenerator(AstCodeGenerator astCodeGenerator) {
@@ -43,10 +43,10 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	}
 
 	@Override
-	public Register visit(Expr ast, Void arg) {
+	public Register visit(Expr ast, StackFrame frame) {
 		try {
 			cg.emit.increaseIndent("Emitting " + AstOneLine.toString(ast));
-			return super.visit(ast, null);
+			return super.visit(ast, frame);
 		} finally {
 			cg.emit.decreaseIndent();
 		}
@@ -54,7 +54,7 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	}
 
 	@Override
-	public Register binaryOp(BinaryOp ast, Void arg) {
+	public Register binaryOp(BinaryOp ast, StackFrame frame) {
 		{
 			// Simplistic HW1 implementation that does
 			// not care if it runs out of registers, and
@@ -65,11 +65,11 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 
 			Register leftReg, rightReg;
 			if (leftRN > rightRN) {
-				leftReg = gen(ast.left());
-				rightReg = gen(ast.right());
+				leftReg =  visit(ast.left(), frame);
+				rightReg = visit(ast.right(), frame);
 			} else {
-				rightReg = gen(ast.right());
-				leftReg = gen(ast.left());
+				rightReg = visit(ast.right(), frame);
+				leftReg = visit(ast.left(), frame);
 			}
 
 			cg.debug("Binary Op: %s (%s,%s)", ast, leftReg, rightReg);
@@ -125,14 +125,21 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	}
 
 	@Override
-	public Register booleanConst(BooleanConst ast, Void arg) {
+	public Register booleanConst(BooleanConst ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			Register reg = cg.rm.getRegister();
+			int val = 0;
+			if (ast.value){
+				val = 1;
+			}
+			cg.emit.emit("movl", "$" + val, reg);
+			return reg;
+			//throw new ToDoException();
 		}
 	}
 
 	@Override
-	public Register builtInRead(BuiltInRead ast, Void arg) {
+	public Register builtInRead(BuiltInRead ast, StackFrame frame) {
 		{
 			Register reg = cg.rm.getRegister();
 			cg.emit.emit("sub", constant(16), STACK_REG);
@@ -147,21 +154,21 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	}
 
 	@Override
-	public Register cast(Cast ast, Void arg) {
+	public Register cast(Cast ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}
 	}
 
 	@Override
-	public Register index(Index ast, Void arg) {
+	public Register index(Index ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}
 	}
 
 	@Override
-	public Register intConst(IntConst ast, Void arg) {
+	public Register intConst(IntConst ast, StackFrame frame) {
 		{
 			Register reg = cg.rm.getRegister();
 			cg.emit.emit("movl", "$" + ast.value, reg);
@@ -170,35 +177,35 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	}
 
 	@Override
-	public Register field(Field ast, Void arg) {
+	public Register field(Field ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}
 	}
 
 	@Override
-	public Register newArray(NewArray ast, Void arg) {
+	public Register newArray(NewArray ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}
 	}
 
 	@Override
-	public Register newObject(NewObject ast, Void arg) {
+	public Register newObject(NewObject ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}
 	}
 
 	@Override
-	public Register nullConst(NullConst ast, Void arg) {
+	public Register nullConst(NullConst ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}
 	}
 
 	@Override
-	public Register thisRef(ThisRef ast, Void arg) {
+	public Register thisRef(ThisRef ast, StackFrame frame) {
 		{
 			
 			throw new ToDoException();
@@ -206,16 +213,16 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	}
 
 	@Override
-	public Register methodCall(MethodCallExpr ast, Void arg) {
+	public Register methodCall(MethodCallExpr ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}
 	}
 
 	@Override
-	public Register unaryOp(UnaryOp ast, Void arg) {
+	public Register unaryOp(UnaryOp ast, StackFrame frame) {
 		{
-			Register argReg = gen(ast.arg());
+			Register argReg = visit(ast.arg(), frame);
 			switch (ast.operator) {
 			case U_PLUS:
 				break;
@@ -235,19 +242,11 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	}
 	
 	@Override
-	public Register var(Var ast, Void arg) {
+	public Register var(Var ast, StackFrame frame) {
 		{
-			//System.out.println(ast.name);
-			Register reg = cg.rm.getRegister();
-			
-			// TODO:
-			// if type == local oder param
-			// anfrage an Stackframe -> base pointer und offset der variable (evtl. direkt adresse / string)
-			
-			// if type == field
-			// get adresse im heap
-			
-			cg.emit.emit("movl",ast.name, reg);
+			String location = frame.getVariable(ast);
+			Register reg = frame.getRegister();
+			cg.emit.emit("movl", location, reg);
 			return reg;
 		}
 	}

@@ -2,7 +2,6 @@ package cd.backend.codegen;
 
 import static cd.backend.codegen.AssemblyEmitter.constant;
 import static cd.backend.codegen.RegisterManager.STACK_REG;
-import static cd.backend.codegen.RegisterManager.BASE_REG;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ import cd.ir.Ast.BuiltInWriteln;
 import cd.ir.Ast.ClassDecl;
 import cd.ir.Ast.Expr;
 import cd.ir.Ast.IfElse;
+import cd.ir.Ast.Index;
 import cd.ir.Ast.MethodCall;
 import cd.ir.Ast.MethodDecl;
 import cd.ir.Ast.ReturnStmt;
@@ -24,12 +24,13 @@ import cd.ir.Ast.Var;
 import cd.ir.Ast.WhileLoop;
 import cd.ir.AstVisitor;
 import cd.ir.Symbol.MethodSymbol;
+import cd.ir.Symbol.VariableSymbol;
 import cd.util.debug.AstOneLine;
 
 /**
  * Generates code to process statements and declarations.
  */
-class StmtGenerator extends AstVisitor<Register, Void> {
+class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	protected final AstCodeGenerator cg;
 	private VTable currentClass;
 
@@ -40,17 +41,17 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 		visit(ast, null);
 	}
 	@Override
-	public Register visit(Ast ast, Void arg) {
+	public Register visit(Ast ast, StackFrame frame) {
 		try {
 			cg.emit.increaseIndent("Emitting " + AstOneLine.toString(ast));
-			return super.visit(ast, arg);
+			return super.visit(ast, frame);
 		} finally {
 			cg.emit.decreaseIndent();
 		}
 	}
 
 	@Override
-	public Register methodCall(MethodCall ast, Void dummy) {
+	public Register methodCall(MethodCall ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}
@@ -63,26 +64,27 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 
 	// Emit vtable for arrays of this class:
 	@Override
-	public Register classDecl(ClassDecl ast, Void arg) {
+	public Register classDecl(ClassDecl ast, StackFrame frame) {
 		{
 			currentClass = cg.vtableManager.get(ast.name);
-			return visitChildren(ast, arg);
+			return visitChildren(ast, frame);
 		}
 	}
 
 	@Override
-	public Register methodDecl(MethodDecl ast, Void arg) {
+	public Register methodDecl(MethodDecl ast, StackFrame f) {
 		{
 			VTable table = cg.vtableManager.get(currentClass.classDecl.name);
 			String label = table.getLabel(ast.name).toString();
 		
 			cg.emit.emitLabel(label);
 			
-			// Frame manager: set uf the frame
-			StackFrame frame = new StackFrame(cg, ast.decls().children());
+			// Frame manager: set up the frame
+			StackFrame frame = new StackFrame(cg, ast);
 
-			if (!ast.body().children().isEmpty())
-				gen(ast.body());
+			if (!ast.body().children().isEmpty()){
+				visit(ast.body(), frame);
+			}
 			
 			cg.emit.emitComment("method suffix");
 			cg.emitMethodSuffix(true);
@@ -91,46 +93,59 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 	}
 
 	@Override
-	public Register ifElse(IfElse ast, Void arg) {
+	public Register ifElse(IfElse ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}
 	}
 
 	@Override
-	public Register whileLoop(WhileLoop ast, Void arg) {
+	public Register whileLoop(WhileLoop ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}
 	}
 
 	@Override
-	public Register assign(Assign ast, Void arg) {
+	public Register assign(Assign ast, StackFrame frame) {
 		{
-			Register leftReg = cg.eg.visit(ast.left(), arg);  //visit(ast.left(), arg);
-			Register rightReg = cg.eg.visit(ast.right(), arg);
-			cg.emit.emit("movl", rightReg, leftReg);
-			cg.rm.releaseRegister(leftReg);
+			Register rightReg = cg.eg.visit(ast.right(), frame);
+			
+			String destination = "";
+			if (ast.left() instanceof Var){
+				Var var = (Var) ast.left();
+				destination = frame.getVariable(var);
+				
+			} else if (ast.left() instanceof Index){
+				//TODO:
+			} else {
+				// TODO:
+			}
+			
+			cg.emit.emit("movl", rightReg, destination);
 			cg.rm.releaseRegister(rightReg);
 
 			return null;
 		}
 	}
 	@Override
-	public Register builtInWrite(BuiltInWrite ast, Void arg) {
+	public Register builtInWrite(BuiltInWrite ast, StackFrame frame) {
 		{
-			Register reg = cg.eg.gen(ast.arg());
+			Register reg = cg.eg.visit(ast.arg(), frame);
+						
 			cg.emit.emit("sub", constant(16), STACK_REG);
 			cg.emit.emitStore(reg, 4, STACK_REG);
 			cg.emit.emitStore("$STR_D", 0, STACK_REG);
 			cg.emit.emit("call", Config.PRINTF);
 			cg.emit.emit("add", constant(16), STACK_REG);
-			cg.rm.releaseRegister(reg);
+			
+			frame.releaseRegister(reg);
+
 			return null;
 		}
 	}
 	@Override
-	public Register builtInWriteln(BuiltInWriteln ast, Void arg) {
+	public Register builtInWriteln(BuiltInWriteln ast, StackFrame frame) {
 		{
 			cg.emit.emit("sub", constant(16), STACK_REG);
 			cg.emit.emitStore("$STR_NL", 0, STACK_REG);
@@ -140,7 +155,7 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 		}
 	}
 	@Override
-	public Register returnStmt(ReturnStmt ast, Void arg) {
+	public Register returnStmt(ReturnStmt ast, StackFrame frame) {
 		{
 			throw new ToDoException();
 		}

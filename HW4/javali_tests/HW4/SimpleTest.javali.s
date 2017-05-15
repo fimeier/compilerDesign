@@ -37,13 +37,28 @@ Main_main:
     pushl $0
     # variable c
     pushl $0
+    # set local variables:
       # Emitting (...)
+        # Emitting b = true
+          # Emitting true
+          movl $1, %edi
+        movl %edi, -16(%ebp)
         # Emitting a = 1
-          # Emitting a
-          movl a, %edi
           # Emitting 1
-          movl $1, %esi
-        movl %esi, %edi
+          movl $1, %edi
+        movl %edi, -20(%ebp)
+        # Emitting c = a
+          # Emitting a
+          movl -20(%ebp), %edi
+        movl %edi, -24(%ebp)
+        # Emitting write(a)
+          # Emitting a
+          movl -20(%ebp), %edi
+        sub $16, %esp
+        movl %edi, 4(%esp)
+        movl $STR_D, 0(%esp)
+        call printf
+        add $16, %esp
     # method suffix
     movl $0, %eax
     leave
