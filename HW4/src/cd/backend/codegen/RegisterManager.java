@@ -32,10 +32,43 @@ public class RegisterManager {
 		EAX("%eax", ByteRegister.EAX), EBX("%ebx", ByteRegister.EBX), ECX(
 				"%ecx", ByteRegister.ECX), EDX("%edx", ByteRegister.EDX), ESI(
 				"%esi", null), EDI("%edi", null), EBP("%ebp", null), ESP(
-				"%esp", null);
+				"%esp", null), MEM("mem", null);
 
-		public final String repr;
+		private final String repr;
 		private final ByteRegister lowByteVersion;
+		
+		public boolean isMem(){
+			if (repr.equals("mem")){
+				return true;
+			}
+			return false;
+			
+		}
+		
+		public String getRepr(){
+			if (isMem()){
+				return getMem();
+			}
+			return repr;
+		}
+		
+		public String base;
+		public String offset;
+		
+		public void setMem(String b, String o){
+			if (isMem()){
+				this.base = b;
+				this.offset = o;
+			}
+		}
+		
+		public String getMem(){
+			String addr = "";
+			if (isMem()){
+				addr = offset + "(" + base + ")";
+			}
+			return addr;
+		}
 
 		private Register(String repr, ByteRegister bv) {
 			this.repr = repr;
@@ -92,10 +125,11 @@ public class RegisterManager {
 	 */
 	public Register getRegister() {
 		int last = registers.size() - 1;
-		if (last < 0)
-			throw new AssemblyFailedException(
-					"Program requires too many registers");
-
+		if (last < 0){
+			System.out.println("no more free registers");
+			Register mem = Register.MEM;
+			return mem;
+		}
 		return registers.remove(last);
 	}
 
@@ -103,6 +137,8 @@ public class RegisterManager {
 	 * marks a currently used register as free
 	 */
 	public void releaseRegister(Register reg) {
+		if (reg.isMem())
+			return;
 		assert !registers.contains(reg);
 		registers.add(reg);
 	}

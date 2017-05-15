@@ -71,15 +71,15 @@ public class AssemblyEmitter {
 	}
 
 	void emit(String op, Register src, String dest) {
-		emit(op, src.repr, dest);
+		emit(op, src.getRepr(), dest);
 	}
 
 	void emit(String op, String src, Register dest) {
-		emit(op, src, dest.repr);
+		emit(op, src, dest.getRepr());
 	}
 
 	void emit(String op, Register src, Register dest) {
-		emit(op, src.repr, dest.repr);
+		emit(op, src.getRepr(), dest.getRepr());
 	}
 
 	void emit(String op, String src, String dest) {
@@ -95,7 +95,7 @@ public class AssemblyEmitter {
 	}
 
 	void emit(String op, Register reg) {
-		emit(op, reg.repr);
+		emit(op, reg.getRepr());
 	}
 
 	void emit(String op, int dest) {
@@ -103,15 +103,15 @@ public class AssemblyEmitter {
 	}
 
 	void emitMove(Register src, String dest) {
-		emitMove(src.repr, dest);
+		emitMove(src.getRepr(), dest);
 	}
 
 	void emitMove(Register src, Register dest) {
-		emitMove(src.repr, dest.repr);
+		emitMove(src.getRepr(), dest.getRepr());
 	}
 
 	void emitMove(String src, Register dest) {
-		emitMove(src, dest.repr);
+		emitMove(src, dest.getRepr());
 	}
 
 	void emitMove(String src, String dest) {
@@ -120,11 +120,11 @@ public class AssemblyEmitter {
 	}
 
 	void emitLoad(int srcOffset, Register src, Register dest) {
-		emitMove(registerOffset(srcOffset, src), dest.repr);
+		emitMove(registerOffset(srcOffset, src), dest.getRepr());
 	}
 
 	void emitStore(Register src, int destOffset, Register dest) {
-		emitStore(src.repr, destOffset, dest);
+		emitStore(src.getRepr(), destOffset, dest);
 	}
 
 	void emitStore(String src, int destOffset, Register dest) {

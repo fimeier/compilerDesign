@@ -1,13 +1,11 @@
 package cd.backend.codegen;
 
-import static cd.Config.MAIN;
 import static cd.backend.codegen.AssemblyEmitter.constant;
 import static cd.backend.codegen.RegisterManager.STACK_REG;
 import static cd.backend.codegen.RegisterManager.BASE_REG;
 
-
-
 import java.util.List;
+
 
 import cd.Config;
 import cd.ToDoException;
@@ -23,11 +21,9 @@ import cd.ir.Ast.MethodCall;
 import cd.ir.Ast.MethodDecl;
 import cd.ir.Ast.ReturnStmt;
 import cd.ir.Ast.Var;
-import cd.ir.Ast.VarDecl;
 import cd.ir.Ast.WhileLoop;
 import cd.ir.AstVisitor;
 import cd.ir.Symbol.MethodSymbol;
-import cd.ir.Symbol.TypeSymbol;
 import cd.util.debug.AstOneLine;
 
 /**
@@ -79,12 +75,16 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 		{
 			VTable table = cg.vtableManager.get(currentClass.classDecl.name);
 			String label = table.getLabel(ast.name).toString();
-			
+		
 			cg.emit.emitLabel(label);
 			
-			cg.emit.emit("pushl", BASE_REG);
-			cg.emit.emit("movl", STACK_REG, BASE_REG);
-			gen(ast.body());
+			// Frame manager: set uf the frame
+			StackFrame frame = new StackFrame(cg, ast.decls().children());
+
+			if (!ast.body().children().isEmpty())
+				gen(ast.body());
+			
+			cg.emit.emitComment("method suffix");
 			cg.emitMethodSuffix(true);
 			return null;
 		}
@@ -107,12 +107,12 @@ class StmtGenerator extends AstVisitor<Register, Void> {
 	@Override
 	public Register assign(Assign ast, Void arg) {
 		{
-			if (!(ast.left() instanceof Var))
-				throw new RuntimeException("LHS must be var in HW1");
-			Var var = (Var) ast.left();
-			Register rhsReg = cg.eg.gen(ast.right());
-			cg.emit.emit("movl", rhsReg, AstCodeGenerator.VAR_PREFIX + var.name);
-			cg.rm.releaseRegister(rhsReg);
+			Register leftReg = cg.eg.visit(ast.left(), arg);  //visit(ast.left(), arg);
+			Register rightReg = cg.eg.visit(ast.right(), arg);
+			cg.emit.emit("movl", rightReg, leftReg);
+			cg.rm.releaseRegister(leftReg);
+			cg.rm.releaseRegister(rightReg);
+
 			return null;
 		}
 	}

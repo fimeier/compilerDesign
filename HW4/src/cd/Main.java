@@ -103,6 +103,7 @@ public class Main {
 			result = visitor.classDecls; 
 		} catch (ParseCancellationException e) {
 			ParseFailure pf = new ParseFailure(0, "?");
+			System.out.println("ParseFailure");
 			pf.initCause(e);
 			throw pf;
 		}

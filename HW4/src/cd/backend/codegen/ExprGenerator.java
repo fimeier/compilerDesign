@@ -200,6 +200,7 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	@Override
 	public Register thisRef(ThisRef ast, Void arg) {
 		{
+			
 			throw new ToDoException();
 		}
 	}
@@ -236,8 +237,17 @@ class ExprGenerator extends ExprVisitor<Register, Void> {
 	@Override
 	public Register var(Var ast, Void arg) {
 		{
+			//System.out.println(ast.name);
 			Register reg = cg.rm.getRegister();
-			cg.emit.emit("movl", AstCodeGenerator.VAR_PREFIX + ast.name, reg);
+			
+			// TODO:
+			// if type == local oder param
+			// anfrage an Stackframe -> base pointer und offset der variable (evtl. direkt adresse / string)
+			
+			// if type == field
+			// get adresse im heap
+			
+			cg.emit.emit("movl",ast.name, reg);
 			return reg;
 		}
 	}

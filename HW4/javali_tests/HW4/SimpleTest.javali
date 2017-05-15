@@ -1,19 +1,31 @@
 /* test */
 
+/*
 class A { 
-	void foo(){}
+	int x;
+	void foo(){
+	write(x);
+	}
 	void funA(){}
 }
 class B extends A { 
 	void funB(){}
 	void foo(){}
-}
+}*/
 
 class Main { 
-	A a;
-	B b;  
-   	void main() {   		
- 		write(10);
-		writeln();
+
+	//int a;
+   	void main() {
+   		boolean b;
+   		int a, c;
+   		
+   	    a = 1;
+   	
+   		//int [] b;
+   		//int x;
+		//a = 10;
+		//b = new int[1000];
+		//write(a);
 	}
 }
