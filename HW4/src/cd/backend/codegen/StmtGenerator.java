@@ -52,7 +52,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.decreaseIndent();
 		}
 	}
-	
+
 	@Override
 	public Register methodCall(MethodCall ast, StackFrame frame) {
 		{
@@ -80,20 +80,20 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		{
 			VTable table = cg.vtableManager.get(currentClass.classDecl.name);
 			String label = table.getLabel(ast.name).toString();
-		
+
 			cg.emit.emitLabel(label);
-			
+
 			// Frame manager: set up the frame
 			StackFrame frame = new StackFrame(cg, ast);
-			
+
 			frame.setUpFrame();
 
 			if (!ast.body().children().isEmpty()){
 				visit(ast.body(), frame);
 			}
-			
+
 			frame.tearDownFrame();
-			
+
 			return null;
 		}
 	}
@@ -111,7 +111,6 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 
 		System.out.println("lableElse="+lableElse +" lableEnd="+lableEnd);
 
-		//TODO jX anpassen gemäss Operator
 		Expr cond = ast.condition();
 		switch (cond.getClass().getSimpleName()){
 
@@ -159,9 +158,15 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 
 			break;
 		}
-		
+
 		case "Var": {
 			cg.emit.emit("cmpl",  "$0", conditionValue);
+			cg.emit.emit("je", lableElse);
+			break;
+		}
+
+		//TODO
+		case "UnaryOp": {
 			cg.emit.emit("je", lableElse);
 			break;
 		}
@@ -194,36 +199,102 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		return null;
 	}
 
+	//TODO: Kopie von ifElse...
 	@Override
 	public Register whileLoop(WhileLoop ast, StackFrame frame) {
-		/*
-		cg.emit.emitCommentSection("WhileLoop");
-		Register conditionValue = (Register) cg.eg.visit(ast.condition(),frame);
+		cg.emit.emitCommentSection("ifElse");
+		Register conditionValue = cg.eg.visit(ast.condition(),frame);
 
-		String lableBody = cg.eg.getNewLabel();
+
+		String lableElse = cg.eg.getNewLabel();
 		String lableEnd = cg.eg.getNewLabel();
 
-		System.out.println("lableBody="+lableBody +" lableEnd="+lableEnd);
+		System.out.println("lableElse="+lableElse +" lableEnd="+lableEnd);
 
-		//jne .lableElse
-		cg.emit.emit("jne", lableElse);
+		Expr cond = ast.condition();
+		switch (cond.getClass().getSimpleName()){
+
+		/*
+		 * <, <=, >, >=
+		 */
+		case "BinaryOp": {
+			System.out.println("ifElse BinaryOp");
+			switch(((Ast.BinaryOp) cond).operator){
+			case B_LESS_THAN:{ //if (a<c){} //jge else
+				//jX .lableElse
+				cg.emit.emit("jge", lableElse);
+				break;
+			}
+			case B_LESS_OR_EQUAL:{ //if (a<=c){ //jg else
+				//jX .lableElse
+				cg.emit.emit("jg", lableElse);
+				break;
+			}
+			case B_GREATER_THAN:{ //if (a>c){ //jle else
+				//jX .lableElse
+				cg.emit.emit("jle", lableElse);
+				break;
+			}
+			case B_GREATER_OR_EQUAL:{ //if (a>=c){ //jl else
+				//jX .lableElse
+				cg.emit.emit("jl", lableElse);
+				break;
+			}
+			case B_AND:{ //if (a&&c){ //je else
+				//jX .lableElse
+				cg.emit.emit("je", lableElse);
+				break;
+			}
+			case B_OR:{ //if (a||c){ //je else
+				//jX .lableElse
+				cg.emit.emit("je", lableElse);
+				break;
+			}
+			default: {
+				System.out.println("whileLoop(case BinaryOp:) implement: "+((Ast.BinaryOp) cond).operator.repr);
+				throw new ToDoException();				
+			}
+			}
+
+			break;
+		}
+
+		case "Var": {
+			cg.emit.emit("cmpl",  "$0", conditionValue);
+			cg.emit.emit("je", lableElse);
+			break;
+		}
+		//TODO
+		case "UnaryOp": {
+			cg.emit.emit("je", lableElse);
+			break;
+		}
+		default: {
+			System.out.println("public Register whileLoop(..) implement: "+ast.condition().getClass().getSimpleName());
+			throw new ToDoException();		
+		}
+
+
+		}
+
+
+		cg.rm.releaseRegister(conditionValue);
+
+
 
 		//visit then body
-		visit(ast.then(), frame);
+		visit(ast.body(), frame);
 		cg.emit.emit("jmp", lableEnd); 
 
 
 		cg.emit.emitLabel(lableElse);
-		//visit else body
-		visit(ast.otherwise(), frame);
+		//visit else body: empty
 
 		cg.emit.emitLabel(lableEnd);
 
 
-		System.out.println(conditionValue.toString());*/
 
 		return null;
-
 	}
 
 	@Override
@@ -238,11 +309,11 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 				Index ind = (Index) ast.left();
 				Register varReg = cg.eg.visit(ind.left(), frame);
 				Register indexReg = cg.eg.visit(ind.right(), frame);
-				
+
 				Var var = (Var)ind.left();
 				String typeName = var.type.name.replace("[", "").replace("]", "");	
 				VTable table = cg.vtableManager.get(typeName + "_array");
-				
+
 				ObjectShape objectShape;
 				if (table.classDecl == null){
 					objectShape = cg.objShapeManager.get("Object");
@@ -252,12 +323,12 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 				if (objectShape == null){
 					return null;
 				}
-				
+
 				// calculate offset of element in array
 				cg.emit.emit("imul", "$"+Integer.toString(objectShape.sizeInN()), indexReg);
 				cg.emit.emit("addl", "$8", indexReg);
 				cg.emit.emit("addl", indexReg, varReg);
-				
+
 				cg.emit.emit("movl", rightReg, "("+varReg+")");
 				frame.releaseRegister(indexReg);
 				frame.releaseRegister(varReg);

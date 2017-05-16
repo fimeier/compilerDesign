@@ -46,6 +46,18 @@ class Main {
 			write(666);
 		}
 		
+		if (!true){
+			write(a);
+		} else {
+			write(666);
+		}
+		
+		if (!false){
+			write(a);
+		} else {
+			write(666);
+		}
+		
 		writeln();
 		//&&
 		if (false && true){
@@ -109,6 +121,22 @@ class Main {
 		writeln();
 		write(+1);writeln();
 		write(-0);writeln();
+		
+		bt = true;
+		//while(true&&true)
+		//while(true&&false)
+		//while(false&&false)
+		//while((true||true) && bt)
+	//	while((true||false) && bt)
+	//	while((false||false) && bt)
+		//while(!true)
+		while(!false && bt)
+		
+		{
+			write(1);
+			bt = ! bt;
+		}
+		write(0);writeln();
 		
 		
 		

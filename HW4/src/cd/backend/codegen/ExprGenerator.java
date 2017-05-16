@@ -458,8 +458,8 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	public Register unaryOp(UnaryOp ast, StackFrame frame) {
 		{
 			Register argReg = visit(ast.arg(), frame);
-			switch (ast.operator) {
 			
+			switch (ast.operator) {
 			// unary arithmetic ops with integers
 			case U_PLUS:
 				break;
@@ -472,6 +472,9 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			case U_BOOL_NOT:
 				cg.emit.emit("negl", argReg);
 				cg.emit.emit("incl", argReg);
+				
+				//set condition codes for ifElse, WhileLoop....
+				cg.emit.emit("cmpl",  "$0", argReg);
 				break;
 			default: {
 				System.out.println("ERROR: implement... public Register unaryOp: "+ast.operator.toString());
