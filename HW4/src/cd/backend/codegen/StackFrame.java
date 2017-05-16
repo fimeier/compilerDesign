@@ -77,13 +77,15 @@ public class StackFrame {
 		
 		// set parameter 
 		cg.emit.emitComment("set local variables:");
-		int paramOffset = 0;
+		int paramOffset = 8;
 		for (String argName: methodDecl.argumentNames){
-			paramOffset -= 4;
+			paramOffset += 4;
 			parametersOffsetMap.put(argName, paramOffset);
 		}
 		
 	}
+	
+	
 	
 	public Register getLocalVar(String varName){
 		Integer offset = localsOffsetMap.get(varName);

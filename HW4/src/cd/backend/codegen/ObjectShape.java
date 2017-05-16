@@ -33,6 +33,10 @@ public class ObjectShape {
 		return 4 +  map.size()*4;
 	}
 	
+	public int sizeInN() {
+		return 1 +  map.size();
+	}
+	
 	public String getAddr() {
 		return this.vtable_addr;
 	}

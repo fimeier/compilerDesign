@@ -86,8 +86,9 @@ public class AstCodeGenerator {
 		//get the size and layout
 		ObjectShape objShape = objShapeManager.get("Main");
 				
-		emit.emit("pushl", "$"+objShape.sizeInByte());
-		emit.emit("call", "malloc");
+		emit.emit("pushl", "$4");
+		emit.emit("pushl", "$"+objShape.sizeInN());
+		emit.emit("call", "calloc");
 		emit.emit("movl", "$"+objShape.getAddr(), "(%eax)");
 		
 		String label = table.getLabel("main").toString();

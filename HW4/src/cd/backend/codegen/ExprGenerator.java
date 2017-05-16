@@ -192,7 +192,12 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register newObject(NewObject ast, StackFrame frame) {
 		{
+			//Register reg
+			VTable table = cg.vtableManager.get(ast.typeName);
+			ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
 			throw new ToDoException();
+
+			//obj
 		}
 	}
 
