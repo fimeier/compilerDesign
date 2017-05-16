@@ -122,26 +122,39 @@ public class StackFrame {
 			return reg;
 		} else if (variable.sym.kind.equals(Kind.FIELD)){
 			ObjectShape objectShape = cg.objShapeManager.get(cg.sg.currentClass.classDecl.name);
+			cg.emit.emit("movl", target(), reg);
+			int offset = objectShape.getOffset(variable.name);
+			String location = getAddr(reg.getRepr(), offset);
+			cg.emit.emit("movl", location, reg.getRepr());
+			return reg;
+		}
+		releaseRegister(reg);
+		return null;
+	}
+	
+	public void assignToVar(Var variable, Register rightReg){
+		if (variable.sym.kind.equals(Kind.LOCAL)) {
+			Integer offset = localsOffsetMap.get(variable.name);
+			if (offset == null){
+				return;
+			}
+			cg.emit.emit("movl", rightReg, getAddr(offset));
+		} else if (variable.sym.kind.equals(Kind.PARAM)){
+			Integer offset = parametersOffsetMap.get(variable.name);
+			if (offset == null){
+				return;
+			}
+			cg.emit.emit("movl", rightReg, getAddr(offset));
+		} else if (variable.sym.kind.equals(Kind.FIELD)){
+			ObjectShape objectShape = cg.objShapeManager.get(cg.sg.currentClass.classDecl.name);
 			Register targetReg = getRegister();
 			cg.emit.emit("movl", target(), targetReg);
 			int offset = objectShape.getOffset(variable.name);
-			/*
-			location = getAddr(reg.getRepr(), offset);
-			cg.emuit.emit("movl", location, reg.getRepr());
-			releaseRegister(reg);*/
+			String location = getAddr(targetReg.getRepr(), offset);
+			cg.emit.emit("movl", rightReg, location);
+			releaseRegister(targetReg);
 		}
-
-		//move the variable to the register.
-		//emit(X86.movl.name(), memLoc, reg.toString());
-			
-			
-			
-			//TODO:
-		
-
-		
-		return null;
-		
+		return;
 	}
 	
 	public String getAddr(Integer offset){

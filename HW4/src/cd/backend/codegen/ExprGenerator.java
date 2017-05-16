@@ -260,10 +260,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register var(Var ast, StackFrame frame) {
 		{
-			//TODO:
-			//String location = frame.getVariable(ast);
-			Register reg = frame.getRegister();
-			//cg.emit.emit("movl", location, reg);
+			Register reg = frame.getVariable(ast);
 			return reg;
 		}
 	}

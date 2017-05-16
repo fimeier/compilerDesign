@@ -110,21 +110,16 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		{
 			Register rightReg = cg.eg.visit(ast.right(), frame);
 			
-			String destination = "";
 			if (ast.left() instanceof Var){
 				Var var = (Var) ast.left();
-				//TODO:
-				//destination = frame.getVariable(var);
-				
+				frame.assignToVar(var, rightReg);				
 			} else if (ast.left() instanceof Index){
 				//TODO:
 			} else {
 				// TODO:
 			}
 			
-			cg.emit.emit("movl", rightReg, destination);
 			cg.rm.releaseRegister(rightReg);
-
 			return null;
 		}
 	}

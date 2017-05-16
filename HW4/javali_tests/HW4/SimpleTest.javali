@@ -15,13 +15,14 @@ class B extends A {
 
 class Main { 
 
-	//int a;
+	int g;
    	void main() {
    		boolean b;
    		int a, c;
+   		g = 1;
    		
    		b = true;
-   	    a = 1;
+   	    a = g;
    	    c = a;
 
 		write(a);

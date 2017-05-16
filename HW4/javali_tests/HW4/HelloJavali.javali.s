@@ -12,16 +12,17 @@
 .global main
 
 main:
-movl $2, %eax
-subl $8, %esp
+pushl %ebp
+movl %esp, %ebp
 pushl $4
-pushl %eax
+pushl $2
 call calloc
-addl $16, %esp
+addl $8, %esp
 movl $vtable_Main, (%eax)
 pushl %eax
 call Main_main
 addl $4, %esp
+popl %ebp
 ret
   # Emitting class Main {...}
     # Emitting int b
@@ -43,7 +44,7 @@ Main_main:
         # Emitting a = 3
           # Emitting 3
           movl $3, %edi
-        movl %edi, -16(%ebp)
+        movl %edi, 
         # Emitting write(a)
           # Emitting a
           movl -16(%ebp), %edi
