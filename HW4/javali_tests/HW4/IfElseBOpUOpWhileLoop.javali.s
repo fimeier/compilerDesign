@@ -681,7 +681,7 @@ Main_main:
           movl $1, %esi
         movl %esi, -4(%ebp)
         # Emitting while ((!(false) && bt)) {...}
-# ________ifElse______________________________________________________
+# ________whileLoop___________________________________________________
           # Emitting (!(false) && bt)
             # Emitting bt
             movl -4(%ebp), %esi

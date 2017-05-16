@@ -1,16 +1,57 @@
+.section .data
+	vtable_A:
+		.int vtable_Object
+		.int A_override
+		.int A_base
+	vtable_B:
+		.int vtable_A
+		.int B_override
+		.int A_base
+		.int B_sub
+	vtable_Main_array:
+		.int vtable_Object
+	vtable_A_array:
+		.int vtable_Object
+	vtable_int_array:
+		.int vtable_Object
+	vtable_B_array:
+		.int vtable_Object
+	vtable_Object:
+		.int 0
+	vtable_Main:
+		.int vtable_Object
+		.int Main_main
+	vtable_boolean_array:
+		.int vtable_Object
+	STR_NL:
+		.string "\n"
+	STR_D:
+		.string "%d"
+.section .text
+.global main
+
+main:
+pushl %ebp
+movl %esp, %ebp
+pushl $4
+pushl $1
+call calloc
+addl $8, %esp
+movl $vtable_Main, (%eax)
+pushl %eax
+call Main_main
+addl $4, %esp
+movl %ebp, %esp
+popl %ebp
+movl $0, %eax
+ret
   # Emitting class A {...}
     # Emitting void override(...) {...}
-    .section .data
-STR_NL:
-    .string "\n"
-STR_D:
-    .string "%d"
-    .section .data
-    .section .text
-    .globl main
-main:
-    enter $8, $0
-    and $-16, %esp
+A_override:
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
       # Emitting (...)
         # Emitting write(0)
           # Emitting 0
@@ -25,21 +66,17 @@ main:
         movl $STR_NL, 0(%esp)
         call printf
         add $16, %esp
-    movl $0, %eax
-    leave
+    addl $0, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
     ret
     # Emitting void base(...) {...}
-    .section .data
-STR_NL:
-    .string "\n"
-STR_D:
-    .string "%d"
-    .section .data
-    .section .text
-    .globl main
-main:
-    enter $8, $0
-    and $-16, %esp
+A_base:
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
       # Emitting (...)
         # Emitting write(1)
           # Emitting 1
@@ -54,22 +91,18 @@ main:
         movl $STR_NL, 0(%esp)
         call printf
         add $16, %esp
-    movl $0, %eax
-    leave
+    addl $0, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
     ret
   # Emitting class B {...}
     # Emitting void override(...) {...}
-    .section .data
-STR_NL:
-    .string "\n"
-STR_D:
-    .string "%d"
-    .section .data
-    .section .text
-    .globl main
-main:
-    enter $8, $0
-    and $-16, %esp
+B_override:
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
       # Emitting (...)
         # Emitting write(2)
           # Emitting 2
@@ -84,21 +117,17 @@ main:
         movl $STR_NL, 0(%esp)
         call printf
         add $16, %esp
-    movl $0, %eax
-    leave
+    addl $0, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
     ret
     # Emitting void sub(...) {...}
-    .section .data
-STR_NL:
-    .string "\n"
-STR_D:
-    .string "%d"
-    .section .data
-    .section .text
-    .globl main
-main:
-    enter $8, $0
-    and $-16, %esp
+B_sub:
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
       # Emitting (...)
         # Emitting write(3)
           # Emitting 3
@@ -113,14 +142,135 @@ main:
         movl $STR_NL, 0(%esp)
         call printf
         add $16, %esp
-    movl $0, %eax
-    leave
+    addl $0, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
     ret
   # Emitting class Main {...}
     # Emitting void main(...) {...}
-    .section .data
-STR_NL:
-    .string "\n"
-STR_D:
-    .string "%d"
-    .section .data
+Main_main:
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
+    # variable a
+    pushl $0
+    # variable b
+    pushl $0
+      # Emitting (...)
+        # Emitting a = null
+          # Emitting null
+          movl $0, %edi
+        movl %edi, -4(%ebp)
+        # Emitting b = null
+          # Emitting null
+          movl $0, %edi
+        movl %edi, -8(%ebp)
+        # Emitting a = new A()
+          # Emitting new A()
+          pushl $4
+          pushl $1
+          call calloc
+          addl $8, %esp
+          movl $vtable_A, (%eax)
+          movl %eax, %edi
+        movl %edi, -4(%ebp)
+        # Emitting a.base(...)
+        subl $4, %esp
+          # Emitting a
+          movl -4(%ebp), %edi
+        pushl %edi
+        call A_base
+        addl $4, %esp
+        popl %edi
+        # Emitting a.override(...)
+        subl $4, %esp
+          # Emitting a
+          movl -4(%ebp), %edi
+        pushl %edi
+        call A_override
+        addl $4, %esp
+        popl %edi
+        # Emitting b = new B()
+          # Emitting new B()
+          pushl $4
+          pushl $1
+          call calloc
+          addl $8, %esp
+          movl $vtable_B, (%eax)
+          movl %eax, %edi
+        movl %edi, -8(%ebp)
+        # Emitting b.base(...)
+        subl $4, %esp
+          # Emitting b
+          movl -8(%ebp), %edi
+        pushl %edi
+        call A_base
+        addl $4, %esp
+        popl %edi
+        # Emitting b.override(...)
+        subl $4, %esp
+          # Emitting b
+          movl -8(%ebp), %edi
+        pushl %edi
+        call B_override
+        addl $4, %esp
+        popl %edi
+        # Emitting b.sub(...)
+        subl $4, %esp
+          # Emitting b
+          movl -8(%ebp), %edi
+        pushl %edi
+        call B_sub
+        addl $4, %esp
+        popl %edi
+        # Emitting a = b
+          # Emitting b
+          movl -8(%ebp), %edi
+        movl %edi, -4(%ebp)
+        # Emitting a.base(...)
+        subl $4, %esp
+          # Emitting a
+          movl -4(%ebp), %edi
+        pushl %edi
+        call A_base
+        addl $4, %esp
+        popl %edi
+        # Emitting a.override(...)
+        subl $4, %esp
+          # Emitting a
+          movl -4(%ebp), %edi
+        pushl %edi
+        call A_override
+        addl $4, %esp
+        popl %edi
+        # Emitting b.base(...)
+        subl $4, %esp
+          # Emitting b
+          movl -8(%ebp), %edi
+        pushl %edi
+        call A_base
+        addl $4, %esp
+        popl %edi
+        # Emitting b.override(...)
+        subl $4, %esp
+          # Emitting b
+          movl -8(%ebp), %edi
+        pushl %edi
+        call B_override
+        addl $4, %esp
+        popl %edi
+        # Emitting b.sub(...)
+        subl $4, %esp
+          # Emitting b
+          movl -8(%ebp), %edi
+        pushl %edi
+        call B_sub
+        addl $4, %esp
+        popl %edi
+    addl $8, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret

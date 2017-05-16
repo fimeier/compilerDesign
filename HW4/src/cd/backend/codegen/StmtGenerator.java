@@ -20,14 +20,12 @@ import cd.ir.Ast.Index;
 import cd.ir.Ast.MethodCall;
 import cd.ir.Ast.MethodDecl;
 import cd.ir.Ast.ReturnStmt;
+import cd.ir.Ast.Stmt;
 import cd.ir.Ast.Var;
 import cd.ir.Ast.WhileLoop;
 import cd.ir.AstVisitor;
 import cd.ir.Symbol.MethodSymbol;
-import cd.ir.Symbol.TypeSymbol;
-import cd.ir.Symbol.VariableSymbol;
 import cd.util.debug.AstOneLine;
-import cd.ir.Ast.BinaryOp.BOp;
 
 
 /**
@@ -98,10 +96,12 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		}
 	}
 
-	//TODO: ev wenn ohne Else keine Label printen... funktioniert aber bereits jetzt
 	@Override
 	public Register ifElse(IfElse ast, StackFrame frame) {
 
+		jumpHelper(ast, frame, "IfElse");
+
+		/*
 		cg.emit.emitCommentSection("ifElse");
 		Register conditionValue = cg.eg.visit(ast.condition(),frame);
 
@@ -113,10 +113,13 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 
 		Expr cond = ast.condition();
 		switch (cond.getClass().getSimpleName()){
+		 */
 
 		/*
 		 * <, <=, >, >=
 		 */
+
+		/*
 		case "BinaryOp": {
 			System.out.println("ifElse BinaryOp");
 			switch(((Ast.BinaryOp) cond).operator){
@@ -194,7 +197,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 
 		cg.emit.emitLabel(lableEnd);
 
-
+		 */
 
 		return null;
 	}
@@ -202,7 +205,11 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	//TODO: Kopie von ifElse...
 	@Override
 	public Register whileLoop(WhileLoop ast, StackFrame frame) {
-		cg.emit.emitCommentSection("ifElse");
+
+		jumpHelper(ast, frame, "WhileLoop");
+
+		/*	
+		cg.emit.emitCommentSection("whileLoop");
 		Register conditionValue = cg.eg.visit(ast.condition(),frame);
 
 
@@ -212,6 +219,108 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		System.out.println("lableElse="+lableElse +" lableEnd="+lableEnd);
 
 		Expr cond = ast.condition();
+		switch (cond.getClass().getSimpleName()){
+		 */
+		///*
+		//* <, <=, >, >=
+		//*/
+		/*
+		case "BinaryOp": {
+			System.out.println("ifElse BinaryOp");
+			switch(((Ast.BinaryOp) cond).operator){
+			case B_LESS_THAN:{ //if (a<c){} //jge else
+				//jX .lableElse
+				cg.emit.emit("jge", lableElse);
+				break;
+			}
+			case B_LESS_OR_EQUAL:{ //if (a<=c){ //jg else
+				//jX .lableElse
+				cg.emit.emit("jg", lableElse);
+				break;
+			}
+			case B_GREATER_THAN:{ //if (a>c){ //jle else
+				//jX .lableElse
+				cg.emit.emit("jle", lableElse);
+				break;
+			}
+			case B_GREATER_OR_EQUAL:{ //if (a>=c){ //jl else
+				//jX .lableElse
+				cg.emit.emit("jl", lableElse);
+				break;
+			}
+			case B_AND:{ //if (a&&c){ //je else
+				//jX .lableElse
+				cg.emit.emit("je", lableElse);
+				break;
+			}
+			case B_OR:{ //if (a||c){ //je else
+				//jX .lableElse
+				cg.emit.emit("je", lableElse);
+				break;
+			}
+			default: {
+				System.out.println("whileLoop(case BinaryOp:) implement: "+((Ast.BinaryOp) cond).operator.repr);
+				throw new ToDoException();				
+			}
+			}
+
+			break;
+		}
+
+		case "Var": {
+			cg.emit.emit("cmpl",  "$0", conditionValue);
+			cg.emit.emit("je", lableElse);
+			break;
+		}
+		case "UnaryOp": {
+			cg.emit.emit("je", lableElse);
+			break;
+		}
+		default: {
+			System.out.println("public Register whileLoop(..) implement: "+ast.condition().getClass().getSimpleName());
+			throw new ToDoException();		
+		}
+
+
+		}
+
+
+		cg.rm.releaseRegister(conditionValue);
+
+
+		//visit then body
+		visit(ast.body(), frame);
+		cg.emit.emit("jmp", lableEnd); 
+
+
+		cg.emit.emitLabel(lableElse);
+		//visit else body: empty
+
+		cg.emit.emitLabel(lableEnd);
+
+		 */
+
+		return null;
+	}
+
+	//public Register whileLoop(WhileLoop ast, StackFrame frame) {
+	private void jumpHelper(Stmt astTemp, StackFrame frame, String condType) {
+		Register conditionValue;
+		Expr cond;
+		if (condType.equals("WhileLoop")){
+			cg.emit.emitCommentSection("whileLoop");
+			conditionValue = cg.eg.visit(((WhileLoop) astTemp).condition(),frame);
+			cond = ((WhileLoop) astTemp).condition();			
+		} else {
+			cg.emit.emitCommentSection("ifElse");
+			conditionValue = cg.eg.visit(((IfElse) astTemp).condition(),frame);
+			cond = ((IfElse) astTemp).condition();
+		}
+
+
+		String lableElse = cg.eg.getNewLabel();
+		String lableEnd = cg.eg.getNewLabel();
+
 		switch (cond.getClass().getSimpleName()){
 
 		/*
@@ -264,37 +373,42 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.emit("je", lableElse);
 			break;
 		}
-		//TODO
 		case "UnaryOp": {
 			cg.emit.emit("je", lableElse);
 			break;
 		}
 		default: {
-			System.out.println("public Register whileLoop(..) implement: "+ast.condition().getClass().getSimpleName());
+			System.out.println("public Register jumpHelper(..) implement: ????????");
 			throw new ToDoException();		
 		}
 
 
 		}
-
-
 		cg.rm.releaseRegister(conditionValue);
 
 
+		if (condType.equals("WhileLoop")){
+			//visit then body
+			visit(((WhileLoop) astTemp).body(), frame);
+			cg.emit.emit("jmp", lableEnd); 
 
-		//visit then body
-		visit(ast.body(), frame);
-		cg.emit.emit("jmp", lableEnd); 
+			cg.emit.emitLabel(lableElse);
+			//visit else body: empty
+
+			cg.emit.emitLabel(lableEnd);
+		} else {
+			//visit then body
+			visit(((IfElse) astTemp).then(), frame);
+
+			cg.emit.emit("jmp", lableEnd); 
 
 
-		cg.emit.emitLabel(lableElse);
-		//visit else body: empty
+			cg.emit.emitLabel(lableElse);
+			//visit else body
+			visit(((IfElse) astTemp).otherwise(), frame);
 
-		cg.emit.emitLabel(lableEnd);
-
-
-
-		return null;
+			cg.emit.emitLabel(lableEnd);
+		}
 	}
 
 	@Override
