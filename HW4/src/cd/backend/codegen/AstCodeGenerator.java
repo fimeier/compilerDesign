@@ -85,15 +85,25 @@ public class AstCodeGenerator {
 		
 		//get the size and layout
 		ObjectShape objShape = objShapeManager.get("Main");
+		
+	//	movl	-16(%ebp), %eax
+		//subl	$8, %esp
+	//	pushl	$4
+		//pushl	%eax
+		
+		emit.emit("movl", "$"+objShape.sizeInN(), "%eax"); 
+		emit.emit("subl", "$8", "%esp");
 				
-		emit.emit("pushl", "$4");
-		emit.emit("pushl", "$"+objShape.sizeInN());
+		emit.emit("pushl", "$4" ); //sizeOf
+		emit.emit("pushl", "%eax" ); //#
 		emit.emit("call", "calloc");
+		emit.emit("addl", "$16", "%esp");
+
 		emit.emit("movl", "$"+objShape.getAddr(), "(%eax)");
 		
 		String label = table.getLabel("main").toString();
 		
-		emit.emit("movl", "%eax", "(%esp)");	//set the receiver of main
+		emit.emit("pushl", "%eax");	//set the receiver of main
 		emit.emit("call", label);			//call main
 		emit.emit("addl", "$4", "%esp");
 		emit.emitRaw("ret");

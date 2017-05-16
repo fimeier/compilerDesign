@@ -1,0 +1,10 @@
+/* some test */
+
+class Main {
+	int b;   
+	void main() {
+		int a;
+		a = 3;
+		write(a);
+	}
+}

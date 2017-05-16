@@ -12,15 +12,19 @@
 .global main
 
 main:
+movl $2, %eax
+subl $8, %esp
 pushl $4
-pushl $1
+pushl %eax
 call calloc
+addl $16, %esp
 movl $vtable_Main, (%eax)
-movl %eax, (%esp)
+pushl %eax
 call Main_main
 addl $4, %esp
 ret
   # Emitting class Main {...}
+    # Emitting int b
     # Emitting void main(...) {...}
 Main_main:
     # store old ebp
@@ -32,29 +36,17 @@ Main_main:
     pushl %edi
     pushl %ebx
     # set local variables:
-    # variable b
-    pushl $0
     # variable a
-    pushl $0
-    # variable c
     pushl $0
     # set local variables:
       # Emitting (...)
-        # Emitting b = true
-          # Emitting true
-          movl $1, %edi
+        # Emitting a = 3
+          # Emitting 3
+          movl $3, %edi
         movl %edi, -16(%ebp)
-        # Emitting a = 1
-          # Emitting 1
-          movl $1, %edi
-        movl %edi, -20(%ebp)
-        # Emitting c = a
-          # Emitting a
-          movl -20(%ebp), %edi
-        movl %edi, -24(%ebp)
         # Emitting write(a)
           # Emitting a
-          movl -20(%ebp), %edi
+          movl -16(%ebp), %edi
         sub $16, %esp
         movl %edi, 4(%esp)
         movl $STR_D, 0(%esp)
