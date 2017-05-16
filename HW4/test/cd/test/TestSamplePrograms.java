@@ -22,7 +22,7 @@ public class TestSamplePrograms extends AbstractTestAgainstFrozenReference {
 	 * variable like:
 	 * {@code justFile = new File("javali_tests/HW2/Inheritance.javali")}.
 	 */
-	public static final File justFile = new File("javali_tests/HW4/HelloJavali.javali");
+	public static final File justFile = new File("javali_tests/HW4/HelloJavaliFilip.javali");
 
 //	public static final File justFile = null;
 
