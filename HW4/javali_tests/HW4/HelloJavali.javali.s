@@ -41,18 +41,38 @@ Main_main:
     pushl $0
     # set local variables:
       # Emitting (...)
-        # Emitting a = 3
-          # Emitting 3
-          movl $3, %edi
-        movl %edi, 
-        # Emitting write(a)
-          # Emitting a
-          movl -16(%ebp), %edi
-        sub $16, %esp
-        movl %edi, 4(%esp)
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
+        # Emitting b = 300
+          # Emitting 300
+          movl $300, %edi
+        movl 8(%ebp), %esi
+        movl %edi, 4(%esi)
+        # Emitting a = 400
+          # Emitting 400
+          movl $400, %edi
+        movl %edi, -16(%ebp)
+        # Emitting if ((a == b)) {...} else {...}
+# ________ifElse______________________________________________________
+          # Emitting (a == b)
+            # Emitting b
+            movl 8(%ebp), %edi
+            movl 4(%edi), %edi
+            # Emitting a
+            movl -16(%ebp), %esi
+          cmpl %edi, %esi
+        jne .L2
+          # Emitting (...)
+            # Emitting write(a)
+              # Emitting a
+              movl -16(%ebp), %edi
+            sub $16, %esp
+            movl %edi, 4(%esp)
+            movl $STR_D, 0(%esp)
+            call printf
+            add $16, %esp
+        jmp .L3
+.L2:
+          # Emitting nop
+.L3:
     # method suffix
     movl $0, %eax
     leave

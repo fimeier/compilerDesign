@@ -24,6 +24,7 @@ import cd.ir.Ast.NullConst;
 import cd.ir.Ast.ThisRef;
 import cd.ir.Ast.UnaryOp;
 import cd.ir.Ast.Var;
+import cd.ir.Ast.BinaryOp.BOp;
 import cd.ir.ExprVisitor;
 import cd.util.debug.AstOneLine;
 
@@ -33,9 +34,12 @@ import cd.util.debug.AstOneLine;
  */
 class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	protected final AstCodeGenerator cg;
+	
+	protected int labelNumber;
 
 	ExprGenerator(AstCodeGenerator astCodeGenerator) {
 		cg = astCodeGenerator;
+		labelNumber = 1;
 	}
 
 	public Register gen(Expr ast) {
@@ -112,8 +116,20 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 						cg.emit.emit("popl", s);
 				}
 				break;
+			case B_EQUAL:{
+				/*
+				 * compare registers
+				 * return 0 or 1
+				 * if ((op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)){
+				 */
+				cg.emit.emit("cmpl",  rightReg, leftReg);//b eq a
+				
+				
+				break;
+			}
 			default:
 				{
+					System.out.println("public Register binaryOp(..) implement: "+ast.operator.toString());
 					throw new ToDoException();
 				}
 			}
@@ -263,6 +279,11 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			Register reg = frame.getVariable(ast);
 			return reg;
 		}
+	}
+	
+	public String getNewLabel(){
+		labelNumber++;
+		return ".L"+labelNumber;
 	}
 
 }

@@ -24,6 +24,7 @@ import cd.ir.Ast.Var;
 import cd.ir.Ast.WhileLoop;
 import cd.ir.AstVisitor;
 import cd.ir.Symbol.MethodSymbol;
+import cd.ir.Symbol.TypeSymbol;
 import cd.ir.Symbol.VariableSymbol;
 import cd.util.debug.AstOneLine;
 
@@ -91,10 +92,36 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		}
 	}
 
+	//TODO: ev wenn ohne Else keine Label printen... funktioniert aber bereits jetzt
 	@Override
 	public Register ifElse(IfElse ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			cg.emit.emitCommentSection("ifElse");
+			Register conditionValue = (Register) cg.eg.visit(ast.condition(),frame);
+			
+			String lableElse = cg.eg.getNewLabel();
+			String lableEnd = cg.eg.getNewLabel();
+			
+			System.out.println("lableElse="+lableElse +" lableEnd="+lableEnd);
+
+			//jne .lableElse
+			cg.emit.emit("jne", lableElse);
+			
+			//visit then body
+			visit(ast.then(), frame);
+			cg.emit.emit("jmp", lableEnd); 
+
+		
+			cg.emit.emitLabel(lableElse);
+			//visit else body
+			visit(ast.otherwise(), frame);
+	
+			cg.emit.emitLabel(lableEnd);
+	
+			
+			System.out.println(conditionValue.toString());
+
+			return null;
 		}
 	}
 

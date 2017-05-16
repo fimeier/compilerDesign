@@ -121,6 +121,7 @@ public class SemanticFailure extends RuntimeException {
 	
 	public SemanticFailure(Cause cause, String format, Object... args) {
 		super(String.format(format, args));
+		System.out.println("SemanticFailure: "+String.format(format, args));
 		this.cause = cause;
 	}
 	

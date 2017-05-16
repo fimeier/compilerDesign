@@ -1,10 +1,25 @@
 /* some test */
 
 class Main {
-	int b;   
+	int b;
 	void main() {
 		int a;
-		a = 3;
+		b = 300;
+		a = 400;
+		
+		/*
 		write(a);
+		writeln();
+		write(b);
+		writeln();
+		write(666);
+		writeln();
+		*/
+		
+		if (a==b){
+			write(a);
+		} /*else {
+			write(666);
+		}*/
 	}
 }
