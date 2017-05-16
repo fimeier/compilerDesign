@@ -93,6 +93,10 @@ class Main {
 		bt = true || false;
 		bt = false || false;
 		
+		//assign test with !
+		bt = ! bf;
+		bt = ! true;
+		
 
 		writeln();
 		if (bt){
@@ -100,6 +104,14 @@ class Main {
 		} else {
 			write(0);
 		}
+		
+		//unary ops with +,-
+		writeln();
+		write(+1);writeln();
+		write(-0);writeln();
+		
+		
+		
 		
 		
 		

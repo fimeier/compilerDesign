@@ -124,34 +124,6 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 					restoreRegisters(dontBother, affected);
 					break;
 				}
-				case B_DIV: { // /
-					// Save EAX, EBX, and EDX to the stack if they are not used
-					// in this subtree (but are used elsewhere). We will be
-					// changing them.
-					List<Register> dontBother = Arrays.asList(rightReg, leftReg);
-					Register[] affected = { Register.EAX, Register.EBX, Register.EDX };
-
-					for (Register s : affected)
-						if (!dontBother.contains(s) && cg.rm.isInUse(s))
-							cg.emit.emit("pushl", s);
-
-					// Move the LHS (numerator) into eax
-					// Move the RHS (denominator) into ebx
-					cg.emit.emit("pushl", rightReg);
-					cg.emit.emit("pushl", leftReg);
-					cg.emit.emit("popl", Register.EAX);
-					cg.emit.emit("popl", "%ebx");
-					cg.emit.emitRaw("cltd"); // sign-extend %eax into %edx
-					cg.emit.emit("idivl", "%ebx"); // division, result into edx:eax
-
-					// Move the result into the LHS
-					cg.emit.emit("movl", Register.EAX, leftReg);
-
-					//restore Registers
-					restoreRegisters(dontBother, affected);
-					break;
-				}
-
 				}//end of switch
 
 			}
@@ -481,11 +453,14 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		}
 	}
 
+	//OK
 	@Override
 	public Register unaryOp(UnaryOp ast, StackFrame frame) {
 		{
 			Register argReg = visit(ast.arg(), frame);
 			switch (ast.operator) {
+			
+			// unary arithmetic ops with integers
 			case U_PLUS:
 				break;
 
@@ -493,12 +468,16 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				cg.emit.emit("negl", argReg);
 				break;
 
+			// unary ops with boolean
 			case U_BOOL_NOT:
 				cg.emit.emit("negl", argReg);
 				cg.emit.emit("incl", argReg);
 				break;
+			default: {
+				System.out.println("ERROR: implement... public Register unaryOp: "+ast.operator.toString());
+				throw new ToDoException();
 			}
-
+			}
 			return argReg;
 		}
 	}

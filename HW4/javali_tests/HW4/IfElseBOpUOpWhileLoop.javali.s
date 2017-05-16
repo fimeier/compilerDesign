@@ -534,6 +534,20 @@ Main_main:
           orl %edi, %esi
           cmpl $0, %esi
         movl %esi, -4(%ebp)
+        # Emitting bt = !(bf)
+          # Emitting !(bf)
+            # Emitting bf
+            movl -8(%ebp), %esi
+          negl %esi
+          incl %esi
+        movl %esi, -4(%ebp)
+        # Emitting bt = !(true)
+          # Emitting !(true)
+            # Emitting true
+            movl $1, %esi
+          negl %esi
+          incl %esi
+        movl %esi, -4(%ebp)
         # Emitting writeln()
         sub $16, %esp
         movl $STR_NL, 0(%esp)
@@ -566,6 +580,40 @@ Main_main:
             call printf
             add $16, %esp
 .L15:
+        # Emitting writeln()
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting write(+(1))
+          # Emitting +(1)
+            # Emitting 1
+            movl $1, %esi
+        sub $16, %esp
+        movl %esi, 4(%esp)
+        movl $STR_D, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting writeln()
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting write(-(0))
+          # Emitting -(0)
+            # Emitting 0
+            movl $0, %esi
+          negl %esi
+        sub $16, %esp
+        movl %esi, 4(%esp)
+        movl $STR_D, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting writeln()
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
     addl $12, %esp
     # restore old ebp
     movl %ebp, %esp
