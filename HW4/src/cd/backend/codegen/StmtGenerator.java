@@ -50,11 +50,13 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.decreaseIndent();
 		}
 	}
-
+	
 	@Override
 	public Register methodCall(MethodCall ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			Register reg = cg.eg.methodCall(ast.getMethodCallExpr(), frame);
+			frame.releaseRegister(reg);
+			return null;
 		}
 	}
 
@@ -76,18 +78,20 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		{
 			VTable table = cg.vtableManager.get(currentClass.classDecl.name);
 			String label = table.getLabel(ast.name).toString();
-
+		
 			cg.emit.emitLabel(label);
-
+			
 			// Frame manager: set up the frame
 			StackFrame frame = new StackFrame(cg, ast);
+			
+			frame.setUpFrame();
 
 			if (!ast.body().children().isEmpty()){
 				visit(ast.body(), frame);
 			}
-
-			cg.emit.emitComment("method suffix");
-			cg.emitMethodSuffix(true);
+			
+			frame.tearDownFrame();
+			
 			return null;
 		}
 	}

@@ -1,5 +1,8 @@
 package cd.backend.codegen;
 
+import static cd.backend.codegen.RegisterManager.BASE_REG;
+import static cd.backend.codegen.RegisterManager.STACK_REG;
+
 import java.io.Writer;
 import java.util.List;
 
@@ -77,6 +80,7 @@ public class AstCodeGenerator {
 		
 		emit.emitRaw(Config.TEXT_SECTION);
 		emit.emit(".global", Config.MAIN);
+		
 		emit.emitRaw("");
 		emit.emitLabel(Config.MAIN);
 		
@@ -88,8 +92,8 @@ public class AstCodeGenerator {
 		
 		
 		// prolog
-		emit.emit("pushl", "%ebp"); // safe base pointer
-		emit.emit("movl", "%esp", "%ebp"); // copy esp to ebp
+		emit.emit("pushl", BASE_REG);// safe base pointer
+		emit.emit("movl", STACK_REG, BASE_REG);// copy esp to ebp
 		
 		// Create Main object and safe its address to %eax
 		//emit.emit("movl", "$"+objShape.sizeInN(), "%eax"); 
@@ -109,14 +113,20 @@ public class AstCodeGenerator {
 		emit.emit("call", label);		  //call main
 		emit.emit("addl", "$4", "%esp");  // remove arg from stack
 		
-		// epilog
-		emit.emit("popl", "%ebp"); // restore base pointer
-		emit.emitRaw("ret"); // return
-
 		
+		// epilog
+		emit.emit("movl", BASE_REG, STACK_REG);
+		emit.emit("popl", BASE_REG);// restore old ebp
+		
+		// return with error code 0
+		emit.emit("movl", "$0", Register.EAX);
+		//emit.emitRaw("leave"); //TODO: not working with leave
+		emit.emitRaw("ret");
+
 		for (ClassDecl ast : astRoots) {
 			sg.gen(ast);
 		}
+		
 	}
 	
 	protected void initMethodData() {
