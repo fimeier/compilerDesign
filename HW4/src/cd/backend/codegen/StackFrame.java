@@ -85,6 +85,11 @@ public class StackFrame {
 		
 	}
 	
+	private String target(){
+		String t = "8(%ebp)";
+		return t;
+	}
+	
 	
 	
 	public Register getLocalVar(String varName){
@@ -97,26 +102,45 @@ public class StackFrame {
 		return reg;
 	}
 	
-	public String getVariable(Var variable){
-		String location = "";
+	public Register getVariable(Var variable){
+		Register reg = getRegister();
 		if (variable.sym.kind.equals(Kind.LOCAL)) {
 			Integer offset = localsOffsetMap.get(variable.name);
 			if (offset == null){
-				return "";
+				releaseRegister(reg);
+				return null;
 			}
-			return getAddr(offset);
+			cg.emit.emit("movl", getAddr(offset), reg);
+			return reg;
 		} else if (variable.sym.kind.equals(Kind.PARAM)){
 			Integer offset = parametersOffsetMap.get(variable.name);
 			if (offset == null){
-				return "";
+				releaseRegister(reg);
+				return null;
 			}
-			return getAddr(offset);
+			cg.emit.emit("movl", getAddr(offset), reg);
+			return reg;
 		} else if (variable.sym.kind.equals(Kind.FIELD)){
-			//TODO:
+			ObjectShape objectShape = cg.objShapeManager.get(cg.sg.currentClass.classDecl.name);
+			Register targetReg = getRegister();
+			cg.emit.emit("movl", target(), targetReg);
+			int offset = objectShape.getOffset(variable.name);
+			/*
+			location = getAddr(reg.getRepr(), offset);
+			cg.emuit.emit("movl", location, reg.getRepr());
+			releaseRegister(reg);*/
 		}
 
+		//move the variable to the register.
+		//emit(X86.movl.name(), memLoc, reg.toString());
+			
+			
+			
+			//TODO:
 		
-		return location;
+
+		
+		return null;
 		
 	}
 	

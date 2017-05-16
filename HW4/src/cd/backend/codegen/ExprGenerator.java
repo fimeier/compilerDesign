@@ -195,9 +195,22 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			//Register reg
 			VTable table = cg.vtableManager.get(ast.typeName);
 			ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
-			throw new ToDoException();
+				
+			// Create Object and safe its address to %eax
+			//emit.emit("movl", "$"+objShape.sizeInN(), "%eax"); 
+			cg.emit.emit("pushl", "$4" );    // arg2: size
+			cg.emit.emit("pushl", "$"+objectShape.sizeInN() );  // arg1: n items
+			cg.emit.emit("call", "calloc");  // call calloc with args
+			cg.emit.emit("addl", "$8", "%esp");  // remove args from stack
 
-			//obj
+			// %eax contains address of the created Object
+			// now copy the vtable address to the top of the Object in the heap
+			cg.emit.emit("movl", "$"+objectShape.getAddr(), "(%eax)");
+			
+			// move addr of the Object to a register and return it
+			Register reg = frame.getRegister();
+			cg.emit.emit("movl", "%eax", reg);
+			return reg;
 		}
 	}
 
@@ -211,7 +224,6 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register thisRef(ThisRef ast, StackFrame frame) {
 		{
-			
 			throw new ToDoException();
 		}
 	}
@@ -248,9 +260,10 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register var(Var ast, StackFrame frame) {
 		{
-			String location = frame.getVariable(ast);
+			//TODO:
+			//String location = frame.getVariable(ast);
 			Register reg = frame.getRegister();
-			cg.emit.emit("movl", location, reg);
+			//cg.emit.emit("movl", location, reg);
 			return reg;
 		}
 	}

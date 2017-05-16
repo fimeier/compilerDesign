@@ -32,7 +32,7 @@ import cd.util.debug.AstOneLine;
  */
 class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	protected final AstCodeGenerator cg;
-	private VTable currentClass;
+	public VTable currentClass;
 
 	StmtGenerator(AstCodeGenerator astCodeGenerator) {
 		cg = astCodeGenerator;
@@ -58,7 +58,6 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	}
 
 	public Register methodCall(MethodSymbol sym, List<Expr> allArguments) {
-		
 		throw new RuntimeException("Not required");
 	}
 
@@ -114,7 +113,8 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			String destination = "";
 			if (ast.left() instanceof Var){
 				Var var = (Var) ast.left();
-				destination = frame.getVariable(var);
+				//TODO:
+				//destination = frame.getVariable(var);
 				
 			} else if (ast.left() instanceof Index){
 				//TODO:

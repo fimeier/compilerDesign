@@ -86,27 +86,33 @@ public class AstCodeGenerator {
 		//get the size and layout
 		ObjectShape objShape = objShapeManager.get("Main");
 		
-	//	movl	-16(%ebp), %eax
-		//subl	$8, %esp
-	//	pushl	$4
-		//pushl	%eax
 		
-		emit.emit("movl", "$"+objShape.sizeInN(), "%eax"); 
-		emit.emit("subl", "$8", "%esp");
-				
-		emit.emit("pushl", "$4" ); //sizeOf
-		emit.emit("pushl", "%eax" ); //#
-		emit.emit("call", "calloc");
-		emit.emit("addl", "$16", "%esp");
+		// prolog
+		emit.emit("pushl", "%ebp"); // safe base pointer
+		emit.emit("movl", "%esp", "%ebp"); // copy esp to ebp
+		
+		// Create Main object and safe its address to %eax
+		//emit.emit("movl", "$"+objShape.sizeInN(), "%eax"); 
+		emit.emit("pushl", "$4" );    // arg2: size
+		emit.emit("pushl", "$"+objShape.sizeInN() );  // arg1: n items
+		emit.emit("call", "calloc");  // call calloc with args
+		emit.emit("addl", "$8", "%esp");  // remove args from stack
 
+		// %eax contains address of Main Object
+		// now copy the pinter to the vtable to the Main Object
 		emit.emit("movl", "$"+objShape.getAddr(), "(%eax)");
 		
+		// get label of the main method
 		String label = table.getLabel("main").toString();
 		
-		emit.emit("pushl", "%eax");	//set the receiver of main
-		emit.emit("call", label);			//call main
-		emit.emit("addl", "$4", "%esp");
-		emit.emitRaw("ret");
+		emit.emit("pushl", "%eax");	      //set the target of main (arg0)
+		emit.emit("call", label);		  //call main
+		emit.emit("addl", "$4", "%esp");  // remove arg from stack
+		
+		// epilog
+		emit.emit("popl", "%ebp"); // restore base pointer
+		emit.emitRaw("ret"); // return
+
 		
 		for (ClassDecl ast : astRoots) {
 			sg.gen(ast);
