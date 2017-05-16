@@ -52,11 +52,13 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.decreaseIndent();
 		}
 	}
-
+	
 	@Override
 	public Register methodCall(MethodCall ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			Register reg = cg.eg.methodCall(ast.getMethodCallExpr(), frame);
+			frame.releaseRegister(reg);
+			return null;
 		}
 	}
 
@@ -78,18 +80,20 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		{
 			VTable table = cg.vtableManager.get(currentClass.classDecl.name);
 			String label = table.getLabel(ast.name).toString();
-
+		
 			cg.emit.emitLabel(label);
-
+			
 			// Frame manager: set up the frame
 			StackFrame frame = new StackFrame(cg, ast);
+			
+			frame.setUpFrame();
 
 			if (!ast.body().children().isEmpty()){
 				visit(ast.body(), frame);
 			}
-
-			cg.emit.emitComment("method suffix");
-			cg.emitMethodSuffix(true);
+			
+			frame.tearDownFrame();
+			
 			return null;
 		}
 	}
@@ -229,9 +233,34 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 
 			if (ast.left() instanceof Var){
 				Var var = (Var) ast.left();
-				frame.assignToVar(var, rightReg);				
+				frame.assignToVar(var, rightReg);
 			} else if (ast.left() instanceof Index){
-				//TODO:
+				Index ind = (Index) ast.left();
+				Register varReg = cg.eg.visit(ind.left(), frame);
+				Register indexReg = cg.eg.visit(ind.right(), frame);
+				
+				Var var = (Var)ind.left();
+				String typeName = var.type.name.replace("[", "").replace("]", "");	
+				VTable table = cg.vtableManager.get(typeName + "_array");
+				
+				ObjectShape objectShape;
+				if (table.classDecl == null){
+					objectShape = cg.objShapeManager.get("Object");
+				} else {
+					objectShape = cg.objShapeManager.get(table.classDecl.name);
+				}
+				if (objectShape == null){
+					return null;
+				}
+				
+				// calculate offset of element in array
+				cg.emit.emit("imul", "$"+Integer.toString(objectShape.sizeInN()), indexReg);
+				cg.emit.emit("addl", "$8", indexReg);
+				cg.emit.emit("addl", indexReg, varReg);
+				
+				cg.emit.emit("movl", rightReg, "("+varReg+")");
+				frame.releaseRegister(indexReg);
+				frame.releaseRegister(varReg);
 			} else {
 				// TODO:
 			}
@@ -242,7 +271,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	}
 	@Override
 	public Register builtInWrite(BuiltInWrite ast, StackFrame frame) {
-		{
+		{		
 			Register reg = cg.eg.visit(ast.arg(), frame);
 
 			cg.emit.emit("sub", constant(16), STACK_REG);
@@ -269,7 +298,13 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	@Override
 	public Register returnStmt(ReturnStmt ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			if (ast.arg() == null){
+				return null;
+			}
+			Register reg = cg.eg.visit(ast.arg(), frame);
+			frame.setReturn(reg);
+			frame.releaseRegister(reg);
+			return null;
 		}
 	}
 

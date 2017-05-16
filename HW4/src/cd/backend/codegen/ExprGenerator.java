@@ -4,7 +4,9 @@ import static cd.Config.SCANF;
 import static cd.backend.codegen.AssemblyEmitter.constant;
 import static cd.backend.codegen.RegisterManager.STACK_REG;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import cd.ToDoException;
@@ -289,7 +291,33 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register index(Index ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			// only read, assign in assign visitor
+			Register varReg = cg.eg.visit(ast.left(), frame);
+			Register indexReg = cg.eg.visit(ast.right(), frame);
+			
+			Var var = (Var)ast.left();
+			String typeName = var.type.name.replace("[", "").replace("]", "");	
+			VTable table = cg.vtableManager.get(typeName + "_array");
+			
+			ObjectShape objectShape;
+			if (table.classDecl == null){
+				objectShape = cg.objShapeManager.get("Object");
+			} else {
+				objectShape = cg.objShapeManager.get(table.classDecl.name);
+			}
+			if (objectShape == null){
+				return null;
+			}
+			
+			// calculate offset of element in array
+			cg.emit.emit("imul", "$"+Integer.toString(objectShape.sizeInByte()), indexReg);
+			cg.emit.emit("addl", "$8", indexReg);
+			cg.emit.emit("addl", indexReg, varReg);
+			cg.emit.emit("movl", "("+varReg+")", varReg);
+
+			frame.releaseRegister(indexReg);
+			
+			return varReg;
 		}
 	}
 
@@ -312,7 +340,42 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register newArray(NewArray ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			String typeName = ast.typeName.replace("[", "").replace("]", "");	
+			VTable table = cg.vtableManager.get(typeName + "_array");
+			
+			ObjectShape objectShape;
+			if (table.classDecl == null){
+				objectShape = cg.objShapeManager.get("Object");
+				
+			} else {
+				objectShape = cg.objShapeManager.get(table.classDecl.name);
+			}
+			if (objectShape == null){
+				return null;
+			}
+			
+			// get the size of the array
+			Register sizeReg = visit(ast.arg(), frame);
+			
+			// TODO: check size ok
+			// calculate the size of the array
+			cg.emit.emit("imul", "$"+Integer.toString(objectShape.sizeInN()), sizeReg);
+			cg.emit.emit("addl", "$2", sizeReg);
+			
+			// Create Array and safe its address to %eax
+			cg.emit.emit("pushl", "$4" );    // arg2: 4 byte per element
+			cg.emit.emit("pushl", sizeReg);  // arg1: size of array
+			cg.emit.emit("call", "calloc");  // call calloc with args
+			cg.emit.emit("addl", "$8", "%esp");  // remove args from stack
+
+			// %eax contains address of the created Array
+			// now copy the vtable address to the top of the Object in the heap
+			cg.emit.emit("movl", "$"+objectShape.getAddr(), "(%eax)");
+
+			// move addr of the Object to a register and return it
+			Register reg = frame.getRegister();
+			cg.emit.emit("movl", "%eax", reg);
+			return reg;
 		}
 	}
 
@@ -324,7 +387,6 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
 
 			// Create Object and safe its address to %eax
-			//emit.emit("movl", "$"+objShape.sizeInN(), "%eax"); 
 			cg.emit.emit("pushl", "$4" );    // arg2: size
 			cg.emit.emit("pushl", "$"+objectShape.sizeInN() );  // arg1: n items
 			cg.emit.emit("call", "calloc");  // call calloc with args
@@ -344,21 +406,78 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register nullConst(NullConst ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			Register reg = frame.getRegister();
+			cg.emit.emit("movl", "$0", reg);
+			return reg;
 		}
 	}
 
 	@Override
 	public Register thisRef(ThisRef ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			Register reg = frame.getRegister();
+			cg.emit.emit("movl", frame.target(), reg);
+			return reg;
 		}
 	}
 
 	@Override
 	public Register methodCall(MethodCallExpr ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			
+			//get the vtable of the receiving object
+			VTable table = cg.vtableManager.get(ast.receiver().type.name);
+			// get the label of the function
+			String functionName = table.getLabel(ast.methodName);
+			
+					
+			// safe caller saved Registers to stack
+			boolean regsSaved[] = {false,false,false}; // eax, ecx, edx
+			int i = 0;
+			for (Register r: RegisterManager.CALLER_SAVE){
+				if (cg.rm.isInUse(r)){
+					regsSaved[i] = true;
+					cg.emit.emit("pushl", r.getRepr());
+					cg.rm.releaseRegister(r);
+				}
+				i++;
+			}
+			
+			// prepare function call:
+			cg.emit.emit("subl", "$4", "%esp");  // make space for return value
+			// add the argmuents to the stack
+			List<Expr> arguments = new ArrayList<Expr>(ast.argumentsWithoutReceiver());
+			Collections.reverse(arguments);
+			for (Expr arg: arguments) {
+				Register argReg = frame.getRegister();
+				argReg = cg.eg.visit(arg, frame);
+				cg.emit.emit("pushl", argReg);
+				frame.releaseRegister(argReg);
+			}
+			// get address of receiver Object
+			Register receiverReg = cg.eg.visit(ast.receiver(), frame);
+			//set the receiver of the function (arg0)
+			cg.emit.emit("pushl", receiverReg);
+			frame.releaseRegister(receiverReg);
+			
+			// call the function:
+			cg.emit.emit("call", functionName);
+			// remove the args from the stack
+			cg.emit.emit("addl", "$"+ast.allArguments().size()*4, "%esp");
+			
+			// restore caller saved Registers from stack
+			for (int j = 2; j <= 0 ; j--){
+				if (regsSaved[j]){
+					Register restoreReg = RegisterManager.CALLER_SAVE[j];
+					cg.emit.emit("popl", restoreReg);
+					cg.rm.setToUsed(restoreReg);
+				}
+			}
+			
+			// copy the result from the stack into register and return;
+			Register returnReg = frame.getRegister();
+			cg.emit.emit("popl", returnReg);
+			return returnReg;
 		}
 	}
 

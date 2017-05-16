@@ -3,6 +3,7 @@ package cd.backend.codegen;
 import cd.backend.codegen.RegisterManager.Register;
 import cd.ir.Ast;
 import cd.ir.Ast.MethodDecl;
+import cd.ir.Ast.ReturnStmt;
 import cd.ir.Ast.Var;
 import cd.ir.Ast.VarDecl;
 import cd.ir.Symbol.VariableSymbol.Kind;
@@ -36,34 +37,63 @@ public class StackFrame {
 	
 	protected final AstCodeGenerator cg;
 		
-	// 
+	
 	private int baseOffset; // in Byte relative to %ebp
+	private int returnValOffset; // offset of the return value location
+	
 	private int nLocalVar;
 
 	private Map<String, Integer> localsOffsetMap = new HashMap<String, Integer>();
 	private Map<String, Integer> parametersOffsetMap = new HashMap<String, Integer>();
+	
+	private MethodDecl methodDecl;
+	private boolean regsSaved[];
 
 	
-	StackFrame(AstCodeGenerator astCodeGenerator, MethodDecl methodDecl) {
+	StackFrame(AstCodeGenerator astCodeGenerator, MethodDecl md) {
 		cg = astCodeGenerator;
+		methodDecl = md;
+		
+		// set parameter location
+		int paramOffset = 8;
+		for (String argName: methodDecl.argumentNames){
+			paramOffset += 4;
+			parametersOffsetMap.put(argName, paramOffset);
+		}
+		
+		returnValOffset = paramOffset +4;
+		
+		
+	}
+	
+	/**
+	 * sets up the frame:
+	 * 1) Establish new base pointer
+	 * 2) save callee saved registers
+	 * 3) allocate room for local vars on stack
+	 */
+	public void setUpFrame(){
 		List<Ast> localsList = methodDecl.decls().children();
 		nLocalVar = localsList.size();
 		
 		// store old ebp
-		cg.emit.emitComment("store old ebp");
+		cg.emit.emitComment("store old ebp, set uf new ebp");
 		cg.emit.emit("pushl", BASE_REG);
-		// set new epb
-		cg.emit.emitComment("set new ebp");
 		cg.emit.emit("movl", STACK_REG, BASE_REG);
 		
-		// save callee-saved registers to stack
-		cg.emit.emitComment("save callee-saved registers to stack");
-		cg.emit.emit("pushl", Register.ESI);
-		cg.emit.emit("pushl", Register.EDI);
-		cg.emit.emit("pushl", Register.EBX); // -12(ebp) => ebx
-		
-		// points to the last element 
-		baseOffset = -12;
+				
+		// safe callee-saved Registers to stack
+		regsSaved = new boolean[3]; // esi, edi, ebx
+		int i = 0;
+		for (Register r: RegisterManager.CALLEE_SAVE){
+			if (cg.rm.isInUse(r)){
+				regsSaved[i] = true;
+				cg.emit.emit("pushl", r.getRepr());
+				cg.rm.releaseRegister(r);
+				baseOffset -= 4;
+			}
+			i++;
+		}
 		
 		// set local variables 
 		cg.emit.emitComment("set local variables:");
@@ -75,17 +105,38 @@ public class StackFrame {
 			cg.emit.emit("pushl", "$0");
 		}
 		
-		// set parameter 
-		cg.emit.emitComment("set local variables:");
-		int paramOffset = 8;
-		for (String argName: methodDecl.argumentNames){
-			paramOffset += 4;
-			parametersOffsetMap.put(argName, paramOffset);
-		}
-		
 	}
 	
-	private String target(){
+	/**
+	 * tears down the frame
+	 * 1) deallocation: free local stace space
+	 * 2) restore callee-saved registers
+	 * 3) restore old ebp
+	 * 4) return
+	 */
+	public void tearDownFrame() {
+		// deallocate local variable space
+		cg.emit.emit("addl", "$"+4*nLocalVar, "%esp");
+		
+		// restore callee saved Registers from stack
+		for (int j = 2; j <= 0 ; j--){
+			if (regsSaved[j]){
+				Register restoreReg = RegisterManager.CALLEE_SAVE[j];
+				cg.emit.emit("popl", restoreReg);
+				cg.rm.setToUsed(restoreReg);
+			}
+		}
+		
+		// restore old ebp
+		cg.emit.emitComment("restore old ebp");
+		cg.emit.emit("movl", BASE_REG, STACK_REG);
+		cg.emit.emit("popl", BASE_REG);
+	
+		//return
+		cg.emit.emitRaw("ret");
+	}
+	
+	public String target(){
 		String t = "8(%ebp)";
 		return t;
 	}
@@ -157,6 +208,15 @@ public class StackFrame {
 		return;
 	}
 	
+	
+	public void setReturn(Register reg){
+		cg.emit.emit("movl", reg, returnAddr());
+	}
+	
+	public String returnAddr(){
+		return getAddr(returnValOffset);
+	}
+	
 	public String getAddr(Integer offset){
 		return getAddr(BASE_REG.getRepr(), offset);
 	}
@@ -165,28 +225,6 @@ public class StackFrame {
 		return offset.toString()+"("+base+")";
 	}
 	
-	public void callerSaveRegister(){
-		// save caller-saved registers to stack
-		cg.emit.emitComment("save caller-saved registers to stack");
-		cg.emit.emit("pushl", Register.EAX);
-		cg.emit.emit("pushl", Register.ECX);
-		cg.emit.emit("pushl", Register.EDX); 
-		
-		// points to the last element 
-		baseOffset -= 12;
-		
-	}
-	
-	public void callerRestoreRegister(){
-		// save caller-saved registers to stack
-		cg.emit.emitComment("save caller-saved registers to stack");
-		cg.emit.emit("popl", Register.EDX);
-		cg.emit.emit("popl", Register.ECX);
-		cg.emit.emit("popl", Register.EAX); 
-				
-		// points to the last element 
-		baseOffset += 12;
-	}
 	
 	/**
 	 * returns a free Register

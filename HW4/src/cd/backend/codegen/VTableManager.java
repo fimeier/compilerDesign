@@ -21,9 +21,9 @@ public class VTableManager {
 		
 		map.put("Object", new VTable());
 		
-		//map.put("intArray", new VTable(map.get("Object"), null));
+		map.put("int_array", new VTable(map.get("Object"), null));
 		
-		//map.put("booleanArray", new VTable(map.get("Object"), null));
+		map.put("boolean_array", new VTable(map.get("Object"), null));
 				
 		boolean needAnotherIteration = true;
 		
@@ -35,7 +35,7 @@ public class VTableManager {
 				if (map.containsKey(decl.superClass)) {
 					if (!map.containsKey(decl.name)) {
 						map.put(decl.name, new VTable(map.get(decl.superClass), decl));
-						//map.put(decl.name + "Array", new VTable(map.get("Object"), null));
+						map.put(decl.name + "_array", new VTable(map.get("Object"), null));
 					}
 				} else {
 					needAnotherIteration = true;
