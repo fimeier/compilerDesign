@@ -22,24 +22,20 @@ movl $vtable_Main, (%eax)
 pushl %eax
 call Main_main
 addl $4, %esp
+movl %ebp, %esp
 popl %ebp
+movl $0, %eax
 ret
   # Emitting class Main {...}
     # Emitting int b
     # Emitting void main(...) {...}
 Main_main:
-    # store old ebp
+    # store old ebp, set uf new ebp
     pushl %ebp
-    # set new ebp
     movl %esp, %ebp
-    # save callee-saved registers to stack
-    pushl %esi
-    pushl %edi
-    pushl %ebx
     # set local variables:
     # variable a
     pushl $0
-    # set local variables:
       # Emitting (...)
         # Emitting b = 300
           # Emitting 300
@@ -49,7 +45,7 @@ Main_main:
         # Emitting a = 200
           # Emitting 200
           movl $200, %edi
-        movl %edi, -16(%ebp)
+        movl %edi, -4(%ebp)
         # Emitting if ((a < b)) {...} else {...}
 # ________ifElse______________________________________________________
           # Emitting (a < b)
@@ -57,13 +53,13 @@ Main_main:
             movl 8(%ebp), %edi
             movl 4(%edi), %edi
             # Emitting a
-            movl -16(%ebp), %esi
+            movl -4(%ebp), %esi
           cmpl %edi, %esi
         jne .L2
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
-              movl -16(%ebp), %edi
+              movl -4(%ebp), %edi
             sub $16, %esp
             movl %edi, 4(%esp)
             movl $STR_D, 0(%esp)
@@ -81,7 +77,8 @@ Main_main:
             call printf
             add $16, %esp
 .L3:
-    # method suffix
-    movl $0, %eax
-    leave
+    addl $4, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
     ret

@@ -1,6 +1,6 @@
 /* test */
 
-/*
+
 class A { 
 	int x;
 	void foo(){
@@ -11,20 +11,30 @@ class A {
 class B extends A { 
 	void funB(){}
 	void foo(){}
-}*/
+}
+
 
 class Main { 
-
+	A a;
+	B b;
 	int g;
    	void main() {
-   		boolean b;
-   		int a, c;
-   		g = 1;
+   		int[] c;
+   		c = new int[3];
    		
-   		b = true;
-   	    a = g;
-   	    c = a;
-
-		write(a);
+   		
+   		a = new A();
+   		b = new B();
+   		g = 1;
+   		 
+   		g = 1;
+   		c[0] = loc(1+5);
+   		
+   		write(c[0]);
+	}
+	
+	int loc(int arg){
+		arg = arg +2;
+		return arg;
 	}
 }

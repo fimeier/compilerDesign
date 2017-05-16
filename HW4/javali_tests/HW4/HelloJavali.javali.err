@@ -22,7 +22,7 @@ ClassDecl (name: Main, superClass: Object)
 | | | | Seq ()
 | | | | | BuiltInWrite ()
 | | | | | | IntConst (value: 666)
-Binary Op: ((a < b))@7825ffd2 (%esi,%edi)
+Binary Op: ((a < b))@2f481476 (%esi,%edi)
 
 Phase exec failed because we expected to see:
 200

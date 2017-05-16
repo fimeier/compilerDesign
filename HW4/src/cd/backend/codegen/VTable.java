@@ -115,7 +115,7 @@ public class VTable {
 		if (classDecl != null)
 			gen.emit.emitRaw("\t\t.int vtable_" + classDecl.superClass);
 		else
-			gen.emit.emitRaw("\t\t.int Object");
+			gen.emit.emitRaw("\t\t.int vtable_Object");
 		
 		for (java.util.Map.Entry<Integer, String> e : offsetMap.entrySet()) {
 			gen.emit.emitRaw("\t\t.int " + e.getValue().toString());

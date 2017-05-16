@@ -12,6 +12,7 @@ public class ObjectShape {
 	
 	public ObjectShape() {
 		map = new HashMap<>();
+		vtable_addr = "vtable_Object";
 	}
 	
 	public ObjectShape(String addr, VTable table, ObjectShape superObjShape) {

@@ -3,6 +3,7 @@ package cd.backend.codegen;
 import cd.backend.codegen.RegisterManager.Register;
 import cd.ir.Ast;
 import cd.ir.Ast.MethodDecl;
+import cd.ir.Ast.ReturnStmt;
 import cd.ir.Ast.Var;
 import cd.ir.Ast.VarDecl;
 import cd.ir.Symbol.VariableSymbol.Kind;
@@ -36,8 +37,10 @@ public class StackFrame {
 	
 	protected final AstCodeGenerator cg;
 		
-	// 
+	
 	private int baseOffset; // in Byte relative to %ebp
+	private int returnValOffset; // offset of the return value location
+	
 	private int nLocalVar;
 
 	private Map<String, Integer> localsOffsetMap = new HashMap<String, Integer>();
@@ -57,6 +60,9 @@ public class StackFrame {
 			paramOffset += 4;
 			parametersOffsetMap.put(argName, paramOffset);
 		}
+		
+		returnValOffset = paramOffset +4;
+		
 		
 	}
 	
@@ -202,6 +208,15 @@ public class StackFrame {
 		return;
 	}
 	
+	
+	public void setReturn(Register reg){
+		cg.emit.emit("movl", reg, returnAddr());
+	}
+	
+	public String returnAddr(){
+		return getAddr(returnValOffset);
+	}
+	
 	public String getAddr(Integer offset){
 		return getAddr(BASE_REG.getRepr(), offset);
 	}
@@ -210,28 +225,6 @@ public class StackFrame {
 		return offset.toString()+"("+base+")";
 	}
 	
-	public void callerSaveRegister(){
-		// save caller-saved registers to stack
-		cg.emit.emitComment("save caller-saved registers to stack");
-		cg.emit.emit("pushl", Register.EAX);
-		cg.emit.emit("pushl", Register.ECX);
-		cg.emit.emit("pushl", Register.EDX); 
-		
-		// points to the last element 
-		baseOffset -= 12;
-		
-	}
-	
-	public void callerRestoreRegister(){
-		// save caller-saved registers to stack
-		cg.emit.emitComment("save caller-saved registers to stack");
-		cg.emit.emit("popl", Register.EDX);
-		cg.emit.emit("popl", Register.ECX);
-		cg.emit.emit("popl", Register.EAX); 
-				
-		// points to the last element 
-		baseOffset += 12;
-	}
 	
 	/**
 	 * returns a free Register
