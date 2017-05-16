@@ -76,16 +76,16 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		{
 			VTable table = cg.vtableManager.get(currentClass.classDecl.name);
 			String label = table.getLabel(ast.name).toString();
-		
+
 			cg.emit.emitLabel(label);
-			
+
 			// Frame manager: set up the frame
 			StackFrame frame = new StackFrame(cg, ast);
 
 			if (!ast.body().children().isEmpty()){
 				visit(ast.body(), frame);
 			}
-			
+
 			cg.emit.emitComment("method suffix");
 			cg.emitMethodSuffix(true);
 			return null;
@@ -95,48 +95,72 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	//TODO: ev wenn ohne Else keine Label printen... funktioniert aber bereits jetzt
 	@Override
 	public Register ifElse(IfElse ast, StackFrame frame) {
-		{
-			cg.emit.emitCommentSection("ifElse");
-			Register conditionValue = (Register) cg.eg.visit(ast.condition(),frame);
-			
-			String lableElse = cg.eg.getNewLabel();
-			String lableEnd = cg.eg.getNewLabel();
-			
-			System.out.println("lableElse="+lableElse +" lableEnd="+lableEnd);
 
-			//jne .lableElse
-			cg.emit.emit("jne", lableElse);
-			
-			//visit then body
-			visit(ast.then(), frame);
-			cg.emit.emit("jmp", lableEnd); 
+		cg.emit.emitCommentSection("ifElse");
+		Register conditionValue = (Register) cg.eg.visit(ast.condition(),frame);
 
-		
-			cg.emit.emitLabel(lableElse);
-			//visit else body
-			visit(ast.otherwise(), frame);
-	
-			cg.emit.emitLabel(lableEnd);
-	
-			
-			System.out.println(conditionValue.toString());
+		String lableElse = cg.eg.getNewLabel();
+		String lableEnd = cg.eg.getNewLabel();
 
-			return null;
-		}
+		System.out.println("lableElse="+lableElse +" lableEnd="+lableEnd);
+
+		//jne .lableElse
+		cg.emit.emit("jne", lableElse);
+
+		//visit then body
+		visit(ast.then(), frame);
+		cg.emit.emit("jmp", lableEnd); 
+
+
+		cg.emit.emitLabel(lableElse);
+		//visit else body
+		visit(ast.otherwise(), frame);
+
+		cg.emit.emitLabel(lableEnd);
+
+
+		System.out.println(conditionValue.toString());
+
+		return null;
 	}
 
 	@Override
 	public Register whileLoop(WhileLoop ast, StackFrame frame) {
-		{
-			throw new ToDoException();
-		}
+		/*
+		cg.emit.emitCommentSection("WhileLoop");
+		Register conditionValue = (Register) cg.eg.visit(ast.condition(),frame);
+		
+		String lableBody = cg.eg.getNewLabel();
+		String lableEnd = cg.eg.getNewLabel();
+
+		System.out.println("lableBody="+lableBody +" lableEnd="+lableEnd);
+
+		//jne .lableElse
+		cg.emit.emit("jne", lableElse);
+
+		//visit then body
+		visit(ast.then(), frame);
+		cg.emit.emit("jmp", lableEnd); 
+
+
+		cg.emit.emitLabel(lableElse);
+		//visit else body
+		visit(ast.otherwise(), frame);
+
+		cg.emit.emitLabel(lableEnd);
+
+
+		System.out.println(conditionValue.toString());*/
+
+		return null;
+
 	}
 
 	@Override
 	public Register assign(Assign ast, StackFrame frame) {
 		{
 			Register rightReg = cg.eg.visit(ast.right(), frame);
-			
+
 			if (ast.left() instanceof Var){
 				Var var = (Var) ast.left();
 				frame.assignToVar(var, rightReg);				
@@ -145,7 +169,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			} else {
 				// TODO:
 			}
-			
+
 			cg.rm.releaseRegister(rightReg);
 			return null;
 		}
@@ -154,13 +178,13 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	public Register builtInWrite(BuiltInWrite ast, StackFrame frame) {
 		{
 			Register reg = cg.eg.visit(ast.arg(), frame);
-						
+
 			cg.emit.emit("sub", constant(16), STACK_REG);
 			cg.emit.emitStore(reg, 4, STACK_REG);
 			cg.emit.emitStore("$STR_D", 0, STACK_REG);
 			cg.emit.emit("call", Config.PRINTF);
 			cg.emit.emit("add", constant(16), STACK_REG);
-			
+
 			frame.releaseRegister(reg);
 
 			return null;

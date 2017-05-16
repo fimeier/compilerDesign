@@ -315,7 +315,7 @@ public class TableCreator extends AstVisitor<Symbol, Symbol>{
 		}
 
 		/* binary ops with L subtype R or R subtype L and return type boolean
-		 * &&, ||
+		 * ==, !=
 		 */
 		if ((op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)){
 			boolean isSubtype = false;

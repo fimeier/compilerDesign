@@ -1,3 +1,5 @@
+Debug information for file: javali_tests/HW4/HelloJavali.javali
+AST Resulting From Parsing Stage:
 ClassDecl (name: Main, superClass: Object)
 | VarDecl (name: b, type: int)
 | MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
@@ -20,3 +22,14 @@ ClassDecl (name: Main, superClass: Object)
 | | | | Seq ()
 | | | | | BuiltInWrite ()
 | | | | | | IntConst (value: 666)
+Binary Op: ((a < b))@7825ffd2 (%esi,%edi)
+
+Phase exec failed because we expected to see:
+200
+But we actually saw:
+666
+The difference is:
+At line   1 /   1:
+< 200
+> 666
+

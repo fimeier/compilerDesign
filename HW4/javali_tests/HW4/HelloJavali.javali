@@ -5,7 +5,7 @@ class Main {
 	void main() {
 		int a;
 		b = 300;
-		a = 400;
+		a = 200;
 		
 		/*
 		write(a);
@@ -16,10 +16,12 @@ class Main {
 		writeln();
 		*/
 		
-		if (a==b){
+		if (a<b){
 			write(a);
-		} /*else {
+		} else {
 			write(666);
-		}*/
+		}
+		
+		
 	}
 }

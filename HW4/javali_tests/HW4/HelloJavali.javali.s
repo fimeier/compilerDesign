@@ -46,13 +46,13 @@ Main_main:
           movl $300, %edi
         movl 8(%ebp), %esi
         movl %edi, 4(%esi)
-        # Emitting a = 400
-          # Emitting 400
-          movl $400, %edi
+        # Emitting a = 200
+          # Emitting 200
+          movl $200, %edi
         movl %edi, -16(%ebp)
-        # Emitting if ((a == b)) {...} else {...}
+        # Emitting if ((a < b)) {...} else {...}
 # ________ifElse______________________________________________________
-          # Emitting (a == b)
+          # Emitting (a < b)
             # Emitting b
             movl 8(%ebp), %edi
             movl 4(%edi), %edi
@@ -71,7 +71,15 @@ Main_main:
             add $16, %esp
         jmp .L3
 .L2:
-          # Emitting nop
+          # Emitting (...)
+            # Emitting write(666)
+              # Emitting 666
+              movl $666, %edi
+            sub $16, %esp
+            movl %edi, 4(%esp)
+            movl $STR_D, 0(%esp)
+            call printf
+            add $16, %esp
 .L3:
     # method suffix
     movl $0, %eax

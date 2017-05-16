@@ -34,7 +34,7 @@ import cd.util.debug.AstOneLine;
  */
 class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	protected final AstCodeGenerator cg;
-	
+
 	protected int labelNumber;
 
 	ExprGenerator(AstCodeGenerator astCodeGenerator) {
@@ -57,6 +57,11 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 	}
 
+	/*
+	 * returns the left register with the value of the calculation or a boolean
+	 * TODO: define what to set sets cpu register ??? for ifElse/whileLoop stuff
+	 * 
+	 */
 	@Override
 	public Register binaryOp(BinaryOp ast, StackFrame frame) {
 		{
@@ -79,16 +84,25 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			cg.debug("Binary Op: %s (%s,%s)", ast, leftReg, rightReg);
 
 			switch (ast.operator) {
-			case B_TIMES:
+
+			/* binary arithmetic ops with integer arguments and return type integer
+			 * *, +, -, %, / 
+			 */
+			case B_TIMES: // *
 				cg.emit.emit("imul", rightReg, leftReg);
 				break;
-			case B_PLUS:
+			case B_PLUS: // +
 				cg.emit.emit("add", rightReg, leftReg);
 				break;
-			case B_MINUS:
+			case B_MINUS: // -
 				cg.emit.emit("sub", rightReg, leftReg);
 				break;
-			case B_DIV:
+			case B_MOD: { // %
+				//TODO
+
+				break;
+			}
+			case B_DIV: { // /
 				// Save EAX, EBX, and EDX to the stack if they are not used
 				// in this subtree (but are used elsewhere). We will be
 				// changing them.
@@ -116,23 +130,66 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 						cg.emit.emit("popl", s);
 				}
 				break;
-			case B_EQUAL:{
+			}
+
+			//TODO
+			/* binary ops with integer arguments and return type boolean
+			 * <, <=, >, >=
+			 */
+			
+			//TODO: Register leftReg mit korrektem boolean 0/1 setzen bei allen
+			case B_LESS_THAN: { // <
+				//sets condition codes
+				cg.emit.emit("cmpl",  rightReg, leftReg);
+				
+				break;
+			}
+			case B_LESS_OR_EQUAL: { // <=
+				//sets condition codes
+				cg.emit.emit("cmpl",  rightReg, leftReg);
+				break;
+			}
+			case B_GREATER_THAN: { // >
+				//sets condition codes
+				cg.emit.emit("cmpl",  rightReg, leftReg);
+				break;
+			}
+			case B_GREATER_OR_EQUAL: { // >=
+				//sets condition codes
+				cg.emit.emit("cmpl",  rightReg, leftReg);
+				break;
+			}
+
+			/* binary ops with boolean arguments and return type boolean
+			 * &&, ||
+			 */
+			//TODO
+
+			/* binary ops with L subtype R or R subtype L and return type boolean
+			 * ==, !=
+			 */
+			//TODO
+			case B_EQUAL:{ // ==
 				/*
 				 * compare registers
 				 * return 0 or 1
 				 * if ((op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)){
 				 */
 				cg.emit.emit("cmpl",  rightReg, leftReg);//b eq a
-				
-				
+
+
 				break;
 			}
-			default:
-				{
-					System.out.println("public Register binaryOp(..) implement: "+ast.operator.toString());
-					throw new ToDoException();
-				}
+			case B_NOT_EQUAL: {
+
+				break;
 			}
+			default: {
+				System.out.println("public Register binaryOp(..) implement: "+ast.operator.toString());
+				throw new ToDoException();
+			}
+			
+			}//end of switch
 
 			cg.rm.releaseRegister(rightReg);
 
@@ -211,7 +268,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			//Register reg
 			VTable table = cg.vtableManager.get(ast.typeName);
 			ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
-				
+
 			// Create Object and safe its address to %eax
 			//emit.emit("movl", "$"+objShape.sizeInN(), "%eax"); 
 			cg.emit.emit("pushl", "$4" );    // arg2: size
@@ -222,7 +279,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			// %eax contains address of the created Object
 			// now copy the vtable address to the top of the Object in the heap
 			cg.emit.emit("movl", "$"+objectShape.getAddr(), "(%eax)");
-			
+
 			// move addr of the Object to a register and return it
 			Register reg = frame.getRegister();
 			cg.emit.emit("movl", "%eax", reg);
@@ -272,7 +329,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			return argReg;
 		}
 	}
-	
+
 	@Override
 	public Register var(Var ast, StackFrame frame) {
 		{
@@ -280,7 +337,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			return reg;
 		}
 	}
-	
+
 	public String getNewLabel(){
 		labelNumber++;
 		return ".L"+labelNumber;
