@@ -10,6 +10,7 @@ import java.util.List;
 import cd.ToDoException;
 import cd.backend.codegen.RegisterManager.Register;
 import cd.ir.Ast.BinaryOp;
+import cd.ir.Ast.BinaryOp.BOp;
 import cd.ir.Ast.BooleanConst;
 import cd.ir.Ast.BuiltInRead;
 import cd.ir.Ast.Cast;
@@ -24,7 +25,6 @@ import cd.ir.Ast.NullConst;
 import cd.ir.Ast.ThisRef;
 import cd.ir.Ast.UnaryOp;
 import cd.ir.Ast.Var;
-import cd.ir.Ast.BinaryOp.BOp;
 import cd.ir.ExprVisitor;
 import cd.util.debug.AstOneLine;
 
@@ -65,9 +65,6 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register binaryOp(BinaryOp ast, StackFrame frame) {
 		{
-			// Simplistic HW1 implementation that does
-			// not care if it runs out of registers, and
-			// supports only a limited range of operations:
 
 			int leftRN = cg.rnv.calc(ast.left());
 			int rightRN = cg.rnv.calc(ast.right());
@@ -83,113 +80,170 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 			cg.debug("Binary Op: %s (%s,%s)", ast, leftReg, rightReg);
 
-			switch (ast.operator) {
 
+			//OK??
 			/* binary arithmetic ops with integer arguments and return type integer
 			 * *, +, -, %, / 
 			 */
-			case B_TIMES: // *
-				cg.emit.emit("imul", rightReg, leftReg);
-				break;
-			case B_PLUS: // +
-				cg.emit.emit("add", rightReg, leftReg);
-				break;
-			case B_MINUS: // -
-				cg.emit.emit("sub", rightReg, leftReg);
-				break;
-			case B_MOD: { // %
-				//TODO
+			if (ast.operator.equals(BOp.B_TIMES)||ast.operator.equals(BOp.B_PLUS)|| ast.operator.equals(BOp.B_MINUS) ||ast.operator.equals(BOp.B_MOD) ||ast.operator.equals(BOp.B_DIV) ){
+				switch (ast.operator) {
+				case B_TIMES: // *
+					cg.emit.emit("imul", rightReg, leftReg);
+					break;
+				case B_PLUS: // +
+					cg.emit.emit("add", rightReg, leftReg);
+					break;
+				case B_MINUS: // -
+					cg.emit.emit("sub", rightReg, leftReg);
+					break;
+				default: { // % or /
+					//save regs
+					List<Register> dontBother = Arrays.asList(rightReg, leftReg);
+					Register[] affected = { Register.EAX, Register.EBX, Register.EDX };
+					saveRegisters(dontBother, affected);
 
-				break;
-			}
-			case B_DIV: { // /
-				// Save EAX, EBX, and EDX to the stack if they are not used
-				// in this subtree (but are used elsewhere). We will be
-				// changing them.
-				List<Register> dontBother = Arrays.asList(rightReg, leftReg);
-				Register[] affected = { Register.EAX, Register.EBX, Register.EDX };
+					// Move the LHS (numerator) into eax
+					// Move the RHS (denominator) into ebx
+					cg.emit.emit("pushl", rightReg);
+					cg.emit.emit("pushl", leftReg);
+					cg.emit.emit("popl", Register.EAX);
+					cg.emit.emit("popl", "%ebx");
+					cg.emit.emitRaw("cltd"); // sign-extend %eax into %edx
+					cg.emit.emit("idivl", "%ebx"); // division, result into edx:eax
 
-				for (Register s : affected)
-					if (!dontBother.contains(s) && cg.rm.isInUse(s))
-						cg.emit.emit("pushl", s);
-
-				// Move the LHS (numerator) into eax
-				// Move the RHS (denominator) into ebx
-				cg.emit.emit("pushl", rightReg);
-				cg.emit.emit("pushl", leftReg);
-				cg.emit.emit("popl", Register.EAX);
-				cg.emit.emit("popl", "%ebx");
-				cg.emit.emitRaw("cltd"); // sign-extend %eax into %edx
-				cg.emit.emit("idivl", "%ebx"); // division, result into edx:eax
-
-				// Move the result into the LHS, and pop off anything we saved
-				cg.emit.emit("movl", Register.EAX, leftReg);
-				for (int i = affected.length - 1; i >= 0; i--) {
-					Register s = affected[i];
-					if (!dontBother.contains(s) && cg.rm.isInUse(s))
-						cg.emit.emit("popl", s);
+					if(ast.operator.equals(BOp.B_MOD)){
+						// % : Move the result into the LHS
+						cg.emit.emit("movl", Register.EDX, leftReg);
+					} else {
+						// / : Move the result into the LHS
+						cg.emit.emit("movl", Register.EAX, leftReg);
+					}
+					//restore Registers
+					restoreRegisters(dontBother, affected);
+					break;
 				}
-				break;
+				case B_DIV: { // /
+					// Save EAX, EBX, and EDX to the stack if they are not used
+					// in this subtree (but are used elsewhere). We will be
+					// changing them.
+					List<Register> dontBother = Arrays.asList(rightReg, leftReg);
+					Register[] affected = { Register.EAX, Register.EBX, Register.EDX };
+
+					for (Register s : affected)
+						if (!dontBother.contains(s) && cg.rm.isInUse(s))
+							cg.emit.emit("pushl", s);
+
+					// Move the LHS (numerator) into eax
+					// Move the RHS (denominator) into ebx
+					cg.emit.emit("pushl", rightReg);
+					cg.emit.emit("pushl", leftReg);
+					cg.emit.emit("popl", Register.EAX);
+					cg.emit.emit("popl", "%ebx");
+					cg.emit.emitRaw("cltd"); // sign-extend %eax into %edx
+					cg.emit.emit("idivl", "%ebx"); // division, result into edx:eax
+
+					// Move the result into the LHS
+					cg.emit.emit("movl", Register.EAX, leftReg);
+
+					//restore Registers
+					restoreRegisters(dontBother, affected);
+					break;
+				}
+
+				}//end of switch
+
 			}
 
-			//TODO
-			/* binary ops with integer arguments and return type boolean
-			 * <, <=, >, >=
-			 */
-			
-			//TODO: Register leftReg mit korrektem boolean 0/1 setzen bei allen
-			case B_LESS_THAN: { // <
-				//sets condition codes
-				cg.emit.emit("cmpl",  rightReg, leftReg);
-				
-				break;
-			}
-			case B_LESS_OR_EQUAL: { // <=
-				//sets condition codes
-				cg.emit.emit("cmpl",  rightReg, leftReg);
-				break;
-			}
-			case B_GREATER_THAN: { // >
-				//sets condition codes
-				cg.emit.emit("cmpl",  rightReg, leftReg);
-				break;
-			}
-			case B_GREATER_OR_EQUAL: { // >=
-				//sets condition codes
-				cg.emit.emit("cmpl",  rightReg, leftReg);
-				break;
-			}
-
-			/* binary ops with boolean arguments and return type boolean
-			 * &&, ||
-			 */
-			//TODO
-
-			/* binary ops with L subtype R or R subtype L and return type boolean
-			 * ==, !=
-			 */
-			//TODO
-			case B_EQUAL:{ // ==
-				/*
-				 * compare registers
-				 * return 0 or 1
-				 * if ((op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)){
+			//OK?
+			else if (ast.operator.equals(BOp.B_LESS_THAN)||ast.operator.equals(BOp.B_LESS_OR_EQUAL)|| ast.operator.equals(BOp.B_GREATER_THAN) ||ast.operator.equals(BOp.B_GREATER_OR_EQUAL)  ){
+				/* binary ops with integer arguments and return type boolean
+				 * <, <=, >, >=
 				 */
-				cg.emit.emit("cmpl",  rightReg, leftReg);//b eq a
+
+				//sets condition codes for ifElse, whileLoop...
+				cg.emit.emit("cmpl",  rightReg, leftReg);
+
+				//save regs
+				List<Register> dontBother = Arrays.asList(rightReg, leftReg);
+				Register[] affected = { Register.EAX};
+				saveRegisters(dontBother, affected);
+
+				switch (ast.operator) {
+
+				case B_LESS_THAN: { // <
+					//set <: register with correct boolean true or false
+					cg.emit.emit("setl", "%al");
+					break;
+				}
+				case B_LESS_OR_EQUAL: { // <=
+					//set <=: register with correct boolean true or false
+					cg.emit.emit("setle", "%al");
+					break;
+				}
+				case B_GREATER_THAN: { // >
+					//set >: register with correct boolean true or false
+					cg.emit.emit("setg", "%al");
+					break;
+				}
+				case B_GREATER_OR_EQUAL: { // >=
+					//set >=: register with correct boolean true or false
+					cg.emit.emit("setge", "%al");
+					break;
+				}
+				default: {
+					System.out.println("public Register binaryOp(..) implement: "+ast.operator.toString());
+					throw new ToDoException();
+				}
+
+				}//end of switch
+				//sign extend and safe result back
+				cg.emit.emit("movzbl", "%al", leftReg);
+				//restore Registers
+				restoreRegisters(dontBother, affected);
+			}
+
+			else {
+				switch (ast.operator) {
+				/* binary ops with boolean arguments and return type boolean
+				 * &&, ||
+				 */
+				case B_AND: {
+					cg.emit.emit("andl",  rightReg, leftReg);
+					cg.emit.emit("cmpl",  "$0", leftReg);				
+					break;
+				}
+				case B_OR: {
+					cg.emit.emit("orl",  rightReg, leftReg);
+					cg.emit.emit("cmpl",  "$0", leftReg);				
+					break;
+				}
+
+				/* binary ops with L subtype R or R subtype L and return type boolean
+				 * ==, !=
+				 */
+				//TODO
+				case B_EQUAL:{ // ==
+					/*
+					 * compare registers
+					 * return 0 or 1
+					 * if ((op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)){
+					 */
+					cg.emit.emit("cmpl",  rightReg, leftReg);//b eq a
 
 
-				break;
-			}
-			case B_NOT_EQUAL: {
+					break;
+				}
+				case B_NOT_EQUAL: { // !=
 
-				break;
+					break;
+				}
+				default: {
+					System.out.println("public Register binaryOp(..) implement: "+ast.operator.toString());
+					throw new ToDoException();
+				}
+
+				}//end of switch
 			}
-			default: {
-				System.out.println("public Register binaryOp(..) implement: "+ast.operator.toString());
-				throw new ToDoException();
-			}
-			
-			}//end of switch
 
 			cg.rm.releaseRegister(rightReg);
 
@@ -341,6 +395,24 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	public String getNewLabel(){
 		labelNumber++;
 		return ".L"+labelNumber;
+	}
+
+
+	public void saveRegisters(List<Register> dontBother, Register[] affected){
+		//save registers: affected - dontBother
+		for (Register s : affected){
+			if (!dontBother.contains(s) && cg.rm.isInUse(s)){
+				cg.emit.emit("pushl", s);
+			}
+		}
+	}
+	public void restoreRegisters(List<Register> dontBother, Register[] affected){
+		//restore any registers we saved
+		for (int i = affected.length - 1; i >= 0; i--) {
+			Register s = affected[i];
+			if (!dontBother.contains(s) && cg.rm.isInUse(s))
+				cg.emit.emit("popl", s);
+		}
 	}
 
 }
