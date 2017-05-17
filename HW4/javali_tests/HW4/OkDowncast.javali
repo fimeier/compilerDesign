@@ -33,7 +33,7 @@ class Main {
       b = (B) a;   /* OK at runtime */
       write(0);
       writeln();
-      a.print();
+      a.print(); // error, should B_print
       b.print();
       
    }

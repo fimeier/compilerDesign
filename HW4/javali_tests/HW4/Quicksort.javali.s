@@ -306,61 +306,63 @@ Main_sort:
             jg .L12
               # Emitting (...)
                 # Emitting this.swap(...)
+                  # Emitting this
+                  movl 8(%ebp), %edi
+                movl 0(%edi), %esi
+                movl 4(%esi), %esi
                 subl $4, %esp
                   # Emitting a[j]
                     # Emitting a
 # ____________________var_____________________________________________
-                    movl 8(%ebp), %edi
-                    movl 4(%edi), %edi
+                    movl 8(%ebp), %ecx
+                    movl 4(%ecx), %ecx
                     # Emitting j
 # ____________________var_____________________________________________
-                    movl -8(%ebp), %edx
+                    movl -8(%ebp), %ebx
 .L14:
-                  imul $4, %edx
-                  addl $8, %edx
-                  addl %edx, %edi
-                  movl (%edi), %edi
-                pushl %edi
+                  imul $4, %ebx
+                  addl $8, %ebx
+                  addl %ebx, %ecx
+                  movl (%ecx), %ecx
+                pushl %ecx
                   # Emitting a[i]
                     # Emitting a
 # ____________________var_____________________________________________
-                    movl 8(%ebp), %edx
-                    movl 4(%edx), %edx
+                    movl 8(%ebp), %ebx
+                    movl 4(%ebx), %ebx
                     # Emitting i
 # ____________________var_____________________________________________
-                    movl -4(%ebp), %ecx
+                    movl -4(%ebp), %eax
 .L15:
-                  imul $4, %ecx
-                  addl $8, %ecx
-                  addl %ecx, %edx
-                  movl (%edx), %edx
-                pushl %edx
-                  # Emitting this
-                  movl 8(%ebp), %edx
-                pushl %edx
-                call Main_swap
+                  imul $4, %eax
+                  addl $8, %eax
+                  addl %eax, %ebx
+                  movl (%ebx), %ebx
+                pushl %ebx
+                pushl %edi
+                call %esi
                 addl $12, %esp
-                popl %edx
+                popl %esi
                 # Emitting i = (i + 1)
 # ________________assign______________________________________________
                   # Emitting (i + 1)
                     # Emitting 1
-                    movl $1, %edx
+                    movl $1, %esi
                     # Emitting i
 # ____________________var_____________________________________________
-                    movl -4(%ebp), %ecx
-                  add %edx, %ecx
-                movl %ecx, -4(%ebp)
+                    movl -4(%ebp), %edi
+                  add %esi, %edi
+                movl %edi, -4(%ebp)
                 # Emitting j = (j - 1)
 # ________________assign______________________________________________
                   # Emitting (j - 1)
                     # Emitting 1
-                    movl $1, %ecx
+                    movl $1, %edi
                     # Emitting j
 # ____________________var_____________________________________________
-                    movl -8(%ebp), %edx
-                  sub %ecx, %edx
-                movl %edx, -8(%ebp)
+                    movl -8(%ebp), %esi
+                  sub %edi, %esi
+                movl %esi, -8(%ebp)
             jmp .L13
 .L12:
               # Emitting nop
@@ -373,31 +375,35 @@ Main_sort:
           # Emitting (left < j)
             # Emitting j
 # ____________var_____________________________________________________
-            movl -8(%ebp), %edx
+            movl -8(%ebp), %esi
             # Emitting left
 # ____________var_____________________________________________________
-            movl 12(%ebp), %ecx
-          cmpl %edx, %ecx
+            movl 12(%ebp), %edi
+          cmpl %esi, %edi
           setl %al
-          movzbl %al, %ecx
+          movzbl %al, %edi
         jge .L16
           # Emitting (...)
             # Emitting this.sort(...)
+            pushl %ecx
+            pushl %edx
+              # Emitting this
+              movl 8(%ebp), %ecx
+            movl 0(%ecx), %edx
+            movl 8(%edx), %edx
             subl $4, %esp
               # Emitting j
 # ______________var___________________________________________________
-              movl -8(%ebp), %edx
-            pushl %edx
+              movl -8(%ebp), %esi
+            pushl %esi
               # Emitting left
 # ______________var___________________________________________________
               movl 12(%ebp), %ebx
             pushl %ebx
-              # Emitting this
-              movl 8(%ebp), %ebx
-            pushl %ebx
-            call Main_sort
+            pushl %ecx
+            call %edx
             addl $12, %esp
-            popl %ebx
+            popl %edx
         jmp .L17
 .L16:
           # Emitting nop
@@ -407,351 +413,24 @@ Main_sort:
           # Emitting (i < right)
             # Emitting right
 # ____________var_____________________________________________________
-            movl 16(%ebp), %ebx
+            movl 16(%ebp), %edx
             # Emitting i
 # ____________var_____________________________________________________
-            movl -4(%ebp), %eax
-          cmpl %ebx, %eax
+            movl -4(%ebp), %ecx
+          cmpl %edx, %ecx
           setl %al
-          movzbl %al, %eax
+          movzbl %al, %ecx
         jge .L18
           # Emitting (...)
             # Emitting this.sort(...)
-            pushl %ecx
-            pushl %edx
+              # Emitting this
+              movl 8(%ebp), %edx
+            movl 0(%edx), %ecx
+            movl 8(%ecx), %ecx
             subl $4, %esp
               # Emitting right
 # ______________var___________________________________________________
-              movl 16(%ebp), %ecx
-            pushl %ecx
+              movl 16(%ebp), %eax
+            pushl %eax
               # Emitting i
 # ______________var___________________________________________________
-              movl -4(%ebp), %eax
-            pushl %eax
-              # Emitting this
-              movl 8(%ebp), %eax
-            pushl %eax
-            call Main_sort
-            addl $12, %esp
-            popl %eax
-        jmp .L19
-.L18:
-          # Emitting nop
-.L19:
-    addl $12, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
-    # Emitting void main(...) {...}
-Main_main:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    pushl %esi
-    pushl %edi
-    # set local variables:
-    # variable SIZE
-    pushl $0
-    # variable j
-    pushl $0
-      # Emitting (...)
-        # Emitting SIZE = 5
-# ________assign______________________________________________________
-          # Emitting 5
-          movl $5, %edi
-        movl %edi, -12(%ebp)
-        # Emitting a = new Record[][SIZE]
-# ________assign______________________________________________________
-          # Emitting new Record[][SIZE]
-            # Emitting SIZE
-# ____________var_____________________________________________________
-            movl -12(%ebp), %edi
-          cmpl $0, %edi
-          jge .L20
-          movl $5, %eax
-          jmp .ERROR_EXIT
-.L20:
-          addl $2, %edi
-          pushl $4
-          pushl %edi
-          call calloc
-          addl $8, %esp
-          movl $vtable_Object, (%eax)
-          movl %edi, 4(%eax)
-          movl %eax, %esi
-        movl 8(%ebp), %eax
-        movl %esi, 4(%eax)
-        # Emitting j = 0
-# ________assign______________________________________________________
-          # Emitting 0
-          movl $0, %esi
-        movl %esi, -16(%ebp)
-        # Emitting while ((j < SIZE)) {...}
-# ________whileLoop___________________________________________________
-          # Emitting (j < SIZE)
-            # Emitting SIZE
-# ____________var_____________________________________________________
-            movl -12(%ebp), %esi
-            # Emitting j
-# ____________var_____________________________________________________
-            movl -16(%ebp), %eax
-          cmpl %esi, %eax
-          setl %al
-          movzbl %al, %eax
-        jge .L21
-          # Emitting (...)
-            # Emitting a[j] = new Record()
-# ____________assign__________________________________________________
-              # Emitting new Record()
-# ______________newObject_____________________________________________
-              pushl $4
-              pushl $2
-              call calloc
-              addl $8, %esp
-              movl $vtable_Record, (%eax)
-              movl %eax, %eax
-              # Emitting a
-# ______________var___________________________________________________
-              movl 8(%ebp), %esi
-              movl 4(%esi), %esi
-              # Emitting j
-# ______________var___________________________________________________
-              movl -16(%ebp), %ebx
-            imul $4, %ebx
-            addl $8, %ebx
-            addl %ebx, %esi
-            movl %eax, (%esi)
-            # Emitting j = (j + 1)
-# ____________assign__________________________________________________
-              # Emitting (j + 1)
-                # Emitting 1
-                movl $1, %eax
-                # Emitting j
-# ________________var_________________________________________________
-                movl -16(%ebp), %esi
-              add %eax, %esi
-            movl %esi, -16(%ebp)
-        jmp .L22
-.L21:
-.L22:
-        # Emitting a[0].a = 5
-# ________assign______________________________________________________
-          # Emitting 5
-          movl $5, %esi
-          # Emitting a[0]
-            # Emitting a
-# ____________var_____________________________________________________
-            movl 8(%ebp), %eax
-            movl 4(%eax), %eax
-            # Emitting 0
-            movl $0, %ebx
-.L23:
-          imul $4, %ebx
-          addl $8, %ebx
-          addl %ebx, %eax
-          movl (%eax), %eax
-        movl %esi, 4(%eax)
-        # Emitting a[1].a = 3
-# ________assign______________________________________________________
-          # Emitting 3
-          movl $3, %esi
-          # Emitting a[1]
-            # Emitting a
-# ____________var_____________________________________________________
-            movl 8(%ebp), %eax
-            movl 4(%eax), %eax
-            # Emitting 1
-            movl $1, %ebx
-.L24:
-          imul $4, %ebx
-          addl $8, %ebx
-          addl %ebx, %eax
-          movl (%eax), %eax
-        movl %esi, 4(%eax)
-        # Emitting a[2].a = 1
-# ________assign______________________________________________________
-          # Emitting 1
-          movl $1, %esi
-          # Emitting a[2]
-            # Emitting a
-# ____________var_____________________________________________________
-            movl 8(%ebp), %eax
-            movl 4(%eax), %eax
-            # Emitting 2
-            movl $2, %ebx
-.L25:
-          imul $4, %ebx
-          addl $8, %ebx
-          addl %ebx, %eax
-          movl (%eax), %eax
-        movl %esi, 4(%eax)
-        # Emitting a[3].a = 4
-# ________assign______________________________________________________
-          # Emitting 4
-          movl $4, %esi
-          # Emitting a[3]
-            # Emitting a
-# ____________var_____________________________________________________
-            movl 8(%ebp), %eax
-            movl 4(%eax), %eax
-            # Emitting 3
-            movl $3, %ebx
-.L26:
-          imul $4, %ebx
-          addl $8, %ebx
-          addl %ebx, %eax
-          movl (%eax), %eax
-        movl %esi, 4(%eax)
-        # Emitting a[4].a = 2
-# ________assign______________________________________________________
-          # Emitting 2
-          movl $2, %esi
-          # Emitting a[4]
-            # Emitting a
-# ____________var_____________________________________________________
-            movl 8(%ebp), %eax
-            movl 4(%eax), %eax
-            # Emitting 4
-            movl $4, %ebx
-.L27:
-          imul $4, %ebx
-          addl $8, %ebx
-          addl %ebx, %eax
-          movl (%eax), %eax
-        movl %esi, 4(%eax)
-        # Emitting j = 0
-# ________assign______________________________________________________
-          # Emitting 0
-          movl $0, %esi
-        movl %esi, -16(%ebp)
-        # Emitting while ((j < SIZE)) {...}
-# ________whileLoop___________________________________________________
-          # Emitting (j < SIZE)
-            # Emitting SIZE
-# ____________var_____________________________________________________
-            movl -12(%ebp), %esi
-            # Emitting j
-# ____________var_____________________________________________________
-            movl -16(%ebp), %eax
-          cmpl %esi, %eax
-          setl %al
-          movzbl %al, %eax
-        jge .L28
-          # Emitting (...)
-            # Emitting a[j].print(...)
-            pushl %ecx
-            pushl %edx
-            subl $4, %esp
-              # Emitting a[j]
-                # Emitting a
-# ________________var_________________________________________________
-                movl 8(%ebp), %edx
-                movl 4(%edx), %edx
-                # Emitting j
-# ________________var_________________________________________________
-                movl -16(%ebp), %ecx
-.L30:
-              imul $4, %ecx
-              addl $8, %ecx
-              addl %ecx, %edx
-              movl (%edx), %edx
-            pushl %edx
-            call Record_print
-            addl $4, %esp
-            popl %edx
-            # Emitting j = (j + 1)
-# ____________assign__________________________________________________
-              # Emitting (j + 1)
-                # Emitting 1
-                movl $1, %edx
-                # Emitting j
-# ________________var_________________________________________________
-                movl -16(%ebp), %ecx
-              add %edx, %ecx
-            movl %ecx, -16(%ebp)
-        jmp .L29
-.L28:
-.L29:
-        # Emitting writeln()
-        sub $16, %esp
-        movl $STR_NL, 0(%esp)
-        call printf
-        add $16, %esp
-        # Emitting this.sort(...)
-        subl $4, %esp
-          # Emitting 4
-          movl $4, %edx
-        pushl %edx
-          # Emitting 0
-          movl $0, %eax
-        pushl %eax
-          # Emitting this
-          movl 8(%ebp), %eax
-        pushl %eax
-        call Main_sort
-        addl $12, %esp
-        popl %eax
-        # Emitting j = 0
-# ________assign______________________________________________________
-          # Emitting 0
-          movl $0, %eax
-        movl %eax, -16(%ebp)
-        # Emitting while ((j < SIZE)) {...}
-# ________whileLoop___________________________________________________
-          # Emitting (j < SIZE)
-            # Emitting SIZE
-# ____________var_____________________________________________________
-            movl -12(%ebp), %eax
-            # Emitting j
-# ____________var_____________________________________________________
-            movl -16(%ebp), %esi
-          cmpl %eax, %esi
-          setl %al
-          movzbl %al, %esi
-        jge .L31
-          # Emitting (...)
-            # Emitting a[j].print(...)
-            pushl %ecx
-            pushl %edx
-            subl $4, %esp
-              # Emitting a[j]
-                # Emitting a
-# ________________var_________________________________________________
-                movl 8(%ebp), %edx
-                movl 4(%edx), %edx
-                # Emitting j
-# ________________var_________________________________________________
-                movl -16(%ebp), %ecx
-.L33:
-              imul $4, %ecx
-              addl $8, %ecx
-              addl %ecx, %edx
-              movl (%edx), %edx
-            pushl %edx
-            call Record_print
-            addl $4, %esp
-            popl %edx
-            # Emitting j = (j + 1)
-# ____________assign__________________________________________________
-              # Emitting (j + 1)
-                # Emitting 1
-                movl $1, %edx
-                # Emitting j
-# ________________var_________________________________________________
-                movl -16(%ebp), %ecx
-              add %edx, %ecx
-            movl %ecx, -16(%ebp)
-        jmp .L32
-.L31:
-.L32:
-        # Emitting writeln()
-        sub $16, %esp
-        movl $STR_NL, 0(%esp)
-        call printf
-        add $16, %esp
-    addl $8, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret

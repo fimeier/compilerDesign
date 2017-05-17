@@ -62,23 +62,25 @@ Main_main:
         # Emitting a = this.fib(...)
 # ________assign______________________________________________________
           # Emitting this.fib(...)
-          subl $4, %esp
-            # Emitting 20
-            movl $20, %esi
-          pushl %esi
             # Emitting this
             movl 8(%ebp), %esi
+          movl 0(%esi), %edi
+          movl 8(%edi), %edi
+          subl $4, %esp
+            # Emitting 20
+            movl $20, %ecx
+          pushl %ecx
           pushl %esi
-          call Main_fib
+          call %edi
           addl $8, %esp
-          popl %esi
-        movl %esi, -4(%ebp)
+          popl %edi
+        movl %edi, -4(%ebp)
         # Emitting write(a)
           # Emitting a
 # __________var_______________________________________________________
-          movl -4(%ebp), %esi
+          movl -4(%ebp), %edi
         sub $16, %esp
-        movl %esi, 4(%esp)
+        movl %edi, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp
@@ -97,7 +99,6 @@ Main_fib:
     # store old ebp, set uf new ebp
     pushl %ebp
     movl %esp, %ebp
-    pushl %edi
     # set local variables:
     # variable fib
     pushl $0
@@ -122,65 +123,70 @@ Main_fib:
               # Emitting n
 # ______________var___________________________________________________
               movl 12(%ebp), %esi
-            movl %esi, -8(%ebp)
+            movl %esi, -4(%ebp)
         jmp .L3
 .L2:
           # Emitting (...)
             # Emitting fib = this.fib(...)
 # ____________assign__________________________________________________
               # Emitting this.fib(...)
+              pushl %edx
+                # Emitting this
+                movl 8(%ebp), %esi
+              movl 0(%esi), %edx
+              movl 8(%edx), %edx
               subl $4, %esp
                 # Emitting (n - 1)
                   # Emitting 1
-                  movl $1, %edi
+                  movl $1, %ecx
                   # Emitting n
 # __________________var_______________________________________________
-                  movl 12(%ebp), %edx
-                sub %edi, %edx
-              pushl %edx
-                # Emitting this
-                movl 8(%ebp), %edx
-              pushl %edx
-              call Main_fib
+                  movl 12(%ebp), %ebx
+                sub %ecx, %ebx
+              pushl %ebx
+              pushl %esi
+              call %edx
               addl $8, %esp
               popl %edx
-            movl %edx, -8(%ebp)
+            movl %edx, -4(%ebp)
             # Emitting fib2 = this.fib(...)
 # ____________assign__________________________________________________
               # Emitting this.fib(...)
+                # Emitting this
+                movl 8(%ebp), %esi
+              movl 0(%esi), %edx
+              movl 8(%edx), %edx
               subl $4, %esp
                 # Emitting (n - 2)
                   # Emitting 2
-                  movl $2, %edi
+                  movl $2, %ecx
                   # Emitting n
 # __________________var_______________________________________________
-                  movl 12(%ebp), %ecx
-                sub %edi, %ecx
-              pushl %ecx
-                # Emitting this
-                movl 8(%ebp), %ecx
-              pushl %ecx
-              call Main_fib
+                  movl 12(%ebp), %eax
+                sub %ecx, %eax
+              pushl %eax
+              pushl %esi
+              call %edx
               addl $8, %esp
-              popl %ecx
-            movl %ecx, -12(%ebp)
+              popl %edx
+            movl %edx, -8(%ebp)
             # Emitting fib = (fib + fib2)
 # ____________assign__________________________________________________
               # Emitting (fib + fib2)
                 # Emitting fib2
 # ________________var_________________________________________________
-                movl -12(%ebp), %ecx
+                movl -8(%ebp), %edx
                 # Emitting fib
 # ________________var_________________________________________________
-                movl -8(%ebp), %edi
-              add %ecx, %edi
-            movl %edi, -8(%ebp)
+                movl -4(%ebp), %esi
+              add %edx, %esi
+            movl %esi, -4(%ebp)
 .L3:
         # Emitting return fib
           # Emitting fib
 # __________var_______________________________________________________
-          movl -8(%ebp), %edi
-        movl %edi, 16(%ebp)
+          movl -4(%ebp), %esi
+        movl %esi, 16(%ebp)
     addl $8, %esp
     # restore old ebp
     movl %ebp, %esp

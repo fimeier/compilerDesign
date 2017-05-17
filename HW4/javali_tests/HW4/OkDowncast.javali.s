@@ -223,21 +223,25 @@ Main_main:
         call printf
         add $16, %esp
         # Emitting a.print(...)
-        subl $4, %esp
           # Emitting a
 # __________var_______________________________________________________
-          movl -4(%ebp), %edx
-        pushl %edx
-        call A_print
+          movl -4(%ebp), %ecx
+        movl 0(%ecx), %edx
+        movl 4(%edx), %edx
+        subl $4, %esp
+        pushl %ecx
+        call %edx
         addl $4, %esp
         popl %edx
         # Emitting b.print(...)
-        subl $4, %esp
           # Emitting b
 # __________var_______________________________________________________
-          movl -8(%ebp), %edx
-        pushl %edx
-        call B_print
+          movl -8(%ebp), %ecx
+        movl 0(%ecx), %edx
+        movl 4(%edx), %edx
+        subl $4, %esp
+        pushl %ecx
+        call %edx
         addl $4, %esp
         popl %edx
     addl $8, %esp

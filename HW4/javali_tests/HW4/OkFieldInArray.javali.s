@@ -247,21 +247,23 @@ Main_main:
         call printf
         add $16, %esp
         # Emitting x[1].foo(...)
-        subl $4, %esp
           # Emitting x[1]
             # Emitting x
 # ____________var_____________________________________________________
-            movl 8(%ebp), %edx
-            movl 4(%edx), %edx
+            movl 8(%ebp), %esi
+            movl 4(%esi), %esi
             # Emitting 1
-            movl $1, %esi
+            movl $1, %ecx
 .L5:
-          imul $4, %esi
-          addl $8, %esi
-          addl %esi, %edx
-          movl (%edx), %edx
-        pushl %edx
-        call A_foo
+          imul $4, %ecx
+          addl $8, %ecx
+          addl %ecx, %esi
+          movl (%esi), %esi
+        movl 0(%esi), %edx
+        movl 8(%edx), %edx
+        subl $4, %esp
+        pushl %esi
+        call %edx
         addl $4, %esp
         popl %edx
     addl $4, %esp

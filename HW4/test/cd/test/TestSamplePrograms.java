@@ -26,7 +26,7 @@ public class TestSamplePrograms extends AbstractTestAgainstFrozenReference {
 	
 //	public static final File justFile = new File("javali_tests/HW4/SimpleTest.javali");
 
-//	public static final File justFile = new File("javali_tests/HW4/OkFieldInArray.javali");
+//	public static final File justFile = new File("javali_tests/HW4/OkDowncast.javali");
 
 	public static final File justFile = null;
 

@@ -121,41 +121,48 @@ Main_main:
           movl -4(%ebp), %esi
         movl %edi, 4(%esi)
         # Emitting a.foo(...)
-        subl $4, %esp
-          # Emitting 1
-          movl $1, %esi
-        pushl %esi
           # Emitting a
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
-        pushl %esi
-        call A_foo
-        addl $8, %esp
-        popl %esi
-        # Emitting a.foo(...)
+        movl 0(%esi), %edi
+        movl 4(%edi), %edi
         subl $4, %esp
-          # Emitting 2
-          movl $2, %edx
+          # Emitting 1
+          movl $1, %ecx
+        pushl %ecx
+        pushl %esi
+        call %edi
+        addl $8, %esp
+        popl %edi
+        # Emitting a.foo(...)
         pushl %edx
           # Emitting a
 # __________var_______________________________________________________
-          movl -4(%ebp), %edx
-        pushl %edx
-        call A_foo
+          movl -4(%ebp), %edi
+        movl 0(%edi), %edx
+        movl 4(%edx), %edx
+        subl $4, %esp
+          # Emitting 2
+          movl $2, %ecx
+        pushl %ecx
+        pushl %edi
+        call %edx
         addl $8, %esp
         popl %edx
         # Emitting a.foo(...)
-        subl $4, %esp
-          # Emitting 3
-          movl $3, %ecx
-        pushl %ecx
           # Emitting a
 # __________var_______________________________________________________
-          movl -4(%ebp), %ecx
-        pushl %ecx
-        call A_foo
+          movl -4(%ebp), %edi
+        movl 0(%edi), %edx
+        movl 4(%edx), %edx
+        subl $4, %esp
+          # Emitting 3
+          movl $3, %ebx
+        pushl %ebx
+        pushl %edi
+        call %edx
         addl $8, %esp
-        popl %ecx
+        popl %edx
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp

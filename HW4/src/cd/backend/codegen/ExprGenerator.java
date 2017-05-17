@@ -565,12 +565,11 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	public Register methodCall(MethodCallExpr ast, StackFrame frame) {
 		{
 			
-			//get the vtable of the receiving object
+			//get the vtable of the receiving object -> to figure out the offset, not the name!
 			VTable table = cg.vtableManager.get(ast.receiver().type.name);
-			// get the label of the function
-			String functionName = table.getLabel(ast.methodName);
+			// offset of the function in the vtable
+			int offset = table.getOffset(ast.methodName);
 			
-					
 			// safe caller saved Registers to stack
 			boolean regsSaved[] = {false,false,false}; // eax, ecx, edx
 			int i = 0;
@@ -582,6 +581,14 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				}
 				i++;
 			}
+			
+			Register functionPtr = frame.getRegister();
+			Register receiverPtr = cg.eg.visit(ast.receiver(), frame);
+
+			// get the actual vtable of the runtime object (in heap)
+			cg.emit.emit("movl", frame.getAddr(receiverPtr.getRepr(), 0), functionPtr);	
+			// get the actual function pointer
+			cg.emit.emit("movl", frame.getAddr(functionPtr.getRepr(), offset), functionPtr);
 			
 			/* prepare function call: */
 			// make space for return value
@@ -595,14 +602,14 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				cg.emit.emit("pushl", argReg);
 				frame.releaseRegister(argReg);
 			}
-			// get address of receiver Object
-			Register receiverReg = cg.eg.visit(ast.receiver(), frame);
+			
 			//set the receiver of the function (arg0)
-			cg.emit.emit("pushl", receiverReg);
-			frame.releaseRegister(receiverReg);
+			cg.emit.emit("pushl", receiverPtr);
+			frame.releaseRegister(receiverPtr);
 			
 			// call the function:
-			cg.emit.emit("call", functionName);
+			cg.emit.emit("call", functionPtr);
+			frame.releaseRegister(functionPtr);
 			// remove the args from the stack
 			cg.emit.emit("addl", "$"+ast.allArguments().size()*4, "%esp");
 			

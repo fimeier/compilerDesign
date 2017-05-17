@@ -15,18 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-// basebpointer address
-
-// stack pointer address
-
-// stack size
-
-// Register / temp address in stack getMemory()
-
-// local variables get and set
-
 // ebp + 4 = return address
 // ebp + 8 = target address
 // ebp +12 = arg 1
