@@ -104,6 +104,16 @@ Main_main:
           movl 4(%edx), %edx
           # Emitting 0
           movl $0, %ecx
+        cmpl $0, %ecx
+        jge .L3
+        movl $3, %eax
+        jmp .ERROR_EXIT
+.L3:
+        cmpl 4(%edx), %ecx
+        jl .L4
+        movl $3, %eax
+        jmp .ERROR_EXIT
+.L4:
         imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
@@ -121,26 +131,35 @@ Main_main:
               movl 4(%ecx), %ecx
               # Emitting 0
               movl $0, %ebx
-.L7:
+            cmpl $0, %ebx
+            jge .L9
+            movl $3, %eax
+            jmp .ERROR_EXIT
+.L9:
+            cmpl 4(%ecx), %ebx
+            jl .L10
+            movl $3, %eax
+            jmp .ERROR_EXIT
+.L10:
             imul $4, %ebx
             addl $8, %ebx
             addl %ebx, %ecx
             movl (%ecx), %ecx
 # __________rTypeRegister_____________________________________________
           movl %ecx, %edx
-.L6:
+.L8:
           cmpl $0, %edx
-          je .L3
+          je .L5
           cmpl %esi, %edx
-          je .L4
+          je .L6
           movl (%edx), %edx
-          jmp .L6
-.L3:
+          jmp .L8
+.L5:
           movl $1, %eax
           jmp .ERROR_EXIT
-          jmp .L5
-.L4:
-.L5:
+          jmp .L7
+.L6:
+.L7:
         movl 8(%ebp), %ebx
         movl %ecx, 8(%ebx)
     addl $0, %esp

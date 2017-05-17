@@ -221,6 +221,16 @@ Main_main:
           movl -4(%ebp), %edx
           # Emitting 0
           movl $0, %eax
+        cmpl $0, %eax
+        jge .L3
+        movl $3, %eax
+        jmp .ERROR_EXIT
+.L3:
+        cmpl 4(%edx), %eax
+        jl .L4
+        movl $3, %eax
+        jmp .ERROR_EXIT
+.L4:
         imul $4, %eax
         addl $8, %eax
         addl %eax, %edx
@@ -232,7 +242,16 @@ Main_main:
             movl -4(%ebp), %esi
             # Emitting 0
             movl $0, %edx
-.L3:
+          cmpl $0, %edx
+          jge .L5
+          movl $3, %eax
+          jmp .ERROR_EXIT
+.L5:
+          cmpl 4(%esi), %edx
+          jl .L6
+          movl $3, %eax
+          jmp .ERROR_EXIT
+.L6:
           imul $4, %edx
           addl $8, %edx
           addl %edx, %esi

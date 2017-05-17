@@ -129,19 +129,8 @@ public class StackFrame {
 		return t;
 	}
 	
-	
-	
-	public Register getLocalVar(String varName){
-		Integer offset = localsOffsetMap.get(varName);
-		if (offset == null){
-			return null;
-		}
-		Register reg = getRegister();
-		cg.emit.emit("movl", getAddr(offset), reg);
-		return reg;
-	}
-	
 	public Register getVariable(Var variable){
+		
 		Register reg = getRegister();
 		if (variable.sym.kind.equals(Kind.LOCAL)) {
 			Integer offset = localsOffsetMap.get(variable.name);
@@ -178,17 +167,21 @@ public class StackFrame {
 			if (offset == null){
 				return;
 			}
+			cg.eg.nullPointerCheck(getAddr(offset));
 			cg.emit.emit("movl", rightReg, getAddr(offset));
 		} else if (variable.sym.kind.equals(Kind.PARAM)){
 			Integer offset = parametersOffsetMap.get(variable.name);
 			if (offset == null){
 				return;
 			}
+			// TODO: check nullpointer
+			cg.eg.nullPointerCheck(getAddr(offset));
 			cg.emit.emit("movl", rightReg, getAddr(offset));
 		} else if (variable.sym.kind.equals(Kind.FIELD)){
 			ObjectShape objectShape = cg.objShapeManager.get(cg.sg.currentClass.classDecl.name);
 			Register targetReg = getRegister();
 			cg.emit.emit("movl", target(), targetReg);
+			cg.eg.nullPointerCheck(targetReg);
 			int offset = objectShape.getOffset(variable.name);
 			String location = getAddr(targetReg.getRepr(), offset);
 			cg.emit.emit("movl", rightReg, location);

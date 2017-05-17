@@ -170,6 +170,16 @@ Main_main:
 # __________var_______________________________________________________
           movl 8(%ebp), %ecx
           movl 4(%ecx), %ecx
+        cmpl $0, %ecx
+        jge .L3
+        movl $3, %eax
+        jmp .ERROR_EXIT
+.L3:
+        cmpl 4(%edx), %ecx
+        jl .L4
+        movl $3, %eax
+        jmp .ERROR_EXIT
+.L4:
         imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
@@ -184,7 +194,16 @@ Main_main:
 # ______________var___________________________________________________
               movl 8(%ebp), %edx
               movl 4(%edx), %edx
-.L3:
+            cmpl $0, %edx
+            jge .L5
+            movl $3, %eax
+            jmp .ERROR_EXIT
+.L5:
+            cmpl 4(%esi), %edx
+            jl .L6
+            movl $3, %eax
+            jmp .ERROR_EXIT
+.L6:
             imul $4, %edx
             addl $8, %edx
             addl %edx, %esi

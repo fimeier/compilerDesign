@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import cd.Config;
 import cd.ToDoException;
 import cd.backend.codegen.RegisterManager.Register;
 import cd.frontend.semantic.SemanticFailure;
@@ -272,6 +273,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		{
 			/*
 			 * casting: (a) b
+			 * 
 			 */
 
 			cg.emit.emitCommentSection("cast");
@@ -404,20 +406,34 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			// only read, assign in assign visitor
 			Register varReg = cg.eg.visit(ast.left(), frame);
 			Register indexReg = cg.eg.visit(ast.right(), frame);
+			nullPointerCheck(varReg);
+			nullPointerCheck(indexReg);
 
+			
 			// ERROR CHECK
-			// check indexReg >= 0 and  //TODO: error 5
+			// check (index >= 0)
+			String elseIfLabel =  cg.eg.getNewLabel();
+			//cg.emit.emit("movl", "("+indexReg+")", indexReg); // size < 0
+			cg.emit.emit("cmpl", "$0", indexReg); // size < 0
+			cg.emit.emit("jge",  elseIfLabel);   // if size >= 0 jump to elseLabel
+			// throw error 3: negative array index
+			throwError(3);
+			
+			// else jump here when (index > 0)
+			cg.emit.emitLabel(elseIfLabel);
 			String elseLabel =  cg.eg.getNewLabel();
-			//cg.emit.emit("cmpl", "$0", sizeReg); // size < 0
-			//cg.emit.emit("jge",  elseLabel);   // if size >= 0 jump to elseLabel
 
-			// throw error 5: negative array size
-			//throwError(5);
-			// else jump here and continue
+			// check (index < array-size)
+			cg.emit.emit("cmpl", frame.getAddr(varReg.getRepr(), 4), indexReg); // index < size
+			cg.emit.emit("jl",  elseLabel);   // if index >= size jump to elseLabel
+			// throw error 3: index out of bounds
+			throwError(3);
+			
+			// jumpt here when index correct
 			cg.emit.emitLabel(elseLabel);
 
-			Var var = (Var)ast.left();
-			String typeName = var.type.name.replace("[", "").replace("]", "");
+			String typeName = ast.left().type.name;
+			typeName = typeName.replace("[", "").replace("]", "");
 			VTable table = cg.vtableManager.get(typeName + "_array");
 
 			ObjectShape objectShape;
@@ -456,6 +472,8 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	public Register field(Field ast, StackFrame frame) {
 		{
 			Register targetReg = cg.eg.visit(ast.arg(), frame);
+
+			nullPointerCheck(targetReg);
 
 			VTable table = cg.vtableManager.get(ast.arg().type.name);
 			ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
@@ -565,6 +583,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	public Register thisRef(ThisRef ast, StackFrame frame) {
 		{
 			Register reg = frame.getRegister();
+			nullPointerCheck(reg);
 			cg.emit.emit("movl", frame.target(), reg);
 			return reg;
 		}
@@ -593,6 +612,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 			Register functionPtr = frame.getRegister();
 			Register receiverPtr = cg.eg.visit(ast.receiver(), frame);
+			nullPointerCheck(receiverPtr);
 
 			// get the actual vtable of the runtime object (in heap)
 			cg.emit.emit("movl", frame.getAddr(receiverPtr.getRepr(), 0), functionPtr);	
@@ -675,6 +695,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		{
 			cg.emit.emitCommentSection("var");
 			Register reg = frame.getVariable(ast);
+			//nullPointerCheck(reg);
 			return reg;
 		}
 	}
@@ -701,9 +722,35 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		}
 	}
 
-	private void throwError(int errorCode){
+	public void throwError(int errorCode){
 		cg.emit.emit("movl", "$"+errorCode, Register.EAX);
 		cg.emit.emit("jmp", ".ERROR_EXIT");
 	}
 
+	public void nullPointerCheck(String checkLocation){
+		// ERROR CHECK
+		// check if target is a null pointer
+		String elseLabel =  cg.eg.getNewLabel();
+		cg.emit.emit("cmpl", "$0", checkLocation); // size < 0
+		cg.emit.emit("jne",  elseLabel);   // if size >= 0 jump to elseLabel
+		// throw error 4: null pointer exception
+		cg.eg.throwError(4);
+		
+		// else jump here when no exception
+		cg.emit.emitLabel(elseLabel);
+	}
+	
+	public void nullPointerCheck(Register checkReg){
+		// ERROR CHECK
+		// check if target is a null pointer
+		String elseLabel =  cg.eg.getNewLabel();
+		cg.emit.emit("cmpl", "$0", checkReg); // size < 0
+		cg.emit.emit("jne",  elseLabel);   // if size >= 0 jump to elseLabel
+		// throw error 4: null pointer exception
+		cg.eg.throwError(4);
+		
+		// else jump here when no exception
+		cg.emit.emitLabel(elseLabel);
+	}
+	
 }

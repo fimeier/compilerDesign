@@ -426,9 +426,32 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			Index ind = (Index) ast.left();
 			Register varReg = cg.eg.visit(ind.left(), frame);
 			Register indexReg = cg.eg.visit(ind.right(), frame);
+			cg.eg.nullPointerCheck(varReg);
+			cg.eg.nullPointerCheck(indexReg);
+			// ERROR CHECK
+			// check (index >= 0)
+			String elseIfLabel =  cg.eg.getNewLabel();
+			//cg.emit.emit("movl", "("+indexReg+")", indexReg); // size < 0
+			cg.emit.emit("cmpl", "$0", indexReg); // size < 0
+			cg.emit.emit("jge",  elseIfLabel);   // if size >= 0 jump to elseLabel
+			// throw error 3: negative array index
+			cg.eg.throwError(3);
+			
+			// else jump here when (index > 0)
+			cg.emit.emitLabel(elseIfLabel);
+			String elseLabel =  cg.eg.getNewLabel();
 
-			Var var = (Var)ind.left();
-			String typeName = var.type.name.replace("[", "").replace("]", "");	
+			// check (index < array-size)
+			cg.emit.emit("cmpl", frame.getAddr(varReg.getRepr(), 4), indexReg); // index < size
+			cg.emit.emit("jl",  elseLabel);   // if index >= size jump to elseLabel
+			// throw error 3: index out of bounds
+			cg.eg.throwError(3);
+			
+			// jumpt here when index correct
+			cg.emit.emitLabel(elseLabel);
+
+			String typeName = ind.left().type.name;
+			typeName = typeName.replace("[", "").replace("]", "");	
 			VTable table = cg.vtableManager.get(typeName + "_array");
 
 			ObjectShape objectShape;
@@ -454,6 +477,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			Field left = (Field) ast.left(); 
 
 			Register targetReg = cg.eg.visit(left.arg(), frame);
+			cg.eg.nullPointerCheck(targetReg);
 
 			VTable table = cg.vtableManager.get(left.arg().type.name);
 			ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
