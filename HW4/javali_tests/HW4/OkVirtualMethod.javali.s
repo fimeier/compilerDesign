@@ -159,14 +159,6 @@ Main_main:
     # variable b
     pushl $0
       # Emitting (...)
-        # Emitting a = null
-          # Emitting null
-          movl $0, %edi
-        movl %edi, -4(%ebp)
-        # Emitting b = null
-          # Emitting null
-          movl $0, %edi
-        movl %edi, -8(%ebp)
         # Emitting a = new A()
           # Emitting new A()
           pushl $4
@@ -176,22 +168,6 @@ Main_main:
           movl $vtable_A, (%eax)
           movl %eax, %edi
         movl %edi, -4(%ebp)
-        # Emitting a.base(...)
-        subl $4, %esp
-          # Emitting a
-          movl -4(%ebp), %edi
-        pushl %edi
-        call A_base
-        addl $4, %esp
-        popl %edi
-        # Emitting a.override(...)
-        subl $4, %esp
-          # Emitting a
-          movl -4(%ebp), %edi
-        pushl %edi
-        call A_override
-        addl $4, %esp
-        popl %edi
         # Emitting b = new B()
           # Emitting new B()
           pushl $4
@@ -201,30 +177,6 @@ Main_main:
           movl $vtable_B, (%eax)
           movl %eax, %edi
         movl %edi, -8(%ebp)
-        # Emitting b.base(...)
-        subl $4, %esp
-          # Emitting b
-          movl -8(%ebp), %edi
-        pushl %edi
-        call A_base
-        addl $4, %esp
-        popl %edi
-        # Emitting b.override(...)
-        subl $4, %esp
-          # Emitting b
-          movl -8(%ebp), %edi
-        pushl %edi
-        call B_override
-        addl $4, %esp
-        popl %edi
-        # Emitting b.sub(...)
-        subl $4, %esp
-          # Emitting b
-          movl -8(%ebp), %edi
-        pushl %edi
-        call B_sub
-        addl $4, %esp
-        popl %edi
         # Emitting a = b
           # Emitting b
           movl -8(%ebp), %edi
@@ -243,30 +195,6 @@ Main_main:
           movl -4(%ebp), %edi
         pushl %edi
         call A_override
-        addl $4, %esp
-        popl %edi
-        # Emitting b.base(...)
-        subl $4, %esp
-          # Emitting b
-          movl -8(%ebp), %edi
-        pushl %edi
-        call A_base
-        addl $4, %esp
-        popl %edi
-        # Emitting b.override(...)
-        subl $4, %esp
-          # Emitting b
-          movl -8(%ebp), %edi
-        pushl %edi
-        call B_override
-        addl $4, %esp
-        popl %edi
-        # Emitting b.sub(...)
-        subl $4, %esp
-          # Emitting b
-          movl -8(%ebp), %edi
-        pushl %edi
-        call B_sub
         addl $4, %esp
         popl %edi
     addl $8, %esp

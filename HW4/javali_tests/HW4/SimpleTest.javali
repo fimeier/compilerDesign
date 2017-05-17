@@ -25,10 +25,9 @@ class Main {
    		
    		a = new A();
    		b = new B();
-   		g = 1;
-   		 
-   		g = 1;
-   		c[0] = loc(1+5);
+  		a.x = 5;
+   		g = a.x; 
+   		c[0] = loc(g+1);
    		
    		write(c[0]);
 	}

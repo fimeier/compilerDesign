@@ -95,6 +95,9 @@ Main_main:
         # Emitting a.i = 10
           # Emitting 10
           movl $10, %edi
+          # Emitting a
+          movl -4(%ebp), %esi
+        movl %edi, 4(%esi)
         # Emitting a.foo(...)
         subl $4, %esp
           # Emitting 1

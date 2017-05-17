@@ -26,25 +26,30 @@ class Main {
 		A a;
 		B b;
 		
-		a = null;
+		a = new A();
+		b = new B();
+		a = b;
+		
+	/*	a = null;
 		b = null;
 
 		a = new A();
-		a.base();
-		a.override();
+		a.base(); //1
+		a.override(); //0
 
 		b = new B();
-		b.base();
-		b.override();
-		b.sub();
+		b.base(); //1
+		b.override(); //2
+		b.sub(); //3
 
 		a = b;
-		a.base();
-		a.override();
+		a.base(); //1
+		a.override(); // should 2, was 0
 		
-      b.base();
-      b.override();
-      b.sub();
+		
+      b.base(); // 1
+      b.override(); //2 
+      b.sub(); //3*/
       
 	}
 }

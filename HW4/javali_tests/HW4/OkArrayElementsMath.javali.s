@@ -47,7 +47,6 @@ Main_main:
           # Emitting new int[][3]
             # Emitting 3
             movl $3, %edi
-          imul $1, %edi
           addl $2, %edi
           pushl $4
           pushl %edi
@@ -65,7 +64,7 @@ Main_main:
           movl 4(%edx), %edx
           # Emitting 0
           movl $0, %ecx
-        imul $1, %ecx
+        imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
         movl %esi, (%edx)
@@ -77,7 +76,7 @@ Main_main:
           movl 4(%edx), %edx
           # Emitting 1
           movl $1, %ecx
-        imul $1, %ecx
+        imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
         movl %esi, (%edx)
@@ -89,7 +88,7 @@ Main_main:
           movl 4(%edx), %edx
           # Emitting 2
           movl $2, %ecx
-        imul $1, %ecx
+        imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
         movl %esi, (%edx)

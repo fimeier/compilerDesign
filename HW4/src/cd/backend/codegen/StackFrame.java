@@ -175,6 +175,7 @@ public class StackFrame {
 			ObjectShape objectShape = cg.objShapeManager.get(cg.sg.currentClass.classDecl.name);
 			cg.emit.emit("movl", target(), reg);
 			int offset = objectShape.getOffset(variable.name);
+			//System.out.println(offset);
 			String location = getAddr(reg.getRepr(), offset);
 			cg.emit.emit("movl", location, reg.getRepr());
 			return reg;

@@ -118,7 +118,6 @@ Main_main:
           # Emitting new int[][64]
             # Emitting 64
             movl $64, %edi
-          imul $1, %edi
           addl $2, %edi
           pushl $4
           pushl %edi
@@ -141,7 +140,7 @@ Main_main:
           # Emitting x
           movl 8(%ebp), %ecx
           movl 4(%ecx), %ecx
-        imul $1, %ecx
+        imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
         movl %esi, (%edx)

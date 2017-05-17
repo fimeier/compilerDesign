@@ -79,6 +79,8 @@ public class AstCodeGenerator {
 		emit.emitRaw("\t\t" + Config.DOT_STRING + " \"%d\"");
 		
 		emit.emitRaw(Config.TEXT_SECTION);
+		emit.emitCommentSection("start: Main-Class");
+
 		emit.emit(".global", Config.MAIN);
 		
 		emit.emitRaw("");
@@ -92,10 +94,14 @@ public class AstCodeGenerator {
 		
 		
 		// prolog
+		emit.emitComment("start: prolog");
 		emit.emit("pushl", BASE_REG);// safe base pointer
 		emit.emit("movl", STACK_REG, BASE_REG);// copy esp to ebp
+		emit.emitComment("end: prolog");
+
 		
 		// Create Main object and safe its address to %eax
+		emit.emitComment("Create Main object and safe its address to %eax");
 		//emit.emit("movl", "$"+objShape.sizeInN(), "%eax"); 
 		emit.emit("pushl", "$4" );    // arg2: size
 		emit.emit("pushl", "$"+objShape.sizeInN() );  // arg1: n items
@@ -104,6 +110,7 @@ public class AstCodeGenerator {
 
 		// %eax contains address of Main Object
 		// now copy the pinter to the vtable to the Main Object
+		emit.emitComment("copy the pinter to the vtable to the Main Object");
 		emit.emit("movl", "$"+objShape.getAddr(), "(%eax)");
 		
 		// get label of the main method
@@ -122,6 +129,9 @@ public class AstCodeGenerator {
 		emit.emit("movl", "$0", Register.EAX);
 		//emit.emitRaw("leave"); //TODO: not working with leave
 		emit.emitRaw("ret");
+		emit.emitCommentSection("end: Main-Class");
+
+		
 
 		for (ClassDecl ast : astRoots) {
 			sg.gen(ast);

@@ -270,7 +270,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			Var var = (Var)ast.left();
 			String typeName = var.type.name.replace("[", "").replace("]", "");	
 			VTable table = cg.vtableManager.get(typeName + "_array");
-			
+						
 			ObjectShape objectShape;
 			if (table.classDecl == null){
 				objectShape = cg.objShapeManager.get("Object");
@@ -281,8 +281,8 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				return null;
 			}
 			
-			// calculate offset of element in array
-			cg.emit.emit("imul", "$"+Integer.toString(objectShape.sizeInByte()), indexReg);
+			// calcutale offset in array
+			cg.emit.emit("imul", "$4", indexReg);
 			cg.emit.emit("addl", "$8", indexReg);
 			cg.emit.emit("addl", indexReg, varReg);
 			cg.emit.emit("movl", "("+varReg+")", varReg);
@@ -305,15 +305,27 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register field(Field ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			Register targetReg = cg.eg.visit(ast.arg(), frame);
+			
+			VTable table = cg.vtableManager.get(ast.arg().type.name);
+			ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
+
+			int offset = objectShape.getOffset(ast.fieldName);
+
+			cg.emit.emit("movl", frame.getAddr(targetReg.getRepr(), offset), targetReg.getRepr());
+			
+			return targetReg;
 		}
 	}
 
 	@Override
 	public Register newArray(NewArray ast, StackFrame frame) {
 		{
+			// NOTE: Array of Objects are stored not contiguously in memory! (inlike in C)
+			// We store a reference to an Object
 			String typeName = ast.typeName.replace("[", "").replace("]", "");	
 			VTable table = cg.vtableManager.get(typeName + "_array");
+			
 			
 			ObjectShape objectShape;
 			if (table.classDecl == null){
@@ -331,7 +343,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			
 			// TODO: check size ok
 			// calculate the size of the array
-			cg.emit.emit("imul", "$"+Integer.toString(objectShape.sizeInN()), sizeReg);
+			//cg.emit.emit("imul", "$"+Integer.toString(objectShape.sizeInN()), sizeReg);
 			cg.emit.emit("addl", "$2", sizeReg);
 			
 			// Create Array and safe its address to %eax
@@ -415,8 +427,9 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				i++;
 			}
 			
-			// prepare function call:
-			cg.emit.emit("subl", "$4", "%esp");  // make space for return value
+			/* prepare function call: */
+			// make space for return value
+			cg.emit.emit("subl", "$4", "%esp");  
 			// add the argmuents to the stack
 			List<Expr> arguments = new ArrayList<Expr>(ast.argumentsWithoutReceiver());
 			Collections.reverse(arguments);
@@ -497,7 +510,6 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		labelNumber++;
 		return ".L"+labelNumber;
 	}
-
 
 	public void saveRegisters(List<Register> dontBother, Register[] affected){
 		//save registers: affected - dontBother

@@ -34,31 +34,10 @@ ClassDecl (name: Main, superClass: Object)
 | | Seq ()
 | | | Assign ()
 | | | | Var (name: a)
-| | | | NullConst ()
-| | | Assign ()
-| | | | Var (name: b)
-| | | | NullConst ()
-| | | Assign ()
-| | | | Var (name: a)
 | | | | NewObject (typeName: A)
-| | | MethodCall ()
-| | | | MethodCallExpr (methodName: base)
-| | | | | Var (name: a)
-| | | MethodCall ()
-| | | | MethodCallExpr (methodName: override)
-| | | | | Var (name: a)
 | | | Assign ()
 | | | | Var (name: b)
 | | | | NewObject (typeName: B)
-| | | MethodCall ()
-| | | | MethodCallExpr (methodName: base)
-| | | | | Var (name: b)
-| | | MethodCall ()
-| | | | MethodCallExpr (methodName: override)
-| | | | | Var (name: b)
-| | | MethodCall ()
-| | | | MethodCallExpr (methodName: sub)
-| | | | | Var (name: b)
 | | | Assign ()
 | | | | Var (name: a)
 | | | | Var (name: b)
@@ -68,43 +47,17 @@ ClassDecl (name: Main, superClass: Object)
 | | | MethodCall ()
 | | | | MethodCallExpr (methodName: override)
 | | | | | Var (name: a)
-| | | MethodCall ()
-| | | | MethodCallExpr (methodName: base)
-| | | | | Var (name: b)
-| | | MethodCall ()
-| | | | MethodCallExpr (methodName: override)
-| | | | | Var (name: b)
-| | | MethodCall ()
-| | | | MethodCallExpr (methodName: sub)
-| | | | | Var (name: b)
 
 Phase exec failed because we expected to see:
 1
-0
-1
 2
-3
-1
-2
-1
-2
-3
 
 But we actually saw:
 1
 0
-1
-2
-3
-1
-0
-1
-2
-3
 
 The difference is:
-At line   7 /   7:
+At line   2 /   2:
 < 2
 > 0
-Line  11 /  11:
 

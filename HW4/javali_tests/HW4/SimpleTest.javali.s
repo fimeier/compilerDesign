@@ -120,7 +120,6 @@ Main_main:
           # Emitting new int[][3]
             # Emitting 3
             movl $3, %edi
-          imul $1, %edi
           addl $2, %edi
           pushl $4
           pushl %edi
@@ -149,24 +148,30 @@ Main_main:
           movl %eax, %esi
         movl 8(%ebp), %edx
         movl %esi, 8(%edx)
-        # Emitting g = 1
-          # Emitting 1
-          movl $1, %esi
-        movl 8(%ebp), %edx
-        movl %esi, 12(%edx)
-        # Emitting g = 1
-          # Emitting 1
-          movl $1, %esi
+        # Emitting a.x = 5
+          # Emitting 5
+          movl $5, %esi
+          # Emitting a
+          movl 8(%ebp), %edx
+          movl 4(%edx), %edx
+        movl %esi, 4(%edx)
+        # Emitting g = a.x
+          # Emitting a.x
+            # Emitting a
+            movl 8(%ebp), %esi
+            movl 4(%esi), %esi
+          movl 4(%esi), %esi
         movl 8(%ebp), %edx
         movl %esi, 12(%edx)
         # Emitting c[0] = this.loc(...)
           # Emitting this.loc(...)
           subl $4, %esp
-            # Emitting (1 + 5)
-              # Emitting 5
-              movl $5, %edx
+            # Emitting (g + 1)
               # Emitting 1
-              movl $1, %ecx
+              movl $1, %edx
+              # Emitting g
+              movl 8(%ebp), %ecx
+              movl 12(%ecx), %ecx
             add %edx, %ecx
           pushl %ecx
             # Emitting this
@@ -179,7 +184,7 @@ Main_main:
           movl -4(%ebp), %edx
           # Emitting 0
           movl $0, %ebx
-        imul $1, %ebx
+        imul $4, %ebx
         addl $8, %ebx
         addl %ebx, %edx
         movl %ecx, (%edx)
