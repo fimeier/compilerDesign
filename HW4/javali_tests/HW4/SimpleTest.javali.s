@@ -28,16 +28,27 @@
 		.string "\n"
 	STR_D:
 		.string "%d"
+	BASE_PT:
+	.int 0
+	STACK_PT:
+	.int 0
 .section .text
+# start: Main-Class___________________________________________________
 .global main
 
 main:
+# start: prolog
+movl %esp, STACK_PT
+movl %ebp, BASE_PT
 pushl %ebp
 movl %esp, %ebp
+# end: prolog
+# Create Main object and safe its address to %eax
 pushl $4
 pushl $4
 call calloc
 addl $8, %esp
+# copy the pinter to the vtable to the Main Object
 movl $vtable_Main, (%eax)
 pushl %eax
 call Main_main
@@ -45,6 +56,11 @@ addl $4, %esp
 movl %ebp, %esp
 popl %ebp
 movl $0, %eax
+ret
+# end: Main-Class_____________________________________________________
+.ERROR_EXIT:
+movl STACK_PT, %esp
+movl BASE_PT, %ebp
 ret
   # Emitting class A {...}
     # Emitting int x
@@ -57,6 +73,7 @@ A_foo:
       # Emitting (...)
         # Emitting write(x)
           # Emitting x
+# __________var_______________________________________________________
           movl 8(%ebp), %edi
           movl 4(%edi), %edi
         sub $16, %esp
@@ -117,6 +134,7 @@ Main_main:
     pushl $0
       # Emitting (...)
         # Emitting c = new int[][3]
+# ________assign______________________________________________________
           # Emitting new int[][3]
             # Emitting 3
             movl $3, %edi
@@ -129,7 +147,9 @@ Main_main:
           movl %eax, %esi
         movl %esi, -4(%ebp)
         # Emitting a = new A()
+# ________assign______________________________________________________
           # Emitting new A()
+# __________newObject_________________________________________________
           pushl $4
           pushl $2
           call calloc
@@ -139,7 +159,9 @@ Main_main:
         movl 8(%ebp), %edx
         movl %esi, 4(%edx)
         # Emitting b = new B()
+# ________assign______________________________________________________
           # Emitting new B()
+# __________newObject_________________________________________________
           pushl $4
           pushl $2
           call calloc
@@ -149,27 +171,33 @@ Main_main:
         movl 8(%ebp), %edx
         movl %esi, 8(%edx)
         # Emitting a.x = 5
+# ________assign______________________________________________________
           # Emitting 5
           movl $5, %esi
           # Emitting a
+# __________var_______________________________________________________
           movl 8(%ebp), %edx
           movl 4(%edx), %edx
         movl %esi, 4(%edx)
         # Emitting g = a.x
+# ________assign______________________________________________________
           # Emitting a.x
             # Emitting a
+# ____________var_____________________________________________________
             movl 8(%ebp), %esi
             movl 4(%esi), %esi
           movl 4(%esi), %esi
         movl 8(%ebp), %edx
         movl %esi, 12(%edx)
         # Emitting c[0] = this.loc(...)
+# ________assign______________________________________________________
           # Emitting this.loc(...)
           subl $4, %esp
             # Emitting (g + 1)
               # Emitting 1
               movl $1, %edx
               # Emitting g
+# ______________var___________________________________________________
               movl 8(%ebp), %ecx
               movl 12(%ecx), %ecx
             add %edx, %ecx
@@ -181,6 +209,7 @@ Main_main:
           addl $8, %esp
           popl %ecx
           # Emitting c
+# __________var_______________________________________________________
           movl -4(%ebp), %edx
           # Emitting 0
           movl $0, %ebx
@@ -191,6 +220,7 @@ Main_main:
         # Emitting write(c[0])
           # Emitting c[0]
             # Emitting c
+# ____________var_____________________________________________________
             movl -4(%ebp), %ecx
             # Emitting 0
             movl $0, %edx
@@ -218,15 +248,18 @@ Main_loc:
     # set local variables:
       # Emitting (...)
         # Emitting arg = (arg + 2)
+# ________assign______________________________________________________
           # Emitting (arg + 2)
             # Emitting 2
             movl $2, %edi
             # Emitting arg
+# ____________var_____________________________________________________
             movl 12(%ebp), %esi
           add %edi, %esi
         movl %esi, 12(%ebp)
         # Emitting return arg
           # Emitting arg
+# __________var_______________________________________________________
           movl 12(%ebp), %esi
         movl %esi, 16(%ebp)
     addl $0, %esp

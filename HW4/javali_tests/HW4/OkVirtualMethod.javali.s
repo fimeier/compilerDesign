@@ -27,16 +27,27 @@
 		.string "\n"
 	STR_D:
 		.string "%d"
+	BASE_PT:
+	.int 0
+	STACK_PT:
+	.int 0
 .section .text
+# start: Main-Class___________________________________________________
 .global main
 
 main:
+# start: prolog
+movl %esp, STACK_PT
+movl %ebp, BASE_PT
 pushl %ebp
 movl %esp, %ebp
+# end: prolog
+# Create Main object and safe its address to %eax
 pushl $4
 pushl $1
 call calloc
 addl $8, %esp
+# copy the pinter to the vtable to the Main Object
 movl $vtable_Main, (%eax)
 pushl %eax
 call Main_main
@@ -44,6 +55,11 @@ addl $4, %esp
 movl %ebp, %esp
 popl %ebp
 movl $0, %eax
+ret
+# end: Main-Class_____________________________________________________
+.ERROR_EXIT:
+movl STACK_PT, %esp
+movl BASE_PT, %ebp
 ret
   # Emitting class A {...}
     # Emitting void override(...) {...}
@@ -160,7 +176,9 @@ Main_main:
     pushl $0
       # Emitting (...)
         # Emitting a = new A()
+# ________assign______________________________________________________
           # Emitting new A()
+# __________newObject_________________________________________________
           pushl $4
           pushl $1
           call calloc
@@ -169,7 +187,9 @@ Main_main:
           movl %eax, %edi
         movl %edi, -4(%ebp)
         # Emitting b = new B()
+# ________assign______________________________________________________
           # Emitting new B()
+# __________newObject_________________________________________________
           pushl $4
           pushl $1
           call calloc
@@ -178,25 +198,11 @@ Main_main:
           movl %eax, %edi
         movl %edi, -8(%ebp)
         # Emitting a = b
+# ________assign______________________________________________________
           # Emitting b
+# __________var_______________________________________________________
           movl -8(%ebp), %edi
         movl %edi, -4(%ebp)
-        # Emitting a.base(...)
-        subl $4, %esp
-          # Emitting a
-          movl -4(%ebp), %edi
-        pushl %edi
-        call A_base
-        addl $4, %esp
-        popl %edi
-        # Emitting a.override(...)
-        subl $4, %esp
-          # Emitting a
-          movl -4(%ebp), %edi
-        pushl %edi
-        call A_override
-        addl $4, %esp
-        popl %edi
     addl $8, %esp
     # restore old ebp
     movl %ebp, %esp

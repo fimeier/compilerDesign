@@ -10,6 +10,7 @@ import cd.Config;
 import cd.Main;
 import cd.backend.codegen.RegisterManager.Register;
 import cd.ir.Ast.ClassDecl;
+import cd.ir.Ast.VarDecl;
 
 public class AstCodeGenerator {
 
@@ -78,6 +79,12 @@ public class AstCodeGenerator {
 		emit.emitLabel("\tSTR_D");
 		emit.emitRaw("\t\t" + Config.DOT_STRING + " \"%d\"");
 		
+		// safe pointer for error exit
+		emit.emitLabel("\tBASE_PT");
+		emit.emitRaw("	.int 0");
+		emit.emitLabel("\tSTACK_PT");
+		emit.emitRaw("	.int 0");
+		
 		emit.emitRaw(Config.TEXT_SECTION);
 		emit.emitCommentSection("start: Main-Class");
 
@@ -95,8 +102,13 @@ public class AstCodeGenerator {
 		
 		// prolog
 		emit.emitComment("start: prolog");
+		
+		emit.emit("movl", STACK_REG, "STACK_PT");
+		emit.emit("movl", BASE_REG, "BASE_PT");
+		
 		emit.emit("pushl", BASE_REG);// safe base pointer
 		emit.emit("movl", STACK_REG, BASE_REG);// copy esp to ebp
+		
 		emit.emitComment("end: prolog");
 
 		
@@ -130,12 +142,19 @@ public class AstCodeGenerator {
 		//emit.emitRaw("leave"); //TODO: not working with leave
 		emit.emitRaw("ret");
 		emit.emitCommentSection("end: Main-Class");
-
+		
+		
+		emit.emitLabel(".ERROR_EXIT");
+		emit.emit("movl", "STACK_PT", STACK_REG );
+		emit.emit("movl", "BASE_PT", BASE_REG );
+		emit.emitRaw("ret");
 		
 
 		for (ClassDecl ast : astRoots) {
 			sg.gen(ast);
 		}
+		
+		
 		
 	}
 	

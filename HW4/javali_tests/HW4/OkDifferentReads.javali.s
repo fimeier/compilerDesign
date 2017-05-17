@@ -14,16 +14,27 @@
 		.string "\n"
 	STR_D:
 		.string "%d"
+	BASE_PT:
+	.int 0
+	STACK_PT:
+	.int 0
 .section .text
+# start: Main-Class___________________________________________________
 .global main
 
 main:
+# start: prolog
+movl %esp, STACK_PT
+movl %ebp, BASE_PT
 pushl %ebp
 movl %esp, %ebp
+# end: prolog
+# Create Main object and safe its address to %eax
 pushl $4
 pushl $2
 call calloc
 addl $8, %esp
+# copy the pinter to the vtable to the Main Object
 movl $vtable_Main, (%eax)
 pushl %eax
 call Main_main
@@ -31,6 +42,11 @@ addl $4, %esp
 movl %ebp, %esp
 popl %ebp
 movl $0, %eax
+ret
+# end: Main-Class_____________________________________________________
+.ERROR_EXIT:
+movl STACK_PT, %esp
+movl BASE_PT, %ebp
 ret
   # Emitting class Main {...}
     # Emitting int x
@@ -59,6 +75,7 @@ Main_main:
         call printf
         add $16, %esp
         # Emitting y = read()
+# ________assign______________________________________________________
           # Emitting read()
           sub $16, %esp
           leal 8(%esp), %edi
@@ -73,6 +90,7 @@ Main_main:
             # Emitting 1
             movl $1, %edi
             # Emitting y
+# ____________var_____________________________________________________
             movl -4(%ebp), %esi
           add %edi, %esi
         sub $16, %esp
@@ -86,6 +104,7 @@ Main_main:
         call printf
         add $16, %esp
         # Emitting x = read()
+# ________assign______________________________________________________
           # Emitting read()
           sub $16, %esp
           leal 8(%esp), %esi
@@ -101,6 +120,7 @@ Main_main:
             # Emitting 1
             movl $1, %esi
             # Emitting x
+# ____________var_____________________________________________________
             movl 8(%ebp), %edi
             movl 4(%edi), %edi
           add %esi, %edi
@@ -115,6 +135,7 @@ Main_main:
         call printf
         add $16, %esp
         # Emitting arr = new int[][64]
+# ________assign______________________________________________________
           # Emitting new int[][64]
             # Emitting 64
             movl $64, %edi
@@ -127,6 +148,7 @@ Main_main:
           movl %eax, %esi
         movl %esi, -8(%ebp)
         # Emitting arr[x] = read()
+# ________assign______________________________________________________
           # Emitting read()
           sub $16, %esp
           leal 8(%esp), %esi
@@ -136,8 +158,10 @@ Main_main:
           movl 8(%esp), %esi
           add $16, %esp
           # Emitting arr
+# __________var_______________________________________________________
           movl -8(%ebp), %edx
           # Emitting x
+# __________var_______________________________________________________
           movl 8(%ebp), %ecx
           movl 4(%ecx), %ecx
         imul $4, %ecx
@@ -148,8 +172,10 @@ Main_main:
           # Emitting (arr[x] + 1)
             # Emitting arr[x]
               # Emitting arr
+# ______________var___________________________________________________
               movl -8(%ebp), %esi
               # Emitting x
+# ______________var___________________________________________________
               movl 8(%ebp), %edx
               movl 4(%edx), %edx
             imul $4, %edx

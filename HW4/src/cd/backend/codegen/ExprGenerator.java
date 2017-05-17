@@ -2,6 +2,7 @@ package cd.backend.codegen;
 
 import static cd.Config.SCANF;
 import static cd.backend.codegen.AssemblyEmitter.constant;
+import static cd.backend.codegen.RegisterManager.BASE_REG;
 import static cd.backend.codegen.RegisterManager.STACK_REG;
 
 import java.util.ArrayList;
@@ -11,8 +12,11 @@ import java.util.List;
 
 import cd.ToDoException;
 import cd.backend.codegen.RegisterManager.Register;
+import cd.frontend.semantic.SemanticFailure;
+import cd.frontend.semantic.SemanticFailure.Cause;
 import cd.ir.Ast.BinaryOp;
 import cd.ir.Ast.BinaryOp.BOp;
+import cd.ir.Symbol.TypeSymbol;
 import cd.ir.Ast.BooleanConst;
 import cd.ir.Ast.BuiltInRead;
 import cd.ir.Ast.Cast;
@@ -253,10 +257,135 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		}
 	}
 
+	//TODO
 	@Override
 	public Register cast(Cast ast, StackFrame frame) {
 		{
-			throw new ToDoException();
+			/*
+			 * casting: (a) b
+			 */
+			
+			cg.emit.emitCommentSection("cast");
+			
+			//TODOregisters
+			Register reg1 = cg.rm.getRegister();
+			Register reg2 = cg.rm.getRegister();
+			
+			//labels
+			String labelNotSubtype = cg.eg.getNewLabel();
+			String labelIsSubtype = cg.eg.getNewLabel();
+			String labelEnd = cg.eg.getNewLabel();
+			
+			//String labelCheckSubtype = cg.eg.getNewLabel();
+			String labelCheckObjectType = cg.eg.getNewLabel();
+
+
+			/*
+			 * check subtype
+			 */
+			
+			/*
+			 * get cast type and store it in reg1
+			 */
+			String castTypeName = ast.typeName;
+			//get vtable-address from castTypeName
+			cg.emit.emitCommentSection("castTypeName");
+			ObjectShape objShape = cg.objShapeManager.get(castTypeName);
+			cg.emit.emit("movl", "$"+objShape.getAddr(), reg1);
+
+
+
+			/*
+			 * get rightRegisteType and store it in reg2
+			 */
+			//TypeSymbol typeRight =
+			Register rTypeRegister = cg.eg.visit(ast.arg(),frame);
+			//get vtable-address from supertype
+			cg.emit.emitCommentSection("rTypeRegister");
+			cg.emit.emit("movl", rTypeRegister, reg2); 
+
+			/*
+			 * labelCheckObjectType
+			 */
+			cg.emit.emitLabel(labelCheckObjectType);
+			cg.emit.emit("cmpl", "$0", reg2);
+			cg.emit.emit("je", labelNotSubtype); //wenn reg2 vom TypObject => nicht gefunden
+
+
+			
+			/*
+			 * Test (A) b; ist b bereits vom Typ A?
+			 */
+
+			cg.emit.emit("cmpl", reg1, reg2);
+			cg.emit.emit("je", labelIsSubtype); //springt zum labelIsSubtype wenn identisch
+			
+			/*
+			 * get superType and check again
+			 */
+			cg.emit.emit("movl", "("+reg2.getRepr()+")", reg2); //get superType and store it in reg2
+			cg.emit.emit("jmp", labelCheckObjectType);
+			
+			
+			
+
+			/*
+			 * labelNotSubtype
+			 */
+			cg.emit.emitLabel(labelNotSubtype);
+			//TODO
+			//
+			throwError(1);
+			
+			cg.emit.emit("jmp", labelEnd);
+			
+			
+			
+			
+			
+			/*
+			 * labelIsSubtype
+			 */
+			cg.emit.emitLabel(labelIsSubtype);
+			
+			
+			
+			
+			
+			/*
+			 * labelEnd
+			 */
+			cg.emit.emitLabel(labelEnd);
+
+
+			
+			
+
+			//boolean isSubtype = false;
+			/*
+			 * two possible cases for casting: (a) b
+			 * 1. b subtype of a
+			 * 2. a subtype of b
+			 */
+			/*
+			//1. b subtype of a
+			isSubtype = checkSubtype(cType, typeRight);
+			//2. a subtype of b
+			isSubtype = isSubtype || checkSubtype(typeRight, cType);
+
+			if (!isSubtype)
+				throw new SemanticFailure(Cause.TYPE_ERROR);
+
+			return cType;	
+			*/
+			//.....
+			
+			//return error code
+			
+			//throw new ToDoException();
+			return rTypeRegister;
+			
+			//TODO register freigeben
 		}
 	}
 
@@ -366,6 +495,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register newObject(NewObject ast, StackFrame frame) {
 		{
+			cg.emit.emitCommentSection("newObject");
 			//Register reg
 			VTable table = cg.vtableManager.get(ast.typeName);
 			ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
@@ -501,6 +631,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register var(Var ast, StackFrame frame) {
 		{
+			cg.emit.emitCommentSection("var");
 			Register reg = frame.getVariable(ast);
 			return reg;
 		}
@@ -526,6 +657,11 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			if (!dontBother.contains(s) && cg.rm.isInUse(s))
 				cg.emit.emit("popl", s);
 		}
+	}
+	
+	private void throwError(int errorCode){
+		cg.emit.emit("movl", "$"+errorCode, Register.EAX);
+		cg.emit.emit("jmp", ".ERROR_EXIT");
 	}
 
 }

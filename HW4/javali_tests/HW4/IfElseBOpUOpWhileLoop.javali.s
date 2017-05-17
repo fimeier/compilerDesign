@@ -14,16 +14,27 @@
 		.string "\n"
 	STR_D:
 		.string "%d"
+	BASE_PT:
+	.int 0
+	STACK_PT:
+	.int 0
 .section .text
+# start: Main-Class___________________________________________________
 .global main
 
 main:
+# start: prolog
+movl %esp, STACK_PT
+movl %ebp, BASE_PT
 pushl %ebp
 movl %esp, %ebp
+# end: prolog
+# Create Main object and safe its address to %eax
 pushl $4
 pushl $2
 call calloc
 addl $8, %esp
+# copy the pinter to the vtable to the Main Object
 movl $vtable_Main, (%eax)
 pushl %eax
 call Main_main
@@ -31,6 +42,11 @@ addl $4, %esp
 movl %ebp, %esp
 popl %ebp
 movl $0, %eax
+ret
+# end: Main-Class_____________________________________________________
+.ERROR_EXIT:
+movl STACK_PT, %esp
+movl BASE_PT, %ebp
 ret
   # Emitting class Main {...}
     # Emitting int b
@@ -48,19 +64,23 @@ Main_main:
     pushl $0
       # Emitting (...)
         # Emitting b = 300
+# ________assign______________________________________________________
           # Emitting 300
           movl $300, %edi
         movl 8(%ebp), %esi
         movl %edi, 4(%esi)
         # Emitting a = 200
+# ________assign______________________________________________________
           # Emitting 200
           movl $200, %edi
         movl %edi, -12(%ebp)
         # Emitting bt = true
+# ________assign______________________________________________________
           # Emitting true
           movl $1, %edi
         movl %edi, -4(%ebp)
         # Emitting bf = false
+# ________assign______________________________________________________
           # Emitting false
           movl $0, %edi
         movl %edi, -8(%ebp)
@@ -68,9 +88,11 @@ Main_main:
 # ________ifElse______________________________________________________
           # Emitting (a < b)
             # Emitting b
+# ____________var_____________________________________________________
             movl 8(%ebp), %edi
             movl 4(%edi), %edi
             # Emitting a
+# ____________var_____________________________________________________
             movl -12(%ebp), %esi
           cmpl %edi, %esi
           setl %al
@@ -79,6 +101,7 @@ Main_main:
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
+# ______________var___________________________________________________
               movl -12(%ebp), %esi
             sub $16, %esp
             movl %esi, 4(%esp)
@@ -101,9 +124,11 @@ Main_main:
 # ________ifElse______________________________________________________
           # Emitting (a <= b)
             # Emitting b
+# ____________var_____________________________________________________
             movl 8(%ebp), %esi
             movl 4(%esi), %esi
             # Emitting a
+# ____________var_____________________________________________________
             movl -12(%ebp), %edi
           cmpl %esi, %edi
           setle %al
@@ -112,6 +137,7 @@ Main_main:
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
+# ______________var___________________________________________________
               movl -12(%ebp), %edi
             sub $16, %esp
             movl %edi, 4(%esp)
@@ -134,9 +160,11 @@ Main_main:
 # ________ifElse______________________________________________________
           # Emitting (a > b)
             # Emitting b
+# ____________var_____________________________________________________
             movl 8(%ebp), %edi
             movl 4(%edi), %edi
             # Emitting a
+# ____________var_____________________________________________________
             movl -12(%ebp), %esi
           cmpl %edi, %esi
           setg %al
@@ -145,6 +173,7 @@ Main_main:
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
+# ______________var___________________________________________________
               movl -12(%ebp), %esi
             sub $16, %esp
             movl %esi, 4(%esp)
@@ -167,9 +196,11 @@ Main_main:
 # ________ifElse______________________________________________________
           # Emitting (a > b)
             # Emitting b
+# ____________var_____________________________________________________
             movl 8(%ebp), %esi
             movl 4(%esi), %esi
             # Emitting a
+# ____________var_____________________________________________________
             movl -12(%ebp), %edi
           cmpl %esi, %edi
           setg %al
@@ -178,6 +209,7 @@ Main_main:
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
+# ______________var___________________________________________________
               movl -12(%ebp), %edi
             sub $16, %esp
             movl %edi, 4(%esp)
@@ -208,6 +240,7 @@ Main_main:
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
+# ______________var___________________________________________________
               movl -12(%ebp), %edi
             sub $16, %esp
             movl %edi, 4(%esp)
@@ -238,6 +271,7 @@ Main_main:
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
+# ______________var___________________________________________________
               movl -12(%ebp), %edi
             sub $16, %esp
             movl %edi, 4(%esp)
@@ -274,6 +308,7 @@ Main_main:
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
+# ______________var___________________________________________________
               movl -12(%ebp), %esi
             sub $16, %esp
             movl %esi, 4(%esp)
@@ -301,8 +336,10 @@ Main_main:
 # ________ifElse______________________________________________________
           # Emitting (bt || bf)
             # Emitting bf
+# ____________var_____________________________________________________
             movl -8(%ebp), %esi
             # Emitting bt
+# ____________var_____________________________________________________
             movl -4(%ebp), %edi
           orl %esi, %edi
           cmpl $0, %edi
@@ -421,6 +458,7 @@ Main_main:
         call printf
         add $16, %esp
         # Emitting bt = (3 < 4)
+# ________assign______________________________________________________
           # Emitting (3 < 4)
             # Emitting 4
             movl $4, %esi
@@ -431,6 +469,7 @@ Main_main:
           movzbl %al, %edi
         movl %edi, -4(%ebp)
         # Emitting bt = (4 < 3)
+# ________assign______________________________________________________
           # Emitting (4 < 3)
             # Emitting 3
             movl $3, %edi
@@ -441,6 +480,7 @@ Main_main:
           movzbl %al, %esi
         movl %esi, -4(%ebp)
         # Emitting bt = (4 < 4)
+# ________assign______________________________________________________
           # Emitting (4 < 4)
             # Emitting 4
             movl $4, %esi
@@ -451,6 +491,7 @@ Main_main:
           movzbl %al, %edi
         movl %edi, -4(%ebp)
         # Emitting bt = (3 <= 4)
+# ________assign______________________________________________________
           # Emitting (3 <= 4)
             # Emitting 4
             movl $4, %edi
@@ -461,6 +502,7 @@ Main_main:
           movzbl %al, %esi
         movl %esi, -4(%ebp)
         # Emitting bt = (4 <= 3)
+# ________assign______________________________________________________
           # Emitting (4 <= 3)
             # Emitting 3
             movl $3, %esi
@@ -471,6 +513,7 @@ Main_main:
           movzbl %al, %edi
         movl %edi, -4(%ebp)
         # Emitting bt = (4 <= 4)
+# ________assign______________________________________________________
           # Emitting (4 <= 4)
             # Emitting 4
             movl $4, %edi
@@ -481,6 +524,7 @@ Main_main:
           movzbl %al, %esi
         movl %esi, -4(%ebp)
         # Emitting bt = (3 > 4)
+# ________assign______________________________________________________
           # Emitting (3 > 4)
             # Emitting 4
             movl $4, %esi
@@ -491,6 +535,7 @@ Main_main:
           movzbl %al, %edi
         movl %edi, -4(%ebp)
         # Emitting bt = (4 > 3)
+# ________assign______________________________________________________
           # Emitting (4 > 3)
             # Emitting 3
             movl $3, %edi
@@ -501,6 +546,7 @@ Main_main:
           movzbl %al, %esi
         movl %esi, -4(%ebp)
         # Emitting bt = (4 > 4)
+# ________assign______________________________________________________
           # Emitting (4 > 4)
             # Emitting 4
             movl $4, %esi
@@ -511,6 +557,7 @@ Main_main:
           movzbl %al, %edi
         movl %edi, -4(%ebp)
         # Emitting bt = (3 >= 4)
+# ________assign______________________________________________________
           # Emitting (3 >= 4)
             # Emitting 4
             movl $4, %edi
@@ -521,6 +568,7 @@ Main_main:
           movzbl %al, %esi
         movl %esi, -4(%ebp)
         # Emitting bt = (4 >= 3)
+# ________assign______________________________________________________
           # Emitting (4 >= 3)
             # Emitting 3
             movl $3, %esi
@@ -531,6 +579,7 @@ Main_main:
           movzbl %al, %edi
         movl %edi, -4(%ebp)
         # Emitting bt = (4 >= 4)
+# ________assign______________________________________________________
           # Emitting (4 >= 4)
             # Emitting 4
             movl $4, %edi
@@ -541,6 +590,7 @@ Main_main:
           movzbl %al, %esi
         movl %esi, -4(%ebp)
         # Emitting bt = (true && true)
+# ________assign______________________________________________________
           # Emitting (true && true)
             # Emitting true
             movl $1, %esi
@@ -550,6 +600,7 @@ Main_main:
           cmpl $0, %edi
         movl %edi, -4(%ebp)
         # Emitting bt = (true && false)
+# ________assign______________________________________________________
           # Emitting (true && false)
             # Emitting false
             movl $0, %edi
@@ -559,6 +610,7 @@ Main_main:
           cmpl $0, %esi
         movl %esi, -4(%ebp)
         # Emitting bt = (false && false)
+# ________assign______________________________________________________
           # Emitting (false && false)
             # Emitting false
             movl $0, %esi
@@ -568,6 +620,7 @@ Main_main:
           cmpl $0, %edi
         movl %edi, -4(%ebp)
         # Emitting bt = (true || true)
+# ________assign______________________________________________________
           # Emitting (true || true)
             # Emitting true
             movl $1, %edi
@@ -577,6 +630,7 @@ Main_main:
           cmpl $0, %esi
         movl %esi, -4(%ebp)
         # Emitting bt = (true || false)
+# ________assign______________________________________________________
           # Emitting (true || false)
             # Emitting false
             movl $0, %esi
@@ -586,6 +640,7 @@ Main_main:
           cmpl $0, %edi
         movl %edi, -4(%ebp)
         # Emitting bt = (false || false)
+# ________assign______________________________________________________
           # Emitting (false || false)
             # Emitting false
             movl $0, %edi
@@ -595,14 +650,17 @@ Main_main:
           cmpl $0, %esi
         movl %esi, -4(%ebp)
         # Emitting bt = !(bf)
+# ________assign______________________________________________________
           # Emitting !(bf)
             # Emitting bf
+# ____________var_____________________________________________________
             movl -8(%ebp), %esi
           negl %esi
           incl %esi
           cmpl $0, %esi
         movl %esi, -4(%ebp)
         # Emitting bt = !(true)
+# ________assign______________________________________________________
           # Emitting !(true)
             # Emitting true
             movl $1, %esi
@@ -618,6 +676,7 @@ Main_main:
         # Emitting if (bt) {...} else {...}
 # ________ifElse______________________________________________________
           # Emitting bt
+# __________var_______________________________________________________
           movl -4(%ebp), %esi
         cmpl $0, %esi
         je .L18
@@ -677,6 +736,7 @@ Main_main:
         call printf
         add $16, %esp
         # Emitting bt = true
+# ________assign______________________________________________________
           # Emitting true
           movl $1, %esi
         movl %esi, -4(%ebp)
@@ -684,6 +744,7 @@ Main_main:
 # ________whileLoop___________________________________________________
           # Emitting (!(false) && bt)
             # Emitting bt
+# ____________var_____________________________________________________
             movl -4(%ebp), %esi
             # Emitting !(false)
               # Emitting false
@@ -704,8 +765,10 @@ Main_main:
             call printf
             add $16, %esp
             # Emitting bt = !(bt)
+# ____________assign__________________________________________________
               # Emitting !(bt)
                 # Emitting bt
+# ________________var_________________________________________________
                 movl -4(%ebp), %edi
               negl %edi
               incl %edi

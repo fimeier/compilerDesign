@@ -19,16 +19,27 @@
 		.string "\n"
 	STR_D:
 		.string "%d"
+	BASE_PT:
+	.int 0
+	STACK_PT:
+	.int 0
 .section .text
+# start: Main-Class___________________________________________________
 .global main
 
 main:
+# start: prolog
+movl %esp, STACK_PT
+movl %ebp, BASE_PT
 pushl %ebp
 movl %esp, %ebp
+# end: prolog
+# Create Main object and safe its address to %eax
 pushl $4
 pushl $1
 call calloc
 addl $8, %esp
+# copy the pinter to the vtable to the Main Object
 movl $vtable_Main, (%eax)
 pushl %eax
 call Main_main
@@ -36,6 +47,11 @@ addl $4, %esp
 movl %ebp, %esp
 popl %ebp
 movl $0, %eax
+ret
+# end: Main-Class_____________________________________________________
+.ERROR_EXIT:
+movl STACK_PT, %esp
+movl BASE_PT, %ebp
 ret
   # Emitting class A {...}
     # Emitting int i
@@ -48,6 +64,7 @@ A_foo:
       # Emitting (...)
         # Emitting write(p)
           # Emitting p
+# __________var_______________________________________________________
           movl 12(%ebp), %edi
         sub $16, %esp
         movl %edi, 4(%esp)
@@ -56,6 +73,7 @@ A_foo:
         add $16, %esp
         # Emitting write(i)
           # Emitting i
+# __________var_______________________________________________________
           movl 8(%ebp), %edi
           movl 4(%edi), %edi
         sub $16, %esp
@@ -84,7 +102,9 @@ Main_main:
     pushl $0
       # Emitting (...)
         # Emitting a = new A()
+# ________assign______________________________________________________
           # Emitting new A()
+# __________newObject_________________________________________________
           pushl $4
           pushl $2
           call calloc
@@ -93,9 +113,11 @@ Main_main:
           movl %eax, %edi
         movl %edi, -4(%ebp)
         # Emitting a.i = 10
+# ________assign______________________________________________________
           # Emitting 10
           movl $10, %edi
           # Emitting a
+# __________var_______________________________________________________
           movl -4(%ebp), %esi
         movl %edi, 4(%esi)
         # Emitting a.foo(...)
@@ -104,6 +126,7 @@ Main_main:
           movl $1, %esi
         pushl %esi
           # Emitting a
+# __________var_______________________________________________________
           movl -4(%ebp), %esi
         pushl %esi
         call A_foo
@@ -115,6 +138,7 @@ Main_main:
           movl $2, %edx
         pushl %edx
           # Emitting a
+# __________var_______________________________________________________
           movl -4(%ebp), %edx
         pushl %edx
         call A_foo
@@ -126,6 +150,7 @@ Main_main:
           movl $3, %ecx
         pushl %ecx
           # Emitting a
+# __________var_______________________________________________________
           movl -4(%ebp), %ecx
         pushl %ecx
         call A_foo

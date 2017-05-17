@@ -1,7 +1,29 @@
 /* Test legal downcasts */
 
-class A { }
-class B extends A { }
+class A {
+	int a;
+	int b;
+	void print(){
+		a = 5;
+		b = 5;
+		write(a);
+		write(b);
+		writeln();
+	}
+		
+}
+class B extends A {
+	//int a;
+	int b;
+	void print(){
+		a = 6;
+		b = 6;
+		write(a);
+		write(b);
+		writeln();
+	}
+	
+}
 
 class Main {
    void main() {
@@ -9,6 +31,10 @@ class Main {
       B b;
       a = new B();
       b = (B) a;   /* OK at runtime */
-      write(0); 
+      write(0);
+      writeln();
+      a.print();
+      b.print();
+      
    }
 }

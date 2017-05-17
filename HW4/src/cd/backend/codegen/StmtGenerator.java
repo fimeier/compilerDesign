@@ -414,60 +414,62 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 
 	@Override
 	public Register assign(Assign ast, StackFrame frame) {
-		{
-			Register rightReg = cg.eg.visit(ast.right(), frame);
 
-			if (ast.left() instanceof Var){ // assign to a variable
-				Var var = (Var) ast.left();
-				frame.assignToVar(var, rightReg);
-			} else if (ast.left() instanceof Index){ // assign to an array element
-				Index ind = (Index) ast.left();
-				Register varReg = cg.eg.visit(ind.left(), frame);
-				Register indexReg = cg.eg.visit(ind.right(), frame);
+		cg.emit.emitCommentSection("assign");
 
-				Var var = (Var)ind.left();
-				String typeName = var.type.name.replace("[", "").replace("]", "");	
-				VTable table = cg.vtableManager.get(typeName + "_array");
+		Register rightReg = cg.eg.visit(ast.right(), frame);
 
-				ObjectShape objectShape;
-				if (table.classDecl == null){
-					objectShape = cg.objShapeManager.get("Object");
-				} else {
-					objectShape = cg.objShapeManager.get(table.classDecl.name);
-				}
-				if (objectShape == null){
-					return null;
-				}
+		if (ast.left() instanceof Var){ // assign to a variable
+			Var var = (Var) ast.left();
+			frame.assignToVar(var, rightReg);
+		} else if (ast.left() instanceof Index){ // assign to an array element
+			Index ind = (Index) ast.left();
+			Register varReg = cg.eg.visit(ind.left(), frame);
+			Register indexReg = cg.eg.visit(ind.right(), frame);
 
-				// calculate offset of element in array
-				//cg.emit.emit("imul", "$"+Integer.toString(objectShape.sizeInN()), indexReg);
-				cg.emit.emit("imul", "$4", indexReg);
-				cg.emit.emit("addl", "$8", indexReg);
-				cg.emit.emit("addl", indexReg, varReg);				
-				
-				cg.emit.emit("movl", rightReg, "("+varReg+")");
-				frame.releaseRegister(indexReg);
-				frame.releaseRegister(varReg);
-			} else if (ast.left() instanceof Field){ // assign to field, e.g. a.x
-				Field left = (Field) ast.left(); 
-				
-				Register targetReg = cg.eg.visit(left.arg(), frame);
-				
-				VTable table = cg.vtableManager.get(left.arg().type.name);
-				ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
+			Var var = (Var)ind.left();
+			String typeName = var.type.name.replace("[", "").replace("]", "");	
+			VTable table = cg.vtableManager.get(typeName + "_array");
 
-				int offset = objectShape.getOffset(left.fieldName);
-
-				cg.emit.emit("movl", rightReg, frame.getAddr(targetReg.getRepr(), offset));
-				
-				frame.releaseRegister(targetReg);
+			ObjectShape objectShape;
+			if (table.classDecl == null){
+				objectShape = cg.objShapeManager.get("Object");
 			} else {
-				throw new ToDoException(); 
+				objectShape = cg.objShapeManager.get(table.classDecl.name);
+			}
+			if (objectShape == null){
+				return null;
 			}
 
-			cg.rm.releaseRegister(rightReg);
-			return null;
+			// calculate offset of element in array
+			//cg.emit.emit("imul", "$"+Integer.toString(objectShape.sizeInN()), indexReg);
+			cg.emit.emit("imul", "$4", indexReg);
+			cg.emit.emit("addl", "$8", indexReg);
+			cg.emit.emit("addl", indexReg, varReg);				
+
+			cg.emit.emit("movl", rightReg, "("+varReg+")");
+			frame.releaseRegister(indexReg);
+			frame.releaseRegister(varReg);
+		} else if (ast.left() instanceof Field){ // assign to field, e.g. a.x
+			Field left = (Field) ast.left(); 
+
+			Register targetReg = cg.eg.visit(left.arg(), frame);
+
+			VTable table = cg.vtableManager.get(left.arg().type.name);
+			ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
+
+			int offset = objectShape.getOffset(left.fieldName);
+
+			cg.emit.emit("movl", rightReg, frame.getAddr(targetReg.getRepr(), offset));
+
+			frame.releaseRegister(targetReg);
+		} else {
+			throw new ToDoException(); 
 		}
+
+		cg.rm.releaseRegister(rightReg);
+		return null;
+
 	}
 	@Override
 	public Register builtInWrite(BuiltInWrite ast, StackFrame frame) {

@@ -26,12 +26,18 @@
 		.string "\n"
 	STR_D:
 		.string "%d"
+	BASE_PT:
+	.int 0
+	STACK_PT:
+	.int 0
 .section .text
 # start: Main-Class___________________________________________________
 .global main
 
 main:
 # start: prolog
+movl %esp, STACK_PT
+movl %ebp, BASE_PT
 pushl %ebp
 movl %esp, %ebp
 # end: prolog
@@ -50,6 +56,10 @@ popl %ebp
 movl $0, %eax
 ret
 # end: Main-Class_____________________________________________________
+.ERROR_EXIT:
+movl STACK_PT, %esp
+movl BASE_PT, %ebp
+ret
   # Emitting class A {...}
     # Emitting int field
     # Emitting void funA(...) {...}
@@ -80,6 +90,7 @@ A_foo:
         add $16, %esp
         # Emitting write(field)
           # Emitting field
+# __________var_______________________________________________________
           movl 8(%ebp), %edi
           movl 4(%edi), %edi
         sub $16, %esp
@@ -122,6 +133,7 @@ Main_main:
     pushl $0
       # Emitting (...)
         # Emitting x = new A[][2]
+# ________assign______________________________________________________
           # Emitting new A[][2]
             # Emitting 2
             movl $2, %edi
@@ -135,11 +147,13 @@ Main_main:
         movl 8(%ebp), %edx
         movl %esi, 4(%edx)
         # Emitting i = 1
+# ________assign______________________________________________________
           # Emitting 1
           movl $1, %esi
         movl %esi, -4(%ebp)
         # Emitting write(i)
           # Emitting i
+# __________var_______________________________________________________
           movl -4(%ebp), %esi
         sub $16, %esp
         movl %esi, 4(%esp)
@@ -152,7 +166,9 @@ Main_main:
         call printf
         add $16, %esp
         # Emitting x[i] = new A()
+# ________assign______________________________________________________
           # Emitting new A()
+# __________newObject_________________________________________________
           pushl $4
           pushl $2
           call calloc
@@ -160,26 +176,32 @@ Main_main:
           movl $vtable_A, (%eax)
           movl %eax, %esi
           # Emitting x
+# __________var_______________________________________________________
           movl 8(%ebp), %edx
           movl 4(%edx), %edx
           # Emitting i
+# __________var_______________________________________________________
           movl -4(%ebp), %ecx
         imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
         movl %esi, (%edx)
         # Emitting x[i].field = (i + 1)
+# ________assign______________________________________________________
           # Emitting (i + 1)
             # Emitting 1
             movl $1, %esi
             # Emitting i
+# ____________var_____________________________________________________
             movl -4(%ebp), %edx
           add %esi, %edx
           # Emitting x[i]
             # Emitting x
+# ____________var_____________________________________________________
             movl 8(%ebp), %esi
             movl 4(%esi), %esi
             # Emitting i
+# ____________var_____________________________________________________
             movl -4(%ebp), %ecx
           imul $4, %ecx
           addl $8, %ecx
@@ -187,9 +209,11 @@ Main_main:
           movl (%esi), %esi
         movl %edx, 4(%esi)
         # Emitting i = x[1].field
+# ________assign______________________________________________________
           # Emitting x[1].field
             # Emitting x[1]
               # Emitting x
+# ______________var___________________________________________________
               movl 8(%ebp), %edx
               movl 4(%edx), %edx
               # Emitting 1
@@ -202,6 +226,7 @@ Main_main:
         movl %edx, -4(%ebp)
         # Emitting write(i)
           # Emitting i
+# __________var_______________________________________________________
           movl -4(%ebp), %edx
         sub $16, %esp
         movl %edx, 4(%esp)
@@ -217,6 +242,7 @@ Main_main:
         subl $4, %esp
           # Emitting x[1]
             # Emitting x
+# ____________var_____________________________________________________
             movl 8(%ebp), %edx
             movl 4(%edx), %edx
             # Emitting 1
