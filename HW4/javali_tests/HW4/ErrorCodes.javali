@@ -6,7 +6,7 @@ class Main {
 	void main() {
 	a = 3;
 	b = 0;
-	write(a/b);
+	write(a/b); //Division By Zero
 	
 	
 	
