@@ -583,7 +583,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	public Register thisRef(ThisRef ast, StackFrame frame) {
 		{
 			Register reg = frame.getRegister();
-			nullPointerCheck(reg);
+			//nullPointerCheck(reg);
 			cg.emit.emit("movl", frame.target(), reg);
 			return reg;
 		}

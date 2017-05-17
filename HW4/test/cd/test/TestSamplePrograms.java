@@ -28,9 +28,9 @@ public class TestSamplePrograms extends AbstractTestAgainstFrozenReference {
 
 //	public static final File justFile = new File("javali_tests/HW4/OkDowncast.javali");
 
-	public static final File justFile = new File("javali_tests/failed/arrayCast.javali");
+//	public static final File justFile = new File("javali_tests/failed/arrayCast.javali");
 
-//	public static final File justFile = null;
+	public static final File justFile = null;
 
 	/**
 	 * Directory in which to search for test files. If null, then the default is

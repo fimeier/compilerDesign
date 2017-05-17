@@ -1,0 +1,33 @@
+Debug information for file: javali_tests/failed/castSubtype.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: Main, superClass: Object)
+| VarDecl (name: c, type: C)
+| VarDecl (name: r, type: R)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: c)
+| | | | Var (name: r)
+| | | Assign ()
+| | | | Var (name: r)
+| | | | Cast (typeName: R)
+| | | | | Var (name: c)
+| | | Assign ()
+| | | | Var (name: c)
+| | | | Cast (typeName: C)
+| | | | | Var (name: r)
+ClassDecl (name: A, superClass: Object)
+ClassDecl (name: C, superClass: Object)
+ClassDecl (name: R, superClass: C)
+
+Phase exec failed because we expected to see:
+
+But we actually saw:
+Error: 1
+
+The difference is:
+At line   1 /   1:
+< 
+> Error: 1
+

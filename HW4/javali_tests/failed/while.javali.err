@@ -1,0 +1,34 @@
+Debug information for file: javali_tests/failed/while.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: Main, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | | VarDecl (name: i, type: int)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: i)
+| | | | IntConst (value: 0)
+| | | WhileLoop ()
+| | | | BinaryOp (operator: B_LESS_THAN)
+| | | | | Var (name: i)
+| | | | | IntConst (value: 5)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: i)
+| | | | | | BinaryOp (operator: B_PLUS)
+| | | | | | | Var (name: i)
+| | | | | | | IntConst (value: 1)
+| | | | | BuiltInWrite ()
+| | | | | | Var (name: i)
+Binary Op: ((i < 5))@36787147 (%esi,%edi)
+Binary Op: ((i + 1))@15b14512 (%edi,%esi)
+
+Phase exec failed because we expected to see:
+12345
+But we actually saw:
+1
+The difference is:
+At line   1 /   1:
+< 12345
+> 1
+
