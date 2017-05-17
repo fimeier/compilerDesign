@@ -395,11 +395,22 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			// only read, assign in assign visitor
 			Register varReg = cg.eg.visit(ast.left(), frame);
 			Register indexReg = cg.eg.visit(ast.right(), frame);
-			
+
+			// ERROR CHECK
+			// check indexReg >= 0 and  //TODO: error 5
+			String elseLabel =  cg.eg.getNewLabel();
+			//cg.emit.emit("cmpl", "$0", sizeReg); // size < 0
+			//cg.emit.emit("jge",  elseLabel);   // if size >= 0 jump to elseLabel
+
+			// throw error 5: negative array size
+			//throwError(5);
+			// else jump here and continue
+			cg.emit.emitLabel(elseLabel);
+
 			Var var = (Var)ast.left();
-			String typeName = var.type.name.replace("[", "").replace("]", "");	
+			String typeName = var.type.name.replace("[", "").replace("]", "");
 			VTable table = cg.vtableManager.get(typeName + "_array");
-						
+
 			ObjectShape objectShape;
 			if (table.classDecl == null){
 				objectShape = cg.objShapeManager.get("Object");
@@ -409,7 +420,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			if (objectShape == null){
 				return null;
 			}
-			
+
 			// calcutale offset in array
 			cg.emit.emit("imul", "$4", indexReg);
 			cg.emit.emit("addl", "$8", indexReg);
@@ -417,10 +428,11 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			cg.emit.emit("movl", "("+varReg+")", varReg);
 
 			frame.releaseRegister(indexReg);
-			
+
 			return varReg;
 		}
 	}
+
 
 	@Override
 	public Register intConst(IntConst ast, StackFrame frame) {
@@ -452,38 +464,51 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		{
 			// NOTE: Array of Objects are stored not contiguously in memory! (inlike in C)
 			// We store a reference to an Object
-			String typeName = ast.typeName.replace("[", "").replace("]", "");	
+			String typeName = ast.typeName.replace("[", "").replace("]", "");
 			VTable table = cg.vtableManager.get(typeName + "_array");
-			
-			
+
 			ObjectShape objectShape;
 			if (table.classDecl == null){
 				objectShape = cg.objShapeManager.get("Object");
-				
+
 			} else {
 				objectShape = cg.objShapeManager.get(table.classDecl.name);
 			}
 			if (objectShape == null){
 				return null;
 			}
-			
+
+
 			// get the size of the array
 			Register sizeReg = visit(ast.arg(), frame);
-			
-			// TODO: check size ok
+
+
+			// ERROR CHECK
+			// check sizeReg >= 0
+			String elseLabel =  cg.eg.getNewLabel();
+			cg.emit.emit("cmpl", "$0", sizeReg); // size < 0
+			cg.emit.emit("jge",  elseLabel);   // if size >= 0 jump to elseLabel
+
+			// throw error 5: negative array size
+			throwError(5);
+			// else jump here and continue
+			cg.emit.emitLabel(elseLabel);
+
+
 			// calculate the size of the array
-			//cg.emit.emit("imul", "$"+Integer.toString(objectShape.sizeInN()), sizeReg);
 			cg.emit.emit("addl", "$2", sizeReg);
-			
+
 			// Create Array and safe its address to %eax
 			cg.emit.emit("pushl", "$4" );    // arg2: 4 byte per element
 			cg.emit.emit("pushl", sizeReg);  // arg1: size of array
 			cg.emit.emit("call", "calloc");  // call calloc with args
 			cg.emit.emit("addl", "$8", "%esp");  // remove args from stack
 
-			// %eax contains address of the created Array
+			/* %eax contains address of the created Array */
 			// now copy the vtable address to the top of the Object in the heap
 			cg.emit.emit("movl", "$"+objectShape.getAddr(), "(%eax)");
+			// The size of the array is stored at array_ptr+4
+			cg.emit.emit("movl", sizeReg, frame.getAddr("%eax", 4));
 
 			// move addr of the Object to a register and return it
 			Register reg = frame.getRegister();
@@ -491,6 +516,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			return reg;
 		}
 	}
+
 
 	@Override
 	public Register newObject(NewObject ast, StackFrame frame) {

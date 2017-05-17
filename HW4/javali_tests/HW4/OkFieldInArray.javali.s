@@ -137,12 +137,18 @@ Main_main:
           # Emitting new A[][2]
             # Emitting 2
             movl $2, %edi
+          cmpl $0, %edi
+          jge .L2
+          movl $5, %eax
+          jmp .ERROR_EXIT
+.L2:
           addl $2, %edi
           pushl $4
           pushl %edi
           call calloc
           addl $8, %esp
           movl $vtable_Object, (%eax)
+          movl %edi, 4(%eax)
           movl %eax, %esi
         movl 8(%ebp), %edx
         movl %esi, 4(%edx)
@@ -203,6 +209,7 @@ Main_main:
             # Emitting i
 # ____________var_____________________________________________________
             movl -4(%ebp), %ecx
+.L3:
           imul $4, %ecx
           addl $8, %ecx
           addl %ecx, %esi
@@ -218,6 +225,7 @@ Main_main:
               movl 4(%edx), %edx
               # Emitting 1
               movl $1, %esi
+.L4:
             imul $4, %esi
             addl $8, %esi
             addl %esi, %edx
@@ -247,6 +255,7 @@ Main_main:
             movl 4(%edx), %edx
             # Emitting 1
             movl $1, %esi
+.L5:
           imul $4, %esi
           addl $8, %esi
           addl %esi, %edx
