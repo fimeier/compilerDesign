@@ -1,0 +1,14 @@
+class A {}
+
+class B extends A {}
+
+class Main {
+    A[] a;
+    B b;
+    
+    void main() {
+        a = new A[1];
+        a[0] = new B();
+        b = (B) a[0];   
+    }
+}

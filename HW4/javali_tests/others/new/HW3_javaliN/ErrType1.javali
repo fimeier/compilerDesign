@@ -1,0 +1,10 @@
+// this should work
+
+class Main {
+
+   void main() {
+    boolean i;
+    i = true;
+    i = false;
+   }
+}

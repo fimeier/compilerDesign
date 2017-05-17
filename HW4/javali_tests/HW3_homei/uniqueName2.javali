@@ -1,0 +1,13 @@
+// TEST: DOUBLE_DECLARATION variable and functions
+class Main {
+	int i;
+	void main() {
+		int i;
+		// DOUBLE_DECLARATION
+		//boolean i;
+
+	}
+	void foo(){}
+	// DOUBLE_DECLARATION
+	int foo(){}
+}

@@ -1,19 +1,12 @@
 .section .data
 	vtable_A:
 		.int vtable_Object
-		.int A_funA
 		.int A_foo
-	vtable_B:
-		.int vtable_A
-		.int A_funA
-		.int B_foo
 	vtable_Main_array:
 		.int vtable_Object
 	vtable_A_array:
 		.int vtable_Object
 	vtable_int_array:
-		.int vtable_Object
-	vtable_B_array:
 		.int vtable_Object
 	vtable_Object:
 		.int 0
@@ -62,17 +55,6 @@ movl BASE_PT, %ebp
 ret
   # Emitting class A {...}
     # Emitting int field
-    # Emitting void funA(...) {...}
-A_funA:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-    addl $0, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
     # Emitting void foo(...) {...}
 A_foo:
     # store old ebp, set uf new ebp
@@ -103,19 +85,6 @@ A_foo:
         movl $STR_NL, 0(%esp)
         call printf
         add $16, %esp
-    addl $0, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
-  # Emitting class B {...}
-    # Emitting boolean field
-    # Emitting void foo(...) {...}
-B_foo:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
@@ -260,7 +229,7 @@ Main_main:
           addl %ecx, %esi
           movl (%esi), %esi
         movl 0(%esi), %edx
-        movl 8(%edx), %edx
+        movl 4(%edx), %edx
         subl $4, %esp
         pushl %esi
         call %edx

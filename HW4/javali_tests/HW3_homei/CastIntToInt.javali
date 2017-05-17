@@ -1,0 +1,11 @@
+class A {
+    int a;
+}
+
+class Main {
+    int[] a;
+    void main() {
+        a = new A[3];
+        a = (int[]) a;
+    }
+}

@@ -1,0 +1,21 @@
+// Use this reference in various (legal) ways
+class Main{
+	void main(){
+		A a;
+		a = new A();
+		a = a.foo(41);
+	}
+}
+
+class A {
+	int x;
+	A foo (int i){
+		this.x = 1;
+		write(this.bar(i));
+		return this;
+	}
+	
+	int bar (int i){
+		return i+this.x;
+	}
+}

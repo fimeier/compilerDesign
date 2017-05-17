@@ -1,0 +1,9 @@
+// Tests extending Object explicitly
+class Foo extends Bar { }
+class Bar extends Object { }
+
+class Main {
+   void main() {
+      writeln();
+   }
+}

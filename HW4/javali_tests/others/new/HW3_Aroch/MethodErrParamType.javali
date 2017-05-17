@@ -1,0 +1,15 @@
+// Test subtyping in method parameters (wrong type given in second parameter here)
+class Main{
+	void main(){
+	A a;
+	B b;
+	a = foo(a,b,b);		
+	}
+	
+	A foo (A arg1, A arg2, B arg3) {
+		return arg2;
+	}
+}
+
+class A {}
+class B {}

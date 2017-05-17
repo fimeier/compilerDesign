@@ -1,0 +1,7 @@
+// TEST: OBJECT_CLASS_DEFINED
+class Main {
+	void main() {
+
+	}
+}
+class Object{}

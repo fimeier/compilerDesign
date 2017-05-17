@@ -1,0 +1,13 @@
+class Main
+{
+
+    void test(int i)
+    {
+        Object a;
+        int[] arr;
+
+        a = arr;
+    }
+
+}
+

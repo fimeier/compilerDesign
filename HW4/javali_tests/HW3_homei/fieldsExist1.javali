@@ -1,0 +1,31 @@
+// TEST: All referenced fields exist; NO_SUCH_FIELD
+class Main {
+	int x;
+	A a;
+	S s;
+	void main() {
+		
+		// OK
+		x = a.i;
+		x = s.s;
+		x = s.i;
+		a.fun1(1);
+		s.fun1(2);
+		x = a.h;
+		x = s.h;
+		// NO_SUCH_FIELD
+		x = s.o;
+		//x = b.i;
+		//x = i;
+	}
+}
+class A {
+	int i;
+	int h;
+	void fun1(int i1){}
+}
+class S extends A {
+	int h;
+	int s;
+	void fun1(int in){}
+}

@@ -1,0 +1,15 @@
+// TEST: Equal operator: L subtype R or R subtype L, TYPE_ERROR
+class Main {
+	A a;
+	S s;
+	C c;
+	void main() {
+		boolean b;
+		// TODO: Expected ok, was TYPE_ERROR
+		
+		b = (s != s);
+	}
+}
+class C {}
+class A {}
+class S extends A {}

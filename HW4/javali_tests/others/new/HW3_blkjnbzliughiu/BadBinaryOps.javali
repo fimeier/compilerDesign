@@ -1,0 +1,6 @@
+class Main {
+	void main() {
+		boolean valid;
+		valid = true + 4;
+	}
+}

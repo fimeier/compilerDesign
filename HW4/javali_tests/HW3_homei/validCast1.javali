@@ -1,0 +1,20 @@
+// TEST: valid type in cast and new; NO_SUCH_TYPE
+class Main {
+	A a;
+	S s;
+	void main() {
+		// OK
+		a = new A();
+		s = new S();
+		a = new S();
+		a = (A) s;
+
+		// NO_SUCH_TYPE
+		a = new C();
+		//a = (C) s;
+
+	}
+}
+class B{}
+class A{}
+class S extends A{}

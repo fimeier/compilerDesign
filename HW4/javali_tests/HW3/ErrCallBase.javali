@@ -1,0 +1,10 @@
+// Test that you cannot invoke a method on an integer.
+
+class Main {
+	void main() {
+		int x;
+		int[] c; c = new int[10];
+		x = 1;
+		x.foo();
+	}
+}

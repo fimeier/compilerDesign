@@ -1,0 +1,14 @@
+class A {
+    int foo() {
+        return 0;
+    }
+}
+
+class Main {
+	void main() {
+		A a;
+		boolean b;
+		a = new A();
+		a.foo(b);
+	}
+}

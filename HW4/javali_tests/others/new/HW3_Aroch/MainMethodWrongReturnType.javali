@@ -1,0 +1,15 @@
+// Test main method with non-void return type
+class A {
+   int foo;
+   B bar(){
+   	int x;
+   }
+}
+
+class B extends A {
+   int bar;
+}
+
+class Main{
+	int main(){}
+}

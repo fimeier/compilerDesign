@@ -1,0 +1,14 @@
+// Casts between related types allowed
+class Main{
+	boolean b;
+	void main(){
+		A aref;
+		B bref;
+		aref = new A();
+		bref = (B) aref;
+	}
+}
+
+class A {}
+
+class B extends A {}

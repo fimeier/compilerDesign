@@ -1,0 +1,17 @@
+// Test accessing a non existent field
+class Main{
+	void main(){
+	A a;
+	int b;
+	a = new A();
+	b = a.field;	
+	}
+	
+	
+}
+
+class A {
+	int a;
+	}
+
+

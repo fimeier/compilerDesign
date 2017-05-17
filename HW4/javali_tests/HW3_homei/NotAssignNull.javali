@@ -1,0 +1,12 @@
+// assign null to int
+
+class Main {
+    void main() {
+        int x;
+        x = null;
+    }
+    
+    A a;
+}
+
+class A {}

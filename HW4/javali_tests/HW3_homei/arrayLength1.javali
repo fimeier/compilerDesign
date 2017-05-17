@@ -1,0 +1,11 @@
+// TEST: array length is type int; TYPE_ERROR
+class Main {
+	int[] a;
+	boolean b;
+	void main() {
+		// OK
+		a = new int[5];
+		// TYPE_ERROR
+		a = new int[b];
+	}
+}

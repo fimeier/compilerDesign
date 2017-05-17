@@ -1,0 +1,14 @@
+// wrong argument type for a method
+
+class Main {
+    void main() {
+        int x;
+        x = foo(5, true);
+    }
+    
+    int foo(int a, int b) {
+        int c;
+        c = a + b;
+        return c;
+    }
+}

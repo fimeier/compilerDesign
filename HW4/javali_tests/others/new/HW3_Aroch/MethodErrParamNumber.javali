@@ -1,0 +1,15 @@
+// Test wrong number of actual arguments
+class Main{
+	void main(){
+	A a;
+	B b;
+	a = foo(a,b);		
+	}
+	
+	A foo (A arg1, A arg2, B arg3) {
+		return arg3;
+	}
+}
+
+class A {}
+class B extends A {}

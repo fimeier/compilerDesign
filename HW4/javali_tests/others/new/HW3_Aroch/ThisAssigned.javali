@@ -1,0 +1,6 @@
+// Checks that this reference cannot be left hand side of assignment
+class Main{
+	void main(){
+		this = new Main();
+	}
+}

@@ -1,0 +1,10 @@
+class X extends Y {
+
+}
+
+class Main {
+
+   void main() {
+      
+   }
+}

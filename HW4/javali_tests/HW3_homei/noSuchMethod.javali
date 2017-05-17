@@ -1,0 +1,1 @@
+// TEST: all referenced methods exist; NO_SUCH_METHODclass Main {	void main() {		int i;		i = foo();			}}

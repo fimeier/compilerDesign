@@ -1,0 +1,4 @@
+// Tests missing main class
+class A {
+	void main(){}
+}

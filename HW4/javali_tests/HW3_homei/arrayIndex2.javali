@@ -1,0 +1,8 @@
+// TEST: index is int, array is of type array
+class Main {
+	int b;
+	void main() {
+		// TYPE_ERROR
+		b[0] = 1;
+	}
+}

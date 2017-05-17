@@ -1,0 +1,12 @@
+// number of arguments must be the same as the number of formal parameters in a method invocation
+
+class Main {
+    void main() {
+        int x;
+        x = foo(5);
+    }
+    
+    int foo(int x, int y) {
+        return y;
+    }
+}

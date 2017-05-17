@@ -1,0 +1,22 @@
+// may call with higher type arguments.
+
+class Main {
+    void main() {
+        A1 a1;
+        B b;
+        b = new B();
+        a1 = new A1();
+        a1.foo(b);
+    }
+
+}
+       
+class A1 {
+     void foo(A x){}
+}
+
+class A {
+}
+
+class B extends A {
+}

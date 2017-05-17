@@ -1,0 +1,18 @@
+class X {
+   int method(int x) {
+      return 0;
+   }
+}
+
+class Y extends X {
+   boolean method(int x) {
+      return true;
+   }
+}
+
+class Main {
+
+   void main() {
+      
+   }
+}

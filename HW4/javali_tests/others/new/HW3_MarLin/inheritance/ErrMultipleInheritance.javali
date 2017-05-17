@@ -1,0 +1,17 @@
+class A {
+
+}
+
+class B {
+
+}
+
+class C extends A, B {
+
+}
+ 
+class Main {
+	void main() {
+	
+	}
+}

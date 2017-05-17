@@ -1,0 +1,7 @@
+class Main {
+
+   void main() {
+    int m;
+    m = null; // m is not a reference type!
+   }
+}

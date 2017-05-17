@@ -1,0 +1,31 @@
+class A {
+/*
+	void test(B a){
+		a = new B();
+	}*/
+}
+
+class B extends A {}
+
+class Main {
+    A[] a;
+    A o;
+    int[] i;
+    int k;
+    boolean b;
+    
+    void main() {
+    
+        a = new B[4]; //Type B[] cannot be assigned to A[]
+   
+   		o = new A();
+        a = new A[3];
+        
+        o = new B();
+        
+       i = new boolean[5]; //Type boolean[] cannot be assigned to int[]
+     
+       o = new B();
+       
+    }
+}

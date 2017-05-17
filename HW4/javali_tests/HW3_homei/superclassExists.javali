@@ -1,0 +1,8 @@
+// TEST: superclass exist; NO_SUCH_TYPE
+class Main {
+	void main() {
+
+	}
+
+}
+class S extends A{}

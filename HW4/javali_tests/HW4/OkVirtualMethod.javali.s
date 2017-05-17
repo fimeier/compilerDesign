@@ -175,6 +175,16 @@ Main_main:
     # variable b
     pushl $0
       # Emitting (...)
+        # Emitting a = null
+# ________assign______________________________________________________
+          # Emitting null
+          movl $0, %edi
+        movl %edi, -4(%ebp)
+        # Emitting b = null
+# ________assign______________________________________________________
+          # Emitting null
+          movl $0, %edi
+        movl %edi, -8(%ebp)
         # Emitting a = new A()
 # ________assign______________________________________________________
           # Emitting new A()
@@ -186,6 +196,28 @@ Main_main:
           movl $vtable_A, (%eax)
           movl %eax, %edi
         movl %edi, -4(%ebp)
+        # Emitting a.base(...)
+          # Emitting a
+# __________var_______________________________________________________
+          movl -4(%ebp), %esi
+        movl 0(%esi), %edi
+        movl 8(%edi), %edi
+        subl $4, %esp
+        pushl %esi
+        call %edi
+        addl $4, %esp
+        popl %edi
+        # Emitting a.override(...)
+          # Emitting a
+# __________var_______________________________________________________
+          movl -4(%ebp), %esi
+        movl 0(%esi), %edi
+        movl 4(%edi), %edi
+        subl $4, %esp
+        pushl %esi
+        call %edi
+        addl $4, %esp
+        popl %edi
         # Emitting b = new B()
 # ________assign______________________________________________________
           # Emitting new B()
@@ -197,12 +229,100 @@ Main_main:
           movl $vtable_B, (%eax)
           movl %eax, %edi
         movl %edi, -8(%ebp)
+        # Emitting b.base(...)
+          # Emitting b
+# __________var_______________________________________________________
+          movl -8(%ebp), %esi
+        movl 0(%esi), %edi
+        movl 8(%edi), %edi
+        subl $4, %esp
+        pushl %esi
+        call %edi
+        addl $4, %esp
+        popl %edi
+        # Emitting b.override(...)
+          # Emitting b
+# __________var_______________________________________________________
+          movl -8(%ebp), %esi
+        movl 0(%esi), %edi
+        movl 4(%edi), %edi
+        subl $4, %esp
+        pushl %esi
+        call %edi
+        addl $4, %esp
+        popl %edi
+        # Emitting b.sub(...)
+          # Emitting b
+# __________var_______________________________________________________
+          movl -8(%ebp), %esi
+        movl 0(%esi), %edi
+        movl 12(%edi), %edi
+        subl $4, %esp
+        pushl %esi
+        call %edi
+        addl $4, %esp
+        popl %edi
         # Emitting a = b
 # ________assign______________________________________________________
           # Emitting b
 # __________var_______________________________________________________
           movl -8(%ebp), %edi
         movl %edi, -4(%ebp)
+        # Emitting a.base(...)
+          # Emitting a
+# __________var_______________________________________________________
+          movl -4(%ebp), %esi
+        movl 0(%esi), %edi
+        movl 8(%edi), %edi
+        subl $4, %esp
+        pushl %esi
+        call %edi
+        addl $4, %esp
+        popl %edi
+        # Emitting a.override(...)
+          # Emitting a
+# __________var_______________________________________________________
+          movl -4(%ebp), %esi
+        movl 0(%esi), %edi
+        movl 4(%edi), %edi
+        subl $4, %esp
+        pushl %esi
+        call %edi
+        addl $4, %esp
+        popl %edi
+        # Emitting b.base(...)
+          # Emitting b
+# __________var_______________________________________________________
+          movl -8(%ebp), %esi
+        movl 0(%esi), %edi
+        movl 8(%edi), %edi
+        subl $4, %esp
+        pushl %esi
+        call %edi
+        addl $4, %esp
+        popl %edi
+        # Emitting b.override(...)
+          # Emitting b
+# __________var_______________________________________________________
+          movl -8(%ebp), %esi
+        movl 0(%esi), %edi
+        movl 4(%edi), %edi
+        subl $4, %esp
+        pushl %esi
+        call %edi
+        addl $4, %esp
+        popl %edi
+        # Emitting b.sub(...)
+          # Emitting b
+# __________var_______________________________________________________
+          movl -8(%ebp), %esi
+        movl 0(%esi), %edi
+        movl 12(%edi), %edi
+        subl $4, %esp
+        pushl %esi
+        call %edi
+        addl $4, %esp
+        popl %edi
     addl $8, %esp
     # restore old ebp
     movl %ebp, %esp

@@ -1,0 +1,34 @@
+// TEST: All referenced methods exist; NO_SUCH_METHOD
+class Main {
+	int x;
+	A a;
+	S s;
+	void main() {
+		
+		// OK
+		x = a.i;
+		x = s.s;
+		x = s.i;
+		a.fun1(1);
+		s.fun1(2);
+		x = a.h;
+		x = s.h;
+		// NO_SUCH_FIELD
+		//x = s.funNo();	
+		// NO_SUCH_VARIABLE
+		//x = b.i;
+		x = i;
+		// NO_SUCH_METHOD
+		// TODO
+	}
+}
+class A {
+	int i;
+	int h;
+	void fun1(int i1){}
+}
+class S extends A {
+	int h;
+	int s;
+	void fun1(int in){}
+}

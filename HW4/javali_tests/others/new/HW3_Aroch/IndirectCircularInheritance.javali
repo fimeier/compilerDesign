@@ -1,0 +1,10 @@
+// Tests slightly larger cycle in inheritance than the provided test
+class Foo extends Bar { }
+class Blubb extends Foo { }
+class Bar extends Blubb { }
+
+class Main {
+   void main() {
+      writeln();
+   }
+}

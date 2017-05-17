@@ -1,0 +1,18 @@
+class Main {
+    void main() {
+    	B b;
+    	int[] a;
+        
+        //this = 5;
+        a = 5;
+       // this = b;
+    }
+}
+
+
+
+class B extends Main {
+
+
+
+}

@@ -1,0 +1,22 @@
+class A
+{
+
+}
+
+class B extends A {
+
+}
+
+class Main {
+
+
+    A test()
+    {
+        B b;
+        return b;
+    }
+
+   void main() {
+
+   }
+}

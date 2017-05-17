@@ -1,0 +1,15 @@
+class Main {
+    void main() {
+        int a,b,c;
+        a = 1;      // cannot eliminate
+        if (2 < 5) {
+            a = 4;      // cannot eliminate
+        }
+        
+        b = 3;  // eliminate assignment to b
+        c = a + 1;
+        
+        write(c);
+        writeln();
+    }
+}

@@ -1,0 +1,15 @@
+// TEST: must have a return statement; MISSING_RETURN
+class Main {
+	void main() {
+	}
+	// OK
+	A foo1(){
+		return s;
+	}
+	S foo2(){
+		return null;
+	}
+}
+class A{}
+class B{}
+class S extends A{}

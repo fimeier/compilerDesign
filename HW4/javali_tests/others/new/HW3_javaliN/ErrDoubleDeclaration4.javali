@@ -1,0 +1,10 @@
+class Main
+{
+
+    void main()
+    {
+        int j;
+        boolean j;
+    }
+
+}
