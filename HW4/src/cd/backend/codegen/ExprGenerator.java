@@ -407,7 +407,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			Register varReg = cg.eg.visit(ast.left(), frame);
 			Register indexReg = cg.eg.visit(ast.right(), frame);
 			nullPointerCheck(varReg);
-			nullPointerCheck(indexReg);
+			//nullPointerCheck(indexReg);
 
 			
 			// ERROR CHECK

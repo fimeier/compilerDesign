@@ -102,6 +102,11 @@ Main_swap:
             # Emitting r1
 # ____________var_____________________________________________________
             movl 12(%ebp), %edi
+          cmpl $0, %edi
+          jne .L2
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L2:
           movl 4(%edi), %edi
         movl %edi, -4(%ebp)
         # Emitting r1.a = r2.a
@@ -110,10 +115,20 @@ Main_swap:
             # Emitting r2
 # ____________var_____________________________________________________
             movl 16(%ebp), %edi
+          cmpl $0, %edi
+          jne .L3
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L3:
           movl 4(%edi), %edi
           # Emitting r1
 # __________var_______________________________________________________
           movl 12(%ebp), %esi
+        cmpl $0, %esi
+        jne .L4
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L4:
         movl %edi, 4(%esi)
         # Emitting r2.a = temp
 # ________assign______________________________________________________
@@ -123,6 +138,11 @@ Main_swap:
           # Emitting r2
 # __________var_______________________________________________________
           movl 16(%ebp), %esi
+        cmpl $0, %esi
+        jne .L5
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L5:
         movl %edi, 4(%esi)
     addl $4, %esp
     # restore old ebp
@@ -155,20 +175,30 @@ Main_sort:
                   # Emitting right
 # __________________var_______________________________________________
                   movl 16(%ebp), %esi
+                cmpl $0, %edi
+                jne .L6
+                movl $4, %eax
+                jmp .ERROR_EXIT
+.L6:
                 cmpl $0, %esi
-                jge .L2
+                jge .L7
                 movl $3, %eax
                 jmp .ERROR_EXIT
-.L2:
+.L7:
                 cmpl 4(%edi), %esi
-                jl .L3
+                jl .L8
                 movl $3, %eax
                 jmp .ERROR_EXIT
-.L3:
+.L8:
                 imul $4, %esi
                 addl $8, %esi
                 addl %esi, %edi
                 movl (%edi), %edi
+              cmpl $0, %edi
+              jne .L9
+              movl $4, %eax
+              jmp .ERROR_EXIT
+.L9:
               movl 4(%edi), %edi
               # Emitting a[left].a
                 # Emitting a[left]
@@ -179,29 +209,39 @@ Main_sort:
                   # Emitting left
 # __________________var_______________________________________________
                   movl 12(%ebp), %edx
+                cmpl $0, %esi
+                jne .L10
+                movl $4, %eax
+                jmp .ERROR_EXIT
+.L10:
                 cmpl $0, %edx
-                jge .L4
+                jge .L11
                 movl $3, %eax
                 jmp .ERROR_EXIT
-.L4:
+.L11:
                 cmpl 4(%esi), %edx
-                jl .L5
+                jl .L12
                 movl $3, %eax
                 jmp .ERROR_EXIT
-.L5:
+.L12:
                 imul $4, %edx
                 addl $8, %edx
                 addl %edx, %esi
                 movl (%esi), %esi
+              cmpl $0, %esi
+              jne .L13
+              movl $4, %eax
+              jmp .ERROR_EXIT
+.L13:
               movl 4(%esi), %esi
             add %edi, %esi
             # Emitting 2
             movl $2, %edi
           cmpl $0, %edi
-          jne .L6
+          jne .L14
           movl $7, %eax
           jmp .ERROR_EXIT
-.L6:
+.L14:
           pushl %edi
           pushl %esi
           popl %eax
@@ -234,7 +274,7 @@ Main_sort:
           cmpl %esi, %edi
           setle %al
           movzbl %al, %edi
-        jg .L7
+        jg .L15
           # Emitting (...)
             # Emitting while ((a[i].a < m)) {...}
 # ____________whileLoop_______________________________________________
@@ -248,20 +288,30 @@ Main_sort:
                     # Emitting i
 # ____________________var_____________________________________________
                     movl -4(%ebp), %esi
+                  cmpl $0, %edi
+                  jne .L17
+                  movl $4, %eax
+                  jmp .ERROR_EXIT
+.L17:
                   cmpl $0, %esi
-                  jge .L9
+                  jge .L18
                   movl $3, %eax
                   jmp .ERROR_EXIT
-.L9:
+.L18:
                   cmpl 4(%edi), %esi
-                  jl .L10
+                  jl .L19
                   movl $3, %eax
                   jmp .ERROR_EXIT
-.L10:
+.L19:
                   imul $4, %esi
                   addl $8, %esi
                   addl %esi, %edi
                   movl (%edi), %edi
+                cmpl $0, %edi
+                jne .L20
+                movl $4, %eax
+                jmp .ERROR_EXIT
+.L20:
                 movl 4(%edi), %edi
                 # Emitting m
 # ________________var_________________________________________________
@@ -269,7 +319,7 @@ Main_sort:
               cmpl %esi, %edi
               setl %al
               movzbl %al, %edi
-            jge .L11
+            jge .L21
               # Emitting (...)
                 # Emitting i = (i + 1)
 # ________________assign______________________________________________
@@ -281,9 +331,9 @@ Main_sort:
                     movl -4(%ebp), %esi
                   add %edi, %esi
                 movl %esi, -4(%ebp)
-            jmp .L12
-.L11:
-.L12:
+            jmp .L22
+.L21:
+.L22:
             # Emitting while ((a[j].a > m)) {...}
 # ____________whileLoop_______________________________________________
               # Emitting (a[j].a > m)
@@ -296,20 +346,30 @@ Main_sort:
                     # Emitting j
 # ____________________var_____________________________________________
                     movl -8(%ebp), %edi
+                  cmpl $0, %esi
+                  jne .L23
+                  movl $4, %eax
+                  jmp .ERROR_EXIT
+.L23:
                   cmpl $0, %edi
-                  jge .L13
+                  jge .L24
                   movl $3, %eax
                   jmp .ERROR_EXIT
-.L13:
+.L24:
                   cmpl 4(%esi), %edi
-                  jl .L14
+                  jl .L25
                   movl $3, %eax
                   jmp .ERROR_EXIT
-.L14:
+.L25:
                   imul $4, %edi
                   addl $8, %edi
                   addl %edi, %esi
                   movl (%esi), %esi
+                cmpl $0, %esi
+                jne .L26
+                movl $4, %eax
+                jmp .ERROR_EXIT
+.L26:
                 movl 4(%esi), %esi
                 # Emitting m
 # ________________var_________________________________________________
@@ -317,7 +377,7 @@ Main_sort:
               cmpl %edi, %esi
               setg %al
               movzbl %al, %esi
-            jle .L15
+            jle .L27
               # Emitting (...)
                 # Emitting j = (j - 1)
 # ________________assign______________________________________________
@@ -329,9 +389,9 @@ Main_sort:
                     movl -8(%ebp), %edi
                   sub %esi, %edi
                 movl %edi, -8(%ebp)
-            jmp .L16
-.L15:
-.L16:
+            jmp .L28
+.L27:
+.L28:
             # Emitting if ((i <= j)) {...} else {...}
 # ____________ifElse__________________________________________________
               # Emitting (i <= j)
@@ -344,11 +404,16 @@ Main_sort:
               cmpl %edi, %esi
               setle %al
               movzbl %al, %esi
-            jg .L17
+            jg .L29
               # Emitting (...)
                 # Emitting this.swap(...)
                   # Emitting this
                   movl 8(%ebp), %edi
+                cmpl $0, %edi
+                jne .L31
+                movl $4, %eax
+                jmp .ERROR_EXIT
+.L31:
                 movl 0(%edi), %esi
                 movl 4(%esi), %esi
                 subl $4, %esp
@@ -360,16 +425,21 @@ Main_sort:
                     # Emitting j
 # ____________________var_____________________________________________
                     movl -8(%ebp), %ebx
+                  cmpl $0, %ecx
+                  jne .L32
+                  movl $4, %eax
+                  jmp .ERROR_EXIT
+.L32:
                   cmpl $0, %ebx
-                  jge .L19
+                  jge .L33
                   movl $3, %eax
                   jmp .ERROR_EXIT
-.L19:
+.L33:
                   cmpl 4(%ecx), %ebx
-                  jl .L20
+                  jl .L34
                   movl $3, %eax
                   jmp .ERROR_EXIT
-.L20:
+.L34:
                   imul $4, %ebx
                   addl $8, %ebx
                   addl %ebx, %ecx
@@ -383,16 +453,21 @@ Main_sort:
                     # Emitting i
 # ____________________var_____________________________________________
                     movl -4(%ebp), %eax
+                  cmpl $0, %ebx
+                  jne .L35
+                  movl $4, %eax
+                  jmp .ERROR_EXIT
+.L35:
                   cmpl $0, %eax
-                  jge .L21
+                  jge .L36
                   movl $3, %eax
                   jmp .ERROR_EXIT
-.L21:
+.L36:
                   cmpl 4(%ebx), %eax
-                  jl .L22
+                  jl .L37
                   movl $3, %eax
                   jmp .ERROR_EXIT
-.L22:
+.L37:
                   imul $4, %eax
                   addl $8, %eax
                   addl %eax, %ebx
@@ -422,13 +497,13 @@ Main_sort:
                     movl -8(%ebp), %esi
                   sub %edi, %esi
                 movl %esi, -8(%ebp)
-            jmp .L18
-.L17:
+            jmp .L30
+.L29:
               # Emitting nop
-.L18:
-        jmp .L8
-.L7:
-.L8:
+.L30:
+        jmp .L16
+.L15:
+.L16:
         # Emitting if ((left < j)) {...} else {...}
 # ________ifElse______________________________________________________
           # Emitting (left < j)
@@ -441,13 +516,18 @@ Main_sort:
           cmpl %esi, %edi
           setl %al
           movzbl %al, %edi
-        jge .L23
+        jge .L38
           # Emitting (...)
             # Emitting this.sort(...)
             pushl %ecx
             pushl %edx
               # Emitting this
               movl 8(%ebp), %ecx
+            cmpl $0, %ecx
+            jne .L40
+            movl $4, %eax
+            jmp .ERROR_EXIT
+.L40:
             movl 0(%ecx), %edx
             movl 8(%edx), %edx
             subl $4, %esp
@@ -463,10 +543,10 @@ Main_sort:
             call %edx
             addl $12, %esp
             popl %edx
-        jmp .L24
-.L23:
+        jmp .L39
+.L38:
           # Emitting nop
-.L24:
+.L39:
         # Emitting if ((i < right)) {...} else {...}
 # ________ifElse______________________________________________________
           # Emitting (i < right)
@@ -479,11 +559,16 @@ Main_sort:
           cmpl %edx, %ecx
           setl %al
           movzbl %al, %ecx
-        jge .L25
+        jge .L41
           # Emitting (...)
             # Emitting this.sort(...)
               # Emitting this
               movl 8(%ebp), %edx
+            cmpl $0, %edx
+            jne .L43
+            movl $4, %eax
+            jmp .ERROR_EXIT
+.L43:
             movl 0(%edx), %ecx
             movl 8(%ecx), %ecx
             subl $4, %esp

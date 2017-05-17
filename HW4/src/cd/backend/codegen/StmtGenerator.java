@@ -427,7 +427,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			Register varReg = cg.eg.visit(ind.left(), frame);
 			Register indexReg = cg.eg.visit(ind.right(), frame);
 			cg.eg.nullPointerCheck(varReg);
-			cg.eg.nullPointerCheck(indexReg);
+			//cg.eg.nullPointerCheck(indexReg);
 			// ERROR CHECK
 			// check (index >= 0)
 			String elseIfLabel =  cg.eg.getNewLabel();
