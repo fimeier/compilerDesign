@@ -360,6 +360,11 @@ Main_main:
             movl $7, %esi
             # Emitting 13
             movl $13, %edi
+          cmpl $0, %esi
+          jne .L14
+          movl $7, %eax
+          jmp .ERROR_EXIT
+.L14:
           pushl %esi
           pushl %edi
           popl %eax
@@ -383,6 +388,11 @@ Main_main:
             movl $7, %edi
             # Emitting 17
             movl $17, %esi
+          cmpl $0, %edi
+          jne .L15
+          movl $7, %eax
+          jmp .ERROR_EXIT
+.L15:
           pushl %edi
           pushl %esi
           popl %eax
@@ -598,7 +608,7 @@ Main_main:
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
         cmpl $0, %esi
-        je .L14
+        je .L16
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -608,8 +618,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L15
-.L14:
+        jmp .L17
+.L16:
           # Emitting (...)
             # Emitting write(0)
               # Emitting 0
@@ -619,7 +629,7 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-.L15:
+.L17:
     addl $12, %esp
     # restore old ebp
     movl %ebp, %esp

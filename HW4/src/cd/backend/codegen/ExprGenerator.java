@@ -108,6 +108,15 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 					Register[] affected = { Register.EAX, Register.EBX, Register.EDX };
 					saveRegisters(dontBother, affected);
 
+					/*
+					 * Check: division by zero
+					 */
+					String labelNoError = cg.eg.getNewLabel();
+					cg.emit.emit("cmpl", "$0", rightReg);
+					cg.emit.emit("jne", labelNoError);
+					throwError(7);
+					cg.emit.emitLabel(labelNoError);
+
 					// Move the LHS (numerator) into eax
 					// Move the RHS (denominator) into ebx
 					cg.emit.emit("pushl", rightReg);
@@ -264,18 +273,18 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			/*
 			 * casting: (a) b
 			 */
-			
+
 			cg.emit.emitCommentSection("cast");
-			
+
 			//TODOregisters
 			Register reg1 = cg.rm.getRegister();
 			Register reg2 = cg.rm.getRegister();
-			
+
 			//labels
 			String labelNotSubtype = cg.eg.getNewLabel();
 			String labelIsSubtype = cg.eg.getNewLabel();
 			String labelEnd = cg.eg.getNewLabel();
-			
+
 			//String labelCheckSubtype = cg.eg.getNewLabel();
 			String labelCheckObjectType = cg.eg.getNewLabel();
 
@@ -283,7 +292,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			/*
 			 * check subtype
 			 */
-			
+
 			/*
 			 * get cast type and store it in reg1
 			 */
@@ -312,22 +321,22 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			cg.emit.emit("je", labelNotSubtype); //wenn reg2 vom TypObject => nicht gefunden
 
 
-			
+
 			/*
 			 * Test (A) b; ist b bereits vom Typ A?
 			 */
 
 			cg.emit.emit("cmpl", reg1, reg2);
 			cg.emit.emit("je", labelIsSubtype); //springt zum labelIsSubtype wenn identisch
-			
+
 			/*
 			 * get superType and check again
 			 */
 			cg.emit.emit("movl", "("+reg2.getRepr()+")", reg2); //get superType and store it in reg2
 			cg.emit.emit("jmp", labelCheckObjectType);
-			
-			
-			
+
+
+
 
 			/*
 			 * labelNotSubtype
@@ -336,30 +345,30 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			//TODO
 			//
 			throwError(1);
-			
+
 			cg.emit.emit("jmp", labelEnd);
-			
-			
-			
-			
-			
+
+
+
+
+
 			/*
 			 * labelIsSubtype
 			 */
 			cg.emit.emitLabel(labelIsSubtype);
-			
-			
-			
-			
-			
+
+
+
+
+
 			/*
 			 * labelEnd
 			 */
 			cg.emit.emitLabel(labelEnd);
 
 
-			
-			
+
+
 
 			//boolean isSubtype = false;
 			/*
@@ -377,14 +386,14 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				throw new SemanticFailure(Cause.TYPE_ERROR);
 
 			return cType;	
-			*/
+			 */
 			//.....
-			
+
 			//return error code
-			
+
 			//throw new ToDoException();
 			return rTypeRegister;
-			
+
 			//TODO register freigeben
 		}
 	}
@@ -447,14 +456,14 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	public Register field(Field ast, StackFrame frame) {
 		{
 			Register targetReg = cg.eg.visit(ast.arg(), frame);
-			
+
 			VTable table = cg.vtableManager.get(ast.arg().type.name);
 			ObjectShape objectShape = cg.objShapeManager.get(table.classDecl.name);
 
 			int offset = objectShape.getOffset(ast.fieldName);
 
 			cg.emit.emit("movl", frame.getAddr(targetReg.getRepr(), offset), targetReg.getRepr());
-			
+
 			return targetReg;
 		}
 	}
@@ -564,12 +573,12 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	@Override
 	public Register methodCall(MethodCallExpr ast, StackFrame frame) {
 		{
-			
+
 			//get the vtable of the receiving object -> to figure out the offset, not the name!
 			VTable table = cg.vtableManager.get(ast.receiver().type.name);
 			// offset of the function in the vtable
 			int offset = table.getOffset(ast.methodName);
-			
+
 			// safe caller saved Registers to stack
 			boolean regsSaved[] = {false,false,false}; // eax, ecx, edx
 			int i = 0;
@@ -581,7 +590,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				}
 				i++;
 			}
-			
+
 			Register functionPtr = frame.getRegister();
 			Register receiverPtr = cg.eg.visit(ast.receiver(), frame);
 
@@ -589,7 +598,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			cg.emit.emit("movl", frame.getAddr(receiverPtr.getRepr(), 0), functionPtr);	
 			// get the actual function pointer
 			cg.emit.emit("movl", frame.getAddr(functionPtr.getRepr(), offset), functionPtr);
-			
+
 			/* prepare function call: */
 			// make space for return value
 			cg.emit.emit("subl", "$4", "%esp");  
@@ -602,17 +611,17 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				cg.emit.emit("pushl", argReg);
 				frame.releaseRegister(argReg);
 			}
-			
+
 			//set the receiver of the function (arg0)
 			cg.emit.emit("pushl", receiverPtr);
 			frame.releaseRegister(receiverPtr);
-			
+
 			// call the function:
 			cg.emit.emit("call", functionPtr);
 			frame.releaseRegister(functionPtr);
 			// remove the args from the stack
 			cg.emit.emit("addl", "$"+ast.allArguments().size()*4, "%esp");
-			
+
 			// restore caller saved Registers from stack
 			for (int j = 2; j <= 0 ; j--){
 				if (regsSaved[j]){
@@ -621,7 +630,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 					cg.rm.setToUsed(restoreReg);
 				}
 			}
-			
+
 			// copy the result from the stack into register and return;
 			Register returnReg = frame.getRegister();
 			cg.emit.emit("popl", returnReg);
@@ -634,7 +643,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	public Register unaryOp(UnaryOp ast, StackFrame frame) {
 		{
 			Register argReg = visit(ast.arg(), frame);
-			
+
 			switch (ast.operator) {
 			// unary arithmetic ops with integers
 			case U_PLUS:
@@ -644,11 +653,11 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				cg.emit.emit("negl", argReg);
 				break;
 
-			// unary ops with boolean
+				// unary ops with boolean
 			case U_BOOL_NOT:
 				cg.emit.emit("negl", argReg);
 				cg.emit.emit("incl", argReg);
-				
+
 				//set condition codes for ifElse, WhileLoop....
 				cg.emit.emit("cmpl",  "$0", argReg);
 				break;
@@ -691,7 +700,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				cg.emit.emit("popl", s);
 		}
 	}
-	
+
 	private void throwError(int errorCode){
 		cg.emit.emit("movl", "$"+errorCode, Register.EAX);
 		cg.emit.emit("jmp", ".ERROR_EXIT");

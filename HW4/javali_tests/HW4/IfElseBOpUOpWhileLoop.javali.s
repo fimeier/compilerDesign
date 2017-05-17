@@ -422,6 +422,11 @@ Main_main:
             movl $7, %esi
             # Emitting 13
             movl $13, %edi
+          cmpl $0, %esi
+          jne .L18
+          movl $7, %eax
+          jmp .ERROR_EXIT
+.L18:
           pushl %esi
           pushl %edi
           popl %eax
@@ -445,6 +450,11 @@ Main_main:
             movl $7, %edi
             # Emitting 17
             movl $17, %esi
+          cmpl $0, %edi
+          jne .L19
+          movl $7, %eax
+          jmp .ERROR_EXIT
+.L19:
           pushl %edi
           pushl %esi
           popl %eax
@@ -679,7 +689,7 @@ Main_main:
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
         cmpl $0, %esi
-        je .L18
+        je .L20
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -689,8 +699,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L19
-.L18:
+        jmp .L21
+.L20:
           # Emitting (...)
             # Emitting write(0)
               # Emitting 0
@@ -700,7 +710,7 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-.L19:
+.L21:
         # Emitting writeln()
         sub $16, %esp
         movl $STR_NL, 0(%esp)
@@ -754,7 +764,7 @@ Main_main:
             cmpl $0, %edi
           andl %esi, %edi
           cmpl $0, %edi
-        je .L20
+        je .L22
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -774,9 +784,9 @@ Main_main:
               incl %edi
               cmpl $0, %edi
             movl %edi, -4(%ebp)
-        jmp .L21
-.L20:
-.L21:
+        jmp .L23
+.L22:
+.L23:
         # Emitting write(0)
           # Emitting 0
           movl $0, %edi

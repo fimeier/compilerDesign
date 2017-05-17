@@ -198,45 +198,47 @@ Main_main:
         # Emitting c[0] = this.loc(...)
 # ________assign______________________________________________________
           # Emitting this.loc(...)
+            # Emitting this
+            movl 8(%ebp), %edx
+          movl 0(%edx), %esi
+          movl 8(%esi), %esi
           subl $4, %esp
             # Emitting (g + 1)
               # Emitting 1
-              movl $1, %edx
+              movl $1, %ebx
               # Emitting g
 # ______________var___________________________________________________
-              movl 8(%ebp), %ecx
-              movl 12(%ecx), %ecx
-            add %edx, %ecx
-          pushl %ecx
-            # Emitting this
-            movl 8(%ebp), %ecx
-          pushl %ecx
-          call Main_loc
+              movl 8(%ebp), %eax
+              movl 12(%eax), %eax
+            add %ebx, %eax
+          pushl %eax
+          pushl %edx
+          call %esi
           addl $8, %esp
-          popl %ecx
+          popl %esi
           # Emitting c
 # __________var_______________________________________________________
           movl -4(%ebp), %edx
           # Emitting 0
-          movl $0, %ebx
-        imul $4, %ebx
-        addl $8, %ebx
-        addl %ebx, %edx
-        movl %ecx, (%edx)
+          movl $0, %eax
+        imul $4, %eax
+        addl $8, %eax
+        addl %eax, %edx
+        movl %esi, (%edx)
         # Emitting write(c[0])
           # Emitting c[0]
             # Emitting c
 # ____________var_____________________________________________________
-            movl -4(%ebp), %ecx
+            movl -4(%ebp), %esi
             # Emitting 0
             movl $0, %edx
 .L3:
           imul $4, %edx
           addl $8, %edx
-          addl %edx, %ecx
-          movl (%ecx), %ecx
+          addl %edx, %esi
+          movl (%esi), %esi
         sub $16, %esp
-        movl %ecx, 4(%esp)
+        movl %esi, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp
@@ -250,7 +252,6 @@ Main_loc:
     # store old ebp, set uf new ebp
     pushl %ebp
     movl %esp, %ebp
-    pushl %esi
     pushl %edi
     # set local variables:
       # Emitting (...)

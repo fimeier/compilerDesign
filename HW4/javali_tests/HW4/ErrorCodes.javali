@@ -1,0 +1,16 @@
+/* Error Code */
+
+class Main {
+	int a;
+	int b;
+	void main() {
+	a = 3;
+	b = 0;
+	write(a/b);
+	
+	
+	
+	
+	}
+	
+}
