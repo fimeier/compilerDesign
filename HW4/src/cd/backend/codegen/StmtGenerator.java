@@ -116,11 +116,16 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	/*
 	 * for IfElse, WhileLoop,...
 	 */
+	
+	//Fehler: WhileLoop muss an den Anfang springen
 	private void jumpHelper(Stmt astTemp, StackFrame frame, String condType) {
 		Register conditionValue;
 		Expr cond;
+		String lableWhile = cg.eg.getNewLabel();
+
 		if (condType.equals("WhileLoop")){
 			cg.emit.emitCommentSection("whileLoop");
+			cg.emit.emitLabel(lableWhile);
 			conditionValue = cg.eg.visit(((WhileLoop) astTemp).condition(),frame);
 			cond = ((WhileLoop) astTemp).condition();			
 		} else {
@@ -218,7 +223,9 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		if (condType.equals("WhileLoop")){
 			//visit then body
 			visit(((WhileLoop) astTemp).body(), frame);
-			cg.emit.emit("jmp", lableEnd); 
+			//cg.emit.emit("jmp", lableEnd);  Fehler... muss an den Anfang springen
+			cg.emit.emit("jmp", lableWhile); 
+
 
 			cg.emit.emitLabel(lableElse);
 			//visit else body: empty

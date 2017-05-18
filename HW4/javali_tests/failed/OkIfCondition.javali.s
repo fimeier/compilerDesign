@@ -71,12 +71,12 @@ Main_main:
           negl %edi
           incl %edi
           cmpl $0, %edi
-        je .L2
+        je .L3
           # Emitting (...)
-        jmp .L3
-.L2:
-          # Emitting nop
+        jmp .L4
 .L3:
+          # Emitting nop
+.L4:
         # Emitting if ((b == false)) {...} else {...}
 # ________ifElse______________________________________________________
           # Emitting (b == false)
@@ -86,18 +86,18 @@ Main_main:
 # ____________var_____________________________________________________
             movl -4(%ebp), %esi
           cmpl %edi, %esi
-          je .L4
+          je .L6
           movl $0, %esi
-          je .L5
-.L4:
-          movl $1, %esi
-.L5:
-        jne .L6
-          # Emitting (...)
-        jmp .L7
+          jmp .L7
 .L6:
-          # Emitting nop
+          movl $1, %esi
 .L7:
+        jne .L8
+          # Emitting (...)
+        jmp .L9
+.L8:
+          # Emitting nop
+.L9:
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp

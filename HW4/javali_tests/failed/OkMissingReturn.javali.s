@@ -62,20 +62,20 @@ Main_test:
           # Emitting true
           movl $1, %edi
         cmpl $0, %edi
-        je .L2
+        je .L3
           # Emitting (...)
             # Emitting return 1
               # Emitting 1
               movl $1, %edi
             movl %edi, 12(%ebp)
-        jmp .L3
-.L2:
+        jmp .L4
+.L3:
           # Emitting (...)
             # Emitting return 2
               # Emitting 2
               movl $2, %edi
             movl %edi, 12(%ebp)
-.L3:
+.L4:
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

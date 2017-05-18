@@ -4,6 +4,8 @@ class Main {
 		Sub sub;
 		Super super;
 		
+//		super = new Super(); gleicher Fehler.... 
+		
 		sub = (Sub) super;	
 	
 	}

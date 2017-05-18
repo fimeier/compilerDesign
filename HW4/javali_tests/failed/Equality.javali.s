@@ -142,13 +142,13 @@ Main_main:
 # ____________var_____________________________________________________
             movl -4(%ebp), %esi
           cmpl %edi, %esi
-          jne .L6
+          jne .L7
           movl $0, %esi
-          jmp .L7
-.L6:
-          movl $1, %esi
+          jmp .L8
 .L7:
-        je .L8
+          movl $1, %esi
+.L8:
+        je .L9
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -163,8 +163,8 @@ Main_main:
             movl $STR_NL, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L9
-.L8:
+        jmp .L10
+.L9:
           # Emitting (...)
             # Emitting write(0)
               # Emitting 0
@@ -179,7 +179,7 @@ Main_main:
             movl $STR_NL, 0(%esp)
             call printf
             add $16, %esp
-.L9:
+.L10:
     addl $20, %esp
     # restore old ebp
     movl %ebp, %esp

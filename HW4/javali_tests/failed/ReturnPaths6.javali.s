@@ -112,6 +112,7 @@ A_foo:
       # Emitting (...)
         # Emitting while ((arg1 == arg2)) {...}
 # ________whileLoop___________________________________________________
+.L3:
           # Emitting (arg1 == arg2)
             # Emitting arg2
 # ____________var_____________________________________________________
@@ -120,17 +121,17 @@ A_foo:
 # ____________var_____________________________________________________
             movl 12(%ebp), %esi
           cmpl %edi, %esi
-          je .L3
-          movl $0, %esi
           je .L4
-.L3:
-          movl $1, %esi
+          movl $0, %esi
+          jmp .L5
 .L4:
-        jne .L5
-          # Emitting (...)
-        jmp .L6
+          movl $1, %esi
 .L5:
+        jne .L6
+          # Emitting (...)
+        jmp .L3
 .L6:
+.L7:
         # Emitting return arg2
           # Emitting arg2
 # __________var_______________________________________________________

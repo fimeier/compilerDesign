@@ -83,31 +83,31 @@ Main_method:
           # Emitting true
           movl $1, %edi
         cmpl $0, %edi
-        je .L2
+        je .L3
           # Emitting (...)
             # Emitting return 1
               # Emitting 1
               movl $1, %edi
             movl %edi, 12(%ebp)
-        jmp .L3
-.L2:
+        jmp .L4
+.L3:
           # Emitting (...)
             # Emitting if (false) {...} else {...}
 # ____________ifElse__________________________________________________
               # Emitting false
               movl $0, %edi
             cmpl $0, %edi
-            je .L4
+            je .L6
               # Emitting (...)
                 # Emitting return 1
                   # Emitting 1
                   movl $1, %edi
                 movl %edi, 12(%ebp)
-            jmp .L5
-.L4:
+            jmp .L7
+.L6:
               # Emitting (...)
-.L5:
-.L3:
+.L7:
+.L4:
         # Emitting return 1
           # Emitting 1
           movl $1, %edi

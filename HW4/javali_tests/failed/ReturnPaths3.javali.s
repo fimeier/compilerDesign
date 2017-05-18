@@ -120,23 +120,23 @@ A_foo:
 # ____________var_____________________________________________________
             movl 12(%ebp), %esi
           cmpl %edi, %esi
-          je .L3
-          movl $0, %esi
           je .L4
-.L3:
-          movl $1, %esi
+          movl $0, %esi
+          jmp .L5
 .L4:
-        jne .L5
+          movl $1, %esi
+.L5:
+        jne .L6
           # Emitting (...)
             # Emitting return arg1
               # Emitting arg1
 # ______________var___________________________________________________
               movl 12(%ebp), %esi
             movl %esi, 20(%ebp)
-        jmp .L6
-.L5:
-          # Emitting (...)
+        jmp .L7
 .L6:
+          # Emitting (...)
+.L7:
         # Emitting return arg2
           # Emitting arg2
 # __________var_______________________________________________________

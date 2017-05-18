@@ -80,6 +80,7 @@ Main_main:
         movl %edi, -8(%ebp)
         # Emitting while ((a > 0)) {...}
 # ________whileLoop___________________________________________________
+.L2:
           # Emitting (a > 0)
             # Emitting 0
             movl $0, %edi
@@ -89,7 +90,7 @@ Main_main:
           cmpl %edi, %esi
           setg %al
           movzbl %al, %esi
-        jle .L2
+        jle .L3
           # Emitting (...)
             # Emitting a = (a - 1)
 # ____________assign__________________________________________________
@@ -119,3 +120,67 @@ Main_main:
                 # Emitting b
 # ________________var_________________________________________________
                 movl -8(%ebp), %edi
+              cmpl %esi, %edi
+              jne .L6
+              movl $0, %edi
+              jmp .L7
+.L6:
+              movl $1, %edi
+.L7:
+            je .L8
+              # Emitting (...)
+                # Emitting c = 5
+# ________________assign______________________________________________
+                  # Emitting 5
+                  movl $5, %edi
+                movl %edi, -12(%ebp)
+                # Emitting d = 10
+# ________________assign______________________________________________
+                  # Emitting 10
+                  movl $10, %edi
+                movl %edi, -16(%ebp)
+            jmp .L9
+.L8:
+              # Emitting (...)
+                # Emitting c = (25 + c)
+# ________________assign______________________________________________
+                  # Emitting (25 + c)
+                    # Emitting c
+# ____________________var_____________________________________________
+                    movl -12(%ebp), %edi
+                    # Emitting 25
+                    movl $25, %esi
+                  add %edi, %esi
+                movl %esi, -12(%ebp)
+                # Emitting e = 37
+# ________________assign______________________________________________
+                  # Emitting 37
+                  movl $37, %esi
+                movl %esi, -20(%ebp)
+.L9:
+            # Emitting if ((a <= 0)) {...} else {...}
+# ____________ifElse__________________________________________________
+              # Emitting (a <= 0)
+                # Emitting 0
+                movl $0, %esi
+                # Emitting a
+# ________________var_________________________________________________
+                movl -4(%ebp), %edi
+              cmpl %esi, %edi
+              setle %al
+              movzbl %al, %edi
+            jg .L11
+              # Emitting (...)
+                # Emitting return
+            jmp .L12
+.L11:
+              # Emitting nop
+.L12:
+        jmp .L2
+.L3:
+.L4:
+    addl $20, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret

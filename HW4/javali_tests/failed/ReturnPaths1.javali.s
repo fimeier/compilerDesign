@@ -134,13 +134,13 @@ A_foo:
 # ____________var_____________________________________________________
             movl -4(%ebp), %esi
           cmpl %edi, %esi
-          je .L3
-          movl $0, %esi
           je .L4
-.L3:
-          movl $1, %esi
+          movl $0, %esi
+          jmp .L5
 .L4:
-        jne .L5
+          movl $1, %esi
+.L5:
+        jne .L6
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -160,8 +160,8 @@ A_foo:
 # ______________var___________________________________________________
               movl 12(%ebp), %esi
             movl %esi, 20(%ebp)
-        jmp .L6
-.L5:
+        jmp .L7
+.L6:
           # Emitting (...)
             # Emitting write(0)
               # Emitting 0
@@ -181,7 +181,7 @@ A_foo:
 # ______________var___________________________________________________
               movl 16(%ebp), %esi
             movl %esi, 20(%ebp)
-.L6:
+.L7:
     addl $8, %esp
     # restore old ebp
     movl %ebp, %esp

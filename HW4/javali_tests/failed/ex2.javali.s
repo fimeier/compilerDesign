@@ -73,28 +73,28 @@ Main_main:
             # Emitting 3
             movl $3, %esi
           cmpl %edi, %esi
-          je .L2
-          movl $0, %esi
           je .L3
-.L2:
-          movl $1, %esi
+          movl $0, %esi
+          jmp .L4
 .L3:
-        jne .L4
+          movl $1, %esi
+.L4:
+        jne .L5
           # Emitting (...)
             # Emitting a = 4
 # ____________assign__________________________________________________
               # Emitting 4
               movl $4, %esi
             movl %esi, -4(%ebp)
-        jmp .L5
-.L4:
+        jmp .L6
+.L5:
           # Emitting (...)
             # Emitting a = 5
 # ____________assign__________________________________________________
               # Emitting 5
               movl $5, %esi
             movl %esi, -4(%ebp)
-.L5:
+.L6:
         # Emitting b = a
 # ________assign______________________________________________________
           # Emitting a
