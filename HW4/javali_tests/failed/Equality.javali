@@ -1,0 +1,25 @@
+// Test returning in branches
+class Main{
+	void main(){
+	
+		int a;
+		int b;
+		boolean c;
+		
+		a = 3;
+		b = 1;
+		
+		c = a==b;
+		
+		if(c) {
+		
+		//if(a == b) {
+			write(1);writeln();
+		} else {
+			write(0);writeln();
+		}
+	
+	}
+	
+	
+}

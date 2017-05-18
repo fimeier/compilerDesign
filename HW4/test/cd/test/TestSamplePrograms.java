@@ -39,8 +39,8 @@ public class TestSamplePrograms extends AbstractTestAgainstFrozenReference {
 	 * {@code testDir = new File("javali_tests/HW2/")}.
 	 */
 	//	public static final File testDir = new File("javali_tests/HW1");
-//	public static final File testDir = new File("javali_tests/failed");
-	public static final File testDir = new File("javali_tests/HW4");
+	public static final File testDir = new File("javali_tests/failed");
+//	public static final File testDir = new File("javali_tests/HW4_homei");
 
 
 	@Parameters(name="{index}:{0}")

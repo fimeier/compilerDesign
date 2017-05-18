@@ -64,6 +64,11 @@ Main_main:
           # Emitting this.fib(...)
             # Emitting this
             movl 8(%ebp), %esi
+          cmpl $0, %esi
+          jne .L2
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L2:
           movl 0(%esi), %edi
           movl 8(%edi), %edi
           subl $4, %esp
@@ -116,7 +121,7 @@ Main_fib:
           cmpl %edi, %esi
           setle %al
           movzbl %al, %esi
-        jg .L2
+        jg .L3
           # Emitting (...)
             # Emitting fib = n
 # ____________assign__________________________________________________
@@ -124,8 +129,8 @@ Main_fib:
 # ______________var___________________________________________________
               movl 12(%ebp), %esi
             movl %esi, -4(%ebp)
-        jmp .L3
-.L2:
+        jmp .L4
+.L3:
           # Emitting (...)
             # Emitting fib = this.fib(...)
 # ____________assign__________________________________________________
@@ -133,6 +138,11 @@ Main_fib:
               pushl %edx
                 # Emitting this
                 movl 8(%ebp), %esi
+              cmpl $0, %esi
+              jne .L5
+              movl $4, %eax
+              jmp .ERROR_EXIT
+.L5:
               movl 0(%esi), %edx
               movl 8(%edx), %edx
               subl $4, %esp
@@ -154,6 +164,11 @@ Main_fib:
               # Emitting this.fib(...)
                 # Emitting this
                 movl 8(%ebp), %esi
+              cmpl $0, %esi
+              jne .L6
+              movl $4, %eax
+              jmp .ERROR_EXIT
+.L6:
               movl 0(%esi), %edx
               movl 8(%edx), %edx
               subl $4, %esp
@@ -181,7 +196,7 @@ Main_fib:
                 movl -4(%ebp), %esi
               add %edx, %esi
             movl %esi, -4(%ebp)
-.L3:
+.L4:
         # Emitting return fib
           # Emitting fib
 # __________var_______________________________________________________

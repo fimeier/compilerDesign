@@ -73,3 +73,64 @@ Main_main:
             # Emitting 3
             movl $3, %esi
           cmpl %edi, %esi
+          je .L2
+          movl $0, %esi
+          je .L3
+.L2:
+          movl $1, %esi
+.L3:
+        jne .L4
+          # Emitting (...)
+            # Emitting a = 4
+# ____________assign__________________________________________________
+              # Emitting 4
+              movl $4, %esi
+            movl %esi, -4(%ebp)
+        jmp .L5
+.L4:
+          # Emitting (...)
+            # Emitting a = 5
+# ____________assign__________________________________________________
+              # Emitting 5
+              movl $5, %esi
+            movl %esi, -4(%ebp)
+.L5:
+        # Emitting b = a
+# ________assign______________________________________________________
+          # Emitting a
+# __________var_______________________________________________________
+          movl -4(%ebp), %esi
+        movl %esi, -8(%ebp)
+        # Emitting write(a)
+          # Emitting a
+# __________var_______________________________________________________
+          movl -4(%ebp), %esi
+        sub $16, %esp
+        movl %esi, 4(%esp)
+        movl $STR_D, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting writeln()
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting write(b)
+          # Emitting b
+# __________var_______________________________________________________
+          movl -8(%ebp), %esi
+        sub $16, %esp
+        movl %esi, 4(%esp)
+        movl $STR_D, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting writeln()
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+    addl $8, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret

@@ -57,8 +57,8 @@ Main_main:
     # set local variables:
     # variable i
     pushl $0
-      # Emitting (...)
-        # Emitting while (true) {...}
-# ________whileLoop___________________________________________________
-          # Emitting true
-          movl $1, %edi
+    addl $4, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret

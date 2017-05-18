@@ -139,9 +139,16 @@ class Main {
 		write(0);writeln();
 		
 		
+		//assign tests with ==, !=
 		
-		
-		
+		bt = true == true;
+	
+		writeln();
+		if (bt){
+			write(1);
+		} else {
+			write(0);
+		}
 		
 		
 		

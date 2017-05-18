@@ -226,6 +226,11 @@ Main_main:
           # Emitting a
 # __________var_______________________________________________________
           movl -4(%ebp), %ecx
+        cmpl $0, %ecx
+        jne .L6
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L6:
         movl 0(%ecx), %edx
         movl 4(%edx), %edx
         subl $4, %esp
@@ -237,6 +242,11 @@ Main_main:
           # Emitting b
 # __________var_______________________________________________________
           movl -8(%ebp), %ecx
+        cmpl $0, %ecx
+        jne .L7
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L7:
         movl 0(%ecx), %edx
         movl 4(%edx), %edx
         subl $4, %esp

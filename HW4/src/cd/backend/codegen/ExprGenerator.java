@@ -66,7 +66,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 	/*
 	 * returns the left register with the value of the calculation or a boolean
-	 * TODO: define what to set sets cpu register ??? for ifElse/whileLoop stuff
+	 * sets condition codes
 	 * 
 	 */
 	@Override
@@ -209,14 +209,32 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				/* binary ops with L subtype R or R subtype L and return type boolean
 				 * ==, !=
 				 */
-				//TODO
+				//TODO ist das korrekt, einfach adresse von object vergleichen?
+				/*
+				 * sollte auch für builtintypes gehen....
+				 */
 				case B_EQUAL:{ // ==
 					/*
 					 * compare registers
 					 * return 0 or 1
 					 * if ((op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)){
 					 */
+					
+					String labelIsEqual = cg.eg.getNewLabel();
+					String labelEnd = cg.eg.getNewLabel();
+
+
 					cg.emit.emit("cmpl",  rightReg, leftReg);//b eq a
+					cg.emit.emit("je", labelIsEqual); 
+					
+					cg.emit.emit("movl", "$0", leftReg); //not equal
+					cg.emit.emit("jmp", labelEnd); //jump to end
+
+					cg.emit.emitLabel(labelIsEqual);
+					cg.emit.emit("movl", "$1", leftReg);
+					
+					cg.emit.emitLabel(labelEnd);
+
 
 
 					break;
@@ -313,7 +331,16 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			Register rTypeRegister = cg.eg.visit(ast.arg(),frame);
 			//get vtable-address from supertype
 			cg.emit.emitCommentSection("rTypeRegister");
-			cg.emit.emit("movl", rTypeRegister, reg2); 
+			cg.emit.emit("movl", rTypeRegister, reg2); //Fehler?? nur Object Adresse und nicht vtable
+			//cg.emit.emit("movl", "("+rTypeRegister.getRepr()+")", reg2); //get superType and store it in reg2
+
+			
+			/*
+			 * Test (A) b; is b already of Typ A?
+			 */
+
+			cg.emit.emit("cmpl", reg1, reg2);
+			cg.emit.emit("je", labelIsSubtype); //springt zum labelIsSubtype wenn identisch
 
 			/*
 			 * labelCheckObjectType
@@ -325,7 +352,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 
 			/*
-			 * Test (A) b; ist b bereits vom Typ A?
+			 * Test (A) b; is b' now of Typ A?
 			 */
 
 			cg.emit.emit("cmpl", reg1, reg2);
@@ -338,20 +365,12 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			cg.emit.emit("jmp", labelCheckObjectType);
 
 
-
-
 			/*
 			 * labelNotSubtype
 			 */
 			cg.emit.emitLabel(labelNotSubtype);
-			//TODO
-			//
 			throwError(1);
-
 			cg.emit.emit("jmp", labelEnd);
-
-
-
 
 
 			/*
@@ -359,41 +378,16 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			 */
 			cg.emit.emitLabel(labelIsSubtype);
 
-
-
-
-
+			
 			/*
 			 * labelEnd
 			 */
 			cg.emit.emitLabel(labelEnd);
 
 
+			frame.releaseRegister(reg1);
+			frame.releaseRegister(reg2);
 
-
-
-			//boolean isSubtype = false;
-			/*
-			 * two possible cases for casting: (a) b
-			 * 1. b subtype of a
-			 * 2. a subtype of b
-			 */
-			/*
-			//1. b subtype of a
-			isSubtype = checkSubtype(cType, typeRight);
-			//2. a subtype of b
-			isSubtype = isSubtype || checkSubtype(typeRight, cType);
-
-			if (!isSubtype)
-				throw new SemanticFailure(Cause.TYPE_ERROR);
-
-			return cType;	
-			 */
-			//.....
-
-			//return error code
-
-			//throw new ToDoException();
 			return rTypeRegister;
 
 			//TODO register freigeben

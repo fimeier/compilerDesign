@@ -101,210 +101,21 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	public Register ifElse(IfElse ast, StackFrame frame) {
 
 		jumpHelper(ast, frame, "IfElse");
-
-		/*
-		cg.emit.emitCommentSection("ifElse");
-		Register conditionValue = cg.eg.visit(ast.condition(),frame);
-
-
-		String lableElse = cg.eg.getNewLabel();
-		String lableEnd = cg.eg.getNewLabel();
-
-		System.out.println("lableElse="+lableElse +" lableEnd="+lableEnd);
-
-		Expr cond = ast.condition();
-		switch (cond.getClass().getSimpleName()){
-		 */
-
-		/*
-		 * <, <=, >, >=
-		 */
-
-		/*
-		case "BinaryOp": {
-			System.out.println("ifElse BinaryOp");
-			switch(((Ast.BinaryOp) cond).operator){
-			case B_LESS_THAN:{ //if (a<c){} //jge else
-				//jX .lableElse
-				cg.emit.emit("jge", lableElse);
-				break;
-			}
-			case B_LESS_OR_EQUAL:{ //if (a<=c){ //jg else
-				//jX .lableElse
-				cg.emit.emit("jg", lableElse);
-				break;
-			}
-			case B_GREATER_THAN:{ //if (a>c){ //jle else
-				//jX .lableElse
-				cg.emit.emit("jle", lableElse);
-				break;
-			}
-			case B_GREATER_OR_EQUAL:{ //if (a>=c){ //jl else
-				//jX .lableElse
-				cg.emit.emit("jl", lableElse);
-				break;
-			}
-			case B_AND:{ //if (a&&c){ //je else
-				//jX .lableElse
-				cg.emit.emit("je", lableElse);
-				break;
-			}
-			case B_OR:{ //if (a||c){ //je else
-				//jX .lableElse
-				cg.emit.emit("je", lableElse);
-				break;
-			}
-			default: {
-				System.out.println("ifElse(case BinaryOp:) implement: "+((Ast.BinaryOp) cond).operator.repr);
-				throw new ToDoException();				
-			}
-			}
-
-			break;
-		}
-
-		case "Var": {
-			cg.emit.emit("cmpl",  "$0", conditionValue);
-			cg.emit.emit("je", lableElse);
-			break;
-		}
-
-		//TODO
-		case "UnaryOp": {
-			cg.emit.emit("je", lableElse);
-			break;
-		}
-		default: {
-			System.out.println("public Register ifElse(..) implement: "+ast.condition().getClass().getSimpleName());
-			throw new ToDoException();		
-		}
-
-
-		}
-
-
-		cg.rm.releaseRegister(conditionValue);
-
-
-
-		//visit then body
-		visit(ast.then(), frame);
-		cg.emit.emit("jmp", lableEnd); 
-
-
-		cg.emit.emitLabel(lableElse);
-		//visit else body
-		visit(ast.otherwise(), frame);
-
-		cg.emit.emitLabel(lableEnd);
-
-		 */
-
+		
 		return null;
 	}
 
-	//TODO: Kopie von ifElse...
 	@Override
 	public Register whileLoop(WhileLoop ast, StackFrame frame) {
 
 		jumpHelper(ast, frame, "WhileLoop");
 
-		/*	
-		cg.emit.emitCommentSection("whileLoop");
-		Register conditionValue = cg.eg.visit(ast.condition(),frame);
-
-
-		String lableElse = cg.eg.getNewLabel();
-		String lableEnd = cg.eg.getNewLabel();
-
-		System.out.println("lableElse="+lableElse +" lableEnd="+lableEnd);
-
-		Expr cond = ast.condition();
-		switch (cond.getClass().getSimpleName()){
-		 */
-		///*
-		//* <, <=, >, >=
-		//*/
-		/*
-		case "BinaryOp": {
-			System.out.println("ifElse BinaryOp");
-			switch(((Ast.BinaryOp) cond).operator){
-			case B_LESS_THAN:{ //if (a<c){} //jge else
-				//jX .lableElse
-				cg.emit.emit("jge", lableElse);
-				break;
-			}
-			case B_LESS_OR_EQUAL:{ //if (a<=c){ //jg else
-				//jX .lableElse
-				cg.emit.emit("jg", lableElse);
-				break;
-			}
-			case B_GREATER_THAN:{ //if (a>c){ //jle else
-				//jX .lableElse
-				cg.emit.emit("jle", lableElse);
-				break;
-			}
-			case B_GREATER_OR_EQUAL:{ //if (a>=c){ //jl else
-				//jX .lableElse
-				cg.emit.emit("jl", lableElse);
-				break;
-			}
-			case B_AND:{ //if (a&&c){ //je else
-				//jX .lableElse
-				cg.emit.emit("je", lableElse);
-				break;
-			}
-			case B_OR:{ //if (a||c){ //je else
-				//jX .lableElse
-				cg.emit.emit("je", lableElse);
-				break;
-			}
-			default: {
-				System.out.println("whileLoop(case BinaryOp:) implement: "+((Ast.BinaryOp) cond).operator.repr);
-				throw new ToDoException();				
-			}
-			}
-
-			break;
-		}
-
-		case "Var": {
-			cg.emit.emit("cmpl",  "$0", conditionValue);
-			cg.emit.emit("je", lableElse);
-			break;
-		}
-		case "UnaryOp": {
-			cg.emit.emit("je", lableElse);
-			break;
-		}
-		default: {
-			System.out.println("public Register whileLoop(..) implement: "+ast.condition().getClass().getSimpleName());
-			throw new ToDoException();		
-		}
-
-
-		}
-
-
-		cg.rm.releaseRegister(conditionValue);
-
-
-		//visit then body
-		visit(ast.body(), frame);
-		cg.emit.emit("jmp", lableEnd); 
-
-
-		cg.emit.emitLabel(lableElse);
-		//visit else body: empty
-
-		cg.emit.emitLabel(lableEnd);
-
-		 */
-
 		return null;
 	}
 
-	//public Register whileLoop(WhileLoop ast, StackFrame frame) {
+	/*
+	 * for IfElse, WhileLoop,...
+	 */
 	private void jumpHelper(Stmt astTemp, StackFrame frame, String condType) {
 		Register conditionValue;
 		Expr cond;
@@ -360,8 +171,14 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 				cg.emit.emit("je", lableElse);
 				break;
 			}
+			
+			case B_EQUAL:{ 
+				cg.emit.emit("jne", lableElse);
+				break;
+			}
+			
 			default: {
-				System.out.println("whileLoop(case BinaryOp:) implement: "+((Ast.BinaryOp) cond).operator.repr);
+				System.out.println("JumpHelper(case BinaryOp:) implement: "+((Ast.BinaryOp) cond).operator.repr);
 				throw new ToDoException();				
 			}
 			}
@@ -378,6 +195,12 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.emit("je", lableElse);
 			break;
 		}
+		case "BooleanConst": {
+			cg.emit.emit("cmpl",  "$0", conditionValue);
+			cg.emit.emit("je", lableElse);
+			break;
+		}
+		
 		default: {
 			System.out.println("public Register jumpHelper(..) implement: ????????");
 			throw new ToDoException();		

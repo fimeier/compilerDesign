@@ -70,6 +70,18 @@ Main_main:
     movl %esp, %ebp
     # set local variables:
       # Emitting (...)
+        # Emitting r = new R()
+# ________assign______________________________________________________
+          # Emitting new R()
+# __________newObject_________________________________________________
+          pushl $4
+          pushl $1
+          call calloc
+          addl $8, %esp
+          movl $vtable_R, (%eax)
+          movl %eax, %edi
+        movl 8(%ebp), %esi
+        movl %edi, 8(%esi)
         # Emitting c = r
 # ________assign______________________________________________________
           # Emitting r
@@ -90,6 +102,8 @@ Main_main:
             movl 4(%edx), %edx
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
+          cmpl %edi, %esi
+          je .L3
 .L5:
           cmpl $0, %esi
           je .L2
@@ -103,8 +117,8 @@ Main_main:
           jmp .L4
 .L3:
 .L4:
-        movl 8(%ebp), %ecx
-        movl %edx, 8(%ecx)
+        movl 8(%ebp), %esi
+        movl %edx, 8(%esi)
         # Emitting c = (C)(r)
 # ________assign______________________________________________________
           # Emitting (C)(r)
@@ -113,16 +127,18 @@ Main_main:
           movl $vtable_C, %edx
             # Emitting r
 # ____________var_____________________________________________________
-            movl 8(%ebp), %ebx
-            movl 8(%ebx), %ebx
+            movl 8(%ebp), %edi
+            movl 8(%edi), %edi
 # __________rTypeRegister_____________________________________________
-          movl %ebx, %ecx
-.L9:
-          cmpl $0, %ecx
-          je .L6
-          cmpl %edx, %ecx
+          movl %edi, %esi
+          cmpl %edx, %esi
           je .L7
-          movl (%ecx), %ecx
+.L9:
+          cmpl $0, %esi
+          je .L6
+          cmpl %edx, %esi
+          je .L7
+          movl (%esi), %esi
           jmp .L9
 .L6:
           movl $1, %eax
@@ -130,8 +146,8 @@ Main_main:
           jmp .L8
 .L7:
 .L8:
-        movl 8(%ebp), %eax
-        movl %ebx, 4(%eax)
+        movl 8(%ebp), %esi
+        movl %edi, 4(%esi)
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

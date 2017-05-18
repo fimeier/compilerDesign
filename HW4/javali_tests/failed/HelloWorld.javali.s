@@ -177,3 +177,65 @@ Main_ok:
 # ________whileLoop___________________________________________________
           # Emitting true
           movl $1, %esi
+        cmpl $0, %esi
+        je .L9
+          # Emitting (...)
+            # Emitting return true
+              # Emitting true
+              movl $1, %esi
+            movl %esi, 16(%ebp)
+        jmp .L10
+.L9:
+.L10:
+        # Emitting return true
+          # Emitting true
+          movl $1, %esi
+        movl %esi, 16(%ebp)
+    addl $4, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret
+    # Emitting void main(...) {...}
+Main_main:
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
+    # variable a
+    pushl $0
+    # variable b
+    pushl $0
+      # Emitting (...)
+        # Emitting a = 6
+# ________assign______________________________________________________
+          # Emitting 6
+          movl $6, %esi
+        movl %esi, -4(%ebp)
+        # Emitting b = this.ok(...)
+# ________assign______________________________________________________
+          # Emitting this.ok(...)
+          pushl %edx
+            # Emitting this
+            movl 8(%ebp), %esi
+          cmpl $0, %esi
+          jne .L11
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L11:
+          movl 0(%esi), %edx
+          movl 8(%edx), %edx
+          subl $4, %esp
+            # Emitting 6
+            movl $6, %ecx
+          pushl %ecx
+          pushl %esi
+          call %edx
+          addl $8, %esp
+          popl %edx
+        movl %edx, -8(%ebp)
+    addl $8, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret

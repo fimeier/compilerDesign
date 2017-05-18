@@ -61,3 +61,34 @@ Main_test:
 # ________ifElse______________________________________________________
           # Emitting true
           movl $1, %edi
+        cmpl $0, %edi
+        je .L2
+          # Emitting (...)
+            # Emitting return 1
+              # Emitting 1
+              movl $1, %edi
+            movl %edi, 12(%ebp)
+        jmp .L3
+.L2:
+          # Emitting (...)
+            # Emitting return 2
+              # Emitting 2
+              movl $2, %edi
+            movl %edi, 12(%ebp)
+.L3:
+    addl $0, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret
+    # Emitting void main(...) {...}
+Main_main:
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
+    addl $0, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret

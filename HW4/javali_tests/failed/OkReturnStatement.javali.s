@@ -82,3 +82,38 @@ Main_method:
 # ________ifElse______________________________________________________
           # Emitting true
           movl $1, %edi
+        cmpl $0, %edi
+        je .L2
+          # Emitting (...)
+            # Emitting return 1
+              # Emitting 1
+              movl $1, %edi
+            movl %edi, 12(%ebp)
+        jmp .L3
+.L2:
+          # Emitting (...)
+            # Emitting if (false) {...} else {...}
+# ____________ifElse__________________________________________________
+              # Emitting false
+              movl $0, %edi
+            cmpl $0, %edi
+            je .L4
+              # Emitting (...)
+                # Emitting return 1
+                  # Emitting 1
+                  movl $1, %edi
+                movl %edi, 12(%ebp)
+            jmp .L5
+.L4:
+              # Emitting (...)
+.L5:
+.L3:
+        # Emitting return 1
+          # Emitting 1
+          movl $1, %edi
+        movl %edi, 12(%ebp)
+    addl $0, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret

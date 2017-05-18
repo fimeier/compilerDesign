@@ -800,6 +800,48 @@ Main_main:
         movl $STR_NL, 0(%esp)
         call printf
         add $16, %esp
+        # Emitting bt = (true == true)
+# ________assign______________________________________________________
+          # Emitting (true == true)
+            # Emitting true
+            movl $1, %edi
+            # Emitting true
+            movl $1, %esi
+          cmpl %edi, %esi
+        movl %esi, -4(%ebp)
+        # Emitting writeln()
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting if (bt) {...} else {...}
+# ________ifElse______________________________________________________
+          # Emitting bt
+# __________var_______________________________________________________
+          movl -4(%ebp), %esi
+        cmpl $0, %esi
+        je .L24
+          # Emitting (...)
+            # Emitting write(1)
+              # Emitting 1
+              movl $1, %esi
+            sub $16, %esp
+            movl %esi, 4(%esp)
+            movl $STR_D, 0(%esp)
+            call printf
+            add $16, %esp
+        jmp .L25
+.L24:
+          # Emitting (...)
+            # Emitting write(0)
+              # Emitting 0
+              movl $0, %esi
+            sub $16, %esp
+            movl %esi, 4(%esp)
+            movl $STR_D, 0(%esp)
+            call printf
+            add $16, %esp
+.L25:
     addl $12, %esp
     # restore old ebp
     movl %ebp, %esp

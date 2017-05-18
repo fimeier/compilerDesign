@@ -86,3 +86,20 @@ Main_main:
 # ____________var_____________________________________________________
             movl -4(%ebp), %esi
           cmpl %edi, %esi
+          je .L4
+          movl $0, %esi
+          je .L5
+.L4:
+          movl $1, %esi
+.L5:
+        jne .L6
+          # Emitting (...)
+        jmp .L7
+.L6:
+          # Emitting nop
+.L7:
+    addl $4, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret

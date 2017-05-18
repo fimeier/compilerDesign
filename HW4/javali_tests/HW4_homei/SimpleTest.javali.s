@@ -184,6 +184,11 @@ Main_main:
 # __________var_______________________________________________________
           movl 8(%ebp), %edx
           movl 4(%edx), %edx
+        cmpl $0, %edx
+        jne .L3
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L3:
         movl %esi, 4(%edx)
         # Emitting g = a.x
 # ________assign______________________________________________________
@@ -192,6 +197,11 @@ Main_main:
 # ____________var_____________________________________________________
             movl 8(%ebp), %esi
             movl 4(%esi), %esi
+          cmpl $0, %esi
+          jne .L4
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L4:
           movl 4(%esi), %esi
         movl 8(%ebp), %edx
         movl %esi, 12(%edx)
@@ -200,6 +210,11 @@ Main_main:
           # Emitting this.loc(...)
             # Emitting this
             movl 8(%ebp), %edx
+          cmpl $0, %edx
+          jne .L5
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L5:
           movl 0(%edx), %esi
           movl 8(%esi), %esi
           subl $4, %esp
@@ -221,16 +236,21 @@ Main_main:
           movl -4(%ebp), %edx
           # Emitting 0
           movl $0, %eax
+        cmpl $0, %edx
+        jne .L6
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L6:
         cmpl $0, %eax
-        jge .L3
+        jge .L7
         movl $3, %eax
         jmp .ERROR_EXIT
-.L3:
+.L7:
         cmpl 4(%edx), %eax
-        jl .L4
+        jl .L8
         movl $3, %eax
         jmp .ERROR_EXIT
-.L4:
+.L8:
         imul $4, %eax
         addl $8, %eax
         addl %eax, %edx
@@ -242,16 +262,21 @@ Main_main:
             movl -4(%ebp), %esi
             # Emitting 0
             movl $0, %edx
+          cmpl $0, %esi
+          jne .L9
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L9:
           cmpl $0, %edx
-          jge .L5
+          jge .L10
           movl $3, %eax
           jmp .ERROR_EXIT
-.L5:
+.L10:
           cmpl 4(%esi), %edx
-          jl .L6
+          jl .L11
           movl $3, %eax
           jmp .ERROR_EXIT
-.L6:
+.L11:
           imul $4, %edx
           addl $8, %edx
           addl %edx, %esi

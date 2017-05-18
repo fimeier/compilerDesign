@@ -79,6 +79,8 @@ Main_main:
             movl -8(%ebp), %edx
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
+          cmpl %edi, %esi
+          je .L3
 .L5:
           cmpl $0, %esi
           je .L2

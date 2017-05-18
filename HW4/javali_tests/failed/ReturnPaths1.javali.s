@@ -109,14 +109,82 @@ A_foo:
     pushl %ebp
     movl %esp, %ebp
     # set local variables:
+    # variable a
+    pushl $0
+    # variable b
+    pushl $0
       # Emitting (...)
-        # Emitting if ((arg1 == arg2)) {...} else {...}
+        # Emitting a = 2
+# ________assign______________________________________________________
+          # Emitting 2
+          movl $2, %edi
+        movl %edi, -4(%ebp)
+        # Emitting b = 3
+# ________assign______________________________________________________
+          # Emitting 3
+          movl $3, %edi
+        movl %edi, -8(%ebp)
+        # Emitting if ((a == b)) {...} else {...}
 # ________ifElse______________________________________________________
-          # Emitting (arg1 == arg2)
-            # Emitting arg2
+          # Emitting (a == b)
+            # Emitting b
 # ____________var_____________________________________________________
-            movl 16(%ebp), %edi
-            # Emitting arg1
+            movl -8(%ebp), %edi
+            # Emitting a
 # ____________var_____________________________________________________
-            movl 12(%ebp), %esi
+            movl -4(%ebp), %esi
           cmpl %edi, %esi
+          je .L3
+          movl $0, %esi
+          je .L4
+.L3:
+          movl $1, %esi
+.L4:
+        jne .L5
+          # Emitting (...)
+            # Emitting write(1)
+              # Emitting 1
+              movl $1, %esi
+            sub $16, %esp
+            movl %esi, 4(%esp)
+            movl $STR_D, 0(%esp)
+            call printf
+            add $16, %esp
+            # Emitting writeln()
+            sub $16, %esp
+            movl $STR_NL, 0(%esp)
+            call printf
+            add $16, %esp
+            # Emitting return arg1
+              # Emitting arg1
+# ______________var___________________________________________________
+              movl 12(%ebp), %esi
+            movl %esi, 20(%ebp)
+        jmp .L6
+.L5:
+          # Emitting (...)
+            # Emitting write(0)
+              # Emitting 0
+              movl $0, %esi
+            sub $16, %esp
+            movl %esi, 4(%esp)
+            movl $STR_D, 0(%esp)
+            call printf
+            add $16, %esp
+            # Emitting writeln()
+            sub $16, %esp
+            movl $STR_NL, 0(%esp)
+            call printf
+            add $16, %esp
+            # Emitting return arg2
+              # Emitting arg2
+# ______________var___________________________________________________
+              movl 16(%ebp), %esi
+            movl %esi, 20(%ebp)
+.L6:
+    addl $8, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret
+  # Emitting class B {...}

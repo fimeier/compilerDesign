@@ -20,8 +20,8 @@ ClassDecl (name: Main, superClass: Object)
 | | | | | | | IntConst (value: 1)
 | | | | | BuiltInWrite ()
 | | | | | | Var (name: i)
-Binary Op: ((i < 5))@36787147 (%esi,%edi)
-Binary Op: ((i + 1))@15b14512 (%edi,%esi)
+Binary Op: ((i < 5))@414f31fb (%esi,%edi)
+Binary Op: ((i + 1))@1998f495 (%edi,%esi)
 
 Phase exec failed because we expected to see:
 12345
