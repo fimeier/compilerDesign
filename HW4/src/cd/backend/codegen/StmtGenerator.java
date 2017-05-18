@@ -68,8 +68,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			Register[] affected = cg.rm.getUsedRegisters();
 			int offsetSpillingReg = affected.length*4;
 			
-			System.out.println("#REGS in Stmt=" +affected.length);
-
+			System.out.println("#REGS in Expr=" +affected.length);
 
 			//space for spilling
 			cg.emit.emit("pushl", "$0");
@@ -286,7 +285,8 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 
 		if (condType.equals("WhileLoop")){
 			//visit then body
-			visit(((WhileLoop) astTemp).body(), frame);
+			Register temp = visit(((WhileLoop) astTemp).body(), frame);
+			cg.rm.releaseRegister(temp);
 			//cg.emit.emit("jmp", lableEnd);  Fehler... muss an den Anfang springen
 			cg.emit.emit("jmp", lableWhile); 
 
@@ -297,14 +297,18 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.emitLabel(lableEnd);
 		} else {
 			//visit then body
-			visit(((IfElse) astTemp).then(), frame);
+			Register temp = visit(((IfElse) astTemp).then(), frame);
+			cg.rm.releaseRegister(temp);
+
 
 			cg.emit.emit("jmp", lableEnd); 
 
 
 			cg.emit.emitLabel(lableElse);
 			//visit else body
-			visit(((IfElse) astTemp).otherwise(), frame);
+			temp = visit(((IfElse) astTemp).otherwise(), frame);
+			cg.rm.releaseRegister(temp);
+
 
 			cg.emit.emitLabel(lableEnd);
 		}

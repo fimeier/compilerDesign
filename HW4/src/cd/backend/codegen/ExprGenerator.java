@@ -92,6 +92,8 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 					}
 				}
 			} else {
+				cg.emit.emitCommentSection("NO swap needed");
+
 				restoreRegSpilling(affected);
 				cg.emit.emit("addl", "$4", STACK_REG.getRepr());
 
@@ -443,8 +445,8 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			cg.emit.emitLabel(labelEnd);
 
 
-			frame.releaseRegister(reg1);
-			frame.releaseRegister(reg2);
+			cg.rm.releaseRegister(reg1);
+			cg.rm.releaseRegister(reg2);
 
 			return rTypeRegister;
 
@@ -765,6 +767,10 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		}
 	}
 	public void restoreRegSpilling(Register[] affected){
+		List<Register> rev = Arrays.asList(affected);
+		Collections.reverse(rev);
+		affected = (Register[]) rev.toArray();
+		
 		for (Register s : affected){
 			cg.emit.emit("popl", s);
 

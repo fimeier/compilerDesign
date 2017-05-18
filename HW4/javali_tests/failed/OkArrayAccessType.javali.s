@@ -56,48 +56,82 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
+  # Emitting class Main {...}
+  pushl $0
+    # Emitting void main(...) {...}
+    pushl $0
 Main_main:
-# store old ebp, set uf new ebp
-pushl %ebp
-movl %esp, %ebp
-# set local variables:
-# variable super
-pushl $0
-# variable sub
-pushl $0
-# assign______________________________________________________________
-  # Emitting sub[0]
-    # Emitting sub
-# ____var_____________________________________________________________
-    movl -8(%ebp), %edi
-    # Emitting 0
-    pushl %edi
-    movl $0, %edi
-# ____swap needed_____________________________________________________
-    movl %edi, %esi
-    popl %edi
-  cmpl $0, %edi
-  jne .L2
-  movl $4, %eax
-  jmp .ERROR_EXIT
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
+    # variable super
+    pushl $0
+    # variable sub
+    pushl $0
+      # Emitting (...)
+      pushl $0
+        # Emitting super = sub[0]
+        pushl $0
+# ________assign______________________________________________________
+          # Emitting sub[0]
+          pushl $0
+            # Emitting sub
+            pushl $0
+# ____________var_____________________________________________________
+            movl -8(%ebp), %edi
+            popl %esi
+            # Emitting 0
+            pushl $0
+            pushl %esi
+            pushl %edi
+            movl $0, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 8(%esp)
+            popl %esi
+            popl %edi
+            popl %edx
+          cmpl $0, %esi
+          jne .L2
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L2:
-  cmpl $0, %esi
-  jge .L3
-  movl $3, %eax
-  jmp .ERROR_EXIT
+          cmpl $0, %edx
+          jge .L3
+          movl $3, %eax
+          jmp .ERROR_EXIT
 .L3:
-  cmpl 4(%edi), %esi
-  jl .L4
-  movl $3, %eax
-  jmp .ERROR_EXIT
+          cmpl 4(%esi), %edx
+          jl .L4
+          movl $3, %eax
+          jmp .ERROR_EXIT
 .L4:
-  imul $4, %esi
-  addl $8, %esi
-  addl %esi, %edi
-  movl (%edi), %edi
-movl %edi, -4(%ebp)
-addl $8, %esp
-# restore old ebp
-movl %ebp, %esp
-popl %ebp
-ret
+          imul $4, %edx
+          addl $8, %edx
+          addl %edx, %esi
+          movl (%esi), %esi
+          popl %edx
+        movl %edx, -4(%ebp)
+        addl $4, %esp
+      addl $4, %esp
+    addl $8, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret
+    addl $4, %esp
+  addl $4, %esp
+  # Emitting class Sub {...}
+  pushl $0
+  pushl %esi
+  pushl %edi
+  popl %esi
+  popl %edi
+  addl $4, %esp
+  # Emitting class Super {...}
+  pushl $0
+  pushl %esi
+  pushl %edi
+  popl %esi
+  popl %edi
+  addl $4, %esp

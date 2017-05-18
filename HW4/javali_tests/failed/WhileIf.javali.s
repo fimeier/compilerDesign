@@ -48,147 +48,315 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
+  # Emitting class Main {...}
+  pushl $0
+    # Emitting void main(...) {...}
+    pushl $0
 Main_main:
-# store old ebp, set uf new ebp
-pushl %ebp
-movl %esp, %ebp
-# set local variables:
-# variable a
-pushl $0
-# variable b
-pushl $0
-# variable c
-pushl $0
-# variable d
-pushl $0
-# variable e
-pushl $0
-# assign______________________________________________________________
-  # Emitting 100
-  movl $100, %edi
-movl %edi, -4(%ebp)
-# assign______________________________________________________________
-  # Emitting -(50)
-    # Emitting 50
-    movl $50, %edi
-  negl %edi
-movl %edi, -8(%ebp)
-# whileLoop___________________________________________________________
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
+    # variable a
+    pushl $0
+    # variable b
+    pushl $0
+    # variable c
+    pushl $0
+    # variable d
+    pushl $0
+    # variable e
+    pushl $0
+      # Emitting (...)
+      pushl $0
+        # Emitting a = 100
+        pushl $0
+# ________assign______________________________________________________
+          # Emitting 100
+          pushl $0
+          movl $100, %edi
+          popl %esi
+        movl %esi, -4(%ebp)
+        addl $4, %esp
+        # Emitting b = -(50)
+        pushl $0
+        pushl %edi
+# ________assign______________________________________________________
+          # Emitting -(50)
+          pushl $0
+            # Emitting 50
+            pushl $0
+            movl $50, %edi
+            popl %esi
+          negl %esi
+          popl %edx
+        movl %edx, -8(%ebp)
+        popl %edi
+        addl $4, %esp
+        # Emitting while ((a > 0)) {...}
+        pushl $0
+        pushl %esi
+        pushl %edi
+# ________whileLoop___________________________________________________
 .L2:
-  # Emitting (a > 0)
-    # Emitting 0
-    movl $0, %edi
-    # Emitting a
-    pushl %edi
-# ____var_____________________________________________________________
-    movl -4(%ebp), %edi
-# ____swap needed_____________________________________________________
-    movl %edi, %esi
-    popl %edi
-  cmpl %edi, %esi
-  setg %al
-  movzbl %al, %esi
-jle .L3
-# assign______________________________________________________________
-  # Emitting (a - 1)
-    # Emitting 1
-    movl $1, %esi
-    # Emitting a
-    pushl %esi
-# ____var_____________________________________________________________
-    movl -4(%ebp), %esi
-# ____swap needed_____________________________________________________
-    movl %esi, %edi
-    popl %esi
-  sub %esi, %edi
-movl %edi, -4(%ebp)
-# assign______________________________________________________________
-  # Emitting (b + 1)
-    # Emitting 1
-    movl $1, %edi
-    # Emitting b
-    pushl %edi
-# ____var_____________________________________________________________
-    movl -8(%ebp), %edi
-# ____swap needed_____________________________________________________
-    movl %edi, %esi
-    popl %edi
-  add %edi, %esi
-movl %esi, -8(%ebp)
-# ifElse______________________________________________________________
-  # Emitting (b != 0)
-    # Emitting 0
-    movl $0, %esi
-    # Emitting b
-    pushl %esi
-# ____var_____________________________________________________________
-    movl -8(%ebp), %esi
-# ____swap needed_____________________________________________________
-    movl %esi, %edi
-    popl %esi
-  cmpl %esi, %edi
-  jne .L6
-  movl $0, %edi
-  jmp .L7
+          # Emitting (a > 0)
+          pushl $0
+            # Emitting 0
+            pushl $0
+            movl $0, %edi
+            popl %esi
+            # Emitting a
+            pushl $0
+            pushl %esi
+            pushl %edi
+# ____________var_____________________________________________________
+            movl -4(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 8(%esp)
+            popl %esi
+            popl %edi
+            popl %edx
+          cmpl %esi, %edx
+          setg %al
+          movzbl %al, %edx
+          popl %esi
+        jle .L3
+          # Emitting (...)
+          pushl $0
+          pushl %edx
+          pushl %edi
+            # Emitting a = (a - 1)
+            pushl $0
+# ____________assign__________________________________________________
+              # Emitting (a - 1)
+              pushl $0
+                # Emitting 1
+                pushl $0
+                movl $1, %edi
+                popl %edx
+                # Emitting a
+                pushl $0
+                pushl %edx
+                pushl %edi
+# ________________var_________________________________________________
+                movl -4(%ebp), %edi
+# ________________swap needed_________________________________________
+                movl %edi, 8(%esp)
+                popl %edx
+                popl %edi
+                popl %esi
+              sub %edx, %esi
+              popl %edx
+            movl %edx, -4(%ebp)
+            addl $4, %esp
+            # Emitting b = (b + 1)
+            pushl $0
+            pushl %esi
+            pushl %edi
+# ____________assign__________________________________________________
+              # Emitting (b + 1)
+              pushl $0
+                # Emitting 1
+                pushl $0
+                movl $1, %edi
+                popl %esi
+                # Emitting b
+                pushl $0
+                pushl %esi
+                pushl %edi
+# ________________var_________________________________________________
+                movl -8(%ebp), %edi
+# ________________swap needed_________________________________________
+                movl %edi, 8(%esp)
+                popl %esi
+                popl %edi
+                popl %edx
+              add %esi, %edx
+              popl %esi
+            movl %esi, -8(%ebp)
+            popl %esi
+            popl %edi
+            addl $4, %esp
+            # Emitting if ((b != 0)) {...} else {...}
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+# ____________ifElse__________________________________________________
+              # Emitting (b != 0)
+              pushl $0
+                # Emitting 0
+                pushl $0
+                movl $0, %edi
+                popl %esi
+                # Emitting b
+                pushl $0
+                pushl %esi
+                pushl %edi
+# ________________var_________________________________________________
+                movl -8(%ebp), %edi
+# ________________swap needed_________________________________________
+                movl %edi, 8(%esp)
+                popl %esi
+                popl %edi
+                popl %edx
+              cmpl %esi, %edx
+              jne .L6
+              movl $0, %edx
+              jmp .L7
 .L6:
-  movl $1, %edi
+              movl $1, %edx
 .L7:
-je .L8
-# assign______________________________________________________________
-  # Emitting 5
-  movl $5, %edi
-movl %edi, -12(%ebp)
-# assign______________________________________________________________
-  # Emitting 10
-  movl $10, %edi
-movl %edi, -16(%ebp)
-jmp .L9
+              popl %esi
+            je .L8
+              # Emitting (...)
+              pushl $0
+              pushl %edx
+              pushl %edi
+                # Emitting c = 5
+                pushl $0
+# ________________assign______________________________________________
+                  # Emitting 5
+                  pushl $0
+                  movl $5, %edi
+                  popl %edx
+                movl %edx, -12(%ebp)
+                addl $4, %esp
+                # Emitting d = 10
+                pushl $0
+                pushl %edi
+# ________________assign______________________________________________
+                  # Emitting 10
+                  pushl $0
+                  movl $10, %edi
+                  popl %edx
+                movl %edx, -16(%ebp)
+                popl %edi
+                addl $4, %esp
+              popl %edx
+              popl %edi
+              addl $4, %esp
+            jmp .L9
 .L8:
-# assign______________________________________________________________
-  # Emitting (25 + c)
-    # Emitting c
-# ____var_____________________________________________________________
-    movl -12(%ebp), %edi
-    # Emitting 25
-    pushl %edi
-    movl $25, %edi
-# ____swap needed_____________________________________________________
-    movl %edi, %esi
-    popl %edi
-  add %edi, %esi
-movl %esi, -12(%ebp)
-# assign______________________________________________________________
-  # Emitting 37
-  movl $37, %esi
-movl %esi, -20(%ebp)
+              # Emitting (...)
+              pushl $0
+              pushl %edx
+              pushl %edi
+                # Emitting c = (25 + c)
+                pushl $0
+# ________________assign______________________________________________
+                  # Emitting (25 + c)
+                  pushl $0
+                    # Emitting c
+                    pushl $0
+# ____________________var_____________________________________________
+                    movl -12(%ebp), %edi
+                    popl %edx
+                    # Emitting 25
+                    pushl $0
+                    pushl %edx
+                    pushl %edi
+                    movl $25, %edi
+# ____________________swap needed_____________________________________
+                    movl %edi, 8(%esp)
+                    popl %edx
+                    popl %edi
+                    popl %esi
+                  add %edx, %esi
+                  popl %edx
+                movl %edx, -12(%ebp)
+                addl $4, %esp
+                # Emitting e = 37
+                pushl $0
+                pushl %esi
+                pushl %edi
+# ________________assign______________________________________________
+                  # Emitting 37
+                  pushl $0
+                  movl $37, %edi
+                  popl %esi
+                movl %esi, -20(%ebp)
+                popl %esi
+                popl %edi
+                addl $4, %esp
+              popl %edx
+              popl %edi
+              addl $4, %esp
 .L9:
-# ifElse______________________________________________________________
-  # Emitting (a <= 0)
-    # Emitting 0
-    movl $0, %esi
-    # Emitting a
-    pushl %esi
-# ____var_____________________________________________________________
-    movl -4(%ebp), %esi
-# ____swap needed_____________________________________________________
-    movl %esi, %edi
-    popl %esi
-  cmpl %esi, %edi
-  setle %al
-  movzbl %al, %edi
-jg .L11
-# restore old ebp
-movl %ebp, %esp
-popl %ebp
-ret
-jmp .L12
+            popl %edx
+            popl %esi
+            popl %edi
+            addl $4, %esp
+            # Emitting if ((a <= 0)) {...} else {...}
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+# ____________ifElse__________________________________________________
+              # Emitting (a <= 0)
+              pushl $0
+                # Emitting 0
+                pushl $0
+                movl $0, %edi
+                popl %esi
+                # Emitting a
+                pushl $0
+                pushl %esi
+                pushl %edi
+# ________________var_________________________________________________
+                movl -4(%ebp), %edi
+# ________________swap needed_________________________________________
+                movl %edi, 8(%esp)
+                popl %esi
+                popl %edi
+                popl %edx
+              cmpl %esi, %edx
+              setle %al
+              movzbl %al, %edx
+              popl %esi
+            jg .L11
+              # Emitting (...)
+              pushl $0
+              pushl %edx
+              pushl %edi
+                # Emitting return
+                pushl $0
+                # restore old ebp
+                movl %ebp, %esp
+                popl %ebp
+                ret
+                addl $4, %esp
+              popl %edx
+              popl %edi
+              addl $4, %esp
+            jmp .L12
 .L11:
+              # Emitting nop
+              pushl $0
+              pushl %edx
+              pushl %edi
+              popl %edx
+              popl %edi
+              addl $4, %esp
 .L12:
-jmp .L2
+            popl %edx
+            popl %esi
+            popl %edi
+            addl $4, %esp
+          popl %edx
+          popl %edi
+          addl $4, %esp
+        jmp .L2
 .L3:
 .L4:
-addl $20, %esp
-# restore old ebp
-movl %ebp, %esp
-popl %ebp
-ret
+        popl %esi
+        popl %edi
+        addl $4, %esp
+      addl $4, %esp
+    addl $20, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret
+    addl $4, %esp
+  addl $4, %esp

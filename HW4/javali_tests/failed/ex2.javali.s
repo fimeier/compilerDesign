@@ -48,79 +48,171 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
+  # Emitting class Main {...}
+  pushl $0
+    # Emitting void main(...) {...}
+    pushl $0
 Main_main:
-# store old ebp, set uf new ebp
-pushl %ebp
-movl %esp, %ebp
-# set local variables:
-# variable a
-pushl $0
-# variable b
-pushl $0
-# assign______________________________________________________________
-  # Emitting 1
-  movl $1, %edi
-movl %edi, -4(%ebp)
-# ifElse______________________________________________________________
-  # Emitting (3 == 3)
-    # Emitting 3
-    movl $3, %edi
-    # Emitting 3
-    pushl %edi
-    movl $3, %edi
-# ____swap needed_____________________________________________________
-    movl %edi, %esi
-    popl %edi
-  cmpl %edi, %esi
-  je .L3
-  movl $0, %esi
-  jmp .L4
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
+    # variable a
+    pushl $0
+    # variable b
+    pushl $0
+      # Emitting (...)
+      pushl $0
+        # Emitting a = 1
+        pushl $0
+# ________assign______________________________________________________
+          # Emitting 1
+          pushl $0
+          movl $1, %edi
+          popl %esi
+        movl %esi, -4(%ebp)
+        addl $4, %esp
+        # Emitting if ((3 == 3)) {...} else {...}
+        pushl $0
+        pushl %edi
+# ________ifElse______________________________________________________
+          # Emitting (3 == 3)
+          pushl $0
+            # Emitting 3
+            pushl $0
+            movl $3, %edi
+            popl %esi
+            # Emitting 3
+            pushl $0
+            pushl %esi
+            pushl %edi
+            movl $3, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 8(%esp)
+            popl %esi
+            popl %edi
+            popl %edx
+          cmpl %esi, %edx
+          je .L3
+          movl $0, %edx
+          jmp .L4
 .L3:
-  movl $1, %esi
+          movl $1, %edx
 .L4:
-jne .L5
-# assign______________________________________________________________
-  # Emitting 4
-  movl $4, %esi
-movl %esi, -4(%ebp)
-jmp .L6
+          popl %esi
+        jne .L5
+          # Emitting (...)
+          pushl $0
+          pushl %edx
+          pushl %edi
+            # Emitting a = 4
+            pushl $0
+# ____________assign__________________________________________________
+              # Emitting 4
+              pushl $0
+              movl $4, %edi
+              popl %edx
+            movl %edx, -4(%ebp)
+            addl $4, %esp
+          popl %edx
+          popl %edi
+          addl $4, %esp
+        jmp .L6
 .L5:
-# assign______________________________________________________________
-  # Emitting 5
-  movl $5, %esi
-movl %esi, -4(%ebp)
+          # Emitting (...)
+          pushl $0
+          pushl %edx
+          pushl %edi
+            # Emitting a = 5
+            pushl $0
+# ____________assign__________________________________________________
+              # Emitting 5
+              pushl $0
+              movl $5, %edi
+              popl %edx
+            movl %edx, -4(%ebp)
+            addl $4, %esp
+          popl %edx
+          popl %edi
+          addl $4, %esp
 .L6:
-# assign______________________________________________________________
-  # Emitting a
-# __var_______________________________________________________________
-  movl -4(%ebp), %esi
-movl %esi, -8(%ebp)
-  # Emitting a
-# __var_______________________________________________________________
-  movl -4(%ebp), %esi
-sub $16, %esp
-movl %esi, 4(%esp)
-movl $STR_D, 0(%esp)
-call printf
-add $16, %esp
-sub $16, %esp
-movl $STR_NL, 0(%esp)
-call printf
-add $16, %esp
-  # Emitting b
-# __var_______________________________________________________________
-  movl -8(%ebp), %esi
-sub $16, %esp
-movl %esi, 4(%esp)
-movl $STR_D, 0(%esp)
-call printf
-add $16, %esp
-sub $16, %esp
-movl $STR_NL, 0(%esp)
-call printf
-add $16, %esp
-addl $8, %esp
-# restore old ebp
-movl %ebp, %esp
-popl %ebp
-ret
+        popl %edi
+        addl $4, %esp
+        # Emitting b = a
+        pushl $0
+        pushl %edx
+        pushl %edi
+# ________assign______________________________________________________
+          # Emitting a
+          pushl $0
+# __________var_______________________________________________________
+          movl -4(%ebp), %edi
+          popl %edx
+        movl %edx, -8(%ebp)
+        popl %edx
+        popl %edi
+        addl $4, %esp
+        # Emitting write(a)
+        pushl $0
+        pushl %edx
+        pushl %edi
+          # Emitting a
+          pushl $0
+# __________var_______________________________________________________
+          movl -4(%ebp), %edi
+          popl %edx
+        sub $16, %esp
+        movl %edx, 4(%esp)
+        movl $STR_D, 0(%esp)
+        call printf
+        add $16, %esp
+        popl %edx
+        popl %edi
+        addl $4, %esp
+        # Emitting writeln()
+        pushl $0
+        pushl %edx
+        pushl %edi
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+        popl %edx
+        popl %edi
+        addl $4, %esp
+        # Emitting write(b)
+        pushl $0
+        pushl %edx
+        pushl %edi
+          # Emitting b
+          pushl $0
+# __________var_______________________________________________________
+          movl -8(%ebp), %edi
+          popl %edx
+        sub $16, %esp
+        movl %edx, 4(%esp)
+        movl $STR_D, 0(%esp)
+        call printf
+        add $16, %esp
+        popl %edx
+        popl %edi
+        addl $4, %esp
+        # Emitting writeln()
+        pushl $0
+        pushl %edx
+        pushl %edi
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+        popl %edx
+        popl %edi
+        addl $4, %esp
+      addl $4, %esp
+    addl $8, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret
+    addl $4, %esp
+  addl $4, %esp

@@ -49,45 +49,84 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
+  # Emitting class Main {...}
+  pushl $0
+    # Emitting int test(...) {...}
+    pushl $0
 Main_test:
-# store old ebp, set uf new ebp
-pushl %ebp
-movl %esp, %ebp
-# set local variables:
-# ifElse______________________________________________________________
-  # Emitting true
-  movl $1, %edi
-cmpl $0, %edi
-je .L3
-  # Emitting 1
-  movl $1, %edi
-movl %edi, 12(%ebp)
-# restore old ebp
-movl %ebp, %esp
-popl %ebp
-ret
-jmp .L4
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
+      # Emitting (...)
+      pushl $0
+        # Emitting if (true) {...} else {...}
+        pushl $0
+# ________ifElse______________________________________________________
+          # Emitting true
+          pushl $0
+          movl $1, %edi
+          popl %esi
+        cmpl $0, %esi
+        je .L3
+          # Emitting (...)
+          pushl $0
+          pushl %edi
+            # Emitting return 1
+            pushl $0
+              # Emitting 1
+              pushl $0
+              movl $1, %edi
+              popl %esi
+            movl %esi, 12(%ebp)
+            # restore old ebp
+            movl %ebp, %esp
+            popl %ebp
+            ret
+            addl $4, %esp
+          popl %edi
+          addl $4, %esp
+        jmp .L4
 .L3:
-  # Emitting 2
-  movl $2, %edi
-movl %edi, 12(%ebp)
-# restore old ebp
-movl %ebp, %esp
-popl %ebp
-ret
+          # Emitting (...)
+          pushl $0
+          pushl %edi
+            # Emitting return 2
+            pushl $0
+              # Emitting 2
+              pushl $0
+              movl $2, %edi
+              popl %esi
+            movl %esi, 12(%ebp)
+            # restore old ebp
+            movl %ebp, %esp
+            popl %ebp
+            ret
+            addl $4, %esp
+          popl %edi
+          addl $4, %esp
 .L4:
-addl $0, %esp
-# restore old ebp
-movl %ebp, %esp
-popl %ebp
-ret
+        addl $4, %esp
+      addl $4, %esp
+    addl $0, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret
+    addl $4, %esp
+    # Emitting void main(...) {...}
+    pushl $0
+    pushl %edi
 Main_main:
-# store old ebp, set uf new ebp
-pushl %ebp
-movl %esp, %ebp
-# set local variables:
-addl $0, %esp
-# restore old ebp
-movl %ebp, %esp
-popl %ebp
-ret
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
+    addl $0, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret
+    popl %edi
+    addl $4, %esp
+  addl $4, %esp
