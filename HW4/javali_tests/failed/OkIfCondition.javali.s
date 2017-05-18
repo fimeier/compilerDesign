@@ -48,60 +48,52 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
-  # Emitting class Main {...}
-    # Emitting void main(...) {...}
 Main_main:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-    # variable b
-    pushl $0
-      # Emitting (...)
-        # Emitting b = true
-# ________assign______________________________________________________
-          # Emitting true
-          movl $1, %edi
-        movl %edi, -4(%ebp)
-        # Emitting if (!(false)) {...} else {...}
-# ________ifElse______________________________________________________
-          # Emitting !(false)
-            # Emitting false
-            movl $0, %edi
-          negl %edi
-          incl %edi
-          cmpl $0, %edi
-        je .L3
-          # Emitting (...)
-        jmp .L4
+# store old ebp, set uf new ebp
+pushl %ebp
+movl %esp, %ebp
+# set local variables:
+# variable b
+pushl $0
+# assign______________________________________________________________
+  # Emitting true
+  movl $1, %edi
+movl %edi, -4(%ebp)
+# ifElse______________________________________________________________
+  # Emitting !(false)
+    # Emitting false
+    movl $0, %edi
+  negl %edi
+  incl %edi
+  cmpl $0, %edi
+je .L3
+jmp .L4
 .L3:
-          # Emitting nop
 .L4:
-        # Emitting if ((b == false)) {...} else {...}
-# ________ifElse______________________________________________________
-          # Emitting (b == false)
-            # Emitting false
-            movl $0, %edi
-            # Emitting b
-            pushl %edi
-# ____________var_____________________________________________________
-            movl -4(%ebp), %esi
-            popl %edi
-          cmpl %edi, %esi
-          je .L6
-          movl $0, %esi
-          jmp .L7
+# ifElse______________________________________________________________
+  # Emitting (b == false)
+    # Emitting false
+    movl $0, %edi
+    # Emitting b
+    pushl %edi
+# ____var_____________________________________________________________
+    movl -4(%ebp), %edi
+# ____swap needed_____________________________________________________
+    movl %edi, %esi
+    popl %edi
+  cmpl %edi, %esi
+  je .L6
+  movl $0, %esi
+  jmp .L7
 .L6:
-          movl $1, %esi
+  movl $1, %esi
 .L7:
-        jne .L8
-          # Emitting (...)
-        jmp .L9
+jne .L8
+jmp .L9
 .L8:
-          # Emitting nop
 .L9:
-    addl $4, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
+addl $4, %esp
+# restore old ebp
+movl %ebp, %esp
+popl %ebp
+ret

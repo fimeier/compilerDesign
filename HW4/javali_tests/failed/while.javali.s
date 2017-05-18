@@ -48,63 +48,59 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
-  # Emitting class Main {...}
-    # Emitting void main(...) {...}
 Main_main:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-    # variable i
-    pushl $0
-      # Emitting (...)
-        # Emitting i = 0
-# ________assign______________________________________________________
-          # Emitting 0
-          movl $0, %edi
-        movl %edi, -4(%ebp)
-        # Emitting while ((i < 5)) {...}
-# ________whileLoop___________________________________________________
+# store old ebp, set uf new ebp
+pushl %ebp
+movl %esp, %ebp
+# set local variables:
+# variable i
+pushl $0
+# assign______________________________________________________________
+  # Emitting 0
+  movl $0, %edi
+movl %edi, -4(%ebp)
+# whileLoop___________________________________________________________
 .L2:
-          # Emitting (i < 5)
-            # Emitting 5
-            movl $5, %edi
-            # Emitting i
-            pushl %edi
-# ____________var_____________________________________________________
-            movl -4(%ebp), %esi
-            popl %edi
-          cmpl %edi, %esi
-          setl %al
-          movzbl %al, %esi
-        jge .L3
-          # Emitting (...)
-            # Emitting i = (i + 1)
-# ____________assign__________________________________________________
-              # Emitting (i + 1)
-                # Emitting 1
-                movl $1, %esi
-                # Emitting i
-                pushl %esi
-# ________________var_________________________________________________
-                movl -4(%ebp), %edi
-                popl %esi
-              add %esi, %edi
-            movl %edi, -4(%ebp)
-            # Emitting write(i)
-              # Emitting i
-# ______________var___________________________________________________
-              movl -4(%ebp), %edi
-            sub $16, %esp
-            movl %edi, 4(%esp)
-            movl $STR_D, 0(%esp)
-            call printf
-            add $16, %esp
-        jmp .L2
+  # Emitting (i < 5)
+    # Emitting 5
+    movl $5, %edi
+    # Emitting i
+    pushl %edi
+# ____var_____________________________________________________________
+    movl -4(%ebp), %edi
+# ____swap needed_____________________________________________________
+    movl %edi, %esi
+    popl %edi
+  cmpl %edi, %esi
+  setl %al
+  movzbl %al, %esi
+jge .L3
+# assign______________________________________________________________
+  # Emitting (i + 1)
+    # Emitting 1
+    movl $1, %esi
+    # Emitting i
+    pushl %esi
+# ____var_____________________________________________________________
+    movl -4(%ebp), %esi
+# ____swap needed_____________________________________________________
+    movl %esi, %edi
+    popl %esi
+  add %esi, %edi
+movl %edi, -4(%ebp)
+  # Emitting i
+# __var_______________________________________________________________
+  movl -4(%ebp), %edi
+sub $16, %esp
+movl %edi, 4(%esp)
+movl $STR_D, 0(%esp)
+call printf
+add $16, %esp
+jmp .L2
 .L3:
 .L4:
-    addl $4, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
+addl $4, %esp
+# restore old ebp
+movl %ebp, %esp
+popl %ebp
+ret

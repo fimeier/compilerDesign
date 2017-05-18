@@ -67,105 +67,88 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
-  # Emitting class D {...}
-    # Emitting A fun(...) {...}
 D_fun:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-    # variable a
-    pushl $0
-      # Emitting (...)
-        # Emitting return a
-          # Emitting a
-# __________var_______________________________________________________
-          movl -4(%ebp), %edi
-        movl %edi, 12(%ebp)
-        # restore old ebp
-        movl %ebp, %esp
-        popl %ebp
-        ret
-    addl $4, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
-  # Emitting class Main {...}
-    # Emitting D d
-    # Emitting void main(...) {...}
+# store old ebp, set uf new ebp
+pushl %ebp
+movl %esp, %ebp
+# set local variables:
+# variable a
+pushl $0
+  # Emitting a
+# __var_______________________________________________________________
+  movl -4(%ebp), %edi
+movl %edi, 12(%ebp)
+# restore old ebp
+movl %ebp, %esp
+popl %ebp
+ret
+addl $4, %esp
+# restore old ebp
+movl %ebp, %esp
+popl %ebp
+ret
 Main_main:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-      # Emitting (...)
-        # Emitting write(this.d.fun(...).foo)
-          # Emitting this.d.fun(...).foo
-            # Emitting this.d.fun(...)
-              # Emitting this.d
-              pushl %edi
-                # Emitting this
-                pushl %edi
-                movl 8(%ebp), %esi
-                popl %edi
-              cmpl $0, %esi
-              jne .L2
-              movl $4, %eax
-              jmp .ERROR_EXIT
+# store old ebp, set uf new ebp
+pushl %ebp
+movl %esp, %ebp
+# set local variables:
+  # Emitting this.d.fun(...).foo
+    # Emitting this.d.fun(...)
+      # Emitting this.d
+      pushl %edi
+        # Emitting this
+        movl 8(%ebp), %edi
+      cmpl $0, %edi
+      jne .L2
+      movl $4, %eax
+      jmp .ERROR_EXIT
 .L2:
-              movl 4(%esi), %esi
-              popl %edi
-            cmpl $0, %esi
-            jne .L3
-            movl $4, %eax
-            jmp .ERROR_EXIT
+      movl 4(%edi), %edi
+# ______swap needed___________________________________________________
+      movl %edi, %esi
+      popl %edi
+    cmpl $0, %esi
+    jne .L3
+    movl $4, %eax
+    jmp .ERROR_EXIT
 .L3:
-            movl 0(%esi), %edi
-            movl 4(%edi), %edi
-            subl $4, %esp
-            pushl %esi
-            call %edi
-            addl $4, %esp
-            popl %edi
-          cmpl $0, %edi
-          jne .L4
-          movl $4, %eax
-          jmp .ERROR_EXIT
+    movl 0(%esi), %edi
+    movl 4(%edi), %edi
+    subl $4, %esp
+    pushl %esi
+    call %edi
+    addl $4, %esp
+    popl %edi
+  cmpl $0, %edi
+  jne .L4
+  movl $4, %eax
+  jmp .ERROR_EXIT
 .L4:
-          movl 4(%edi), %edi
-        sub $16, %esp
-        movl %edi, 4(%esp)
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
-    addl $0, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
-  # Emitting class A {...}
-    # Emitting void print(...) {...}
+  movl 4(%edi), %edi
+sub $16, %esp
+movl %edi, 4(%esp)
+movl $STR_D, 0(%esp)
+call printf
+add $16, %esp
+addl $0, %esp
+# restore old ebp
+movl %ebp, %esp
+popl %ebp
+ret
 A_print:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-      # Emitting (...)
-        # Emitting write(1)
-          # Emitting 1
-          movl $1, %edi
-        sub $16, %esp
-        movl %edi, 4(%esp)
-        movl $STR_D, 0(%esp)
-        call printf
-        add $16, %esp
-    addl $0, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
-  # Emitting class B {...}
-    # Emitting int foo0
-  # Emitting class C {...}
-    # Emitting int foo
+# store old ebp, set uf new ebp
+pushl %ebp
+movl %esp, %ebp
+# set local variables:
+  # Emitting 1
+  movl $1, %edi
+sub $16, %esp
+movl %edi, 4(%esp)
+movl $STR_D, 0(%esp)
+call printf
+add $16, %esp
+addl $0, %esp
+# restore old ebp
+movl %ebp, %esp
+popl %ebp
+ret

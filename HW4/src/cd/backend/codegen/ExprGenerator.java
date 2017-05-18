@@ -57,13 +57,19 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	public Register visit(Expr ast, StackFrame frame) {
 		try {
 			cg.emit.increaseIndent("Emitting " + AstOneLine.toString(ast));
-			
-			
+
+
 			//1. save registers
-			List<Register> dontBother = new ArrayList<>();
+			//List<Register> dontBother = new ArrayList<>();
 			Register[] affected = cg.rm.getUsedRegisters();
+			int offsetSpillingReg = affected.length*4;
 			
-			saveRegisters(dontBother, affected);
+			System.out.println("#REGS in Expr=" +affected.length);
+
+			//space for spilling
+			cg.emit.emit("pushl", "$0");
+
+			saveRegSpilling(affected);
 
 			Register retReg = super.visit(ast, frame);
 
@@ -75,18 +81,28 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 						System.out.println("*******swap Needed");
 						cg.emit.emitCommentSection("swap needed");
 
-						Register temp = cg.rm.getRegister();
-						cg.emit.emit("movl", reg.getRepr(), temp.getRepr());
+						//Register temp = cg.rm.getRegister();
+						//cg.emit.emit("movl", retReg.getRepr(), temp.getRepr());
+
+						cg.emit.emit("movl", retReg.getRepr(), frame.getAddr(STACK_REG.getRepr(), offsetSpillingReg));
+
 
 						cg.rm.releaseRegister(retReg);
-						retReg = temp;					
+						//retReg = temp;					
 					}
 				}
+			} else {
+				restoreRegSpilling(affected);
+				cg.emit.emit("addl", "$4", STACK_REG.getRepr());
+
+				return null;
 			}
 			//3. restore
-			restoreRegisters(dontBother, affected);
+			restoreRegSpilling(affected);
 
-			
+			retReg = cg.rm.getRegister();
+			cg.emit.emit("popl", retReg.getRepr());
+
 			return retReg;
 		} finally {
 			cg.emit.decreaseIndent();
@@ -250,13 +266,13 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 					cg.emit.emit("cmpl",  rightReg, leftReg);//b eq a
 					cg.emit.emit("je", labelIsEqual); 
-					
+
 					cg.emit.emit("movl", "$0", leftReg); //not equal
 					cg.emit.emit("jmp", labelEnd); //jump to end
 
 					cg.emit.emitLabel(labelIsEqual);
 					cg.emit.emit("movl", "$1", leftReg);
-					
+
 					cg.emit.emitLabel(labelEnd);
 
 					break;
@@ -268,13 +284,13 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 					cg.emit.emit("cmpl",  rightReg, leftReg);//b eq a
 					cg.emit.emit("jne", labelIsEqual); 
-					
+
 					cg.emit.emit("movl", "$0", leftReg); //not equal
 					cg.emit.emit("jmp", labelEnd); //jump to end
 
 					cg.emit.emitLabel(labelIsEqual);
 					cg.emit.emit("movl", "$1", leftReg);
-					
+
 					cg.emit.emitLabel(labelEnd);
 					break;
 				}
@@ -369,14 +385,14 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			cg.emit.emit("movl", rTypeRegister, reg2); //Fehler?? nur Object Adresse und nicht vtable
 			//cg.emit.emit("movl", "("+rTypeRegister.getRepr()+")", reg2); //get superType and store it in reg2
 
-			
+
 			/*
 			 * null Pointer always io
 			 */
 			cg.emit.emit("cmpl", "$0", reg2);
 			cg.emit.emit("je", labelIsSubtype); //wenn reg2 vom TypObject => nicht gefunden
-			
-			
+
+
 			/*
 			 * Test (A) b; is b already of Typ A?
 			 */
@@ -420,7 +436,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			 */
 			cg.emit.emitLabel(labelIsSubtype);
 
-			
+
 			/*
 			 * labelEnd
 			 */
@@ -445,7 +461,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			nullPointerCheck(varReg);
 			//nullPointerCheck(indexReg);
 
-			
+
 			// ERROR CHECK
 			// check (index >= 0)
 			String elseIfLabel =  cg.eg.getNewLabel();
@@ -454,7 +470,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			cg.emit.emit("jge",  elseIfLabel);   // if size >= 0 jump to elseLabel
 			// throw error 3: negative array index
 			throwError(3);
-			
+
 			// else jump here when (index > 0)
 			cg.emit.emitLabel(elseIfLabel);
 			String elseLabel =  cg.eg.getNewLabel();
@@ -464,7 +480,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			cg.emit.emit("jl",  elseLabel);   // if index >= size jump to elseLabel
 			// throw error 3: index out of bounds
 			throwError(3);
-			
+
 			// jumpt here when index correct
 			cg.emit.emitLabel(elseLabel);
 
@@ -741,6 +757,23 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		return ".L"+labelNumber;
 	}
 
+	public void saveRegSpilling(Register[] affected){
+		//save registers: affected - dontBother
+		for (Register s : affected){
+			cg.emit.emit("pushl", s);
+			cg.rm.releaseRegister(s);
+		}
+	}
+	public void restoreRegSpilling(Register[] affected){
+		for (Register s : affected){
+			cg.emit.emit("popl", s);
+
+			cg.rm.getRegisterX(s);
+
+			//cg.rm.setToUsed(s);
+		}
+	}
+
 	public void saveRegisters(List<Register> dontBother, Register[] affected){
 		//save registers: affected - dontBother
 		for (Register s : affected){
@@ -771,11 +804,11 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		cg.emit.emit("jne",  elseLabel);   // if size >= 0 jump to elseLabel
 		// throw error 4: null pointer exception
 		cg.eg.throwError(4);
-		
+
 		// else jump here when no exception
 		cg.emit.emitLabel(elseLabel);
 	}
-	
+
 	public void nullPointerCheck(Register checkReg){
 		// ERROR CHECK
 		// check if target is a null pointer
@@ -784,9 +817,9 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		cg.emit.emit("jne",  elseLabel);   // if size >= 0 jump to elseLabel
 		// throw error 4: null pointer exception
 		cg.eg.throwError(4);
-		
+
 		// else jump here when no exception
 		cg.emit.emitLabel(elseLabel);
 	}
-	
+
 }

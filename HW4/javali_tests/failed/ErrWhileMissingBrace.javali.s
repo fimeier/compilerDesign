@@ -48,17 +48,15 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
-  # Emitting class Main {...}
-    # Emitting void main(...) {...}
 Main_main:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-    # variable i
-    pushl $0
-    addl $4, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
+# store old ebp, set uf new ebp
+pushl %ebp
+movl %esp, %ebp
+# set local variables:
+# variable i
+pushl $0
+addl $4, %esp
+# restore old ebp
+movl %ebp, %esp
+popl %ebp
+ret

@@ -60,111 +60,62 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
-  # Emitting class Main {...}
-    # Emitting C c
-    # Emitting R r
-    # Emitting void main(...) {...}
 Main_main:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-      # Emitting (...)
-        # Emitting r = new R()
-# ________assign______________________________________________________
-          # Emitting new R()
-# __________newObject_________________________________________________
-          pushl $4
-          pushl $1
-          call calloc
-          addl $8, %esp
-          movl $vtable_R, (%eax)
-          movl %eax, %edi
-        movl 8(%ebp), %esi
-        movl %edi, 8(%esi)
-        # Emitting c = r
-# ________assign______________________________________________________
-          # Emitting r
-# __________var_______________________________________________________
-          movl 8(%ebp), %edi
-          movl 8(%edi), %edi
-        movl 8(%ebp), %esi
-        movl %edi, 4(%esi)
-        # Emitting r = (R)(c)
-# ________assign______________________________________________________
-          # Emitting (R)(c)
-# __________cast______________________________________________________
-# __________castTypeName______________________________________________
-          movl $vtable_R, %edi
-            # Emitting c
-            pushl %esi
-            pushl %edi
-# ____________var_____________________________________________________
-            movl 8(%ebp), %edx
-            movl 4(%edx), %edx
-            popl %edi
-            popl %esi
-# __________rTypeRegister_____________________________________________
-          movl %edx, %esi
-          cmpl $0, %esi
-          je .L3
-          cmpl %edi, %esi
-          je .L3
+# store old ebp, set uf new ebp
+pushl %ebp
+movl %esp, %ebp
+# set local variables:
+# assign______________________________________________________________
+  # Emitting new R()
+# __newObject_________________________________________________________
+  pushl $4
+  pushl $1
+  call calloc
+  addl $8, %esp
+  movl $vtable_R, (%eax)
+  movl %eax, %edi
+movl 8(%ebp), %esi
+movl %edi, 8(%esi)
+# assign______________________________________________________________
+  # Emitting r
+# __var_______________________________________________________________
+  movl 8(%ebp), %edi
+  movl 8(%edi), %edi
+movl 8(%ebp), %esi
+movl %edi, 4(%esi)
+# assign______________________________________________________________
+  # Emitting (R)(c)
+# __cast______________________________________________________________
+# __castTypeName______________________________________________________
+  movl $vtable_R, %edi
+    # Emitting c
+    pushl %esi
+    pushl %edi
+# ____var_____________________________________________________________
+    movl 8(%ebp), %edi
+    movl 4(%edi), %edi
+# ____swap needed_____________________________________________________
+    movl %edi, %esi
+    popl %esi
+    popl %edi
+# __rTypeRegister_____________________________________________________
+  movl %esi, %esi
+  cmpl $0, %esi
+  je .L3
+  cmpl %edi, %esi
+  je .L3
 .L5:
-          cmpl $0, %esi
-          je .L2
-          cmpl %edi, %esi
-          je .L3
-          movl (%esi), %esi
-          jmp .L5
+  cmpl $0, %esi
+  je .L2
+  cmpl %edi, %esi
+  je .L3
+  movl (%esi), %esi
+  jmp .L5
 .L2:
-          movl $1, %eax
-          jmp .ERROR_EXIT
-          jmp .L4
+  movl $1, %eax
+  jmp .ERROR_EXIT
+  jmp .L4
 .L3:
 .L4:
-        movl 8(%ebp), %esi
-        movl %edx, 8(%esi)
-        # Emitting c = (C)(r)
-# ________assign______________________________________________________
-          # Emitting (C)(r)
-# __________cast______________________________________________________
-# __________castTypeName______________________________________________
-          movl $vtable_C, %edx
-            # Emitting r
-            pushl %edx
-            pushl %esi
-# ____________var_____________________________________________________
-            movl 8(%ebp), %edi
-            movl 8(%edi), %edi
-            popl %esi
-            popl %edx
-# __________rTypeRegister_____________________________________________
-          movl %edi, %esi
-          cmpl $0, %esi
-          je .L7
-          cmpl %edx, %esi
-          je .L7
-.L9:
-          cmpl $0, %esi
-          je .L6
-          cmpl %edx, %esi
-          je .L7
-          movl (%esi), %esi
-          jmp .L9
-.L6:
-          movl $1, %eax
-          jmp .ERROR_EXIT
-          jmp .L8
-.L7:
-.L8:
-        movl 8(%ebp), %esi
-        movl %edi, 4(%esi)
-    addl $0, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
-  # Emitting class A {...}
-  # Emitting class C {...}
-  # Emitting class R {...}
+movl 8(%ebp), %esi
+movl %esi, 8(%esi)

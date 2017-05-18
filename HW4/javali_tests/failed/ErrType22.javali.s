@@ -56,57 +56,48 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
-  # Emitting class Main {...}
-    # Emitting void main(...) {...}
 Main_main:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-    # variable x
-    pushl $0
-    # variable a
-    pushl $0
-    # variable b
-    pushl $0
-      # Emitting (...)
-        # Emitting a = (A)(b)
-# ________assign______________________________________________________
-          # Emitting (A)(b)
-# __________cast______________________________________________________
-# __________castTypeName______________________________________________
-          movl $vtable_A, %edi
-            # Emitting b
-            pushl %esi
-            pushl %edi
-# ____________var_____________________________________________________
-            movl -12(%ebp), %edx
-            popl %edi
-            popl %esi
-# __________rTypeRegister_____________________________________________
-          movl %edx, %esi
-          cmpl $0, %esi
-          je .L3
-          cmpl %edi, %esi
-          je .L3
+# store old ebp, set uf new ebp
+pushl %ebp
+movl %esp, %ebp
+# set local variables:
+# variable x
+pushl $0
+# variable a
+pushl $0
+# variable b
+pushl $0
+# assign______________________________________________________________
+  # Emitting (A)(b)
+# __cast______________________________________________________________
+# __castTypeName______________________________________________________
+  movl $vtable_A, %edi
+    # Emitting b
+    pushl %esi
+    pushl %edi
+# ____var_____________________________________________________________
+    movl -12(%ebp), %edi
+# ____swap needed_____________________________________________________
+    movl %edi, %esi
+    popl %esi
+    popl %edi
+# __rTypeRegister_____________________________________________________
+  movl %esi, %esi
+  cmpl $0, %esi
+  je .L3
+  cmpl %edi, %esi
+  je .L3
 .L5:
-          cmpl $0, %esi
-          je .L2
-          cmpl %edi, %esi
-          je .L3
-          movl (%esi), %esi
-          jmp .L5
+  cmpl $0, %esi
+  je .L2
+  cmpl %edi, %esi
+  je .L3
+  movl (%esi), %esi
+  jmp .L5
 .L2:
-          movl $1, %eax
-          jmp .ERROR_EXIT
-          jmp .L4
+  movl $1, %eax
+  jmp .ERROR_EXIT
+  jmp .L4
 .L3:
 .L4:
-        movl %edx, -8(%ebp)
-    addl $12, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
-  # Emitting class A {...}
-  # Emitting class B {...}
+movl %esi, -8(%ebp)

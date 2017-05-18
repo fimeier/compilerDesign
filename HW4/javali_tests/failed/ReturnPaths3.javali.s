@@ -58,175 +58,54 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
-  # Emitting class Main {...}
-    # Emitting void main(...) {...}
 Main_main:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-    # variable a
-    pushl $0
-    # variable b
-    pushl $0
-      # Emitting (...)
-        # Emitting a = b.foo(...)
-# ________assign______________________________________________________
-          # Emitting b.foo(...)
-            # Emitting b
-            pushl %edi
-# ____________var_____________________________________________________
-            movl -8(%ebp), %esi
-            popl %edi
-          cmpl $0, %esi
-          jne .L2
-          movl $4, %eax
-          jmp .ERROR_EXIT
+# store old ebp, set uf new ebp
+pushl %ebp
+movl %esp, %ebp
+# set local variables:
+# variable a
+pushl $0
+# variable b
+pushl $0
+# assign______________________________________________________________
+  # Emitting b.foo(...)
+    # Emitting b
+    pushl %edi
+# ____var_____________________________________________________________
+    movl -8(%ebp), %edi
+# ____swap needed_____________________________________________________
+    movl %edi, %esi
+    popl %edi
+  cmpl $0, %esi
+  jne .L2
+  movl $4, %eax
+  jmp .ERROR_EXIT
 .L2:
-          movl 0(%esi), %edi
-          movl 4(%edi), %edi
-          subl $4, %esp
-            # Emitting b
-            pushl %edx
-            pushl %esi
-            pushl %edi
-# ____________var_____________________________________________________
-            movl -8(%ebp), %ecx
-            popl %edi
-            popl %esi
-            popl %edx
-          pushl %ecx
-            # Emitting a
-            pushl %ecx
-            pushl %edx
-            pushl %esi
-            pushl %edi
-# ____________var_____________________________________________________
-            movl -4(%ebp), %ebx
-            popl %edi
-            popl %esi
-            popl %edx
-            popl %ecx
-          pushl %ebx
-          pushl %esi
-          call %edi
-          addl $12, %esp
-          popl %edi
-        movl %edi, -4(%ebp)
-    addl $8, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
-  # Emitting class A {...}
-  pushl %ecx
-  pushl %edx
-    # Emitting A foo(...) {...}
-    pushl %ecx
+  movl 0(%esi), %edi
+  movl 4(%edi), %edi
+  subl $4, %esp
+    # Emitting b
     pushl %edx
-A_foo:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-      # Emitting (...)
-      pushl %ecx
-      pushl %edx
-        # Emitting if ((arg1 == arg2)) {...} else {...}
-        pushl %ecx
-        pushl %edx
-# ________ifElse______________________________________________________
-          # Emitting (arg1 == arg2)
-          pushl %ecx
-          pushl %edx
-            # Emitting arg2
-            pushl %ecx
-            pushl %edx
-# ____________var_____________________________________________________
-            movl 16(%ebp), %edi
-            popl %edx
-            popl %ecx
-            # Emitting arg1
-            pushl %ecx
-            pushl %edx
-            pushl %edi
-# ____________var_____________________________________________________
-            movl 12(%ebp), %esi
-            popl %edi
-            popl %edx
-            popl %ecx
-          cmpl %edi, %esi
-          je .L4
-          movl $0, %esi
-          jmp .L5
-.L4:
-          movl $1, %esi
-.L5:
-          popl %edx
-          popl %ecx
-        jne .L6
-          # Emitting (...)
-          pushl %ecx
-          pushl %edx
-            # Emitting return arg1
-            pushl %ecx
-            pushl %edx
-              # Emitting arg1
-              pushl %ecx
-              pushl %edx
-# ______________var___________________________________________________
-              movl 12(%ebp), %esi
-              popl %edx
-              popl %ecx
-            movl %esi, 20(%ebp)
-            # restore old ebp
-            movl %ebp, %esp
-            popl %ebp
-            ret
-            popl %edx
-            popl %ecx
-          popl %edx
-          popl %ecx
-        jmp .L7
-.L6:
-          # Emitting (...)
-          pushl %ecx
-          pushl %edx
-          popl %edx
-          popl %ecx
-.L7:
-        popl %edx
-        popl %ecx
-        # Emitting return arg2
-        pushl %ecx
-        pushl %edx
-          # Emitting arg2
-          pushl %ecx
-          pushl %edx
-# __________var_______________________________________________________
-          movl 16(%ebp), %esi
-          popl %edx
-          popl %ecx
-        movl %esi, 20(%ebp)
-        # restore old ebp
-        movl %ebp, %esp
-        popl %ebp
-        ret
-        popl %edx
-        popl %ecx
-      popl %edx
-      popl %ecx
-    addl $0, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
+    pushl %esi
+    pushl %edi
+# ____var_____________________________________________________________
+    movl -8(%ebp), %edi
+# ____swap needed_____________________________________________________
+    movl %edi, %esi
     popl %edx
-    popl %ecx
-  popl %edx
-  popl %ecx
-  # Emitting class B {...}
-  pushl %ecx
-  pushl %edx
-  popl %edx
-  popl %ecx
+    popl %esi
+    popl %edi
+  pushl %esi
+    # Emitting a
+    pushl %edx
+    pushl %esi
+    pushl %edi
+# ____var_____________________________________________________________
+    movl -4(%ebp), %edi
+# ____swap needed_____________________________________________________
+    movl %edi, %esi
+    popl %edx
+    popl %esi
+    popl %edi
+  pushl %esi
+  pushl %esi

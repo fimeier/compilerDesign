@@ -56,87 +56,70 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
-  # Emitting class A {...}
-  # Emitting class B {...}
-  # Emitting class Main {...}
-    # Emitting A[] a
-    # Emitting B b
-    # Emitting void main(...) {...}
 Main_main:
-    # store old ebp, set uf new ebp
-    pushl %ebp
-    movl %esp, %ebp
-    # set local variables:
-      # Emitting (...)
-        # Emitting b = (B)(a[0])
-# ________assign______________________________________________________
-          # Emitting (B)(a[0])
-# __________cast______________________________________________________
-# __________castTypeName______________________________________________
-          movl $vtable_B, %edi
-            # Emitting a[0]
-            pushl %esi
-            pushl %edi
-              # Emitting a
-              pushl %esi
-              pushl %edi
-# ______________var___________________________________________________
-              movl 8(%ebp), %edx
-              movl 4(%edx), %edx
-              popl %edi
-              popl %esi
-              # Emitting 0
-              pushl %edx
-              pushl %esi
-              pushl %edi
-              movl $0, %ecx
-              popl %edi
-              popl %esi
-              popl %edx
-            cmpl $0, %edx
-            jne .L6
-            movl $4, %eax
-            jmp .ERROR_EXIT
+# store old ebp, set uf new ebp
+pushl %ebp
+movl %esp, %ebp
+# set local variables:
+# assign______________________________________________________________
+  # Emitting (B)(a[0])
+# __cast______________________________________________________________
+# __castTypeName______________________________________________________
+  movl $vtable_B, %edi
+    # Emitting a[0]
+    pushl %esi
+    pushl %edi
+      # Emitting a
+# ______var___________________________________________________________
+      movl 8(%ebp), %edi
+      movl 4(%edi), %edi
+      # Emitting 0
+      pushl %edi
+      movl $0, %edi
+# ______swap needed___________________________________________________
+      movl %edi, %esi
+      popl %edi
+    cmpl $0, %edi
+    jne .L6
+    movl $4, %eax
+    jmp .ERROR_EXIT
 .L6:
-            cmpl $0, %ecx
-            jge .L7
-            movl $3, %eax
-            jmp .ERROR_EXIT
+    cmpl $0, %esi
+    jge .L7
+    movl $3, %eax
+    jmp .ERROR_EXIT
 .L7:
-            cmpl 4(%edx), %ecx
-            jl .L8
-            movl $3, %eax
-            jmp .ERROR_EXIT
+    cmpl 4(%edi), %esi
+    jl .L8
+    movl $3, %eax
+    jmp .ERROR_EXIT
 .L8:
-            imul $4, %ecx
-            addl $8, %ecx
-            addl %ecx, %edx
-            movl (%edx), %edx
-            popl %edi
-            popl %esi
-# __________rTypeRegister_____________________________________________
-          movl %edx, %esi
-          cmpl $0, %esi
-          je .L3
-          cmpl %edi, %esi
-          je .L3
+    imul $4, %esi
+    addl $8, %esi
+    addl %esi, %edi
+    movl (%edi), %edi
+# ____swap needed_____________________________________________________
+    movl %edi, %esi
+    popl %esi
+    popl %edi
+# __rTypeRegister_____________________________________________________
+  movl %esi, %esi
+  cmpl $0, %esi
+  je .L3
+  cmpl %edi, %esi
+  je .L3
 .L5:
-          cmpl $0, %esi
-          je .L2
-          cmpl %edi, %esi
-          je .L3
-          movl (%esi), %esi
-          jmp .L5
+  cmpl $0, %esi
+  je .L2
+  cmpl %edi, %esi
+  je .L3
+  movl (%esi), %esi
+  jmp .L5
 .L2:
-          movl $1, %eax
-          jmp .ERROR_EXIT
-          jmp .L4
+  movl $1, %eax
+  jmp .ERROR_EXIT
+  jmp .L4
 .L3:
 .L4:
-        movl 8(%ebp), %esi
-        movl %edx, 8(%esi)
-    addl $0, %esp
-    # restore old ebp
-    movl %ebp, %esp
-    popl %ebp
-    ret
+movl 8(%ebp), %esi
+movl %esi, 8(%esi)

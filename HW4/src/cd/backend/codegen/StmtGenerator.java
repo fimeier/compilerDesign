@@ -57,15 +57,24 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	}
 	 */
 
+	@Override
 	public Register visit(Ast ast, StackFrame frame) {
 		try {
 			cg.emit.increaseIndent("Emitting " + AstOneLine.toString(ast));
 
 
 			//1. save registers
-			List<Register> dontBother = new ArrayList<>();
+			//List<Register> dontBother = new ArrayList<>();
 			Register[] affected = cg.rm.getUsedRegisters();
-			cg.eg.saveRegisters(dontBother, affected);
+			int offsetSpillingReg = affected.length*4;
+			
+			System.out.println("#REGS in Stmt=" +affected.length);
+
+
+			//space for spilling
+			cg.emit.emit("pushl", "$0");
+
+			cg.eg.saveRegSpilling(affected);
 
 			Register retReg = super.visit(ast, frame);
 
@@ -77,17 +86,27 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 						System.out.println("*******swap Needed");
 						cg.emit.emitCommentSection("swap needed");
 
-						Register temp = cg.rm.getRegister();
-						cg.emit.emit("movl", reg.getRepr(), temp.getRepr());
+						//Register temp = cg.rm.getRegister();
+						//cg.emit.emit("movl", retReg.getRepr(), temp.getRepr());
+
+						cg.emit.emit("movl", retReg.getRepr(), frame.getAddr(STACK_REG.getRepr(), offsetSpillingReg));
+
 
 						cg.rm.releaseRegister(retReg);
-						retReg = temp;					
+						//retReg = temp;					
 					}
 				}
+			} else {
+				cg.eg.restoreRegSpilling(affected);
+				cg.emit.emit("addl", "$4", STACK_REG.getRepr());
+
+				return null;
 			}
 			//3. restore
-			cg.eg.restoreRegisters(dontBother, affected);
+			cg.eg.restoreRegSpilling(affected);
 
+			retReg = cg.rm.getRegister();
+			cg.emit.emit("popl", retReg.getRepr());
 
 			return retReg;
 		} finally {
