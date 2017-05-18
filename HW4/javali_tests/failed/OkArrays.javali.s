@@ -95,26 +95,27 @@ Main_main:
           movl %eax, %esi
         movl %esi, -4(%ebp)
         # Emitting b = new B[][1]
-        pushl $0
-        pushl %edi
 # ________assign______________________________________________________
           # Emitting new B[][1]
             # Emitting 1
-            movl $1, %edi
-          cmpl $0, %edi
+            movl $1, %esi
+          cmpl $0, %esi
           jge .L3
           movl $5, %eax
           jmp .ERROR_EXIT
 .L3:
-          addl $2, %edi
+          addl $2, %esi
           pushl $4
-          pushl %edi
+          pushl %esi
           call calloc
           addl $8, %esp
           movl $vtable_Object, (%eax)
-          subl $2, %edi
-          movl %edi, 4(%eax)
-          movl %eax, %esi
-        movl %esi, -8(%ebp)
-# ________NO swap needed______________________________________________
-        popl %edi
+          subl $2, %esi
+          movl %esi, 4(%eax)
+          movl %eax, %edi
+        movl %edi, -8(%ebp)
+    addl $16, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret

@@ -109,6 +109,8 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			if (affB){
 				retReg = cg.rm.getRegister();
 				cg.emit.emit("popl", retReg.getRepr());
+			} else {
+				cg.emit.emit("addl", "$4", STACK_REG.getRepr());
 			}
 
 			return retReg;
@@ -345,7 +347,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	}
 
 	//TODO
-	@Override
+	@Override // reg ok
 	public Register cast(Cast ast, StackFrame frame) {
 		{
 			/*
@@ -459,7 +461,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		}
 	}
 
-	@Override
+	@Override // reg ok
 	public Register index(Index ast, StackFrame frame) {
 		{
 			// only read, assign in assign visitor
@@ -502,6 +504,12 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				objectShape = cg.objShapeManager.get(table.classDecl.name);
 			}
 			if (objectShape == null){
+				if (varReg != null){
+					frame.releaseRegister(varReg);
+				}
+				if (indexReg != null){
+					frame.releaseRegister(indexReg);
+				}
 				return null;
 			}
 
@@ -518,7 +526,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	}
 
 
-	@Override
+	@Override // reg ok
 	public Register intConst(IntConst ast, StackFrame frame) {
 		{
 			Register reg = cg.rm.getRegister();
@@ -527,7 +535,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		}
 	}
 
-	@Override
+	@Override // reg ok
 	public Register field(Field ast, StackFrame frame) {
 		{
 			Register targetReg = cg.eg.visit(ast.arg(), frame);
@@ -545,7 +553,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		}
 	}
 
-	@Override
+	@Override // reg ok
 	public Register newArray(NewArray ast, StackFrame frame) {
 		{
 			// NOTE: Array of Objects are stored not contiguously in memory! (inlike in C)
@@ -599,13 +607,14 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 			// move addr of the Object to a register and return it
 			Register reg = frame.getRegister();
+			frame.releaseRegister(sizeReg);
 			cg.emit.emit("movl", "%eax", reg);
 			return reg;
 		}
 	}
 
 
-	@Override
+	@Override // reg ok
 	public Register newObject(NewObject ast, StackFrame frame) {
 		{
 			cg.emit.emitCommentSection("newObject");
@@ -649,7 +658,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 		}
 	}
 
-	@Override
+	@Override // reg ok
 	public Register methodCall(MethodCallExpr ast, StackFrame frame) {
 		{
 

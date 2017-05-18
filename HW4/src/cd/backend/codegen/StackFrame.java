@@ -161,10 +161,14 @@ public class StackFrame {
 		return null;
 	}
 	
+	// assing variable to rightReg, and FREE rightReg!!
 	public void assignToVar(Var variable, Register rightReg){
 		if (variable.sym.kind.equals(Kind.LOCAL)) {
 			Integer offset = localsOffsetMap.get(variable.name);
 			if (offset == null){
+				if (rightReg != null){
+					releaseRegister(rightReg);
+				}
 				return;
 			}
 			//cg.eg.nullPointerCheck(getAddr(offset));
@@ -172,6 +176,9 @@ public class StackFrame {
 		} else if (variable.sym.kind.equals(Kind.PARAM)){
 			Integer offset = parametersOffsetMap.get(variable.name);
 			if (offset == null){
+				if (rightReg != null){
+					releaseRegister(rightReg);
+				}
 				return;
 			}
 			// TODO: check nullpointer
@@ -186,6 +193,9 @@ public class StackFrame {
 			String location = getAddr(targetReg.getRepr(), offset);
 			cg.emit.emit("movl", rightReg, location);
 			releaseRegister(targetReg);
+		}
+		if (rightReg != null){
+			releaseRegister(rightReg);
 		}
 		return;
 	}

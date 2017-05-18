@@ -112,7 +112,8 @@ public class RegisterManager {
 		}
 		if(!registers.remove(regX)){
 			System.out.println("getRegisterX: cannot return register "+regX.getRepr());
-			throw new RuntimeException();
+			return null;
+			//throw new RuntimeException();
 		} else {
 			System.out.println("getRegisterX: "+regX.getRepr());
 		}
@@ -123,7 +124,10 @@ public class RegisterManager {
 	 * marks a currently used register as free
 	 */
 	public void releaseRegister(Register reg) {
-		assert !registers.contains(reg);
+		//assert !registers.contains(reg);
+		if (registers.contains(reg)){
+			return;
+		}
 		if(reg!=null){
 			registers.add(reg);
 		}

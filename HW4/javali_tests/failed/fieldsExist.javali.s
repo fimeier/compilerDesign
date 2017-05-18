@@ -115,79 +115,81 @@ Main_main:
         movl 8(%ebp), %esi
         movl %edi, 4(%esi)
         # Emitting a.fun1(...)
-          # Emitting a
-          pushl $0
-          pushl %edi
-# __________var_______________________________________________________
-          movl 8(%ebp), %edi
-          movl 8(%edi), %edi
-# __________swap needed_______________________________________________
-          movl %edi, 4(%esp)
-          popl %edi
-          popl %esi
-        cmpl $0, %esi
-        jne .L5
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting a.fun1(...)
+            # Emitting a
+            pushl $0
+            pushl %edi
+# ____________var_____________________________________________________
+            movl 8(%ebp), %edi
+            movl 8(%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          cmpl $0, %esi
+          jne .L5
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L5:
-        movl 0(%esi), %edi
-        movl 4(%edi), %edi
-        subl $4, %esp
-          # Emitting 1
-          pushl $0
-          pushl %edx
+          movl 0(%esi), %edi
+          movl 4(%edi), %edi
+          subl $4, %esp
+            # Emitting 1
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+            movl $1, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+          pushl %ecx
           pushl %esi
-          pushl %edi
-          movl $1, %edi
-# __________swap needed_______________________________________________
-          movl %edi, 12(%esp)
+          call %edi
+          addl $8, %esp
           popl %edi
-          popl %esi
-          popl %edx
-          popl %ecx
-        pushl %ecx
-        pushl %esi
-        call %edi
-        addl $8, %esp
-        popl %edi
         # Emitting s.fun1(...)
         pushl $0
         pushl %edx
-          # Emitting s
-          pushl $0
-          pushl %edx
-# __________var_______________________________________________________
-          movl 8(%ebp), %edx
-          movl 12(%edx), %edx
-# __________swap needed_______________________________________________
-          movl %edx, 4(%esp)
-          popl %edx
-          popl %edi
-        cmpl $0, %edi
-        jne .L6
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting s.fun1(...)
+            # Emitting s
+            pushl $0
+            pushl %edx
+# ____________var_____________________________________________________
+            movl 8(%ebp), %edx
+            movl 12(%edx), %edx
+# ____________swap needed_____________________________________________
+            movl %edx, 4(%esp)
+            popl %edx
+            popl %edi
+          cmpl $0, %edi
+          jne .L6
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L6:
-        movl 0(%edi), %edx
-        movl 4(%edx), %edx
-        subl $4, %esp
-          # Emitting 2
-          pushl $0
-          pushl %edx
-          pushl %esi
+          movl 0(%edi), %edx
+          movl 4(%edx), %edx
+          subl $4, %esp
+            # Emitting 2
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+            movl $2, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+          pushl %ecx
           pushl %edi
-          movl $2, %edi
-# __________swap needed_______________________________________________
-          movl %edi, 12(%esp)
-          popl %edi
-          popl %esi
+          call %edx
+          addl $8, %esp
           popl %edx
-          popl %ecx
-        pushl %ecx
-        pushl %edi
-        call %edx
-        addl $8, %esp
-        popl %edx
 # ________NO swap needed______________________________________________
         popl %edx
         addl $4, %esp

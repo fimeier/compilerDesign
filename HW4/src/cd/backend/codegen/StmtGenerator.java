@@ -113,6 +113,8 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			if (affB){
 				retReg = cg.rm.getRegister();
 				cg.emit.emit("popl", retReg.getRepr());
+			}else {
+				cg.emit.emit("addl", "$4", STACK_REG.getRepr());
 			}
 
 			return retReg;
@@ -122,11 +124,11 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 
 	}
 
-
-	@Override
+	@Override // reg ok
 	public Register methodCall(MethodCall ast, StackFrame frame) {
 		{
-			Register reg = cg.eg.methodCall(ast.getMethodCallExpr(), frame);
+			//Register reg = cg.eg.methodCall(ast.getMethodCallExpr(), frame);
+			Register reg = cg.eg.visit(ast.getMethodCallExpr(), frame);
 			frame.releaseRegister(reg);
 			return null;
 		}
@@ -145,7 +147,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		}
 	}
 
-	@Override
+	@Override // reg ok
 	public Register methodDecl(MethodDecl ast, StackFrame f) {
 		{
 			VTable table = cg.vtableManager.get(currentClass.classDecl.name);
@@ -159,7 +161,10 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			frame.setUpFrame();
 
 			if (!ast.body().children().isEmpty()){
-				visit(ast.body(), frame);
+				Register reg = visit(ast.body(), frame);
+				if (reg != null){
+					frame.releaseRegister(reg);
+				}
 			}
 
 			frame.tearDownFrame();
@@ -176,7 +181,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		return null;
 	}
 
-	@Override
+	@Override // reg ok
 	public Register whileLoop(WhileLoop ast, StackFrame frame) {
 
 		jumpHelper(ast, frame, "WhileLoop");
@@ -184,11 +189,8 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		return null;
 	}
 
-	/*
-	 * for IfElse, WhileLoop,...
-	 */
-
-	//Fehler: WhileLoop muss an den Anfang springen
+	
+	// for IfElse, WhileLoop,... // reg ok 
 	private void jumpHelper(Stmt astTemp, StackFrame frame, String condType) {
 		Register conditionValue;
 		Expr cond;
@@ -321,17 +323,19 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.emitLabel(lableEnd);
 		}
 	}
-
+	
+	// reg ok?
 	@Override
 	public Register assign(Assign ast, StackFrame frame) {
 
 		cg.emit.emitCommentSection("assign");
 
 		Register rightReg = cg.eg.visit(ast.right(), frame);
+		
 
 		if (ast.left() instanceof Var){ // assign to a variable
 			Var var = (Var) ast.left();
-			frame.assignToVar(var, rightReg);
+			frame.assignToVar(var, rightReg); // release rightReg
 		} else if (ast.left() instanceof Index){ // assign to an array element
 			Index ind = (Index) ast.left();
 			Register varReg = cg.eg.visit(ind.left(), frame);
@@ -371,7 +375,11 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 				objectShape = cg.objShapeManager.get(table.classDecl.name);
 			}
 			if (objectShape == null){
-				cg.rm.releaseRegister(rightReg);
+				frame.releaseRegister(indexReg);
+				frame.releaseRegister(varReg);
+				if (rightReg != null){
+					cg.rm.releaseRegister(rightReg);
+				}
 				return null;
 			}
 
@@ -401,12 +409,14 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		} else {
 			throw new ToDoException(); 
 		}
-
-		cg.rm.releaseRegister(rightReg);
+		
+		if (rightReg != null){
+			cg.rm.releaseRegister(rightReg);
+		}
 		return null;
 
 	}
-	@Override
+	@Override // reg ok
 	public Register builtInWrite(BuiltInWrite ast, StackFrame frame) {
 		{		
 			Register reg = cg.eg.visit(ast.arg(), frame);
@@ -422,7 +432,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			return null;
 		}
 	}
-	@Override
+	@Override // reg ok
 	public Register builtInWriteln(BuiltInWriteln ast, StackFrame frame) {
 		{
 			cg.emit.emit("sub", constant(16), STACK_REG);
@@ -433,7 +443,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		}
 	}
 	
-	@Override
+	@Override // reg ok
 	public Register returnStmt(ReturnStmt ast, StackFrame frame) {
 		{
 			// save return value if any
