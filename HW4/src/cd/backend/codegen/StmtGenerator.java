@@ -371,6 +371,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 				objectShape = cg.objShapeManager.get(table.classDecl.name);
 			}
 			if (objectShape == null){
+				cg.rm.releaseRegister(rightReg);
 				return null;
 			}
 

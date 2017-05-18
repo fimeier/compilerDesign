@@ -456,7 +456,6 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 			return rTypeRegister;
 
-			//TODO register freigeben
 		}
 	}
 

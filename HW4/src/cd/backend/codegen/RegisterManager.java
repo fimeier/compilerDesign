@@ -112,7 +112,7 @@ public class RegisterManager {
 		}
 		if(!registers.remove(regX)){
 			System.out.println("getRegisterX: cannot return register "+regX.getRepr());
-			return null;
+			throw new RuntimeException();
 		} else {
 			System.out.println("getRegisterX: "+regX.getRepr());
 		}
