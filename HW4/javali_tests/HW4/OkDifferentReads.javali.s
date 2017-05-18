@@ -90,8 +90,14 @@ Main_main:
             # Emitting 1
             movl $1, %edi
             # Emitting y
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -4(%ebp), %esi
+            movl -4(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           add %edi, %esi
         sub $16, %esp
         movl %esi, 4(%esp)
@@ -120,9 +126,15 @@ Main_main:
             # Emitting 1
             movl $1, %esi
             # Emitting x
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl 8(%ebp), %edi
-            movl 4(%edi), %edi
+            movl 8(%ebp), %esi
+            movl 4(%esi), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           add %esi, %edi
         sub $16, %esp
         movl %edi, 4(%esp)
@@ -150,6 +162,7 @@ Main_main:
           call calloc
           addl $8, %esp
           movl $vtable_Object, (%eax)
+          subl $2, %edi
           movl %edi, 4(%eax)
           movl %eax, %esi
         movl %esi, -8(%ebp)
@@ -164,31 +177,45 @@ Main_main:
           movl 8(%esp), %esi
           add $16, %esp
           # Emitting arr
+          pushl $0
+          pushl %esi
 # __________var_______________________________________________________
-          movl -8(%ebp), %edx
+          movl -8(%ebp), %esi
+# __________swap needed_______________________________________________
+          movl %esi, 4(%esp)
+          popl %esi
+          popl %edi
           # Emitting x
+          pushl $0
+          pushl %esi
+          pushl %edi
 # __________var_______________________________________________________
-          movl 8(%ebp), %ecx
-          movl 4(%ecx), %ecx
-        cmpl $0, %edx
+          movl 8(%ebp), %edi
+          movl 4(%edi), %edi
+# __________swap needed_______________________________________________
+          movl %edi, 8(%esp)
+          popl %edi
+          popl %esi
+          popl %edx
+        cmpl $0, %edi
         jne .L3
         movl $4, %eax
         jmp .ERROR_EXIT
 .L3:
-        cmpl $0, %ecx
+        cmpl $0, %edx
         jge .L4
         movl $3, %eax
         jmp .ERROR_EXIT
 .L4:
-        cmpl 4(%edx), %ecx
+        cmpl 4(%edi), %edx
         jl .L5
         movl $3, %eax
         jmp .ERROR_EXIT
 .L5:
-        imul $4, %ecx
-        addl $8, %ecx
-        addl %ecx, %edx
-        movl %esi, (%edx)
+        imul $4, %edx
+        addl $8, %edx
+        addl %edx, %edi
+        movl %esi, (%edi)
         # Emitting write((arr[x] + 1))
           # Emitting (arr[x] + 1)
             # Emitting arr[x]
@@ -196,31 +223,43 @@ Main_main:
 # ______________var___________________________________________________
               movl -8(%ebp), %esi
               # Emitting x
+              pushl $0
+              pushl %esi
 # ______________var___________________________________________________
-              movl 8(%ebp), %edx
-              movl 4(%edx), %edx
+              movl 8(%ebp), %esi
+              movl 4(%esi), %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
             cmpl $0, %esi
             jne .L6
             movl $4, %eax
             jmp .ERROR_EXIT
 .L6:
-            cmpl $0, %edx
+            cmpl $0, %edi
             jge .L7
             movl $3, %eax
             jmp .ERROR_EXIT
 .L7:
-            cmpl 4(%esi), %edx
+            cmpl 4(%esi), %edi
             jl .L8
             movl $3, %eax
             jmp .ERROR_EXIT
 .L8:
-            imul $4, %edx
-            addl $8, %edx
-            addl %edx, %esi
+            imul $4, %edi
+            addl $8, %edi
+            addl %edi, %esi
             movl (%esi), %esi
             # Emitting 1
-            movl $1, %edx
-          add %edx, %esi
+            pushl $0
+            pushl %esi
+            movl $1, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
+          add %edi, %esi
         sub $16, %esp
         movl %esi, 4(%esp)
         movl $STR_D, 0(%esp)

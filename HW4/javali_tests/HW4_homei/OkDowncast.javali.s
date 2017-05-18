@@ -191,10 +191,20 @@ Main_main:
 # __________castTypeName______________________________________________
           movl $vtable_B, %edi
             # Emitting a
+            pushl $0
+            pushl %esi
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -4(%ebp), %edx
+            movl -4(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 8(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
+          cmpl $0, %esi
+          je .L3
           cmpl %edi, %esi
           je .L3
 .L5:
@@ -225,37 +235,51 @@ Main_main:
         call printf
         add $16, %esp
         # Emitting a.print(...)
-          # Emitting a
-# __________var_______________________________________________________
-          movl -4(%ebp), %esi
-        cmpl $0, %esi
-        jne .L6
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting a.print(...)
+            # Emitting a
+            pushl $0
+            pushl %edx
+# ____________var_____________________________________________________
+            movl -4(%ebp), %edx
+# ____________swap needed_____________________________________________
+            movl %edx, 4(%esp)
+            popl %edx
+            popl %esi
+          cmpl $0, %esi
+          jne .L6
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L6:
-        movl 0(%esi), %edx
-        movl 4(%edx), %edx
-        subl $4, %esp
-        pushl %esi
-        call %edx
-        addl $4, %esp
-        popl %edx
+          movl 0(%esi), %edx
+          movl 4(%edx), %edx
+          subl $4, %esp
+          pushl %esi
+          call %edx
+          addl $4, %esp
+          popl %edx
         # Emitting b.print(...)
-          # Emitting b
-# __________var_______________________________________________________
-          movl -8(%ebp), %esi
-        cmpl $0, %esi
-        jne .L7
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting b.print(...)
+            # Emitting b
+            pushl $0
+            pushl %edx
+# ____________var_____________________________________________________
+            movl -8(%ebp), %edx
+# ____________swap needed_____________________________________________
+            movl %edx, 4(%esp)
+            popl %edx
+            popl %esi
+          cmpl $0, %esi
+          jne .L7
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L7:
-        movl 0(%esi), %edx
-        movl 4(%edx), %edx
-        subl $4, %esp
-        pushl %esi
-        call %edx
-        addl $4, %esp
-        popl %edx
+          movl 0(%esi), %edx
+          movl 4(%edx), %edx
+          subl $4, %esp
+          pushl %esi
+          call %edx
+          addl $4, %esp
+          popl %edx
     addl $8, %esp
     # restore old ebp
     movl %ebp, %esp

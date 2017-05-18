@@ -89,8 +89,14 @@ Main_main:
 # ____________var_____________________________________________________
             movl -16(%ebp), %edi
             # Emitting i0
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %esi
+            movl -12(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           add %edi, %esi
         movl %esi, -4(%ebp)
         # Emitting write(r1)
@@ -112,8 +118,14 @@ Main_main:
             # Emitting 3
             movl $3, %esi
             # Emitting r1
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl -4(%ebp), %edi
+            movl -4(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           sub %esi, %edi
         sub $16, %esp
         movl %edi, 4(%esp)

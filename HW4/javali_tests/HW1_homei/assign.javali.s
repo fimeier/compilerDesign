@@ -78,8 +78,14 @@ Main_main:
             # Emitting 1
             movl $1, %edi
             # Emitting a
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -4(%ebp), %esi
+            movl -4(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl $0, %edi
           jne .L2
           movl $7, %eax
@@ -101,32 +107,56 @@ Main_main:
                 # Emitting 2
                 movl $2, %esi
                 # Emitting d
+                pushl $0
+                pushl %esi
 # ________________var_________________________________________________
-                movl -16(%ebp), %edi
+                movl -16(%ebp), %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
               add %esi, %edi
               # Emitting (b / (c + 1))
+              pushl $0
+              pushl %edi
                 # Emitting (c + 1)
                   # Emitting 1
-                  movl $1, %esi
+                  movl $1, %edi
                   # Emitting c
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
-                  movl -12(%ebp), %edx
-                add %esi, %edx
+                  movl -12(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
                 # Emitting b
+                pushl $0
+                pushl %esi
 # ________________var_________________________________________________
                 movl -8(%ebp), %esi
-              cmpl $0, %edx
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
+              cmpl $0, %esi
               jne .L3
               movl $7, %eax
               jmp .ERROR_EXIT
 .L3:
-              pushl %edx
               pushl %esi
+              pushl %edi
               popl %eax
               popl %ebx
               cltd
               idivl %ebx
-              movl %eax, %esi
+              movl %eax, %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
             cmpl $0, %edi
             jne .L4
             movl $7, %eax
@@ -140,11 +170,17 @@ Main_main:
             idivl %ebx
             movl %eax, %esi
             # Emitting -(-(3))
+            pushl $0
+            pushl %esi
               # Emitting -(3)
                 # Emitting 3
-                movl $3, %edi
-              negl %edi
-            negl %edi
+                movl $3, %esi
+              negl %esi
+            negl %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl $0, %edi
           jne .L5
           movl $7, %eax

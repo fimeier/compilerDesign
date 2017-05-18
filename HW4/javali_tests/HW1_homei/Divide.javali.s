@@ -84,8 +84,14 @@ Main_main:
 # ______________var___________________________________________________
               movl -8(%ebp), %edi
               # Emitting a
+              pushl $0
+              pushl %edi
 # ______________var___________________________________________________
-              movl -4(%ebp), %esi
+              movl -4(%ebp), %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
             cmpl $0, %edi
             jne .L2
             movl $7, %eax
@@ -99,8 +105,14 @@ Main_main:
             idivl %ebx
             movl %eax, %esi
             # Emitting c
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %edi
+            movl -12(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl $0, %edi
           jne .L3
           movl $7, %eax
@@ -129,8 +141,14 @@ Main_main:
 # ____________var_____________________________________________________
             movl -8(%ebp), %esi
             # Emitting c
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %edi
+            movl -12(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl $0, %esi
           jne .L4
           movl $7, %eax
@@ -160,8 +178,14 @@ Main_main:
 # ____________var_____________________________________________________
             movl -12(%ebp), %edi
             # Emitting a
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -4(%ebp), %esi
+            movl -4(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           imul %edi, %esi
         movl %esi, -8(%ebp)
         # Emitting write(((a + b) + c))
@@ -171,12 +195,24 @@ Main_main:
 # ______________var___________________________________________________
               movl -8(%ebp), %esi
               # Emitting a
+              pushl $0
+              pushl %esi
 # ______________var___________________________________________________
-              movl -4(%ebp), %edi
+              movl -4(%ebp), %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
             add %esi, %edi
             # Emitting c
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %esi
+            movl -12(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           add %esi, %edi
         sub $16, %esp
         movl %edi, 4(%esp)
@@ -209,45 +245,81 @@ Main_main:
                 # Emitting 3
                 movl $3, %edi
                 # Emitting 6
-                movl $6, %esi
+                pushl $0
+                pushl %edi
+                movl $6, %edi
+# ________________swap needed_________________________________________
+                movl %edi, 4(%esp)
+                popl %edi
+                popl %esi
               add %edi, %esi
               # Emitting (3 + 2)
+              pushl $0
+              pushl %esi
                 # Emitting 2
-                movl $2, %edi
+                movl $2, %esi
                 # Emitting 3
-                movl $3, %edx
-              add %edi, %edx
-            add %esi, %edx
+                pushl $0
+                pushl %esi
+                movl $3, %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
+              add %esi, %edi
+              popl %esi
+              addl $4, %esp
+            add %esi, %edi
             # Emitting ((6 * 7) / (4 * 3))
+            pushl $0
+            pushl %edi
               # Emitting (4 * 3)
                 # Emitting 3
-                movl $3, %esi
+                movl $3, %edi
                 # Emitting 4
+                pushl $0
+                pushl %edi
                 movl $4, %edi
-              imul %esi, %edi
+# ________________swap needed_________________________________________
+                movl %edi, 4(%esp)
+                popl %edi
+                popl %esi
+              imul %edi, %esi
               # Emitting (6 * 7)
+              pushl $0
+              pushl %esi
                 # Emitting 7
                 movl $7, %esi
                 # Emitting 6
-                movl $6, %ecx
-              imul %esi, %ecx
-            pushl %edx
-            cmpl $0, %edi
+                pushl $0
+                pushl %esi
+                movl $6, %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
+              imul %esi, %edi
+              popl %esi
+              addl $4, %esp
+            cmpl $0, %esi
             jne .L5
             movl $7, %eax
             jmp .ERROR_EXIT
 .L5:
+            pushl %esi
             pushl %edi
-            pushl %ecx
             popl %eax
             popl %ebx
             cltd
             idivl %ebx
-            movl %eax, %ecx
-            popl %edx
-          sub %edx, %ecx
+            movl %eax, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          sub %edi, %esi
         sub $16, %esp
-        movl %ecx, 4(%esp)
+        movl %esi, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp
@@ -263,82 +335,243 @@ Main_main:
                 # Emitting ((15 / 2) / (10 / 2))
                   # Emitting (10 / 2)
                     # Emitting 2
-                    movl $2, %ecx
+                    movl $2, %esi
                     # Emitting 10
-                    movl $10, %edx
-                  cmpl $0, %ecx
+                    pushl $0
+                    pushl %esi
+                    movl $10, %esi
+# ____________________swap needed_____________________________________
+                    movl %esi, 4(%esp)
+                    popl %esi
+                    popl %edi
+                  cmpl $0, %esi
                   jne .L6
                   movl $7, %eax
                   jmp .ERROR_EXIT
 .L6:
-                  pushl %ecx
-                  pushl %edx
-                  popl %eax
-                  popl %ebx
-                  cltd
-                  idivl %ebx
-                  movl %eax, %edx
-                  # Emitting (15 / 2)
-                    # Emitting 2
-                    movl $2, %ecx
-                    # Emitting 15
-                    movl $15, %edi
-                  pushl %edx
-                  cmpl $0, %ecx
-                  jne .L7
-                  movl $7, %eax
-                  jmp .ERROR_EXIT
-.L7:
-                  pushl %ecx
+                  pushl %esi
                   pushl %edi
                   popl %eax
                   popl %ebx
                   cltd
                   idivl %ebx
                   movl %eax, %edi
-                  popl %edx
-                cmpl $0, %edx
+                  # Emitting (15 / 2)
+                  pushl $0
+                  pushl %edi
+                    # Emitting 2
+                    movl $2, %edi
+                    # Emitting 15
+                    pushl $0
+                    pushl %edi
+                    movl $15, %edi
+# ____________________swap needed_____________________________________
+                    movl %edi, 4(%esp)
+                    popl %edi
+                    popl %esi
+                  cmpl $0, %edi
+                  jne .L7
+                  movl $7, %eax
+                  jmp .ERROR_EXIT
+.L7:
+                  pushl %edi
+                  pushl %esi
+                  popl %eax
+                  popl %ebx
+                  cltd
+                  idivl %ebx
+                  movl %eax, %esi
+                  popl %edi
+                  addl $4, %esp
+                cmpl $0, %edi
                 jne .L8
                 movl $7, %eax
                 jmp .ERROR_EXIT
 .L8:
-                pushl %edx
                 pushl %edi
-                popl %eax
-                popl %ebx
-                cltd
-                idivl %ebx
-                movl %eax, %edi
-                # Emitting ((2 * 12) / (3 * 2))
-                  # Emitting (3 * 2)
-                    # Emitting 2
-                    movl $2, %edx
-                    # Emitting 3
-                    movl $3, %ecx
-                  imul %edx, %ecx
-                  # Emitting (2 * 12)
-                    # Emitting 12
-                    movl $12, %edx
-                    # Emitting 2
-                    movl $2, %esi
-                  imul %edx, %esi
-                cmpl $0, %ecx
-                jne .L9
-                movl $7, %eax
-                jmp .ERROR_EXIT
-.L9:
-                pushl %ecx
                 pushl %esi
                 popl %eax
                 popl %ebx
                 cltd
                 idivl %ebx
                 movl %eax, %esi
-              cmpl $0, %edi
+                # Emitting ((2 * 12) / (3 * 2))
+                pushl $0
+                pushl %esi
+                  # Emitting (3 * 2)
+                    # Emitting 2
+                    movl $2, %esi
+                    # Emitting 3
+                    pushl $0
+                    pushl %esi
+                    movl $3, %esi
+# ____________________swap needed_____________________________________
+                    movl %esi, 4(%esp)
+                    popl %esi
+                    popl %edi
+                  imul %esi, %edi
+                  # Emitting (2 * 12)
+                  pushl $0
+                  pushl %edi
+                    # Emitting 12
+                    movl $12, %edi
+                    # Emitting 2
+                    pushl $0
+                    pushl %edi
+                    movl $2, %edi
+# ____________________swap needed_____________________________________
+                    movl %edi, 4(%esp)
+                    popl %edi
+                    popl %esi
+                  imul %edi, %esi
+                  popl %edi
+                  addl $4, %esp
+                cmpl $0, %edi
+                jne .L9
+                movl $7, %eax
+                jmp .ERROR_EXIT
+.L9:
+                pushl %edi
+                pushl %esi
+                popl %eax
+                popl %ebx
+                cltd
+                idivl %ebx
+                movl %eax, %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
+              cmpl $0, %esi
               jne .L10
               movl $7, %eax
               jmp .ERROR_EXIT
 .L10:
+              pushl %esi
+              pushl %edi
+              popl %eax
+              popl %ebx
+              cltd
+              idivl %ebx
+              movl %eax, %edi
+              # Emitting (((6 * 54) / (5 * 3)) / ((18 / 18) / (34 / 34)))
+              pushl $0
+              pushl %edi
+                # Emitting ((18 / 18) / (34 / 34))
+                  # Emitting (34 / 34)
+                    # Emitting 34
+                    movl $34, %edi
+                    # Emitting 34
+                    pushl $0
+                    pushl %edi
+                    movl $34, %edi
+# ____________________swap needed_____________________________________
+                    movl %edi, 4(%esp)
+                    popl %edi
+                    popl %esi
+                  cmpl $0, %edi
+                  jne .L11
+                  movl $7, %eax
+                  jmp .ERROR_EXIT
+.L11:
+                  pushl %edi
+                  pushl %esi
+                  popl %eax
+                  popl %ebx
+                  cltd
+                  idivl %ebx
+                  movl %eax, %esi
+                  # Emitting (18 / 18)
+                  pushl $0
+                  pushl %esi
+                    # Emitting 18
+                    movl $18, %esi
+                    # Emitting 18
+                    pushl $0
+                    pushl %esi
+                    movl $18, %esi
+# ____________________swap needed_____________________________________
+                    movl %esi, 4(%esp)
+                    popl %esi
+                    popl %edi
+                  cmpl $0, %esi
+                  jne .L12
+                  movl $7, %eax
+                  jmp .ERROR_EXIT
+.L12:
+                  pushl %esi
+                  pushl %edi
+                  popl %eax
+                  popl %ebx
+                  cltd
+                  idivl %ebx
+                  movl %eax, %edi
+                  popl %esi
+                  addl $4, %esp
+                cmpl $0, %esi
+                jne .L13
+                movl $7, %eax
+                jmp .ERROR_EXIT
+.L13:
+                pushl %esi
+                pushl %edi
+                popl %eax
+                popl %ebx
+                cltd
+                idivl %ebx
+                movl %eax, %edi
+                # Emitting ((6 * 54) / (5 * 3))
+                pushl $0
+                pushl %edi
+                  # Emitting (5 * 3)
+                    # Emitting 3
+                    movl $3, %edi
+                    # Emitting 5
+                    pushl $0
+                    pushl %edi
+                    movl $5, %edi
+# ____________________swap needed_____________________________________
+                    movl %edi, 4(%esp)
+                    popl %edi
+                    popl %esi
+                  imul %edi, %esi
+                  # Emitting (6 * 54)
+                  pushl $0
+                  pushl %esi
+                    # Emitting 54
+                    movl $54, %esi
+                    # Emitting 6
+                    pushl $0
+                    pushl %esi
+                    movl $6, %esi
+# ____________________swap needed_____________________________________
+                    movl %esi, 4(%esp)
+                    popl %esi
+                    popl %edi
+                  imul %esi, %edi
+                  popl %esi
+                  addl $4, %esp
+                cmpl $0, %esi
+                jne .L14
+                movl $7, %eax
+                jmp .ERROR_EXIT
+.L14:
+                pushl %esi
+                pushl %edi
+                popl %eax
+                popl %ebx
+                cltd
+                idivl %ebx
+                movl %eax, %edi
+# ________________swap needed_________________________________________
+                movl %edi, 4(%esp)
+                popl %edi
+                popl %esi
+              cmpl $0, %edi
+              jne .L15
+              movl $7, %eax
+              jmp .ERROR_EXIT
+.L15:
               pushl %edi
               pushl %esi
               popl %eax
@@ -346,139 +579,41 @@ Main_main:
               cltd
               idivl %ebx
               movl %eax, %esi
-              # Emitting (((6 * 54) / (5 * 3)) / ((18 / 18) / (34 / 34)))
-                # Emitting ((18 / 18) / (34 / 34))
-                  # Emitting (34 / 34)
-                    # Emitting 34
-                    movl $34, %edi
-                    # Emitting 34
-                    movl $34, %ecx
-                  cmpl $0, %edi
-                  jne .L11
-                  movl $7, %eax
-                  jmp .ERROR_EXIT
-.L11:
-                  pushl %edi
-                  pushl %ecx
-                  popl %eax
-                  popl %ebx
-                  cltd
-                  idivl %ebx
-                  movl %eax, %ecx
-                  # Emitting (18 / 18)
-                    # Emitting 18
-                    movl $18, %edi
-                    # Emitting 18
-                    movl $18, %edx
-                  cmpl $0, %edi
-                  jne .L12
-                  movl $7, %eax
-                  jmp .ERROR_EXIT
-.L12:
-                  pushl %edi
-                  pushl %edx
-                  popl %eax
-                  popl %ebx
-                  cltd
-                  idivl %ebx
-                  movl %eax, %edx
-                cmpl $0, %ecx
-                jne .L13
-                movl $7, %eax
-                jmp .ERROR_EXIT
-.L13:
-                pushl %ecx
-                pushl %edx
-                popl %eax
-                popl %ebx
-                cltd
-                idivl %ebx
-                movl %eax, %edx
-                # Emitting ((6 * 54) / (5 * 3))
-                  # Emitting (5 * 3)
-                    # Emitting 3
-                    movl $3, %ecx
-                    # Emitting 5
-                    movl $5, %edi
-                  imul %ecx, %edi
-                  # Emitting (6 * 54)
-                    # Emitting 54
-                    movl $54, %ecx
-                    # Emitting 6
-                    movl $6, %ebx
-                  imul %ecx, %ebx
-                pushl %edx
-                cmpl $0, %edi
-                jne .L14
-                movl $7, %eax
-                jmp .ERROR_EXIT
-.L14:
-                pushl %edi
-                pushl %ebx
-                popl %eax
-                popl %ebx
-                cltd
-                idivl %ebx
-                movl %eax, %ebx
-                popl %edx
-              cmpl $0, %edx
-              jne .L15
-              movl $7, %eax
-              jmp .ERROR_EXIT
-.L15:
-              pushl %edx
-              pushl %ebx
-              popl %eax
-              popl %ebx
-              cltd
-              idivl %ebx
-              movl %eax, %ebx
-            cmpl $0, %esi
+              popl %edi
+              addl $4, %esp
+            cmpl $0, %edi
             jne .L16
             movl $7, %eax
             jmp .ERROR_EXIT
 .L16:
+            pushl %edi
             pushl %esi
-            pushl %ebx
             popl %eax
             popl %ebx
             cltd
             idivl %ebx
-            movl %eax, %ebx
+            movl %eax, %esi
             # Emitting ((((6 * 54) / (5 * 3)) / ((18 / 18) / (34 / 34))) / (((2 * 12) / (3 * 2)) / ((15 / 2) / (10 / 2))))
+            pushl $0
+            pushl %esi
               # Emitting (((2 * 12) / (3 * 2)) / ((15 / 2) / (10 / 2)))
                 # Emitting ((15 / 2) / (10 / 2))
                   # Emitting (10 / 2)
                     # Emitting 2
                     movl $2, %esi
                     # Emitting 10
-                    movl $10, %edx
-                  pushl %ebx
+                    pushl $0
+                    pushl %esi
+                    movl $10, %esi
+# ____________________swap needed_____________________________________
+                    movl %esi, 4(%esp)
+                    popl %esi
+                    popl %edi
                   cmpl $0, %esi
                   jne .L17
                   movl $7, %eax
                   jmp .ERROR_EXIT
 .L17:
-                  pushl %esi
-                  pushl %edx
-                  popl %eax
-                  popl %ebx
-                  cltd
-                  idivl %ebx
-                  movl %eax, %edx
-                  popl %ebx
-                  # Emitting (15 / 2)
-                    # Emitting 2
-                    movl $2, %esi
-                    # Emitting 15
-                    movl $15, %edi
-                  pushl %ebx
-                  pushl %edx
-                  cmpl $0, %esi
-                  jne .L18
-                  movl $7, %eax
-                  jmp .ERROR_EXIT
-.L18:
                   pushl %esi
                   pushl %edi
                   popl %eax
@@ -486,71 +621,119 @@ Main_main:
                   cltd
                   idivl %ebx
                   movl %eax, %edi
-                  popl %edx
+                  # Emitting (15 / 2)
+                  pushl $0
+                  pushl %edi
+                    # Emitting 2
+                    movl $2, %edi
+                    # Emitting 15
+                    pushl $0
+                    pushl %edi
+                    movl $15, %edi
+# ____________________swap needed_____________________________________
+                    movl %edi, 4(%esp)
+                    popl %edi
+                    popl %esi
+                  cmpl $0, %edi
+                  jne .L18
+                  movl $7, %eax
+                  jmp .ERROR_EXIT
+.L18:
+                  pushl %edi
+                  pushl %esi
+                  popl %eax
                   popl %ebx
-                pushl %ebx
-                cmpl $0, %edx
+                  cltd
+                  idivl %ebx
+                  movl %eax, %esi
+                  popl %edi
+                  addl $4, %esp
+                cmpl $0, %edi
                 jne .L19
                 movl $7, %eax
                 jmp .ERROR_EXIT
 .L19:
-                pushl %edx
                 pushl %edi
+                pushl %esi
                 popl %eax
                 popl %ebx
                 cltd
                 idivl %ebx
-                movl %eax, %edi
-                popl %ebx
+                movl %eax, %esi
                 # Emitting ((2 * 12) / (3 * 2))
+                pushl $0
+                pushl %esi
                   # Emitting (3 * 2)
                     # Emitting 2
-                    movl $2, %edx
+                    movl $2, %esi
                     # Emitting 3
+                    pushl $0
+                    pushl %esi
                     movl $3, %esi
-                  imul %edx, %esi
+# ____________________swap needed_____________________________________
+                    movl %esi, 4(%esp)
+                    popl %esi
+                    popl %edi
+                  imul %esi, %edi
                   # Emitting (2 * 12)
+                  pushl $0
+                  pushl %edi
                     # Emitting 12
-                    movl $12, %edx
+                    movl $12, %edi
                     # Emitting 2
-                    movl $2, %ecx
-                  imul %edx, %ecx
-                pushl %ebx
-                cmpl $0, %esi
+                    pushl $0
+                    pushl %edi
+                    movl $2, %edi
+# ____________________swap needed_____________________________________
+                    movl %edi, 4(%esp)
+                    popl %edi
+                    popl %esi
+                  imul %edi, %esi
+                  popl %edi
+                  addl $4, %esp
+                cmpl $0, %edi
                 jne .L20
                 movl $7, %eax
                 jmp .ERROR_EXIT
 .L20:
+                pushl %edi
                 pushl %esi
-                pushl %ecx
                 popl %eax
                 popl %ebx
                 cltd
                 idivl %ebx
-                movl %eax, %ecx
-                popl %ebx
-              pushl %ebx
-              cmpl $0, %edi
+                movl %eax, %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
+              cmpl $0, %esi
               jne .L21
               movl $7, %eax
               jmp .ERROR_EXIT
 .L21:
+              pushl %esi
               pushl %edi
-              pushl %ecx
               popl %eax
               popl %ebx
               cltd
               idivl %ebx
-              movl %eax, %ecx
-              popl %ebx
+              movl %eax, %edi
               # Emitting (((6 * 54) / (5 * 3)) / ((18 / 18) / (34 / 34)))
+              pushl $0
+              pushl %edi
                 # Emitting ((18 / 18) / (34 / 34))
                   # Emitting (34 / 34)
                     # Emitting 34
                     movl $34, %edi
                     # Emitting 34
-                    movl $34, %esi
-                  pushl %ebx
+                    pushl $0
+                    pushl %edi
+                    movl $34, %edi
+# ____________________swap needed_____________________________________
+                    movl %edi, 4(%esp)
+                    popl %edi
+                    popl %esi
                   cmpl $0, %edi
                   jne .L22
                   movl $7, %eax
@@ -563,111 +746,136 @@ Main_main:
                   cltd
                   idivl %ebx
                   movl %eax, %esi
-                  popl %ebx
                   # Emitting (18 / 18)
+                  pushl $0
+                  pushl %esi
                     # Emitting 18
-                    movl $18, %edi
+                    movl $18, %esi
                     # Emitting 18
-                    movl $18, %edx
-                  pushl %ebx
-                  cmpl $0, %edi
+                    pushl $0
+                    pushl %esi
+                    movl $18, %esi
+# ____________________swap needed_____________________________________
+                    movl %esi, 4(%esp)
+                    popl %esi
+                    popl %edi
+                  cmpl $0, %esi
                   jne .L23
                   movl $7, %eax
                   jmp .ERROR_EXIT
 .L23:
+                  pushl %esi
                   pushl %edi
-                  pushl %edx
                   popl %eax
                   popl %ebx
                   cltd
                   idivl %ebx
-                  movl %eax, %edx
-                  popl %ebx
-                pushl %ebx
+                  movl %eax, %edi
+                  popl %esi
+                  addl $4, %esp
                 cmpl $0, %esi
                 jne .L24
                 movl $7, %eax
                 jmp .ERROR_EXIT
 .L24:
                 pushl %esi
-                pushl %edx
+                pushl %edi
                 popl %eax
                 popl %ebx
                 cltd
                 idivl %ebx
-                movl %eax, %edx
-                popl %ebx
+                movl %eax, %edi
                 # Emitting ((6 * 54) / (5 * 3))
+                pushl $0
+                pushl %edi
                   # Emitting (5 * 3)
                     # Emitting 3
-                    movl $3, %esi
+                    movl $3, %edi
                     # Emitting 5
+                    pushl $0
+                    pushl %edi
                     movl $5, %edi
-                  imul %esi, %edi
+# ____________________swap needed_____________________________________
+                    movl %edi, 4(%esp)
+                    popl %edi
+                    popl %esi
+                  imul %edi, %esi
                   # Emitting (6 * 54)
+                  pushl $0
+                  pushl %esi
                     # Emitting 54
                     movl $54, %esi
                     # Emitting 6
-                    movl $6, %eax
-                  imul %esi, %eax
-                pushl %ebx
-                pushl %edx
-                cmpl $0, %edi
+                    pushl $0
+                    pushl %esi
+                    movl $6, %esi
+# ____________________swap needed_____________________________________
+                    movl %esi, 4(%esp)
+                    popl %esi
+                    popl %edi
+                  imul %esi, %edi
+                  popl %esi
+                  addl $4, %esp
+                cmpl $0, %esi
                 jne .L25
                 movl $7, %eax
                 jmp .ERROR_EXIT
 .L25:
+                pushl %esi
                 pushl %edi
-                pushl %eax
                 popl %eax
                 popl %ebx
                 cltd
                 idivl %ebx
-                movl %eax, %eax
-                popl %edx
-                popl %ebx
-              pushl %ebx
-              cmpl $0, %edx
+                movl %eax, %edi
+# ________________swap needed_________________________________________
+                movl %edi, 4(%esp)
+                popl %edi
+                popl %esi
+              cmpl $0, %edi
               jne .L26
               movl $7, %eax
               jmp .ERROR_EXIT
 .L26:
-              pushl %edx
-              pushl %eax
+              pushl %edi
+              pushl %esi
               popl %eax
               popl %ebx
               cltd
               idivl %ebx
-              movl %eax, %eax
-              popl %ebx
-            pushl %ebx
-            cmpl $0, %ecx
+              movl %eax, %esi
+              popl %edi
+              addl $4, %esp
+            cmpl $0, %edi
             jne .L27
             movl $7, %eax
             jmp .ERROR_EXIT
 .L27:
-            pushl %ecx
-            pushl %eax
+            pushl %edi
+            pushl %esi
             popl %eax
             popl %ebx
             cltd
             idivl %ebx
-            movl %eax, %eax
-            popl %ebx
-          cmpl $0, %ebx
+            movl %eax, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
+          cmpl $0, %esi
           jne .L28
           movl $7, %eax
           jmp .ERROR_EXIT
 .L28:
-          pushl %ebx
-          pushl %eax
+          pushl %esi
+          pushl %edi
           popl %eax
           popl %ebx
           cltd
           idivl %ebx
-          movl %eax, %eax
+          movl %eax, %edi
         sub $16, %esp
-        movl %eax, 4(%esp)
+        movl %edi, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp

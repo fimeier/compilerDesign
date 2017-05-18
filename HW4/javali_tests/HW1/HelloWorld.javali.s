@@ -64,8 +64,14 @@ Main_bla:
             # Emitting 2
             movl $2, %edi
             # Emitting a
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl 12(%ebp), %esi
+            movl 12(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setl %al
           movzbl %al, %esi
@@ -75,6 +81,10 @@ Main_bla:
               # Emitting true
               movl $1, %esi
             movl %esi, 16(%ebp)
+            # restore old ebp
+            movl %ebp, %esp
+            popl %ebp
+            ret
         jmp .L4
 .L3:
           # Emitting nop
@@ -83,6 +93,10 @@ Main_bla:
           # Emitting false
           movl $0, %esi
         movl %esi, 16(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
@@ -98,55 +112,89 @@ Main_ok:
     pushl $0
       # Emitting (...)
         # Emitting this.bla(...)
-          # Emitting this
-          movl 8(%ebp), %edi
-        cmpl $0, %edi
-        jne .L5
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting this.bla(...)
+            # Emitting this
+            pushl $0
+            pushl %esi
+            movl 8(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
+          cmpl $0, %edi
+          jne .L5
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L5:
-        movl 0(%edi), %esi
-        movl 4(%esi), %esi
-        subl $4, %esp
-          # Emitting a
-# __________var_______________________________________________________
-          movl 12(%ebp), %ecx
-        pushl %ecx
-        pushl %edi
-        call %esi
-        addl $8, %esp
-        popl %esi
+          movl 0(%edi), %esi
+          movl 4(%esi), %esi
+          subl $4, %esp
+            # Emitting a
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+# ____________var_____________________________________________________
+            movl 12(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+          pushl %ecx
+          pushl %edi
+          call %esi
+          addl $8, %esp
+          popl %esi
         # Emitting write(a)
+        pushl $0
+        pushl %edx
           # Emitting a
 # __________var_______________________________________________________
-          movl 12(%ebp), %esi
+          movl 12(%ebp), %edx
         sub $16, %esp
-        movl %esi, 4(%esp)
+        movl %edx, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp
+# ________NO swap needed______________________________________________
+        popl %edx
+        addl $4, %esp
         # Emitting if ((a < 5)) {...} else {...}
+        pushl $0
+        pushl %edx
 # ________ifElse______________________________________________________
           # Emitting (a < 5)
             # Emitting 5
-            movl $5, %esi
+            movl $5, %edx
             # Emitting a
+            pushl $0
+            pushl %edx
 # ____________var_____________________________________________________
-            movl 12(%ebp), %edi
-          cmpl %esi, %edi
+            movl 12(%ebp), %edx
+# ____________swap needed_____________________________________________
+            movl %edx, 4(%esp)
+            popl %edx
+            popl %esi
+          cmpl %edx, %esi
           setl %al
-          movzbl %al, %edi
+          movzbl %al, %esi
         jge .L7
           # Emitting (...)
             # Emitting b = 3
 # ____________assign__________________________________________________
               # Emitting 3
-              movl $3, %edi
-            movl %edi, -4(%ebp)
+              movl $3, %esi
+            movl %esi, -4(%ebp)
             # Emitting return true
               # Emitting true
-              movl $1, %edi
-            movl %edi, 16(%ebp)
+              movl $1, %esi
+            movl %esi, 16(%ebp)
+            # restore old ebp
+            movl %ebp, %esp
+            popl %ebp
+            ret
         jmp .L8
 .L7:
           # Emitting (...)
@@ -154,13 +202,19 @@ Main_ok:
 # ____________ifElse__________________________________________________
               # Emitting (a < 2)
                 # Emitting 2
-                movl $2, %edi
+                movl $2, %esi
                 # Emitting a
+                pushl $0
+                pushl %esi
 # ________________var_________________________________________________
                 movl 12(%ebp), %esi
-              cmpl %edi, %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edx
+              cmpl %esi, %edx
               setl %al
-              movzbl %al, %esi
+              movzbl %al, %edx
             jge .L10
               # Emitting (...)
             jmp .L11
@@ -169,20 +223,34 @@ Main_ok:
                 # Emitting a = 4
 # ________________assign______________________________________________
                   # Emitting 4
-                  movl $4, %esi
-                movl %esi, 12(%ebp)
+                  movl $4, %edx
+                movl %edx, 12(%ebp)
 .L11:
 .L8:
+# ________NO swap needed______________________________________________
+        popl %edx
+        addl $4, %esp
         # Emitting return true
+        pushl $0
+        pushl %edx
           # Emitting true
-          movl $1, %esi
-        movl %esi, 16(%ebp)
+          movl $1, %edx
+        movl %edx, 16(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
+# ________NO swap needed______________________________________________
+        popl %edx
+        addl $4, %esp
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
     # Emitting void main(...) {...}
+    pushl $0
+    pushl %edx
 Main_main:
     # store old ebp, set uf new ebp
     pushl %ebp
@@ -196,14 +264,19 @@ Main_main:
         # Emitting a = 6
 # ________assign______________________________________________________
           # Emitting 6
-          movl $6, %esi
-        movl %esi, -4(%ebp)
+          movl $6, %edx
+        movl %edx, -4(%ebp)
         # Emitting b = this.ok(...)
 # ________assign______________________________________________________
           # Emitting this.ok(...)
-          pushl %edx
             # Emitting this
-            movl 8(%ebp), %esi
+            pushl $0
+            pushl %edx
+            movl 8(%ebp), %edx
+# ____________swap needed_____________________________________________
+            movl %edx, 4(%esp)
+            popl %edx
+            popl %esi
           cmpl $0, %esi
           jne .L12
           movl $4, %eax
@@ -213,7 +286,17 @@ Main_main:
           movl 8(%edx), %edx
           subl $4, %esp
             # Emitting 6
-            movl $6, %ecx
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+            movl $6, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
           pushl %ecx
           pushl %esi
           call %edx
@@ -225,3 +308,6 @@ Main_main:
     movl %ebp, %esp
     popl %ebp
     ret
+# ____NO swap needed__________________________________________________
+    popl %edx
+    addl $4, %esp

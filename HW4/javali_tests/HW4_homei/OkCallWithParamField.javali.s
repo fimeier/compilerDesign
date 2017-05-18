@@ -117,8 +117,14 @@ Main_main:
           # Emitting 10
           movl $10, %edi
           # Emitting a
+          pushl $0
+          pushl %edi
 # __________var_______________________________________________________
-          movl -4(%ebp), %esi
+          movl -4(%ebp), %edi
+# __________swap needed_______________________________________________
+          movl %edi, 4(%esp)
+          popl %edi
+          popl %esi
         cmpl $0, %esi
         jne .L2
         movl $4, %eax
@@ -126,63 +132,125 @@ Main_main:
 .L2:
         movl %edi, 4(%esi)
         # Emitting a.foo(...)
-          # Emitting a
-# __________var_______________________________________________________
-          movl -4(%ebp), %esi
-        cmpl $0, %esi
-        jne .L3
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting a.foo(...)
+            # Emitting a
+            pushl $0
+            pushl %edi
+# ____________var_____________________________________________________
+            movl -4(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          cmpl $0, %esi
+          jne .L3
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L3:
-        movl 0(%esi), %edi
-        movl 4(%edi), %edi
-        subl $4, %esp
-          # Emitting 1
-          movl $1, %ecx
-        pushl %ecx
-        pushl %esi
-        call %edi
-        addl $8, %esp
-        popl %edi
+          movl 0(%esi), %edi
+          movl 4(%edi), %edi
+          subl $4, %esp
+            # Emitting 1
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+            movl $1, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+          pushl %ecx
+          pushl %esi
+          call %edi
+          addl $8, %esp
+          popl %edi
         # Emitting a.foo(...)
+        pushl $0
         pushl %edx
-          # Emitting a
-# __________var_______________________________________________________
-          movl -4(%ebp), %edi
-        cmpl $0, %edi
-        jne .L4
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting a.foo(...)
+            # Emitting a
+            pushl $0
+            pushl %edx
+# ____________var_____________________________________________________
+            movl -4(%ebp), %edx
+# ____________swap needed_____________________________________________
+            movl %edx, 4(%esp)
+            popl %edx
+            popl %edi
+          cmpl $0, %edi
+          jne .L4
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L4:
-        movl 0(%edi), %edx
-        movl 4(%edx), %edx
-        subl $4, %esp
-          # Emitting 2
-          movl $2, %ecx
-        pushl %ecx
-        pushl %edi
-        call %edx
-        addl $8, %esp
+          movl 0(%edi), %edx
+          movl 4(%edx), %edx
+          subl $4, %esp
+            # Emitting 2
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+            movl $2, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+          pushl %ecx
+          pushl %edi
+          call %edx
+          addl $8, %esp
+          popl %edx
+# ________NO swap needed______________________________________________
         popl %edx
+        addl $4, %esp
         # Emitting a.foo(...)
-          # Emitting a
-# __________var_______________________________________________________
-          movl -4(%ebp), %edi
-        cmpl $0, %edi
-        jne .L5
-        movl $4, %eax
-        jmp .ERROR_EXIT
+        pushl $0
+        pushl %edx
+        pushl %esi
+          # Emitting a.foo(...)
+            # Emitting a
+            pushl $0
+            pushl %esi
+# ____________var_____________________________________________________
+            movl -4(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edx
+          cmpl $0, %edx
+          jne .L5
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L5:
-        movl 0(%edi), %edx
-        movl 4(%edx), %edx
-        subl $4, %esp
-          # Emitting 3
-          movl $3, %ebx
-        pushl %ebx
-        pushl %edi
-        call %edx
-        addl $8, %esp
+          movl 0(%edx), %esi
+          movl 4(%esi), %esi
+          subl $4, %esp
+            # Emitting 3
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+            movl $3, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+          pushl %ecx
+          pushl %edx
+          call %esi
+          addl $8, %esp
+          popl %esi
+# ________NO swap needed______________________________________________
+        popl %esi
         popl %edx
+        addl $4, %esp
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp

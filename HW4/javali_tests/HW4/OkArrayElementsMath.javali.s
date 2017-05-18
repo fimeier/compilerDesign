@@ -75,97 +75,140 @@ Main_main:
           call calloc
           addl $8, %esp
           movl $vtable_Object, (%eax)
+          subl $2, %edi
           movl %edi, 4(%eax)
           movl %eax, %esi
-        movl 8(%ebp), %edx
-        movl %esi, 4(%edx)
+        movl 8(%ebp), %edi
+        movl %esi, 4(%edi)
         # Emitting x[0] = 3
 # ________assign______________________________________________________
           # Emitting 3
           movl $3, %esi
           # Emitting x
+          pushl $0
+          pushl %esi
 # __________var_______________________________________________________
-          movl 8(%ebp), %edx
-          movl 4(%edx), %edx
+          movl 8(%ebp), %esi
+          movl 4(%esi), %esi
+# __________swap needed_______________________________________________
+          movl %esi, 4(%esp)
+          popl %esi
+          popl %edi
           # Emitting 0
-          movl $0, %ecx
-        cmpl $0, %edx
+          pushl $0
+          pushl %esi
+          pushl %edi
+          movl $0, %edi
+# __________swap needed_______________________________________________
+          movl %edi, 8(%esp)
+          popl %edi
+          popl %esi
+          popl %edx
+        cmpl $0, %edi
         jne .L3
         movl $4, %eax
         jmp .ERROR_EXIT
 .L3:
-        cmpl $0, %ecx
+        cmpl $0, %edx
         jge .L4
         movl $3, %eax
         jmp .ERROR_EXIT
 .L4:
-        cmpl 4(%edx), %ecx
+        cmpl 4(%edi), %edx
         jl .L5
         movl $3, %eax
         jmp .ERROR_EXIT
 .L5:
-        imul $4, %ecx
-        addl $8, %ecx
-        addl %ecx, %edx
-        movl %esi, (%edx)
+        imul $4, %edx
+        addl $8, %edx
+        addl %edx, %edi
+        movl %esi, (%edi)
         # Emitting x[1] = 4
 # ________assign______________________________________________________
           # Emitting 4
           movl $4, %esi
           # Emitting x
+          pushl $0
+          pushl %esi
 # __________var_______________________________________________________
-          movl 8(%ebp), %edx
-          movl 4(%edx), %edx
+          movl 8(%ebp), %esi
+          movl 4(%esi), %esi
+# __________swap needed_______________________________________________
+          movl %esi, 4(%esp)
+          popl %esi
+          popl %edi
           # Emitting 1
-          movl $1, %ecx
-        cmpl $0, %edx
+          pushl $0
+          pushl %esi
+          pushl %edi
+          movl $1, %edi
+# __________swap needed_______________________________________________
+          movl %edi, 8(%esp)
+          popl %edi
+          popl %esi
+          popl %edx
+        cmpl $0, %edi
         jne .L6
         movl $4, %eax
         jmp .ERROR_EXIT
 .L6:
-        cmpl $0, %ecx
+        cmpl $0, %edx
         jge .L7
         movl $3, %eax
         jmp .ERROR_EXIT
 .L7:
-        cmpl 4(%edx), %ecx
+        cmpl 4(%edi), %edx
         jl .L8
         movl $3, %eax
         jmp .ERROR_EXIT
 .L8:
-        imul $4, %ecx
-        addl $8, %ecx
-        addl %ecx, %edx
-        movl %esi, (%edx)
+        imul $4, %edx
+        addl $8, %edx
+        addl %edx, %edi
+        movl %esi, (%edi)
         # Emitting x[2] = 5
 # ________assign______________________________________________________
           # Emitting 5
           movl $5, %esi
           # Emitting x
+          pushl $0
+          pushl %esi
 # __________var_______________________________________________________
-          movl 8(%ebp), %edx
-          movl 4(%edx), %edx
+          movl 8(%ebp), %esi
+          movl 4(%esi), %esi
+# __________swap needed_______________________________________________
+          movl %esi, 4(%esp)
+          popl %esi
+          popl %edi
           # Emitting 2
-          movl $2, %ecx
-        cmpl $0, %edx
+          pushl $0
+          pushl %esi
+          pushl %edi
+          movl $2, %edi
+# __________swap needed_______________________________________________
+          movl %edi, 8(%esp)
+          popl %edi
+          popl %esi
+          popl %edx
+        cmpl $0, %edi
         jne .L9
         movl $4, %eax
         jmp .ERROR_EXIT
 .L9:
-        cmpl $0, %ecx
+        cmpl $0, %edx
         jge .L10
         movl $3, %eax
         jmp .ERROR_EXIT
 .L10:
-        cmpl 4(%edx), %ecx
+        cmpl 4(%edi), %edx
         jl .L11
         movl $3, %eax
         jmp .ERROR_EXIT
 .L11:
-        imul $4, %ecx
-        addl $8, %ecx
-        addl %ecx, %edx
-        movl %esi, (%edx)
+        imul $4, %edx
+        addl $8, %edx
+        addl %edx, %edi
+        movl %esi, (%edi)
         # Emitting i = ((x[0] + x[1]) + x[2])
 # ________assign______________________________________________________
           # Emitting ((x[0] + x[1]) + x[2])
@@ -176,87 +219,117 @@ Main_main:
                 movl 8(%ebp), %esi
                 movl 4(%esi), %esi
                 # Emitting 1
-                movl $1, %edx
+                pushl $0
+                pushl %esi
+                movl $1, %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
               cmpl $0, %esi
               jne .L12
               movl $4, %eax
               jmp .ERROR_EXIT
 .L12:
-              cmpl $0, %edx
+              cmpl $0, %edi
               jge .L13
               movl $3, %eax
               jmp .ERROR_EXIT
 .L13:
-              cmpl 4(%esi), %edx
+              cmpl 4(%esi), %edi
               jl .L14
               movl $3, %eax
               jmp .ERROR_EXIT
 .L14:
-              imul $4, %edx
-              addl $8, %edx
-              addl %edx, %esi
+              imul $4, %edi
+              addl $8, %edi
+              addl %edi, %esi
               movl (%esi), %esi
               # Emitting x[0]
+              pushl $0
+              pushl %esi
                 # Emitting x
 # ________________var_________________________________________________
-                movl 8(%ebp), %edx
-                movl 4(%edx), %edx
+                movl 8(%ebp), %esi
+                movl 4(%esi), %esi
                 # Emitting 0
-                movl $0, %ecx
-              cmpl $0, %edx
+                pushl $0
+                pushl %esi
+                movl $0, %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
+              cmpl $0, %esi
               jne .L15
               movl $4, %eax
               jmp .ERROR_EXIT
 .L15:
-              cmpl $0, %ecx
+              cmpl $0, %edi
               jge .L16
               movl $3, %eax
               jmp .ERROR_EXIT
 .L16:
-              cmpl 4(%edx), %ecx
+              cmpl 4(%esi), %edi
               jl .L17
               movl $3, %eax
               jmp .ERROR_EXIT
 .L17:
-              imul $4, %ecx
-              addl $8, %ecx
-              addl %ecx, %edx
-              movl (%edx), %edx
-            add %esi, %edx
+              imul $4, %edi
+              addl $8, %edi
+              addl %edi, %esi
+              movl (%esi), %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
+            add %esi, %edi
             # Emitting x[2]
+            pushl $0
+            pushl %edi
               # Emitting x
 # ______________var___________________________________________________
-              movl 8(%ebp), %esi
-              movl 4(%esi), %esi
+              movl 8(%ebp), %edi
+              movl 4(%edi), %edi
               # Emitting 2
-              movl $2, %ecx
-            cmpl $0, %esi
+              pushl $0
+              pushl %edi
+              movl $2, %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
+            cmpl $0, %edi
             jne .L18
             movl $4, %eax
             jmp .ERROR_EXIT
 .L18:
-            cmpl $0, %ecx
+            cmpl $0, %esi
             jge .L19
             movl $3, %eax
             jmp .ERROR_EXIT
 .L19:
-            cmpl 4(%esi), %ecx
+            cmpl 4(%edi), %esi
             jl .L20
             movl $3, %eax
             jmp .ERROR_EXIT
 .L20:
-            imul $4, %ecx
-            addl $8, %ecx
-            addl %ecx, %esi
-            movl (%esi), %esi
-          add %esi, %edx
-        movl %edx, -4(%ebp)
+            imul $4, %esi
+            addl $8, %esi
+            addl %esi, %edi
+            movl (%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          add %esi, %edi
+        movl %edi, -4(%ebp)
         # Emitting write(i)
           # Emitting i
 # __________var_______________________________________________________
-          movl -4(%ebp), %edx
+          movl -4(%ebp), %edi
         sub $16, %esp
-        movl %edx, 4(%esp)
+        movl %edi, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp

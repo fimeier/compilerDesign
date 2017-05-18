@@ -88,8 +88,14 @@ Main_main:
           # Emitting 1
           movl $1, %edi
           # Emitting a
+          pushl $0
+          pushl %edi
 # __________var_______________________________________________________
-          movl -4(%ebp), %esi
+          movl -4(%ebp), %edi
+# __________swap needed_______________________________________________
+          movl %edi, 4(%esp)
+          popl %edi
+          popl %esi
         cmpl $0, %esi
         jne .L2
         movl $4, %eax
@@ -128,8 +134,14 @@ Main_main:
           # Emitting 2
           movl $2, %edi
           # Emitting a
+          pushl $0
+          pushl %edi
 # __________var_______________________________________________________
-          movl -4(%ebp), %esi
+          movl -4(%ebp), %edi
+# __________swap needed_______________________________________________
+          movl %edi, 4(%esp)
+          popl %edi
+          popl %esi
         cmpl $0, %esi
         jne .L4
         movl $4, %eax
@@ -168,8 +180,14 @@ Main_main:
           # Emitting 3
           movl $3, %edi
           # Emitting b
+          pushl $0
+          pushl %edi
 # __________var_______________________________________________________
-          movl -8(%ebp), %esi
+          movl -8(%ebp), %edi
+# __________swap needed_______________________________________________
+          movl %edi, 4(%esp)
+          popl %edi
+          popl %esi
         cmpl $0, %esi
         jne .L6
         movl $4, %eax
@@ -181,8 +199,14 @@ Main_main:
           # Emitting 4
           movl $4, %edi
           # Emitting b
+          pushl $0
+          pushl %edi
 # __________var_______________________________________________________
-          movl -8(%ebp), %esi
+          movl -8(%ebp), %edi
+# __________swap needed_______________________________________________
+          movl %edi, 4(%esp)
+          popl %edi
+          popl %esi
         cmpl $0, %esi
         jne .L7
         movl $4, %eax

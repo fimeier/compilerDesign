@@ -87,8 +87,14 @@ Main_main:
               movl -8(%ebp), %edi
             negl %edi
             # Emitting A
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -4(%ebp), %esi
+            movl -4(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           imul %edi, %esi
         movl %esi, -12(%ebp)
         # Emitting b = (-(A) * B)
@@ -98,10 +104,16 @@ Main_main:
 # ____________var_____________________________________________________
             movl -8(%ebp), %esi
             # Emitting -(A)
+            pushl $0
+            pushl %esi
               # Emitting A
 # ______________var___________________________________________________
-              movl -4(%ebp), %edi
-            negl %edi
+              movl -4(%ebp), %esi
+            negl %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           imul %esi, %edi
         movl %edi, -16(%ebp)
         # Emitting c = -((A + B))
@@ -112,8 +124,14 @@ Main_main:
 # ______________var___________________________________________________
               movl -8(%ebp), %edi
               # Emitting A
+              pushl $0
+              pushl %edi
 # ______________var___________________________________________________
-              movl -4(%ebp), %esi
+              movl -4(%ebp), %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
             add %edi, %esi
           negl %esi
         movl %esi, -20(%ebp)
@@ -125,8 +143,14 @@ Main_main:
 # ______________var___________________________________________________
               movl -8(%ebp), %esi
               # Emitting A
+              pushl $0
+              pushl %esi
 # ______________var___________________________________________________
-              movl -4(%ebp), %edi
+              movl -4(%ebp), %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
             imul %esi, %edi
           negl %edi
         movl %edi, -24(%ebp)

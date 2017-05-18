@@ -108,8 +108,14 @@ Main_main:
 # ________________var_________________________________________________
                 movl -8(%ebp), %edi
                 # Emitting a
+                pushl $0
+                pushl %edi
 # ________________var_________________________________________________
-                movl -4(%ebp), %esi
+                movl -4(%ebp), %edi
+# ________________swap needed_________________________________________
+                movl %edi, 4(%esp)
+                popl %edi
+                popl %esi
               cmpl $0, %edi
               jne .L2
               movl $7, %eax
@@ -123,15 +129,27 @@ Main_main:
               idivl %ebx
               movl %eax, %esi
               # Emitting -(-(64))
+              pushl $0
+              pushl %esi
                 # Emitting -(64)
                   # Emitting 64
-                  movl $64, %edi
-                negl %edi
-              negl %edi
+                  movl $64, %esi
+                negl %esi
+              negl %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
             imul %edi, %esi
             # Emitting c
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %edi
+            movl -12(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           add %esi, %edi
         movl %edi, -12(%ebp)
         # Emitting write(c)
@@ -161,8 +179,14 @@ Main_main:
 # ________________var_________________________________________________
                 movl -8(%ebp), %edi
                 # Emitting a
+                pushl $0
+                pushl %edi
 # ________________var_________________________________________________
-                movl -4(%ebp), %esi
+                movl -4(%ebp), %edi
+# ________________swap needed_________________________________________
+                movl %edi, 4(%esp)
+                popl %edi
+                popl %esi
               cmpl $0, %edi
               jne .L3
               movl $7, %eax
@@ -176,15 +200,27 @@ Main_main:
               idivl %ebx
               movl %eax, %esi
               # Emitting -(-(64))
+              pushl $0
+              pushl %esi
                 # Emitting -(64)
                   # Emitting 64
-                  movl $64, %edi
-                negl %edi
-              negl %edi
+                  movl $64, %esi
+                negl %esi
+              negl %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
             imul %edi, %esi
             # Emitting c
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %edi
+            movl -12(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           add %esi, %edi
         sub $16, %esp
         movl %edi, 4(%esp)
@@ -210,8 +246,14 @@ Main_main:
               movl $3, %edi
             negl %edi
             # Emitting d
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -16(%ebp), %esi
+            movl -16(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl $0, %edi
           jne .L4
           movl $7, %eax

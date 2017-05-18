@@ -67,7 +67,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			}
 			int offsetSpillingReg = affected.length*4;
 			
-			System.out.println("#REGS in Expr=" +affected.length);
+			//System.out.println("#REGS in Expr=" +affected.length);
 
 			//space for spilling
 			cg.emit.emit("pushl", "$0");
@@ -82,7 +82,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				for (Register reg: affected){
 					if (reg.getRepr().equals(retReg.getRepr())) {
 						affB = true;
-						System.out.println("*******swap Needed");
+						//System.out.println("*******swap Needed");
 						cg.emit.emitCommentSection("swap needed");
 
 						//Register temp = cg.rm.getRegister();
@@ -235,7 +235,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 					break;
 				}
 				default: {
-					System.out.println("public Register binaryOp(..) implement: "+ast.operator.toString());
+					//System.out.println("public Register binaryOp(..) implement: "+ast.operator.toString());
 					throw new ToDoException();
 				}
 
@@ -305,7 +305,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 					break;
 				}
 				default: {
-					System.out.println("public Register binaryOp(..) implement: "+ast.operator.toString());
+					//System.out.println("public Register binaryOp(..) implement: "+ast.operator.toString());
 					throw new ToDoException();
 				}
 
@@ -751,7 +751,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				cg.emit.emit("cmpl",  "$0", argReg);
 				break;
 			default: {
-				System.out.println("ERROR: implement... public Register unaryOp: "+ast.operator.toString());
+				//System.out.println("ERROR: implement... public Register unaryOp: "+ast.operator.toString());
 				throw new ToDoException();
 			}
 			}

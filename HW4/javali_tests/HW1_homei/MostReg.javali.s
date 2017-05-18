@@ -74,81 +74,167 @@ Main_main:
 # __________________var_______________________________________________
                   movl -16(%ebp), %edi
                   # Emitting c
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
-                  movl -12(%ebp), %esi
+                  movl -12(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
                 add %edi, %esi
                 # Emitting (a + b)
+                pushl $0
+                pushl %esi
                   # Emitting b
 # __________________var_______________________________________________
-                  movl -8(%ebp), %edi
+                  movl -8(%ebp), %esi
                   # Emitting a
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
-                  movl -4(%ebp), %edx
-                add %edi, %edx
-              add %esi, %edx
+                  movl -4(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                popl %esi
+                addl $4, %esp
+              add %esi, %edi
+              # Emitting ((a + b) + (c + d))
+              pushl $0
+              pushl %edi
+                # Emitting (c + d)
+                  # Emitting d
+# __________________var_______________________________________________
+                  movl -16(%ebp), %edi
+                  # Emitting c
+                  pushl $0
+                  pushl %edi
+# __________________var_______________________________________________
+                  movl -12(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
+                # Emitting (a + b)
+                pushl $0
+                pushl %esi
+                  # Emitting b
+# __________________var_______________________________________________
+                  movl -8(%ebp), %esi
+                  # Emitting a
+                  pushl $0
+                  pushl %esi
+# __________________var_______________________________________________
+                  movl -4(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                popl %esi
+                addl $4, %esp
+              add %esi, %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
+            imul %edi, %esi
+            # Emitting ((((1000 * a) + b) + (c + d)) * ((a + b) + (c + d)))
+            pushl $0
+            pushl %esi
               # Emitting ((a + b) + (c + d))
                 # Emitting (c + d)
                   # Emitting d
 # __________________var_______________________________________________
                   movl -16(%ebp), %esi
                   # Emitting c
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
-                  movl -12(%ebp), %edi
+                  movl -12(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
                 add %esi, %edi
                 # Emitting (a + b)
+                pushl $0
+                pushl %edi
                   # Emitting b
 # __________________var_______________________________________________
-                  movl -8(%ebp), %esi
+                  movl -8(%ebp), %edi
                   # Emitting a
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
-                  movl -4(%ebp), %ecx
-                add %esi, %ecx
-              add %edi, %ecx
-            imul %edx, %ecx
-            # Emitting ((((1000 * a) + b) + (c + d)) * ((a + b) + (c + d)))
-              # Emitting ((a + b) + (c + d))
-                # Emitting (c + d)
-                  # Emitting d
-# __________________var_______________________________________________
-                  movl -16(%ebp), %edx
-                  # Emitting c
-# __________________var_______________________________________________
-                  movl -12(%ebp), %edi
-                add %edx, %edi
-                # Emitting (a + b)
-                  # Emitting b
-# __________________var_______________________________________________
-                  movl -8(%ebp), %edx
-                  # Emitting a
-# __________________var_______________________________________________
-                  movl -4(%ebp), %esi
-                add %edx, %esi
+                  movl -4(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
+                popl %edi
+                addl $4, %esp
               add %edi, %esi
               # Emitting (((1000 * a) + b) + (c + d))
+              pushl $0
+              pushl %esi
                 # Emitting (c + d)
                   # Emitting d
 # __________________var_______________________________________________
-                  movl -16(%ebp), %edi
+                  movl -16(%ebp), %esi
                   # Emitting c
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
-                  movl -12(%ebp), %edx
-                add %edi, %edx
+                  movl -12(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
                 # Emitting ((1000 * a) + b)
+                pushl $0
+                pushl %edi
                   # Emitting (1000 * a)
                     # Emitting a
 # ____________________var_____________________________________________
                     movl -4(%ebp), %edi
                     # Emitting 1000
-                    movl $1000, %ebx
-                  imul %edi, %ebx
+                    pushl $0
+                    pushl %edi
+                    movl $1000, %edi
+# ____________________swap needed_____________________________________
+                    movl %edi, 4(%esp)
+                    popl %edi
+                    popl %esi
+                  imul %edi, %esi
                   # Emitting b
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
-                  movl -8(%ebp), %edi
-                add %edi, %ebx
-              add %edx, %ebx
-            imul %esi, %ebx
-          add %ecx, %ebx
-        movl %ebx, -4(%ebp)
+                  movl -8(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %edi, %esi
+                popl %edi
+                addl $4, %esp
+              add %edi, %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
+            imul %esi, %edi
+            popl %esi
+            addl $4, %esp
+          add %esi, %edi
+        movl %edi, -4(%ebp)
         # Emitting b = ((((a + b) + (c + d)) * ((a + b) + (c + d))) + (((a + b) + (c + d)) * ((a + b) + (c + d))))
 # ________assign______________________________________________________
           # Emitting ((((a + b) + (c + d)) * ((a + b) + (c + d))) + (((a + b) + (c + d)) * ((a + b) + (c + d))))
@@ -157,78 +243,158 @@ Main_main:
                 # Emitting (c + d)
                   # Emitting d
 # __________________var_______________________________________________
-                  movl -16(%ebp), %ebx
+                  movl -16(%ebp), %edi
                   # Emitting c
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
-                  movl -12(%ebp), %ecx
-                add %ebx, %ecx
+                  movl -12(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
                 # Emitting (a + b)
+                pushl $0
+                pushl %esi
                   # Emitting b
 # __________________var_______________________________________________
-                  movl -8(%ebp), %ebx
+                  movl -8(%ebp), %esi
                   # Emitting a
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
                   movl -4(%ebp), %esi
-                add %ebx, %esi
-              add %ecx, %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                popl %esi
+                addl $4, %esp
+              add %esi, %edi
               # Emitting ((a + b) + (c + d))
+              pushl $0
+              pushl %edi
                 # Emitting (c + d)
                   # Emitting d
 # __________________var_______________________________________________
-                  movl -16(%ebp), %ecx
+                  movl -16(%ebp), %edi
                   # Emitting c
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
-                  movl -12(%ebp), %ebx
-                add %ecx, %ebx
+                  movl -12(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
                 # Emitting (a + b)
+                pushl $0
+                pushl %esi
                   # Emitting b
 # __________________var_______________________________________________
-                  movl -8(%ebp), %ecx
+                  movl -8(%ebp), %esi
                   # Emitting a
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
-                  movl -4(%ebp), %edx
-                add %ecx, %edx
-              add %ebx, %edx
-            imul %esi, %edx
+                  movl -4(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                popl %esi
+                addl $4, %esp
+              add %esi, %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
+            imul %edi, %esi
             # Emitting (((a + b) + (c + d)) * ((a + b) + (c + d)))
+            pushl $0
+            pushl %esi
               # Emitting ((a + b) + (c + d))
                 # Emitting (c + d)
                   # Emitting d
 # __________________var_______________________________________________
                   movl -16(%ebp), %esi
                   # Emitting c
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
-                  movl -12(%ebp), %ebx
-                add %esi, %ebx
+                  movl -12(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
                 # Emitting (a + b)
+                pushl $0
+                pushl %edi
                   # Emitting b
 # __________________var_______________________________________________
-                  movl -8(%ebp), %esi
+                  movl -8(%ebp), %edi
                   # Emitting a
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
-                  movl -4(%ebp), %ecx
-                add %esi, %ecx
-              add %ebx, %ecx
+                  movl -4(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
+                popl %edi
+                addl $4, %esp
+              add %edi, %esi
               # Emitting ((a + b) + (c + d))
+              pushl $0
+              pushl %esi
                 # Emitting (c + d)
                   # Emitting d
 # __________________var_______________________________________________
-                  movl -16(%ebp), %ebx
+                  movl -16(%ebp), %esi
                   # Emitting c
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
                   movl -12(%ebp), %esi
-                add %ebx, %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
                 # Emitting (a + b)
+                pushl $0
+                pushl %edi
                   # Emitting b
 # __________________var_______________________________________________
-                  movl -8(%ebp), %ebx
+                  movl -8(%ebp), %edi
                   # Emitting a
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
                   movl -4(%ebp), %edi
-                add %ebx, %edi
-              add %esi, %edi
-            imul %ecx, %edi
-          add %edx, %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
+                popl %edi
+                addl $4, %esp
+              add %edi, %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
+            imul %esi, %edi
+            popl %esi
+            addl $4, %esp
+          add %esi, %edi
         movl %edi, -8(%ebp)
         # Emitting c = ((((a + b) + (c + d)) * ((a + b) + (c + d))) + (((a + b) + (c + d)) * ((a + b) + (c + d))))
 # ________assign______________________________________________________
@@ -240,77 +406,157 @@ Main_main:
 # __________________var_______________________________________________
                   movl -16(%ebp), %edi
                   # Emitting c
-# __________________var_______________________________________________
-                  movl -12(%ebp), %edx
-                add %edi, %edx
-                # Emitting (a + b)
-                  # Emitting b
-# __________________var_______________________________________________
-                  movl -8(%ebp), %edi
-                  # Emitting a
-# __________________var_______________________________________________
-                  movl -4(%ebp), %ecx
-                add %edi, %ecx
-              add %edx, %ecx
-              # Emitting ((a + b) + (c + d))
-                # Emitting (c + d)
-                  # Emitting d
-# __________________var_______________________________________________
-                  movl -16(%ebp), %edx
-                  # Emitting c
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
                   movl -12(%ebp), %edi
-                add %edx, %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
                 # Emitting (a + b)
+                pushl $0
+                pushl %esi
                   # Emitting b
 # __________________var_______________________________________________
-                  movl -8(%ebp), %edx
+                  movl -8(%ebp), %esi
                   # Emitting a
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
                   movl -4(%ebp), %esi
-                add %edx, %esi
-              add %edi, %esi
-            imul %ecx, %esi
-            # Emitting (((a + b) + (c + d)) * ((a + b) + (c + d)))
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                popl %esi
+                addl $4, %esp
+              add %esi, %edi
               # Emitting ((a + b) + (c + d))
-                # Emitting (c + d)
-                  # Emitting d
-# __________________var_______________________________________________
-                  movl -16(%ebp), %ecx
-                  # Emitting c
-# __________________var_______________________________________________
-                  movl -12(%ebp), %edi
-                add %ecx, %edi
-                # Emitting (a + b)
-                  # Emitting b
-# __________________var_______________________________________________
-                  movl -8(%ebp), %ecx
-                  # Emitting a
-# __________________var_______________________________________________
-                  movl -4(%ebp), %edx
-                add %ecx, %edx
-              add %edi, %edx
-              # Emitting ((a + b) + (c + d))
+              pushl $0
+              pushl %edi
                 # Emitting (c + d)
                   # Emitting d
 # __________________var_______________________________________________
                   movl -16(%ebp), %edi
                   # Emitting c
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
-                  movl -12(%ebp), %ecx
-                add %edi, %ecx
+                  movl -12(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
                 # Emitting (a + b)
+                pushl $0
+                pushl %esi
+                  # Emitting b
+# __________________var_______________________________________________
+                  movl -8(%ebp), %esi
+                  # Emitting a
+                  pushl $0
+                  pushl %esi
+# __________________var_______________________________________________
+                  movl -4(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                popl %esi
+                addl $4, %esp
+              add %esi, %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
+            imul %edi, %esi
+            # Emitting (((a + b) + (c + d)) * ((a + b) + (c + d)))
+            pushl $0
+            pushl %esi
+              # Emitting ((a + b) + (c + d))
+                # Emitting (c + d)
+                  # Emitting d
+# __________________var_______________________________________________
+                  movl -16(%ebp), %esi
+                  # Emitting c
+                  pushl $0
+                  pushl %esi
+# __________________var_______________________________________________
+                  movl -12(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                # Emitting (a + b)
+                pushl $0
+                pushl %edi
                   # Emitting b
 # __________________var_______________________________________________
                   movl -8(%ebp), %edi
                   # Emitting a
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
-                  movl -4(%ebp), %ebx
-                add %edi, %ebx
-              add %ecx, %ebx
-            imul %edx, %ebx
-          add %esi, %ebx
-        movl %ebx, -12(%ebp)
+                  movl -4(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
+                popl %edi
+                addl $4, %esp
+              add %edi, %esi
+              # Emitting ((a + b) + (c + d))
+              pushl $0
+              pushl %esi
+                # Emitting (c + d)
+                  # Emitting d
+# __________________var_______________________________________________
+                  movl -16(%ebp), %esi
+                  # Emitting c
+                  pushl $0
+                  pushl %esi
+# __________________var_______________________________________________
+                  movl -12(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                # Emitting (a + b)
+                pushl $0
+                pushl %edi
+                  # Emitting b
+# __________________var_______________________________________________
+                  movl -8(%ebp), %edi
+                  # Emitting a
+                  pushl $0
+                  pushl %edi
+# __________________var_______________________________________________
+                  movl -4(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
+                popl %edi
+                addl $4, %esp
+              add %edi, %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
+            imul %esi, %edi
+            popl %esi
+            addl $4, %esp
+          add %esi, %edi
+        movl %edi, -12(%ebp)
         # Emitting d = ((((a + b) + (c + d)) * ((a + b) + (c + d))) + (((a + b) + (c + d)) * ((a + b) + (c + d))))
 # ________assign______________________________________________________
           # Emitting ((((a + b) + (c + d)) * ((a + b) + (c + d))) + (((a + b) + (c + d)) * ((a + b) + (c + d))))
@@ -319,78 +565,158 @@ Main_main:
                 # Emitting (c + d)
                   # Emitting d
 # __________________var_______________________________________________
-                  movl -16(%ebp), %ebx
+                  movl -16(%ebp), %edi
                   # Emitting c
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
-                  movl -12(%ebp), %esi
-                add %ebx, %esi
+                  movl -12(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
                 # Emitting (a + b)
+                pushl $0
+                pushl %esi
                   # Emitting b
 # __________________var_______________________________________________
-                  movl -8(%ebp), %ebx
+                  movl -8(%ebp), %esi
                   # Emitting a
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
-                  movl -4(%ebp), %edx
-                add %ebx, %edx
-              add %esi, %edx
+                  movl -4(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                popl %esi
+                addl $4, %esp
+              add %esi, %edi
+              # Emitting ((a + b) + (c + d))
+              pushl $0
+              pushl %edi
+                # Emitting (c + d)
+                  # Emitting d
+# __________________var_______________________________________________
+                  movl -16(%ebp), %edi
+                  # Emitting c
+                  pushl $0
+                  pushl %edi
+# __________________var_______________________________________________
+                  movl -12(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
+                # Emitting (a + b)
+                pushl $0
+                pushl %esi
+                  # Emitting b
+# __________________var_______________________________________________
+                  movl -8(%ebp), %esi
+                  # Emitting a
+                  pushl $0
+                  pushl %esi
+# __________________var_______________________________________________
+                  movl -4(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                popl %esi
+                addl $4, %esp
+              add %esi, %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
+            imul %edi, %esi
+            # Emitting (((a + b) + (c + d)) * ((a + b) + (c + d)))
+            pushl $0
+            pushl %esi
               # Emitting ((a + b) + (c + d))
                 # Emitting (c + d)
                   # Emitting d
 # __________________var_______________________________________________
                   movl -16(%ebp), %esi
                   # Emitting c
+                  pushl $0
+                  pushl %esi
 # __________________var_______________________________________________
-                  movl -12(%ebp), %ebx
-                add %esi, %ebx
+                  movl -12(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
                 # Emitting (a + b)
+                pushl $0
+                pushl %edi
                   # Emitting b
 # __________________var_______________________________________________
-                  movl -8(%ebp), %esi
+                  movl -8(%ebp), %edi
                   # Emitting a
-# __________________var_______________________________________________
-                  movl -4(%ebp), %ecx
-                add %esi, %ecx
-              add %ebx, %ecx
-            imul %edx, %ecx
-            # Emitting (((a + b) + (c + d)) * ((a + b) + (c + d)))
-              # Emitting ((a + b) + (c + d))
-                # Emitting (c + d)
-                  # Emitting d
-# __________________var_______________________________________________
-                  movl -16(%ebp), %edx
-                  # Emitting c
-# __________________var_______________________________________________
-                  movl -12(%ebp), %ebx
-                add %edx, %ebx
-                # Emitting (a + b)
-                  # Emitting b
-# __________________var_______________________________________________
-                  movl -8(%ebp), %edx
-                  # Emitting a
-# __________________var_______________________________________________
-                  movl -4(%ebp), %esi
-                add %edx, %esi
-              add %ebx, %esi
-              # Emitting ((a + b) + (c + d))
-                # Emitting (c + d)
-                  # Emitting d
-# __________________var_______________________________________________
-                  movl -16(%ebp), %ebx
-                  # Emitting c
-# __________________var_______________________________________________
-                  movl -12(%ebp), %edx
-                add %ebx, %edx
-                # Emitting (a + b)
-                  # Emitting b
-# __________________var_______________________________________________
-                  movl -8(%ebp), %ebx
-                  # Emitting a
+                  pushl $0
+                  pushl %edi
 # __________________var_______________________________________________
                   movl -4(%ebp), %edi
-                add %ebx, %edi
-              add %edx, %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
+                popl %edi
+                addl $4, %esp
+              add %edi, %esi
+              # Emitting ((a + b) + (c + d))
+              pushl $0
+              pushl %esi
+                # Emitting (c + d)
+                  # Emitting d
+# __________________var_______________________________________________
+                  movl -16(%ebp), %esi
+                  # Emitting c
+                  pushl $0
+                  pushl %esi
+# __________________var_______________________________________________
+                  movl -12(%ebp), %esi
+# __________________swap needed_______________________________________
+                  movl %esi, 4(%esp)
+                  popl %esi
+                  popl %edi
+                add %esi, %edi
+                # Emitting (a + b)
+                pushl $0
+                pushl %edi
+                  # Emitting b
+# __________________var_______________________________________________
+                  movl -8(%ebp), %edi
+                  # Emitting a
+                  pushl $0
+                  pushl %edi
+# __________________var_______________________________________________
+                  movl -4(%ebp), %edi
+# __________________swap needed_______________________________________
+                  movl %edi, 4(%esp)
+                  popl %edi
+                  popl %esi
+                add %edi, %esi
+                popl %edi
+                addl $4, %esp
+              add %edi, %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
             imul %esi, %edi
-          add %ecx, %edi
+            popl %esi
+            addl $4, %esp
+          add %esi, %edi
         movl %edi, -16(%ebp)
         # Emitting write(((a * b) + (c * d)))
           # Emitting ((a * b) + (c * d))
@@ -399,20 +725,36 @@ Main_main:
 # ______________var___________________________________________________
               movl -16(%ebp), %edi
               # Emitting c
+              pushl $0
+              pushl %edi
 # ______________var___________________________________________________
-              movl -12(%ebp), %ecx
-            imul %edi, %ecx
+              movl -12(%ebp), %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
+            imul %edi, %esi
             # Emitting (a * b)
+            pushl $0
+            pushl %esi
               # Emitting b
 # ______________var___________________________________________________
-              movl -8(%ebp), %edi
+              movl -8(%ebp), %esi
               # Emitting a
+              pushl $0
+              pushl %esi
 # ______________var___________________________________________________
               movl -4(%ebp), %esi
-            imul %edi, %esi
-          add %ecx, %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
+            imul %esi, %edi
+            popl %esi
+            addl $4, %esp
+          add %esi, %edi
         sub $16, %esp
-        movl %esi, 4(%esp)
+        movl %edi, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp
@@ -424,13 +766,19 @@ Main_main:
         # Emitting write((c * 0))
           # Emitting (c * 0)
             # Emitting 0
-            movl $0, %esi
+            movl $0, %edi
             # Emitting c
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %ecx
-          imul %esi, %ecx
+            movl -12(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          imul %edi, %esi
         sub $16, %esp
-        movl %ecx, 4(%esp)
+        movl %esi, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp

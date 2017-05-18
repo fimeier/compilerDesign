@@ -92,8 +92,14 @@ Main_main:
             movl 8(%ebp), %edi
             movl 4(%edi), %edi
             # Emitting a
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %esi
+            movl -12(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setl %al
           movzbl %al, %esi
@@ -128,8 +134,14 @@ Main_main:
             movl 8(%ebp), %esi
             movl 4(%esi), %esi
             # Emitting a
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %edi
+            movl -12(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl %esi, %edi
           setle %al
           movzbl %al, %edi
@@ -164,8 +176,14 @@ Main_main:
             movl 8(%ebp), %edi
             movl 4(%edi), %edi
             # Emitting a
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %esi
+            movl -12(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setg %al
           movzbl %al, %esi
@@ -200,8 +218,14 @@ Main_main:
             movl 8(%ebp), %esi
             movl 4(%esi), %esi
             # Emitting a
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %edi
+            movl -12(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl %esi, %edi
           setg %al
           movzbl %al, %edi
@@ -301,7 +325,13 @@ Main_main:
             # Emitting true
             movl $1, %edi
             # Emitting false
-            movl $0, %esi
+            pushl $0
+            pushl %edi
+            movl $0, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           andl %edi, %esi
           cmpl $0, %esi
         je .L21
@@ -339,8 +369,14 @@ Main_main:
 # ____________var_____________________________________________________
             movl -8(%ebp), %esi
             # Emitting bt
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl -4(%ebp), %edi
+            movl -4(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           orl %esi, %edi
           cmpl $0, %edi
         je .L24
@@ -370,7 +406,13 @@ Main_main:
             # Emitting 4
             movl $4, %edi
             # Emitting 3
-            movl $3, %esi
+            pushl $0
+            pushl %edi
+            movl $3, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           imul %edi, %esi
         sub $16, %esp
         movl %esi, 4(%esp)
@@ -387,7 +429,13 @@ Main_main:
             # Emitting 4
             movl $4, %esi
             # Emitting 3
-            movl $3, %edi
+            pushl $0
+            pushl %esi
+            movl $3, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           add %esi, %edi
         sub $16, %esp
         movl %edi, 4(%esp)
@@ -404,7 +452,13 @@ Main_main:
             # Emitting 4
             movl $4, %edi
             # Emitting 3
-            movl $3, %esi
+            pushl $0
+            pushl %edi
+            movl $3, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           sub %edi, %esi
         sub $16, %esp
         movl %esi, 4(%esp)
@@ -421,7 +475,13 @@ Main_main:
             # Emitting 7
             movl $7, %esi
             # Emitting 13
-            movl $13, %edi
+            pushl $0
+            pushl %esi
+            movl $13, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl $0, %esi
           jne .L26
           movl $7, %eax
@@ -449,7 +509,13 @@ Main_main:
             # Emitting 7
             movl $7, %edi
             # Emitting 17
-            movl $17, %esi
+            pushl $0
+            pushl %edi
+            movl $17, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl $0, %edi
           jne .L27
           movl $7, %eax
@@ -473,7 +539,13 @@ Main_main:
             # Emitting 4
             movl $4, %esi
             # Emitting 3
-            movl $3, %edi
+            pushl $0
+            pushl %esi
+            movl $3, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl %esi, %edi
           setl %al
           movzbl %al, %edi
@@ -484,7 +556,13 @@ Main_main:
             # Emitting 3
             movl $3, %edi
             # Emitting 4
-            movl $4, %esi
+            pushl $0
+            pushl %edi
+            movl $4, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setl %al
           movzbl %al, %esi
@@ -495,7 +573,13 @@ Main_main:
             # Emitting 4
             movl $4, %esi
             # Emitting 4
-            movl $4, %edi
+            pushl $0
+            pushl %esi
+            movl $4, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl %esi, %edi
           setl %al
           movzbl %al, %edi
@@ -506,7 +590,13 @@ Main_main:
             # Emitting 4
             movl $4, %edi
             # Emitting 3
-            movl $3, %esi
+            pushl $0
+            pushl %edi
+            movl $3, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setle %al
           movzbl %al, %esi
@@ -517,7 +607,13 @@ Main_main:
             # Emitting 3
             movl $3, %esi
             # Emitting 4
-            movl $4, %edi
+            pushl $0
+            pushl %esi
+            movl $4, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl %esi, %edi
           setle %al
           movzbl %al, %edi
@@ -528,7 +624,13 @@ Main_main:
             # Emitting 4
             movl $4, %edi
             # Emitting 4
-            movl $4, %esi
+            pushl $0
+            pushl %edi
+            movl $4, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setle %al
           movzbl %al, %esi
@@ -539,7 +641,13 @@ Main_main:
             # Emitting 4
             movl $4, %esi
             # Emitting 3
-            movl $3, %edi
+            pushl $0
+            pushl %esi
+            movl $3, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl %esi, %edi
           setg %al
           movzbl %al, %edi
@@ -550,7 +658,13 @@ Main_main:
             # Emitting 3
             movl $3, %edi
             # Emitting 4
-            movl $4, %esi
+            pushl $0
+            pushl %edi
+            movl $4, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setg %al
           movzbl %al, %esi
@@ -561,7 +675,13 @@ Main_main:
             # Emitting 4
             movl $4, %esi
             # Emitting 4
-            movl $4, %edi
+            pushl $0
+            pushl %esi
+            movl $4, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl %esi, %edi
           setg %al
           movzbl %al, %edi
@@ -572,7 +692,13 @@ Main_main:
             # Emitting 4
             movl $4, %edi
             # Emitting 3
-            movl $3, %esi
+            pushl $0
+            pushl %edi
+            movl $3, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setge %al
           movzbl %al, %esi
@@ -583,7 +709,13 @@ Main_main:
             # Emitting 3
             movl $3, %esi
             # Emitting 4
-            movl $4, %edi
+            pushl $0
+            pushl %esi
+            movl $4, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl %esi, %edi
           setge %al
           movzbl %al, %edi
@@ -594,7 +726,13 @@ Main_main:
             # Emitting 4
             movl $4, %edi
             # Emitting 4
-            movl $4, %esi
+            pushl $0
+            pushl %edi
+            movl $4, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setge %al
           movzbl %al, %esi
@@ -605,7 +743,13 @@ Main_main:
             # Emitting true
             movl $1, %esi
             # Emitting true
-            movl $1, %edi
+            pushl $0
+            pushl %esi
+            movl $1, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           andl %esi, %edi
           cmpl $0, %edi
         movl %edi, -4(%ebp)
@@ -615,7 +759,13 @@ Main_main:
             # Emitting false
             movl $0, %edi
             # Emitting true
-            movl $1, %esi
+            pushl $0
+            pushl %edi
+            movl $1, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           andl %edi, %esi
           cmpl $0, %esi
         movl %esi, -4(%ebp)
@@ -625,7 +775,13 @@ Main_main:
             # Emitting false
             movl $0, %esi
             # Emitting false
-            movl $0, %edi
+            pushl $0
+            pushl %esi
+            movl $0, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           andl %esi, %edi
           cmpl $0, %edi
         movl %edi, -4(%ebp)
@@ -635,7 +791,13 @@ Main_main:
             # Emitting true
             movl $1, %edi
             # Emitting true
-            movl $1, %esi
+            pushl $0
+            pushl %edi
+            movl $1, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           orl %edi, %esi
           cmpl $0, %esi
         movl %esi, -4(%ebp)
@@ -645,7 +807,13 @@ Main_main:
             # Emitting false
             movl $0, %esi
             # Emitting true
-            movl $1, %edi
+            pushl $0
+            pushl %esi
+            movl $1, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           orl %esi, %edi
           cmpl $0, %edi
         movl %edi, -4(%ebp)
@@ -655,7 +823,13 @@ Main_main:
             # Emitting false
             movl $0, %edi
             # Emitting false
-            movl $0, %esi
+            pushl $0
+            pushl %edi
+            movl $0, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           orl %edi, %esi
           cmpl $0, %esi
         movl %esi, -4(%ebp)
@@ -758,11 +932,17 @@ Main_main:
 # ____________var_____________________________________________________
             movl -4(%ebp), %esi
             # Emitting !(false)
+            pushl $0
+            pushl %esi
               # Emitting false
-              movl $0, %edi
-            negl %edi
-            incl %edi
-            cmpl $0, %edi
+              movl $0, %esi
+            negl %esi
+            incl %esi
+            cmpl $0, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           andl %esi, %edi
           cmpl $0, %edi
         je .L32
@@ -807,7 +987,13 @@ Main_main:
             # Emitting true
             movl $1, %edi
             # Emitting true
-            movl $1, %esi
+            pushl $0
+            pushl %edi
+            movl $1, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           je .L34
           movl $0, %esi

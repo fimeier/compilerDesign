@@ -78,8 +78,14 @@ Main_main:
             # Emitting 3
             movl $3, %edi
             # Emitting i1
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -12(%ebp), %esi
+            movl -12(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           imul %edi, %esi
         movl %esi, -4(%ebp)
         # Emitting write(r1)
@@ -103,8 +109,14 @@ Main_main:
 # ____________var_____________________________________________________
             movl -12(%ebp), %esi
             # Emitting i0
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl -8(%ebp), %edi
+            movl -8(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           imul %esi, %edi
         movl %edi, -4(%ebp)
         # Emitting write(r1)
@@ -130,15 +142,33 @@ Main_main:
 # ________________var_________________________________________________
                 movl -8(%ebp), %edi
                 # Emitting r1
+                pushl $0
+                pushl %edi
 # ________________var_________________________________________________
-                movl -4(%ebp), %esi
+                movl -4(%ebp), %edi
+# ________________swap needed_________________________________________
+                movl %edi, 4(%esp)
+                popl %edi
+                popl %esi
               imul %edi, %esi
               # Emitting i1
+              pushl $0
+              pushl %esi
 # ______________var___________________________________________________
-              movl -12(%ebp), %edi
+              movl -12(%ebp), %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
             imul %edi, %esi
             # Emitting 3
-            movl $3, %edi
+            pushl $0
+            pushl %esi
+            movl $3, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           imul %edi, %esi
         movl %esi, -4(%ebp)
         # Emitting write(r1)

@@ -70,7 +70,13 @@ Main_main:
 # ____________var_____________________________________________________
             movl -4(%ebp), %edi
             # Emitting 5
-            movl $5, %esi
+            pushl $0
+            pushl %edi
+            movl $5, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           add %edi, %esi
         movl %esi, -4(%ebp)
         # Emitting write(i0)
@@ -93,8 +99,14 @@ Main_main:
             # Emitting 5
             movl $5, %esi
             # Emitting i0
+            pushl $0
+            pushl %esi
 # ____________var_____________________________________________________
-            movl -4(%ebp), %edi
+            movl -4(%ebp), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           add %esi, %edi
         movl %edi, -4(%ebp)
         # Emitting write(i0)
@@ -118,11 +130,23 @@ Main_main:
               # Emitting 5
               movl $5, %edi
               # Emitting i0
+              pushl $0
+              pushl %edi
 # ______________var___________________________________________________
-              movl -4(%ebp), %esi
+              movl -4(%ebp), %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
             add %edi, %esi
             # Emitting 3
-            movl $3, %edi
+            pushl $0
+            pushl %esi
+            movl $3, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           add %edi, %esi
         movl %esi, -4(%ebp)
         # Emitting write(i0)

@@ -351,3 +351,108 @@ Main_main:
         popl %edi
         popl %esi
         popl %edx
+        popl %ecx
+        addl $4, %esp
+        # Emitting writeln()
+        pushl $0
+        pushl %ecx
+        pushl %edx
+        pushl %esi
+        pushl %edi
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+# ________NO swap needed______________________________________________
+        popl %edi
+        popl %esi
+        popl %edx
+        popl %ecx
+        addl $4, %esp
+        # Emitting write(this.m(...))
+        pushl $0
+        pushl %ecx
+        pushl %edx
+        pushl %esi
+        pushl %edi
+          # Emitting this.m(...)
+            # Emitting this
+            pushl $0
+            pushl %edi
+            movl 8(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          cmpl $0, %esi
+          jne .L5
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L5:
+          movl 0(%esi), %edi
+          movl 4(%edi), %edi
+          subl $4, %esp
+            # Emitting 2
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+            movl $2, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+          pushl %ecx
+            # Emitting 1
+            pushl $0
+            pushl %ecx
+            pushl %edx
+            pushl %esi
+            pushl %edi
+            movl $1, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 16(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+            popl %ebx
+          pushl %ebx
+          pushl %esi
+          call %edi
+          addl $12, %esp
+          popl %edi
+        sub $16, %esp
+        movl %edi, 4(%esp)
+        movl $STR_D, 0(%esp)
+        call printf
+        add $16, %esp
+# ________NO swap needed______________________________________________
+        popl %edi
+        popl %esi
+        popl %edx
+        popl %ecx
+        addl $4, %esp
+        # Emitting writeln()
+        pushl $0
+        pushl %ecx
+        pushl %edx
+        pushl %esi
+        pushl %edi
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+# ________NO swap needed______________________________________________
+        popl %edi
+        popl %esi
+        popl %edx
+        popl %ecx
+        addl $4, %esp
+    addl $8, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret
