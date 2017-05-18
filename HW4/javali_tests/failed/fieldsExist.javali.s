@@ -59,100 +59,62 @@ movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
   # Emitting class Main {...}
-  pushl $0
     # Emitting int x
-    pushl $0
-    addl $4, %esp
     # Emitting A a
-    pushl $0
-    addl $4, %esp
     # Emitting S s
-    pushl $0
-    addl $4, %esp
     # Emitting void main(...) {...}
-    pushl $0
 Main_main:
     # store old ebp, set uf new ebp
     pushl %ebp
     movl %esp, %ebp
     # set local variables:
       # Emitting (...)
-      pushl $0
         # Emitting x = a.i
-        pushl $0
 # ________assign______________________________________________________
           # Emitting a.i
-          pushl $0
             # Emitting a
-            pushl $0
 # ____________var_____________________________________________________
             movl 8(%ebp), %edi
             movl 8(%edi), %edi
-            popl %esi
-          cmpl $0, %esi
+          cmpl $0, %edi
           jne .L2
           movl $4, %eax
           jmp .ERROR_EXIT
 .L2:
-          movl 4(%esi), %esi
-          popl %edx
-        movl 8(%ebp), %ecx
-        movl %edx, 4(%ecx)
-        addl $4, %esp
+          movl 4(%edi), %edi
+        movl 8(%ebp), %esi
+        movl %edi, 4(%esi)
         # Emitting x = s.s
-        pushl $0
-        pushl %esi
-        pushl %edi
 # ________assign______________________________________________________
           # Emitting s.s
-          pushl $0
             # Emitting s
-            pushl $0
 # ____________var_____________________________________________________
             movl 8(%ebp), %edi
             movl 12(%edi), %edi
-            popl %esi
-          cmpl $0, %esi
+          cmpl $0, %edi
           jne .L3
           movl $4, %eax
           jmp .ERROR_EXIT
 .L3:
-          movl 12(%esi), %esi
-          popl %edx
-        movl 8(%ebp), %ecx
-        movl %edx, 4(%ecx)
-        popl %esi
-        popl %edi
-        addl $4, %esp
+          movl 12(%edi), %edi
+        movl 8(%ebp), %esi
+        movl %edi, 4(%esi)
         # Emitting x = s.i
-        pushl $0
-        pushl %esi
-        pushl %edi
 # ________assign______________________________________________________
           # Emitting s.i
-          pushl $0
             # Emitting s
-            pushl $0
 # ____________var_____________________________________________________
             movl 8(%ebp), %edi
             movl 12(%edi), %edi
-            popl %esi
-          cmpl $0, %esi
+          cmpl $0, %edi
           jne .L4
           movl $4, %eax
           jmp .ERROR_EXIT
 .L4:
-          movl 4(%esi), %esi
-          popl %edx
-        movl 8(%ebp), %ecx
-        movl %edx, 4(%ecx)
-        popl %esi
-        popl %edi
-        addl $4, %esp
+          movl 4(%edi), %edi
+        movl 8(%ebp), %esi
+        movl %edi, 4(%esi)
         # Emitting a.fun1(...)
-        pushl $0
-        pushl %esi
-        pushl %edi
           # Emitting a
           pushl $0
           pushl %edi
@@ -179,40 +141,35 @@ Main_main:
           movl $1, %edi
 # __________swap needed_______________________________________________
           movl %edi, 12(%esp)
-          popl %edx
-          popl %esi
           popl %edi
+          popl %esi
+          popl %edx
           popl %ecx
         pushl %ecx
         pushl %esi
         call %edi
         addl $8, %esp
         popl %edi
-        popl %esi
-        popl %edi
-        addl $4, %esp
         # Emitting s.fun1(...)
         pushl $0
         pushl %edx
-        pushl %esi
-        pushl %edi
           # Emitting s
           pushl $0
-          pushl %edi
+          pushl %edx
 # __________var_______________________________________________________
-          movl 8(%ebp), %edi
-          movl 12(%edi), %edi
+          movl 8(%ebp), %edx
+          movl 12(%edx), %edx
 # __________swap needed_______________________________________________
-          movl %edi, 4(%esp)
+          movl %edx, 4(%esp)
+          popl %edx
           popl %edi
-          popl %esi
-        cmpl $0, %esi
+        cmpl $0, %edi
         jne .L6
         movl $4, %eax
         jmp .ERROR_EXIT
 .L6:
-        movl 0(%esi), %edi
-        movl 4(%edi), %edi
+        movl 0(%edi), %edx
+        movl 4(%edx), %edx
         subl $4, %esp
           # Emitting 2
           pushl $0
@@ -222,94 +179,74 @@ Main_main:
           movl $2, %edi
 # __________swap needed_______________________________________________
           movl %edi, 12(%esp)
-          popl %edx
-          popl %esi
           popl %edi
+          popl %esi
+          popl %edx
           popl %ecx
         pushl %ecx
-        pushl %esi
-        call %edi
+        pushl %edi
+        call %edx
         addl $8, %esp
-        popl %edi
         popl %edx
-        popl %esi
-        popl %edi
+# ________NO swap needed______________________________________________
+        popl %edx
         addl $4, %esp
         # Emitting x = a.h
         pushl $0
         pushl %edx
         pushl %esi
-        pushl %edi
 # ________assign______________________________________________________
           # Emitting a.h
-          pushl $0
             # Emitting a
-            pushl $0
 # ____________var_____________________________________________________
-            movl 8(%ebp), %edi
-            movl 8(%edi), %edi
-            popl %esi
+            movl 8(%ebp), %esi
+            movl 8(%esi), %esi
           cmpl $0, %esi
           jne .L7
           movl $4, %eax
           jmp .ERROR_EXIT
 .L7:
           movl 8(%esi), %esi
-          popl %edx
-        movl 8(%ebp), %ecx
-        movl %edx, 4(%ecx)
-        popl %edx
+        movl 8(%ebp), %edx
+        movl %esi, 4(%edx)
+# ________NO swap needed______________________________________________
         popl %esi
-        popl %edi
+        popl %edx
         addl $4, %esp
         # Emitting x = s.h
         pushl $0
         pushl %edx
         pushl %esi
-        pushl %edi
 # ________assign______________________________________________________
           # Emitting s.h
-          pushl $0
             # Emitting s
-            pushl $0
 # ____________var_____________________________________________________
-            movl 8(%ebp), %edi
-            movl 12(%edi), %edi
-            popl %esi
+            movl 8(%ebp), %esi
+            movl 12(%esi), %esi
           cmpl $0, %esi
           jne .L8
           movl $4, %eax
           jmp .ERROR_EXIT
 .L8:
           movl 8(%esi), %esi
-          popl %edx
-        movl 8(%ebp), %ecx
-        movl %edx, 4(%ecx)
-        popl %edx
+        movl 8(%ebp), %edx
+        movl %esi, 4(%edx)
+# ________NO swap needed______________________________________________
         popl %esi
-        popl %edi
+        popl %edx
         addl $4, %esp
-      addl $4, %esp
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
-    addl $4, %esp
-  addl $4, %esp
   # Emitting class A {...}
   pushl $0
   pushl %edx
   pushl %esi
-  pushl %edi
     # Emitting int i
-    pushl $0
-    addl $4, %esp
     # Emitting int h
-    pushl $0
-    addl $4, %esp
     # Emitting void fun1(...) {...}
-    pushl $0
 A_fun1:
     # store old ebp, set uf new ebp
     pushl %ebp
@@ -320,24 +257,17 @@ A_fun1:
     movl %ebp, %esp
     popl %ebp
     ret
-    addl $4, %esp
-  popl %edx
+# __NO swap needed____________________________________________________
   popl %esi
-  popl %edi
+  popl %edx
   addl $4, %esp
   # Emitting class S {...}
   pushl $0
   pushl %edx
   pushl %esi
-  pushl %edi
     # Emitting int h
-    pushl $0
-    addl $4, %esp
     # Emitting int s
-    pushl $0
-    addl $4, %esp
     # Emitting void fun1(...) {...}
-    pushl $0
 S_fun1:
     # store old ebp, set uf new ebp
     pushl %ebp
@@ -348,8 +278,7 @@ S_fun1:
     movl %ebp, %esp
     popl %ebp
     ret
-    addl $4, %esp
-  popl %edx
+# __NO swap needed____________________________________________________
   popl %esi
-  popl %edi
+  popl %edx
   addl $4, %esp

@@ -49,9 +49,7 @@ movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
   # Emitting class Main {...}
-  pushl $0
     # Emitting void main(...) {...}
-    pushl $0
 Main_main:
     # store old ebp, set uf new ebp
     pushl %ebp
@@ -64,5 +62,3 @@ Main_main:
     movl %ebp, %esp
     popl %ebp
     ret
-    addl $4, %esp
-  addl $4, %esp

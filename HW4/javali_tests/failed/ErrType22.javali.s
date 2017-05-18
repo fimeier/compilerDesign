@@ -57,9 +57,7 @@ movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
   # Emitting class Main {...}
-  pushl $0
     # Emitting void main(...) {...}
-    pushl $0
 Main_main:
     # store old ebp, set uf new ebp
     pushl %ebp
@@ -72,12 +70,9 @@ Main_main:
     # variable b
     pushl $0
       # Emitting (...)
-      pushl $0
         # Emitting a = (A)(b)
-        pushl $0
 # ________assign______________________________________________________
           # Emitting (A)(b)
-          pushl $0
 # __________cast______________________________________________________
 # __________castTypeName______________________________________________
           movl $vtable_A, %edi
@@ -89,8 +84,8 @@ Main_main:
             movl -12(%ebp), %edi
 # ____________swap needed_____________________________________________
             movl %edi, 8(%esp)
-            popl %esi
             popl %edi
+            popl %esi
             popl %edx
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
@@ -111,24 +106,11 @@ Main_main:
           jmp .L4
 .L3:
 .L4:
-          popl %esi
-        movl %esi, -8(%ebp)
-        addl $4, %esp
-      addl $4, %esp
+        movl %edx, -8(%ebp)
     addl $12, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
-    addl $4, %esp
-  addl $4, %esp
   # Emitting class A {...}
-  pushl $0
-  pushl %edx
-  popl %edx
-  addl $4, %esp
   # Emitting class B {...}
-  pushl $0
-  pushl %edx
-  popl %edx
-  addl $4, %esp

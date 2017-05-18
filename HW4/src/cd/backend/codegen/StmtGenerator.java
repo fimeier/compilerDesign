@@ -66,6 +66,9 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			//1. save registers
 			//List<Register> dontBother = new ArrayList<>();
 			Register[] affected = cg.rm.getUsedRegisters();
+			if (affected==null){
+				return super.visit(ast, frame);
+			}
 			int offsetSpillingReg = affected.length*4;
 			
 			System.out.println("#REGS in Expr=" +affected.length);
@@ -77,11 +80,12 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 
 			Register retReg = super.visit(ast, frame);
 
+			boolean affB = false;
 			if (retReg!=null){
 				//2. swap retReg??
 				for (Register reg: affected){
 					if (reg.getRepr().equals(retReg.getRepr())) {
-						//swapIt = true;
+						affB = true;
 						System.out.println("*******swap Needed");
 						cg.emit.emitCommentSection("swap needed");
 
@@ -96,6 +100,8 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 					}
 				}
 			} else {
+				cg.emit.emitCommentSection("NO swap needed");
+
 				cg.eg.restoreRegSpilling(affected);
 				cg.emit.emit("addl", "$4", STACK_REG.getRepr());
 
@@ -104,8 +110,10 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			//3. restore
 			cg.eg.restoreRegSpilling(affected);
 
-			retReg = cg.rm.getRegister();
-			cg.emit.emit("popl", retReg.getRepr());
+			if (affB){
+				retReg = cg.rm.getRegister();
+				cg.emit.emit("popl", retReg.getRepr());
+			}
 
 			return retReg;
 		} finally {

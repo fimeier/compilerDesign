@@ -49,9 +49,7 @@ movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
   # Emitting class Main {...}
-  pushl $0
     # Emitting void main(...) {...}
-    pushl $0
 Main_main:
     # store old ebp, set uf new ebp
     pushl %ebp
@@ -60,101 +58,61 @@ Main_main:
     # variable i
     pushl $0
       # Emitting (...)
-      pushl $0
         # Emitting i = 0
-        pushl $0
 # ________assign______________________________________________________
           # Emitting 0
-          pushl $0
           movl $0, %edi
-          popl %esi
-        movl %esi, -4(%ebp)
-        addl $4, %esp
+        movl %edi, -4(%ebp)
         # Emitting while ((i < 5)) {...}
-        pushl $0
-        pushl %edi
 # ________whileLoop___________________________________________________
 .L2:
           # Emitting (i < 5)
-          pushl $0
             # Emitting 5
-            pushl $0
             movl $5, %edi
-            popl %esi
             # Emitting i
             pushl $0
-            pushl %esi
             pushl %edi
 # ____________var_____________________________________________________
             movl -4(%ebp), %edi
 # ____________swap needed_____________________________________________
-            movl %edi, 8(%esp)
+            movl %edi, 4(%esp)
             popl %edi
             popl %esi
-            popl %edx
-          cmpl %esi, %edx
+          cmpl %edi, %esi
           setl %al
-          movzbl %al, %edx
-          popl %esi
+          movzbl %al, %esi
         jge .L3
           # Emitting (...)
-          pushl $0
-          pushl %edx
-          pushl %edi
             # Emitting i = (i + 1)
-            pushl $0
 # ____________assign__________________________________________________
               # Emitting (i + 1)
-              pushl $0
                 # Emitting 1
-                pushl $0
-                movl $1, %edi
-                popl %edx
+                movl $1, %esi
                 # Emitting i
                 pushl $0
-                pushl %edx
-                pushl %edi
+                pushl %esi
 # ________________var_________________________________________________
-                movl -4(%ebp), %edi
+                movl -4(%ebp), %esi
 # ________________swap needed_________________________________________
-                movl %edi, 8(%esp)
-                popl %edi
-                popl %edx
+                movl %esi, 4(%esp)
                 popl %esi
-              add %edx, %esi
-              popl %edx
-            movl %edx, -4(%ebp)
-            addl $4, %esp
+                popl %edi
+              add %esi, %edi
+            movl %edi, -4(%ebp)
             # Emitting write(i)
-            pushl $0
-            pushl %esi
-            pushl %edi
               # Emitting i
-              pushl $0
 # ______________var___________________________________________________
               movl -4(%ebp), %edi
-              popl %esi
             sub $16, %esp
-            movl %esi, 4(%esp)
+            movl %edi, 4(%esp)
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-            popl %edi
-            popl %esi
-            addl $4, %esp
-          popl %edi
-          popl %edx
-          addl $4, %esp
         jmp .L2
 .L3:
 .L4:
-        popl %edi
-        addl $4, %esp
-      addl $4, %esp
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
-    addl $4, %esp
-  addl $4, %esp

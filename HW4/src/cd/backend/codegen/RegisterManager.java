@@ -124,7 +124,9 @@ public class RegisterManager {
 	 */
 	public void releaseRegister(Register reg) {
 		assert !registers.contains(reg);
-		registers.add(reg);
+		if(reg!=null){
+			registers.add(reg);
+		}
 	}
 	
 	/**
@@ -152,10 +154,16 @@ public class RegisterManager {
 	public Register[] getUsedRegisters(){
 		int nUsed = 6-registers.size(); //??????????
 		//int nUsed = registers.size();
+		
+		if (nUsed <0){
+			System.out.println("asdsad");
+		}
 
-		Register[] usedRegs = new Register[nUsed];
+		Register[] usedRegs;
 		if (nUsed==0){
-			return usedRegs;
+			return null; //new Register[0];
+		} else {
+			usedRegs = new Register[nUsed];
 		}
 		//System.arraycopy( GPR, 0, usedRegs, 0, GPR.length );
 		int i = 0;

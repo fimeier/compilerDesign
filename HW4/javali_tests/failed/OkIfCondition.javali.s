@@ -49,9 +49,7 @@ movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
   # Emitting class Main {...}
-  pushl $0
     # Emitting void main(...) {...}
-    pushl $0
 Main_main:
     # store old ebp, set uf new ebp
     pushl %ebp
@@ -60,106 +58,54 @@ Main_main:
     # variable b
     pushl $0
       # Emitting (...)
-      pushl $0
         # Emitting b = true
-        pushl $0
 # ________assign______________________________________________________
           # Emitting true
-          pushl $0
           movl $1, %edi
-          popl %esi
-        movl %esi, -4(%ebp)
-        addl $4, %esp
+        movl %edi, -4(%ebp)
         # Emitting if (!(false)) {...} else {...}
-        pushl $0
-        pushl %edi
 # ________ifElse______________________________________________________
           # Emitting !(false)
-          pushl $0
             # Emitting false
-            pushl $0
             movl $0, %edi
-            popl %esi
-          negl %esi
-          incl %esi
-          cmpl $0, %esi
-          popl %edx
+          negl %edi
+          incl %edi
+          cmpl $0, %edi
         je .L3
           # Emitting (...)
-          pushl $0
-          pushl %esi
-          pushl %edi
-          popl %esi
-          popl %edi
-          addl $4, %esp
         jmp .L4
 .L3:
           # Emitting nop
-          pushl $0
-          pushl %esi
-          pushl %edi
-          popl %esi
-          popl %edi
-          addl $4, %esp
 .L4:
-        popl %edi
-        addl $4, %esp
         # Emitting if ((b == false)) {...} else {...}
-        pushl $0
-        pushl %esi
-        pushl %edi
 # ________ifElse______________________________________________________
           # Emitting (b == false)
-          pushl $0
             # Emitting false
-            pushl $0
             movl $0, %edi
-            popl %esi
             # Emitting b
             pushl $0
-            pushl %esi
             pushl %edi
 # ____________var_____________________________________________________
             movl -4(%ebp), %edi
 # ____________swap needed_____________________________________________
-            movl %edi, 8(%esp)
-            popl %esi
+            movl %edi, 4(%esp)
             popl %edi
-            popl %edx
-          cmpl %esi, %edx
+            popl %esi
+          cmpl %edi, %esi
           je .L6
-          movl $0, %edx
+          movl $0, %esi
           jmp .L7
 .L6:
-          movl $1, %edx
+          movl $1, %esi
 .L7:
-          popl %esi
         jne .L8
           # Emitting (...)
-          pushl $0
-          pushl %edx
-          pushl %edi
-          popl %edx
-          popl %edi
-          addl $4, %esp
         jmp .L9
 .L8:
           # Emitting nop
-          pushl $0
-          pushl %edx
-          pushl %edi
-          popl %edx
-          popl %edi
-          addl $4, %esp
 .L9:
-        popl %esi
-        popl %edi
-        addl $4, %esp
-      addl $4, %esp
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
-    addl $4, %esp
-  addl $4, %esp

@@ -59,9 +59,7 @@ movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
   # Emitting class Main {...}
-  pushl $0
     # Emitting void main(...) {...}
-    pushl $0
 Main_main:
     # store old ebp, set uf new ebp
     pushl %ebp
@@ -72,12 +70,9 @@ Main_main:
     # variable b
     pushl $0
       # Emitting (...)
-      pushl $0
         # Emitting a = b.foo(...)
-        pushl $0
 # ________assign______________________________________________________
           # Emitting b.foo(...)
-          pushl $0
             # Emitting b
             pushl $0
             pushl %edi
@@ -104,9 +99,9 @@ Main_main:
             movl -8(%ebp), %edi
 # ____________swap needed_____________________________________________
             movl %edi, 12(%esp)
-            popl %edx
-            popl %esi
             popl %edi
+            popl %esi
+            popl %edx
             popl %ecx
           pushl %ecx
             # Emitting a
@@ -119,62 +114,48 @@ Main_main:
             movl -4(%ebp), %edi
 # ____________swap needed_____________________________________________
             movl %edi, 16(%esp)
-            popl %ecx
-            popl %edx
-            popl %esi
             popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
             popl %ebx
           pushl %ebx
           pushl %esi
           call %edi
           addl $12, %esp
           popl %edi
-          popl %esi
-        movl %esi, -4(%ebp)
-        addl $4, %esp
-      addl $4, %esp
+        movl %edi, -4(%ebp)
     addl $8, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
-    addl $4, %esp
-  addl $4, %esp
   # Emitting class A {...}
   pushl $0
   pushl %ecx
   pushl %edx
-  pushl %edi
     # Emitting A foo(...) {...}
-    pushl $0
 A_foo:
     # store old ebp, set uf new ebp
     pushl %ebp
     movl %esp, %ebp
     # set local variables:
       # Emitting (...)
-      pushl $0
         # Emitting while ((arg1 == arg2)) {...}
-        pushl $0
 # ________whileLoop___________________________________________________
 .L3:
           # Emitting (arg1 == arg2)
-          pushl $0
             # Emitting arg2
-            pushl $0
 # ____________var_____________________________________________________
-            movl 16(%ebp), %edi
-            popl %edx
+            movl 16(%ebp), %edx
             # Emitting arg1
             pushl $0
             pushl %edx
-            pushl %edi
 # ____________var_____________________________________________________
-            movl 12(%ebp), %edi
+            movl 12(%ebp), %edx
 # ____________swap needed_____________________________________________
-            movl %edi, 8(%esp)
+            movl %edx, 4(%esp)
             popl %edx
-            popl %edi
             popl %ecx
           cmpl %edx, %ecx
           je .L4
@@ -183,53 +164,34 @@ A_foo:
 .L4:
           movl $1, %ecx
 .L5:
-          popl %edx
         jne .L6
           # Emitting (...)
-          pushl $0
-          pushl %ecx
-          pushl %edi
-          popl %ecx
-          popl %edi
-          addl $4, %esp
         jmp .L3
 .L6:
 .L7:
-        addl $4, %esp
         # Emitting return arg2
-        pushl $0
-        pushl %ecx
-        pushl %edi
           # Emitting arg2
-          pushl $0
 # __________var_______________________________________________________
-          movl 16(%ebp), %edi
-          popl %ecx
+          movl 16(%ebp), %ecx
         movl %ecx, 20(%ebp)
         # restore old ebp
         movl %ebp, %esp
         popl %ebp
         ret
-        popl %ecx
-        popl %edi
-        addl $4, %esp
-      addl $4, %esp
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
-    addl $4, %esp
-  popl %ecx
+# __NO swap needed____________________________________________________
   popl %edx
-  popl %edi
+  popl %ecx
   addl $4, %esp
   # Emitting class B {...}
   pushl $0
   pushl %ecx
   pushl %edx
-  pushl %edi
-  popl %ecx
+# __NO swap needed____________________________________________________
   popl %edx
-  popl %edi
+  popl %ecx
   addl $4, %esp

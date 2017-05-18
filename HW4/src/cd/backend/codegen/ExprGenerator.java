@@ -62,6 +62,9 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			//1. save registers
 			//List<Register> dontBother = new ArrayList<>();
 			Register[] affected = cg.rm.getUsedRegisters();
+			if (affected==null){
+				return super.visit(ast, frame);
+			}
 			int offsetSpillingReg = affected.length*4;
 			
 			System.out.println("#REGS in Expr=" +affected.length);
@@ -73,11 +76,12 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 			Register retReg = super.visit(ast, frame);
 
+			boolean affB = false;
 			if (retReg!=null){
 				//2. swap retReg??
 				for (Register reg: affected){
 					if (reg.getRepr().equals(retReg.getRepr())) {
-						//swapIt = true;
+						affB = true;
 						System.out.println("*******swap Needed");
 						cg.emit.emitCommentSection("swap needed");
 
@@ -102,8 +106,10 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			//3. restore
 			restoreRegSpilling(affected);
 
-			retReg = cg.rm.getRegister();
-			cg.emit.emit("popl", retReg.getRepr());
+			if (affB){
+				retReg = cg.rm.getRegister();
+				cg.emit.emit("popl", retReg.getRepr());
+			}
 
 			return retReg;
 		} finally {
@@ -589,6 +595,7 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 			// now copy the vtable address to the top of the Object in the heap
 			cg.emit.emit("movl", "$"+objectShape.getAddr(), "(%eax)");
 			// The size of the array is stored at array_ptr+4
+			cg.emit.emit("subl", "$2", sizeReg); // get size correct!
 			cg.emit.emit("movl", sizeReg, frame.getAddr("%eax", 4));
 
 			// move addr of the Object to a register and return it
