@@ -49,8 +49,8 @@ ClassDecl (name: Main, superClass: Object)
 | | | | | IntConst (value: 1)
 | | | | | IntConst (value: 2)
 | | | BuiltInWriteln ()
-Binary Op: ((a + b))@5c57941f (%esi,%edi)
-Binary Op: (((a + b) + 1))@2cbd06ca (%esi,%edi)
+Binary Op: ((a + b))@9a5853b (%esi,%edi)
+Binary Op: (((a + b) + 1))@791aa017 (%esi,%edi)
 
 Test failed because an exception was thrown:
     null

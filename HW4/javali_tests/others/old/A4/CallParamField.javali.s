@@ -119,11 +119,21 @@ Main_main:
           # Emitting a
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
+        cmpl $0, %esi
+        jne .L2
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L2:
         movl %edi, 4(%esi)
         # Emitting a.foo(...)
           # Emitting a
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
+        cmpl $0, %esi
+        jne .L3
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L3:
         movl 0(%esi), %edi
         movl 4(%edi), %edi
         subl $4, %esp
@@ -139,6 +149,11 @@ Main_main:
           # Emitting a
 # __________var_______________________________________________________
           movl -4(%ebp), %edi
+        cmpl $0, %edi
+        jne .L4
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L4:
         movl 0(%edi), %edx
         movl 4(%edx), %edx
         subl $4, %esp
@@ -153,6 +168,11 @@ Main_main:
           # Emitting a
 # __________var_______________________________________________________
           movl -4(%ebp), %edi
+        cmpl $0, %edi
+        jne .L5
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L5:
         movl 0(%edi), %edx
         movl 4(%edx), %edx
         subl $4, %esp

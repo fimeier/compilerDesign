@@ -1,0 +1,188 @@
+.section .data
+	vtable_Main_array:
+		.int vtable_Object
+	vtable_int_array:
+		.int vtable_Object
+	vtable_Object:
+		.int 0
+	vtable_Main:
+		.int vtable_Object
+		.int Main_m
+		.int Main_main
+	vtable_boolean_array:
+		.int vtable_Object
+	STR_NL:
+		.string "\n"
+	STR_D:
+		.string "%d"
+	BASE_PT:
+	.int 0
+	STACK_PT:
+	.int 0
+.section .text
+# start: Main-Class___________________________________________________
+.global main
+
+main:
+# start: prolog
+movl %esp, STACK_PT
+movl %ebp, BASE_PT
+pushl %ebp
+movl %esp, %ebp
+# end: prolog
+# Create Main object and safe its address to %eax
+pushl $4
+pushl $1
+call calloc
+addl $8, %esp
+# copy the pinter to the vtable to the Main Object
+movl $vtable_Main, (%eax)
+pushl %eax
+call Main_main
+addl $4, %esp
+movl %ebp, %esp
+popl %ebp
+movl $0, %eax
+ret
+# end: Main-Class_____________________________________________________
+.ERROR_EXIT:
+movl STACK_PT, %esp
+movl BASE_PT, %ebp
+ret
+  # Emitting class Main {...}
+    # Emitting int m(...) {...}
+Main_m:
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
+      # Emitting (...)
+        # Emitting return ((a + b) + 1)
+          # Emitting ((a + b) + 1)
+            # Emitting (a + b)
+              # Emitting b
+# ______________var___________________________________________________
+              movl 16(%ebp), %edi
+              # Emitting a
+# ______________var___________________________________________________
+              movl 12(%ebp), %esi
+            add %edi, %esi
+            # Emitting 1
+            movl $1, %edi
+          add %edi, %esi
+        movl %esi, 20(%ebp)
+    addl $0, %esp
+    # restore old ebp
+    movl %ebp, %esp
+    popl %ebp
+    ret
+    # Emitting void main(...) {...}
+Main_main:
+    # store old ebp, set uf new ebp
+    pushl %ebp
+    movl %esp, %ebp
+    # set local variables:
+    # variable res
+    pushl $0
+      # Emitting (...)
+        # Emitting res = -(1)
+# ________assign______________________________________________________
+          # Emitting -(1)
+            # Emitting 1
+            movl $1, %esi
+          negl %esi
+        movl %esi, -4(%ebp)
+        # Emitting res = this.m(...)
+# ________assign______________________________________________________
+          # Emitting this.m(...)
+            # Emitting this
+            movl 8(%ebp), %edi
+          cmpl $0, %edi
+          jne .L2
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L2:
+          movl 0(%edi), %esi
+          movl 4(%esi), %esi
+          subl $4, %esp
+            # Emitting 2
+            movl $2, %ecx
+          pushl %ecx
+            # Emitting 1
+            movl $1, %ebx
+          pushl %ebx
+          pushl %edi
+          call %esi
+          addl $12, %esp
+          popl %esi
+        movl %esi, -4(%ebp)
+        # Emitting write(res)
+          # Emitting res
+# __________var_______________________________________________________
+          movl -4(%ebp), %esi
+        sub $16, %esp
+        movl %esi, 4(%esp)
+        movl $STR_D, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting writeln()
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting res = this.m(...)
+# ________assign______________________________________________________
+          # Emitting this.m(...)
+          pushl %ecx
+          pushl %edx
+            # Emitting this
+            movl 8(%ebp), %ecx
+          cmpl $0, %ecx
+          jne .L3
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L3:
+          movl 0(%ecx), %edx
+          movl 4(%edx), %edx
+          subl $4, %esp
+            # Emitting 2
+            movl $2, %edi
+          pushl %edi
+            # Emitting 1
+            movl $1, %ebx
+          pushl %ebx
+          pushl %ecx
+          call %edx
+          addl $12, %esp
+          popl %edx
+        movl %edx, -4(%ebp)
+        # Emitting write(res)
+          # Emitting res
+# __________var_______________________________________________________
+          movl -4(%ebp), %edx
+        sub $16, %esp
+        movl %edx, 4(%esp)
+        movl $STR_D, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting writeln()
+        sub $16, %esp
+        movl $STR_NL, 0(%esp)
+        call printf
+        add $16, %esp
+        # Emitting write(this.m(...))
+          # Emitting this.m(...)
+            # Emitting this
+            movl 8(%ebp), %ecx
+          cmpl $0, %ecx
+          jne .L4
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L4:
+          movl 0(%ecx), %edx
+          movl 4(%edx), %edx
+          subl $4, %esp
+            # Emitting 2
+            movl $2, %eax
+          pushl %eax
+            # Emitting 1

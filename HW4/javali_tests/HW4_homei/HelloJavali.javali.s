@@ -97,7 +97,7 @@ Main_main:
           cmpl %edi, %esi
           setl %al
           movzbl %al, %esi
-        jge .L2
+        jge .L3
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
@@ -108,8 +108,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L3
-.L2:
+        jmp .L4
+.L3:
           # Emitting (...)
             # Emitting write(666)
               # Emitting 666
@@ -119,7 +119,7 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-.L3:
+.L4:
         # Emitting if ((a <= b)) {...} else {...}
 # ________ifElse______________________________________________________
           # Emitting (a <= b)
@@ -133,7 +133,7 @@ Main_main:
           cmpl %esi, %edi
           setle %al
           movzbl %al, %edi
-        jg .L4
+        jg .L6
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
@@ -144,8 +144,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L5
-.L4:
+        jmp .L7
+.L6:
           # Emitting (...)
             # Emitting write(666)
               # Emitting 666
@@ -155,7 +155,7 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-.L5:
+.L7:
         # Emitting if ((a > b)) {...} else {...}
 # ________ifElse______________________________________________________
           # Emitting (a > b)
@@ -169,7 +169,7 @@ Main_main:
           cmpl %edi, %esi
           setg %al
           movzbl %al, %esi
-        jle .L6
+        jle .L9
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
@@ -180,8 +180,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L7
-.L6:
+        jmp .L10
+.L9:
           # Emitting (...)
             # Emitting write(666)
               # Emitting 666
@@ -191,7 +191,7 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-.L7:
+.L10:
         # Emitting if ((a > b)) {...} else {...}
 # ________ifElse______________________________________________________
           # Emitting (a > b)
@@ -205,7 +205,7 @@ Main_main:
           cmpl %esi, %edi
           setg %al
           movzbl %al, %edi
-        jle .L8
+        jle .L12
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
@@ -216,8 +216,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L9
-.L8:
+        jmp .L13
+.L12:
           # Emitting (...)
             # Emitting write(666)
               # Emitting 666
@@ -227,7 +227,7 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-.L9:
+.L13:
         # Emitting writeln()
         sub $16, %esp
         movl $STR_NL, 0(%esp)
@@ -242,7 +242,7 @@ Main_main:
             movl $0, %esi
           andl %edi, %esi
           cmpl $0, %esi
-        je .L10
+        je .L15
           # Emitting (...)
             # Emitting write(a)
               # Emitting a
@@ -253,8 +253,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L11
-.L10:
+        jmp .L16
+.L15:
           # Emitting (...)
             # Emitting write(666)
               # Emitting 666
@@ -264,7 +264,7 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-.L11:
+.L16:
         # Emitting writeln()
         sub $16, %esp
         movl $STR_NL, 0(%esp)
@@ -281,7 +281,7 @@ Main_main:
             movl -4(%ebp), %edi
           orl %esi, %edi
           cmpl $0, %edi
-        je .L12
+        je .L18
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -291,8 +291,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L13
-.L12:
+        jmp .L19
+.L18:
           # Emitting (...)
             # Emitting write(0)
               # Emitting 0
@@ -302,7 +302,7 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-.L13:
+.L19:
         # Emitting write((3 * 4))
           # Emitting (3 * 4)
             # Emitting 4
@@ -361,10 +361,10 @@ Main_main:
             # Emitting 13
             movl $13, %edi
           cmpl $0, %esi
-          jne .L14
+          jne .L20
           movl $7, %eax
           jmp .ERROR_EXIT
-.L14:
+.L20:
           pushl %esi
           pushl %edi
           popl %eax
@@ -389,10 +389,10 @@ Main_main:
             # Emitting 17
             movl $17, %esi
           cmpl $0, %edi
-          jne .L15
+          jne .L21
           movl $7, %eax
           jmp .ERROR_EXIT
-.L15:
+.L21:
           pushl %edi
           pushl %esi
           popl %eax
@@ -608,7 +608,7 @@ Main_main:
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
         cmpl $0, %esi
-        je .L16
+        je .L23
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -618,8 +618,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L17
-.L16:
+        jmp .L24
+.L23:
           # Emitting (...)
             # Emitting write(0)
               # Emitting 0
@@ -629,7 +629,7 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-.L17:
+.L24:
     addl $12, %esp
     # restore old ebp
     movl %ebp, %esp

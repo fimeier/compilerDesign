@@ -67,6 +67,11 @@ Main_main:
           movl $7, %edi
           # Emitting this
           movl 8(%ebp), %esi
+        cmpl $0, %esi
+        jne .L2
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L2:
         movl %edi, 4(%esi)
         # Emitting b = 8
 # ________assign______________________________________________________
@@ -79,6 +84,11 @@ Main_main:
           # Emitting this.b
             # Emitting this
             movl 8(%ebp), %edi
+          cmpl $0, %edi
+          jne .L3
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L3:
           movl 8(%edi), %edi
         movl %edi, -4(%ebp)
         # Emitting c = a
@@ -93,12 +103,22 @@ Main_main:
           # Emitting this.foo(...)
             # Emitting this
             movl 8(%ebp), %esi
+          cmpl $0, %esi
+          jne .L4
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L4:
           movl 0(%esi), %edi
           movl 8(%edi), %edi
           subl $4, %esp
             # Emitting this.b
               # Emitting this
               movl 8(%ebp), %ecx
+            cmpl $0, %ecx
+            jne .L5
+            movl $4, %eax
+            jmp .ERROR_EXIT
+.L5:
             movl 8(%ecx), %ecx
           pushl %ecx
           pushl %esi
@@ -126,6 +146,11 @@ Main_main:
           # Emitting this.b
             # Emitting this
             movl 8(%ebp), %edi
+          cmpl $0, %edi
+          jne .L6
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L6:
           movl 8(%edi), %edi
         sub $16, %esp
         movl %edi, 4(%esp)
@@ -151,6 +176,11 @@ Main_foo:
           movl 12(%ebp), %edi
           # Emitting this
           movl 8(%ebp), %esi
+        cmpl $0, %esi
+        jne .L7
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L7:
         movl %edi, 4(%esi)
         # Emitting return (2 * a)
           # Emitting (2 * a)

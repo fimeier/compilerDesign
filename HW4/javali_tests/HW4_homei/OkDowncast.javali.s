@@ -195,6 +195,8 @@ Main_main:
             movl -4(%ebp), %edx
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
+          cmpl %edi, %esi
+          je .L3
 .L5:
           cmpl $0, %esi
           je .L2
@@ -225,32 +227,32 @@ Main_main:
         # Emitting a.print(...)
           # Emitting a
 # __________var_______________________________________________________
-          movl -4(%ebp), %ecx
-        cmpl $0, %ecx
+          movl -4(%ebp), %esi
+        cmpl $0, %esi
         jne .L6
         movl $4, %eax
         jmp .ERROR_EXIT
 .L6:
-        movl 0(%ecx), %edx
+        movl 0(%esi), %edx
         movl 4(%edx), %edx
         subl $4, %esp
-        pushl %ecx
+        pushl %esi
         call %edx
         addl $4, %esp
         popl %edx
         # Emitting b.print(...)
           # Emitting b
 # __________var_______________________________________________________
-          movl -8(%ebp), %ecx
-        cmpl $0, %ecx
+          movl -8(%ebp), %esi
+        cmpl $0, %esi
         jne .L7
         movl $4, %eax
         jmp .ERROR_EXIT
 .L7:
-        movl 0(%ecx), %edx
+        movl 0(%esi), %edx
         movl 4(%edx), %edx
         subl $4, %esp
-        pushl %ecx
+        pushl %esi
         call %edx
         addl $4, %esp
         popl %edx

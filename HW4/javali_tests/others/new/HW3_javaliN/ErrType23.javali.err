@@ -1,0 +1,26 @@
+Debug information for file: javali_tests/others/new/HW3_javaliN/ErrType23.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: Main, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | | VarDecl (name: x, type: boolean)
+| | | VarDecl (name: a, type: A)
+| | | VarDecl (name: b, type: B)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: b)
+| | | | Cast (typeName: B)
+| | | | | Var (name: a)
+ClassDecl (name: A, superClass: Object)
+ClassDecl (name: B, superClass: A)
+
+Phase exec failed because we expected to see:
+
+But we actually saw:
+Error: 1
+
+The difference is:
+At line   1 /   1:
+< 
+> Error: 1
+

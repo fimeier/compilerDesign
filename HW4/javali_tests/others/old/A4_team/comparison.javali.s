@@ -81,7 +81,7 @@ Main_main:
             movl -4(%ebp), %esi
           andl %edi, %esi
           cmpl $0, %esi
-        je .L2
+        je .L3
           # Emitting (...)
             # Emitting write(0)
               # Emitting 0
@@ -91,10 +91,10 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L3
-.L2:
-          # Emitting nop
+        jmp .L4
 .L3:
+          # Emitting nop
+.L4:
     addl $8, %esp
     # restore old ebp
     movl %ebp, %esp

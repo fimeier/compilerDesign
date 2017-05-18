@@ -61,6 +61,11 @@ Main_main:
         # Emitting this.foo(...)
           # Emitting this
           movl 8(%ebp), %esi
+        cmpl $0, %esi
+        jne .L2
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L2:
         movl 0(%esi), %edi
         movl 8(%edi), %edi
         subl $4, %esp
@@ -90,6 +95,11 @@ Main_foo:
           movl 12(%ebp), %edi
           # Emitting this
           movl 8(%ebp), %esi
+        cmpl $0, %esi
+        jne .L3
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L3:
         movl %edi, 4(%esi)
     addl $0, %esp
     # restore old ebp

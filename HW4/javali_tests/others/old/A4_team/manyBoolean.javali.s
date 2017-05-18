@@ -126,7 +126,7 @@ Main_main:
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
         cmpl $0, %esi
-        je .L2
+        je .L3
           # Emitting (...)
             # Emitting if (((b || a) || c)) {...} else {...}
 # ____________ifElse__________________________________________________
@@ -145,7 +145,7 @@ Main_main:
                 movl -12(%ebp), %esi
               orl %esi, %edi
               cmpl $0, %edi
-            je .L4
+            je .L6
               # Emitting (...)
                 # Emitting write(0)
                   # Emitting 0
@@ -155,8 +155,8 @@ Main_main:
                 movl $STR_D, 0(%esp)
                 call printf
                 add $16, %esp
-            jmp .L5
-.L4:
+            jmp .L7
+.L6:
               # Emitting (...)
                 # Emitting write(1)
                   # Emitting 1
@@ -166,9 +166,9 @@ Main_main:
                 movl $STR_D, 0(%esp)
                 call printf
                 add $16, %esp
-.L5:
-        jmp .L3
-.L2:
+.L7:
+        jmp .L4
+.L3:
           # Emitting (...)
             # Emitting if (((d && d) || d)) {...} else {...}
 # ____________ifElse__________________________________________________
@@ -187,7 +187,7 @@ Main_main:
                 movl -16(%ebp), %edi
               orl %edi, %esi
               cmpl $0, %esi
-            je .L6
+            je .L9
               # Emitting (...)
                 # Emitting write(2)
                   # Emitting 2
@@ -197,10 +197,10 @@ Main_main:
                 movl $STR_D, 0(%esp)
                 call printf
                 add $16, %esp
-            jmp .L7
-.L6:
+            jmp .L10
+.L9:
               # Emitting nop
-.L7:
+.L10:
             # Emitting if ((e && false)) {...} else {...}
 # ____________ifElse__________________________________________________
               # Emitting (e && false)
@@ -211,7 +211,7 @@ Main_main:
                 movl -20(%ebp), %edi
               andl %esi, %edi
               cmpl $0, %edi
-            je .L8
+            je .L12
               # Emitting (...)
                 # Emitting write(3)
                   # Emitting 3
@@ -221,8 +221,8 @@ Main_main:
                 movl $STR_D, 0(%esp)
                 call printf
                 add $16, %esp
-            jmp .L9
-.L8:
+            jmp .L13
+.L12:
               # Emitting (...)
                 # Emitting if ((true || e)) {...} else {...}
 # ________________ifElse______________________________________________
@@ -234,7 +234,7 @@ Main_main:
                     movl $1, %esi
                   orl %edi, %esi
                   cmpl $0, %esi
-                je .L10
+                je .L15
                   # Emitting (...)
                     # Emitting e = false
 # ____________________assign__________________________________________
@@ -249,11 +249,11 @@ Main_main:
                     movl $STR_D, 0(%esp)
                     call printf
                     add $16, %esp
-                jmp .L11
-.L10:
+                jmp .L16
+.L15:
                   # Emitting nop
-.L11:
-.L9:
+.L16:
+.L13:
             # Emitting if (!(e)) {...} else {...}
 # ____________ifElse__________________________________________________
               # Emitting !(e)
@@ -263,7 +263,7 @@ Main_main:
               negl %esi
               incl %esi
               cmpl $0, %esi
-            je .L12
+            je .L18
               # Emitting (...)
                 # Emitting e = ((a || b) || c)
 # ________________assign______________________________________________
@@ -291,11 +291,11 @@ Main_main:
                 movl $STR_D, 0(%esp)
                 call printf
                 add $16, %esp
-            jmp .L13
-.L12:
+            jmp .L19
+.L18:
               # Emitting nop
-.L13:
-.L3:
+.L19:
+.L4:
     addl $28, %esp
     # restore old ebp
     movl %ebp, %esp

@@ -94,7 +94,7 @@ Main_main:
           cmpl %edi, %esi
           setg %al
           movzbl %al, %esi
-        jle .L2
+        jle .L3
           # Emitting (...)
             # Emitting a = new A()
 # ____________assign__________________________________________________
@@ -107,8 +107,8 @@ Main_main:
               movl $vtable_A, (%eax)
               movl %eax, %esi
             movl %esi, -4(%ebp)
-        jmp .L3
-.L2:
+        jmp .L4
+.L3:
           # Emitting (...)
             # Emitting a = new B()
 # ____________assign__________________________________________________
@@ -121,7 +121,7 @@ Main_main:
               movl $vtable_B, (%eax)
               movl %eax, %esi
             movl %esi, -4(%ebp)
-.L3:
+.L4:
         # Emitting b = (B)(a)
 # ________assign______________________________________________________
           # Emitting (B)(a)
@@ -133,19 +133,21 @@ Main_main:
             movl -4(%ebp), %edx
 # __________rTypeRegister_____________________________________________
           movl %edx, %edi
-.L7:
-          cmpl $0, %edi
-          je .L4
           cmpl %esi, %edi
+          je .L6
+.L8:
+          cmpl $0, %edi
           je .L5
+          cmpl %esi, %edi
+          je .L6
           movl (%edi), %edi
-          jmp .L7
-.L4:
+          jmp .L8
+.L5:
           movl $1, %eax
           jmp .ERROR_EXIT
-          jmp .L6
-.L5:
+          jmp .L7
 .L6:
+.L7:
         movl %edx, -8(%ebp)
     addl $12, %esp
     # restore old ebp

@@ -104,16 +104,21 @@ Main_main:
           movl 4(%edx), %edx
           # Emitting 0
           movl $0, %ecx
-        cmpl $0, %ecx
-        jge .L3
-        movl $3, %eax
+        cmpl $0, %edx
+        jne .L3
+        movl $4, %eax
         jmp .ERROR_EXIT
 .L3:
-        cmpl 4(%edx), %ecx
-        jl .L4
+        cmpl $0, %ecx
+        jge .L4
         movl $3, %eax
         jmp .ERROR_EXIT
 .L4:
+        cmpl 4(%edx), %ecx
+        jl .L5
+        movl $3, %eax
+        jmp .ERROR_EXIT
+.L5:
         imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
@@ -131,37 +136,44 @@ Main_main:
               movl 4(%ecx), %ecx
               # Emitting 0
               movl $0, %ebx
-            cmpl $0, %ebx
-            jge .L9
-            movl $3, %eax
-            jmp .ERROR_EXIT
-.L9:
-            cmpl 4(%ecx), %ebx
-            jl .L10
-            movl $3, %eax
+            cmpl $0, %ecx
+            jne .L10
+            movl $4, %eax
             jmp .ERROR_EXIT
 .L10:
+            cmpl $0, %ebx
+            jge .L11
+            movl $3, %eax
+            jmp .ERROR_EXIT
+.L11:
+            cmpl 4(%ecx), %ebx
+            jl .L12
+            movl $3, %eax
+            jmp .ERROR_EXIT
+.L12:
             imul $4, %ebx
             addl $8, %ebx
             addl %ebx, %ecx
             movl (%ecx), %ecx
 # __________rTypeRegister_____________________________________________
           movl %ecx, %edx
-.L8:
-          cmpl $0, %edx
-          je .L5
           cmpl %esi, %edx
+          je .L7
+.L9:
+          cmpl $0, %edx
           je .L6
+          cmpl %esi, %edx
+          je .L7
           movl (%edx), %edx
-          jmp .L8
-.L5:
+          jmp .L9
+.L6:
           movl $1, %eax
           jmp .ERROR_EXIT
-          jmp .L7
-.L6:
+          jmp .L8
 .L7:
-        movl 8(%ebp), %ebx
-        movl %ecx, 8(%ebx)
+.L8:
+        movl 8(%ebp), %edx
+        movl %ecx, 8(%edx)
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

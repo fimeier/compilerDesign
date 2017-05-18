@@ -65,6 +65,7 @@ Main_main:
         movl %edi, -4(%ebp)
         # Emitting while ((i < 5)) {...}
 # ________whileLoop___________________________________________________
+.L2:
           # Emitting (i < 5)
             # Emitting 5
             movl $5, %edi
@@ -74,7 +75,7 @@ Main_main:
           cmpl %edi, %esi
           setl %al
           movzbl %al, %esi
-        jge .L2
+        jge .L3
           # Emitting (...)
             # Emitting i = (i + 1)
 # ____________assign__________________________________________________
@@ -95,9 +96,9 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L3
-.L2:
+        jmp .L2
 .L3:
+.L4:
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp

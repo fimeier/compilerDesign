@@ -71,6 +71,11 @@ Main_main:
           # Emitting this.foo(...)
             # Emitting this
             movl 8(%ebp), %esi
+          cmpl $0, %esi
+          jne .L2
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L2:
           movl 0(%esi), %edi
           movl 8(%edi), %edi
           subl $4, %esp
@@ -115,7 +120,7 @@ Main_main:
 # __________var_______________________________________________________
           movl -8(%ebp), %esi
         cmpl $0, %esi
-        je .L2
+        je .L4
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -125,8 +130,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L3
-.L2:
+        jmp .L5
+.L4:
           # Emitting (...)
             # Emitting if ((a || a)) {...} else {...}
 # ____________ifElse__________________________________________________
@@ -139,7 +144,7 @@ Main_main:
                 movl -4(%ebp), %edi
               orl %esi, %edi
               cmpl $0, %edi
-            je .L4
+            je .L7
               # Emitting (...)
                 # Emitting write(2)
                   # Emitting 2
@@ -149,11 +154,11 @@ Main_main:
                 movl $STR_D, 0(%esp)
                 call printf
                 add $16, %esp
-            jmp .L5
-.L4:
+            jmp .L8
+.L7:
               # Emitting nop
+.L8:
 .L5:
-.L3:
     addl $8, %esp
     # restore old ebp
     movl %ebp, %esp

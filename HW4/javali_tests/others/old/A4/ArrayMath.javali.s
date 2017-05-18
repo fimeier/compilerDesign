@@ -89,16 +89,21 @@ Main_main:
           movl 4(%edx), %edx
           # Emitting 0
           movl $0, %ecx
-        cmpl $0, %ecx
-        jge .L3
-        movl $3, %eax
+        cmpl $0, %edx
+        jne .L3
+        movl $4, %eax
         jmp .ERROR_EXIT
 .L3:
-        cmpl 4(%edx), %ecx
-        jl .L4
+        cmpl $0, %ecx
+        jge .L4
         movl $3, %eax
         jmp .ERROR_EXIT
 .L4:
+        cmpl 4(%edx), %ecx
+        jl .L5
+        movl $3, %eax
+        jmp .ERROR_EXIT
+.L5:
         imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
@@ -113,16 +118,21 @@ Main_main:
           movl 4(%edx), %edx
           # Emitting 1
           movl $1, %ecx
-        cmpl $0, %ecx
-        jge .L5
-        movl $3, %eax
-        jmp .ERROR_EXIT
-.L5:
-        cmpl 4(%edx), %ecx
-        jl .L6
-        movl $3, %eax
+        cmpl $0, %edx
+        jne .L6
+        movl $4, %eax
         jmp .ERROR_EXIT
 .L6:
+        cmpl $0, %ecx
+        jge .L7
+        movl $3, %eax
+        jmp .ERROR_EXIT
+.L7:
+        cmpl 4(%edx), %ecx
+        jl .L8
+        movl $3, %eax
+        jmp .ERROR_EXIT
+.L8:
         imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
@@ -137,16 +147,21 @@ Main_main:
           movl 4(%edx), %edx
           # Emitting 2
           movl $2, %ecx
+        cmpl $0, %edx
+        jne .L9
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L9:
         cmpl $0, %ecx
-        jge .L7
+        jge .L10
         movl $3, %eax
         jmp .ERROR_EXIT
-.L7:
+.L10:
         cmpl 4(%edx), %ecx
-        jl .L8
+        jl .L11
         movl $3, %eax
         jmp .ERROR_EXIT
-.L8:
+.L11:
         imul $4, %ecx
         addl $8, %ecx
         addl %ecx, %edx
@@ -162,16 +177,21 @@ Main_main:
                 movl 4(%esi), %esi
                 # Emitting 1
                 movl $1, %edx
+              cmpl $0, %esi
+              jne .L12
+              movl $4, %eax
+              jmp .ERROR_EXIT
+.L12:
               cmpl $0, %edx
-              jge .L9
+              jge .L13
               movl $3, %eax
               jmp .ERROR_EXIT
-.L9:
+.L13:
               cmpl 4(%esi), %edx
-              jl .L10
+              jl .L14
               movl $3, %eax
               jmp .ERROR_EXIT
-.L10:
+.L14:
               imul $4, %edx
               addl $8, %edx
               addl %edx, %esi
@@ -183,16 +203,21 @@ Main_main:
                 movl 4(%edx), %edx
                 # Emitting 0
                 movl $0, %ecx
+              cmpl $0, %edx
+              jne .L15
+              movl $4, %eax
+              jmp .ERROR_EXIT
+.L15:
               cmpl $0, %ecx
-              jge .L11
+              jge .L16
               movl $3, %eax
               jmp .ERROR_EXIT
-.L11:
+.L16:
               cmpl 4(%edx), %ecx
-              jl .L12
+              jl .L17
               movl $3, %eax
               jmp .ERROR_EXIT
-.L12:
+.L17:
               imul $4, %ecx
               addl $8, %ecx
               addl %ecx, %edx
@@ -205,16 +230,21 @@ Main_main:
               movl 4(%esi), %esi
               # Emitting 2
               movl $2, %ecx
+            cmpl $0, %esi
+            jne .L18
+            movl $4, %eax
+            jmp .ERROR_EXIT
+.L18:
             cmpl $0, %ecx
-            jge .L13
+            jge .L19
             movl $3, %eax
             jmp .ERROR_EXIT
-.L13:
+.L19:
             cmpl 4(%esi), %ecx
-            jl .L14
+            jl .L20
             movl $3, %eax
             jmp .ERROR_EXIT
-.L14:
+.L20:
             imul $4, %ecx
             addl $8, %ecx
             addl %ecx, %esi

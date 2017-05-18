@@ -58,6 +58,7 @@ Main_main:
       # Emitting (...)
         # Emitting while (((false && true) || false)) {...}
 # ________whileLoop___________________________________________________
+.L2:
           # Emitting ((false && true) || false)
             # Emitting (false && true)
               # Emitting true
@@ -70,7 +71,7 @@ Main_main:
             movl $0, %edi
           orl %edi, %esi
           cmpl $0, %esi
-        je .L2
+        je .L3
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -80,9 +81,9 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L3
-.L2:
+        jmp .L2
 .L3:
+.L4:
         # Emitting write(0)
           # Emitting 0
           movl $0, %esi

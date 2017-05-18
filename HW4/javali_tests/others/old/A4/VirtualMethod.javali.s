@@ -195,6 +195,11 @@ Main_main:
           # Emitting a
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
+        cmpl $0, %esi
+        jne .L2
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L2:
         movl 0(%esi), %edi
         movl 8(%edi), %edi
         subl $4, %esp
@@ -206,6 +211,11 @@ Main_main:
           # Emitting a
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
+        cmpl $0, %esi
+        jne .L3
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L3:
         movl 0(%esi), %edi
         movl 4(%edi), %edi
         subl $4, %esp
@@ -233,6 +243,11 @@ Main_main:
           # Emitting b
 # __________var_______________________________________________________
           movl -8(%ebp), %esi
+        cmpl $0, %esi
+        jne .L4
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L4:
         movl 0(%esi), %edi
         movl 8(%edi), %edi
         subl $4, %esp
@@ -244,6 +259,11 @@ Main_main:
           # Emitting b
 # __________var_______________________________________________________
           movl -8(%ebp), %esi
+        cmpl $0, %esi
+        jne .L5
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L5:
         movl 0(%esi), %edi
         movl 4(%edi), %edi
         subl $4, %esp
@@ -255,6 +275,11 @@ Main_main:
           # Emitting b
 # __________var_______________________________________________________
           movl -8(%ebp), %esi
+        cmpl $0, %esi
+        jne .L6
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L6:
         movl 0(%esi), %edi
         movl 12(%edi), %edi
         subl $4, %esp
@@ -277,6 +302,11 @@ Main_main:
           # Emitting a
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
+        cmpl $0, %esi
+        jne .L7
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L7:
         movl 0(%esi), %edi
         movl 8(%edi), %edi
         subl $4, %esp
@@ -288,6 +318,11 @@ Main_main:
           # Emitting a
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
+        cmpl $0, %esi
+        jne .L8
+        movl $4, %eax
+        jmp .ERROR_EXIT
+.L8:
         movl 0(%esi), %edi
         movl 4(%edi), %edi
         subl $4, %esp

@@ -73,7 +73,7 @@ Main_main:
             movl $1, %edi
           orl %edi, %esi
           cmpl $0, %esi
-        je .L2
+        je .L3
           # Emitting (...)
             # Emitting write(0)
               # Emitting 0
@@ -83,8 +83,8 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L3
-.L2:
+        jmp .L4
+.L3:
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -94,12 +94,17 @@ Main_main:
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
-.L3:
+.L4:
         # Emitting a = this.foo(...)
 # ________assign______________________________________________________
           # Emitting this.foo(...)
             # Emitting this
             movl 8(%ebp), %edi
+          cmpl $0, %edi
+          jne .L5
+          movl $4, %eax
+          jmp .ERROR_EXIT
+.L5:
           movl 0(%edi), %esi
           movl 8(%esi), %esi
           subl $4, %esp
@@ -162,20 +167,20 @@ Main_foo:
             movl 12(%ebp), %esi
           andl %ebx, %esi
           cmpl $0, %esi
-        je .L4
+        je .L7
           # Emitting (...)
             # Emitting return 3
               # Emitting 3
               movl $3, %esi
             movl %esi, 20(%ebp)
-        jmp .L5
-.L4:
+        jmp .L8
+.L7:
           # Emitting (...)
             # Emitting return 5
               # Emitting 5
               movl $5, %esi
             movl %esi, 20(%ebp)
-.L5:
+.L8:
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

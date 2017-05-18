@@ -106,7 +106,7 @@ Main_main:
           cmpl %esi, %edi
           setl %al
           movzbl %al, %edi
-        jge .L3
+        jge .L4
           # Emitting (...)
             # Emitting b = 3
 # ____________assign__________________________________________________
@@ -125,24 +125,24 @@ Main_main:
               cmpl %edi, %esi
               setg %al
               movzbl %al, %esi
-            jle .L5
+            jle .L7
               # Emitting (...)
                 # Emitting c = 7
 # ________________assign______________________________________________
                   # Emitting 7
                   movl $7, %esi
                 movl %esi, -12(%ebp)
-            jmp .L6
-.L5:
+            jmp .L8
+.L7:
               # Emitting (...)
                 # Emitting a = 0
 # ________________assign______________________________________________
                   # Emitting 0
                   movl $0, %esi
                 movl %esi, -4(%ebp)
-.L6:
-        jmp .L4
-.L3:
+.L8:
+        jmp .L5
+.L4:
           # Emitting (...)
             # Emitting a = 2
 # ____________assign__________________________________________________
@@ -166,15 +166,15 @@ Main_main:
               cmpl %esi, %edi
               setl %al
               movzbl %al, %edi
-            jge .L7
+            jge .L10
               # Emitting (...)
                 # Emitting a = 3
 # ________________assign______________________________________________
                   # Emitting 3
                   movl $3, %edi
                 movl %edi, -4(%ebp)
-            jmp .L8
-.L7:
+            jmp .L11
+.L10:
               # Emitting (...)
                 # Emitting b = (a + c)
 # ________________assign______________________________________________
@@ -187,8 +187,8 @@ Main_main:
                     movl -4(%ebp), %esi
                   add %edi, %esi
                 movl %esi, -8(%ebp)
-.L8:
-.L4:
+.L11:
+.L5:
         # Emitting write(a)
           # Emitting a
 # __________var_______________________________________________________
