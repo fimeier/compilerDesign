@@ -1,8 +1,0 @@
-// Int in boolean operator detected
-class Main{
-	int i;
-	void main(){
-		boolean b;
-		b = !i;
-	}
-}

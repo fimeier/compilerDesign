@@ -1,8 +1,0 @@
-// no int or float for arithmetic operation
-
-class Main {
-    void main() {
-        int x;
-        x = 5 + true;
-    }
-}

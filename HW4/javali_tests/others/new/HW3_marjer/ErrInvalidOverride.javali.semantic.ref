@@ -1,2 +1,0 @@
-INVALID_OVERRIDE
-Overridden method foo has return type int,but its superclass has void

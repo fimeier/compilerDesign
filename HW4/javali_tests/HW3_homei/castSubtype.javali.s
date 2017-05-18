@@ -85,11 +85,21 @@ Main_main:
 # __________castTypeName______________________________________________
           movl $vtable_R, %edi
             # Emitting c
+            pushl $0
+            pushl %esi
+            pushl %edi
 # ____________var_____________________________________________________
-            movl 8(%ebp), %edx
-            movl 4(%edx), %edx
+            movl 8(%ebp), %edi
+            movl 4(%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 8(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
+          cmpl $0, %esi
+          je .L3
           cmpl %edi, %esi
           je .L3
 .L5:
@@ -114,11 +124,21 @@ Main_main:
 # __________castTypeName______________________________________________
           movl $vtable_C, %edx
             # Emitting r
+            pushl $0
+            pushl %edx
+            pushl %esi
 # ____________var_____________________________________________________
-            movl 8(%ebp), %edi
-            movl 8(%edi), %edi
+            movl 8(%ebp), %esi
+            movl 8(%esi), %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 8(%esp)
+            popl %esi
+            popl %edx
+            popl %edi
 # __________rTypeRegister_____________________________________________
           movl %edi, %esi
+          cmpl $0, %esi
+          je .L7
           cmpl %edx, %esi
           je .L7
 .L9:

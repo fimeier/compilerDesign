@@ -87,37 +87,53 @@ Main_main:
 # ______________var___________________________________________________
               movl -16(%ebp), %edi
               # Emitting a
+              pushl $0
+              pushl %edi
 # ______________var___________________________________________________
-              movl -8(%ebp), %esi
+              movl -8(%ebp), %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
             cmpl %edi, %esi
             setl %al
             movzbl %al, %esi
             # Emitting (b < a)
+            pushl $0
+            pushl %esi
               # Emitting a
 # ______________var___________________________________________________
-              movl -8(%ebp), %edi
+              movl -8(%ebp), %esi
               # Emitting b
+              pushl $0
+              pushl %esi
 # ______________var___________________________________________________
-              movl -12(%ebp), %edx
-            cmpl %edi, %edx
+              movl -12(%ebp), %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
+            cmpl %esi, %edi
             setl %al
-            movzbl %al, %edx
-          andl %esi, %edx
-          cmpl $0, %edx
-        movl %edx, -4(%ebp)
+            movzbl %al, %edi
+            popl %esi
+            addl $4, %esp
+          andl %esi, %edi
+          cmpl $0, %edi
+        movl %edi, -4(%ebp)
         # Emitting if (k) {...} else {...}
 # ________ifElse______________________________________________________
           # Emitting k
 # __________var_______________________________________________________
-          movl -4(%ebp), %edx
-        cmpl $0, %edx
+          movl -4(%ebp), %edi
+        cmpl $0, %edi
         je .L3
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
-              movl $1, %edx
+              movl $1, %edi
             sub $16, %esp
-            movl %edx, 4(%esp)
+            movl %edi, 4(%esp)
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp
@@ -126,9 +142,9 @@ Main_main:
           # Emitting (...)
             # Emitting write(0)
               # Emitting 0
-              movl $0, %edx
+              movl $0, %edi
             sub $16, %esp
-            movl %edx, 4(%esp)
+            movl %edi, 4(%esp)
             movl $STR_D, 0(%esp)
             call printf
             add $16, %esp

@@ -1,8 +1,0 @@
-ClassDecl (name: Foo, superClass: Bar)
-ClassDecl (name: Blubb, superClass: Foo)
-ClassDecl (name: Bar, superClass: Blubb)
-ClassDecl (name: Main, superClass: Object)
-| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
-| | Seq ()
-| | Seq ()
-| | | BuiltInWriteln ()

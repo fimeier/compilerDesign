@@ -113,11 +113,21 @@ Main_main:
 # __________castTypeName______________________________________________
           movl $vtable_A, %edi
             # Emitting s
+            pushl $0
+            pushl %esi
+            pushl %edi
 # ____________var_____________________________________________________
-            movl 8(%ebp), %edx
-            movl 8(%edx), %edx
+            movl 8(%ebp), %edi
+            movl 8(%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 8(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
+          cmpl $0, %esi
+          je .L3
           cmpl %edi, %esi
           je .L3
 .L5:

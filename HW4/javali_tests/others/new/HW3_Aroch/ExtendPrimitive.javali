@@ -1,9 +1,0 @@
-// Tests erroneously extending a primitive type
-class Foo extends Bar { }
-class Bar extends int { }
-
-class Main {
-   void main() {
-      writeln();
-   }
-}

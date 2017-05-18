@@ -75,33 +75,49 @@ Main_main:
 # __________castTypeName______________________________________________
           movl $vtable_B, %edi
             # Emitting a[0]
+            pushl $0
+            pushl %esi
+            pushl %edi
               # Emitting a
 # ______________var___________________________________________________
-              movl 8(%ebp), %edx
-              movl 4(%edx), %edx
+              movl 8(%ebp), %edi
+              movl 4(%edi), %edi
               # Emitting 0
-              movl $0, %ecx
-            cmpl $0, %edx
+              pushl $0
+              pushl %edi
+              movl $0, %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
+            cmpl $0, %edi
             jne .L6
             movl $4, %eax
             jmp .ERROR_EXIT
 .L6:
-            cmpl $0, %ecx
+            cmpl $0, %esi
             jge .L7
             movl $3, %eax
             jmp .ERROR_EXIT
 .L7:
-            cmpl 4(%edx), %ecx
+            cmpl 4(%edi), %esi
             jl .L8
             movl $3, %eax
             jmp .ERROR_EXIT
 .L8:
-            imul $4, %ecx
-            addl $8, %ecx
-            addl %ecx, %edx
-            movl (%edx), %edx
+            imul $4, %esi
+            addl $8, %esi
+            addl %esi, %edi
+            movl (%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 8(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
+          cmpl $0, %esi
+          je .L3
           cmpl %edi, %esi
           je .L3
 .L5:

@@ -80,9 +80,15 @@ Main_main:
             movl 8(%ebp), %edi
             movl 8(%edi), %edi
             # Emitting i1
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl 8(%ebp), %esi
-            movl 4(%esi), %esi
+            movl 8(%ebp), %edi
+            movl 4(%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setl %al
           movzbl %al, %esi
@@ -94,7 +100,13 @@ Main_main:
             # Emitting 5
             movl $5, %esi
             # Emitting 10
-            movl $10, %edi
+            pushl $0
+            pushl %esi
+            movl $10, %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl %esi, %edi
           setle %al
           movzbl %al, %edi
@@ -106,9 +118,15 @@ Main_main:
             # Emitting 0
             movl $0, %edi
             # Emitting i1
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl 8(%ebp), %esi
-            movl 4(%esi), %esi
+            movl 8(%ebp), %edi
+            movl 4(%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setg %al
           movzbl %al, %esi
@@ -122,9 +140,15 @@ Main_main:
             movl 8(%ebp), %esi
             movl 8(%esi), %esi
             # Emitting -(5)
+            pushl $0
+            pushl %esi
               # Emitting 5
-              movl $5, %edi
-            negl %edi
+              movl $5, %esi
+            negl %esi
+# ____________swap needed_____________________________________________
+            movl %esi, 4(%esp)
+            popl %esi
+            popl %edi
           cmpl %esi, %edi
           setge %al
           movzbl %al, %edi

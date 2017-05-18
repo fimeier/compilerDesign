@@ -68,37 +68,75 @@ Main_main:
                 # Emitting 8
                 movl $8, %edi
                 # Emitting 7
-                movl $7, %esi
+                pushl $0
+                pushl %edi
+                movl $7, %edi
+# ________________swap needed_________________________________________
+                movl %edi, 4(%esp)
+                popl %edi
+                popl %esi
               add %edi, %esi
               # Emitting (3 - 1)
+              pushl $0
+              pushl %esi
                 # Emitting 1
-                movl $1, %edi
+                movl $1, %esi
                 # Emitting 3
-                movl $3, %edx
-              sub %edi, %edx
-            add %esi, %edx
+                pushl $0
+                pushl %esi
+                movl $3, %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
+              sub %esi, %edi
+              popl %esi
+              addl $4, %esp
+            add %esi, %edi
             # Emitting ((4 + 5) + (3 - 2))
+            pushl $0
+            pushl %edi
               # Emitting (3 - 2)
                 # Emitting 2
-                movl $2, %esi
+                movl $2, %edi
                 # Emitting 3
+                pushl $0
+                pushl %edi
                 movl $3, %edi
-              sub %esi, %edi
+# ________________swap needed_________________________________________
+                movl %edi, 4(%esp)
+                popl %edi
+                popl %esi
+              sub %edi, %esi
               # Emitting (4 + 5)
+              pushl $0
+              pushl %esi
                 # Emitting 5
                 movl $5, %esi
                 # Emitting 4
-                movl $4, %ecx
-              add %esi, %ecx
-            add %edi, %ecx
-          add %edx, %ecx
-        movl %ecx, -4(%ebp)
+                pushl $0
+                pushl %esi
+                movl $4, %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
+              add %esi, %edi
+              popl %esi
+              addl $4, %esp
+            add %esi, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          add %edi, %esi
+        movl %esi, -4(%ebp)
         # Emitting write(r0)
           # Emitting r0
 # __________var_______________________________________________________
-          movl -4(%ebp), %ecx
+          movl -4(%ebp), %esi
         sub $16, %esp
-        movl %ecx, 4(%esp)
+        movl %esi, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp
@@ -112,24 +150,40 @@ Main_main:
           # Emitting ((9 - 1) + (6 + 6))
             # Emitting (6 + 6)
               # Emitting 6
-              movl $6, %ecx
+              movl $6, %esi
               # Emitting 6
-              movl $6, %edx
-            add %ecx, %edx
+              pushl $0
+              pushl %esi
+              movl $6, %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
+            add %esi, %edi
             # Emitting (9 - 1)
+            pushl $0
+            pushl %edi
               # Emitting 1
-              movl $1, %ecx
+              movl $1, %edi
               # Emitting 9
+              pushl $0
+              pushl %edi
               movl $9, %edi
-            sub %ecx, %edi
-          add %edx, %edi
-        movl %edi, -8(%ebp)
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
+            sub %edi, %esi
+            popl %edi
+            addl $4, %esp
+          add %edi, %esi
+        movl %esi, -8(%ebp)
         # Emitting write(r1)
           # Emitting r1
 # __________var_______________________________________________________
-          movl -8(%ebp), %edi
+          movl -8(%ebp), %esi
         sub $16, %esp
-        movl %edi, 4(%esp)
+        movl %esi, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp

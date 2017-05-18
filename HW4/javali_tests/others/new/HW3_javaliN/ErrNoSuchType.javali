@@ -1,7 +1,0 @@
-class Main {
-
-    A a; // A not defined!
-
-   void main() {
-   }
-}

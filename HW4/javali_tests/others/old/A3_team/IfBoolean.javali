@@ -1,9 +1,0 @@
-// no boolean condition for if stmt
-
-class Main {
-    void main() {
-        if (7) {
-            write(5);
-        }
-    }
-}

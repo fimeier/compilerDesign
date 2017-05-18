@@ -71,7 +71,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			}
 			int offsetSpillingReg = affected.length*4;
 			
-			System.out.println("#REGS in Expr=" +affected.length);
+			//System.out.println("#REGS in Expr=" +affected.length);
 
 			//space for spilling
 			cg.emit.emit("pushl", "$0");
@@ -86,7 +86,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 				for (Register reg: affected){
 					if (reg.getRepr().equals(retReg.getRepr())) {
 						affB = true;
-						System.out.println("*******swap Needed");
+						//System.out.println("*******swap Needed");
 						cg.emit.emitCommentSection("swap needed");
 
 						//Register temp = cg.rm.getRegister();
@@ -260,7 +260,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			}
 
 			default: {
-				System.out.println("JumpHelper(case BinaryOp:) implement: "+((Ast.BinaryOp) cond).operator.repr);
+				//System.out.println("JumpHelper(case BinaryOp:) implement: "+((Ast.BinaryOp) cond).operator.repr);
 				throw new ToDoException();				
 			}
 			}
@@ -284,7 +284,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 		}
 
 		default: {
-			System.out.println("public Register jumpHelper(..) implement: ????????");
+			//System.out.println("public Register jumpHelper(..) implement: ????????");
 			throw new ToDoException();		
 		}
 

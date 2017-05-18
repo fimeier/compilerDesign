@@ -58,20 +58,27 @@ Main_main:
     # set local variables:
       # Emitting (...)
         # Emitting this.foo(...)
-          # Emitting this
-          movl 8(%ebp), %esi
-        cmpl $0, %esi
-        jne .L2
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting this.foo(...)
+            # Emitting this
+            pushl $0
+            pushl %edi
+            movl 8(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          cmpl $0, %esi
+          jne .L2
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L2:
-        movl 0(%esi), %edi
-        movl 8(%edi), %edi
-        subl $4, %esp
-        pushl %esi
-        call %edi
-        addl $4, %esp
-        popl %edi
+          movl 0(%esi), %edi
+          movl 8(%edi), %edi
+          subl $4, %esp
+          pushl %esi
+          call %edi
+          addl $4, %esp
+          popl %edi
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

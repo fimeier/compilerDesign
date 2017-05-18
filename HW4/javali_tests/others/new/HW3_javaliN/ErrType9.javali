@@ -1,7 +1,0 @@
-class Main {
-
-   void main() {
-    boolean m;
-    m = true && false || true;
-   }
-}

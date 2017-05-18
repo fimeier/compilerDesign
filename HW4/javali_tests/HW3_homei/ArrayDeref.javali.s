@@ -74,6 +74,7 @@ Main_main:
           call calloc
           addl $8, %esp
           movl $vtable_Object, (%eax)
+          subl $2, %edi
           movl %edi, 4(%eax)
           movl %eax, %esi
         movl %esi, -4(%ebp)
@@ -82,29 +83,43 @@ Main_main:
           # Emitting 5
           movl $5, %esi
           # Emitting x
+          pushl $0
+          pushl %esi
 # __________var_______________________________________________________
-          movl -4(%ebp), %edx
+          movl -4(%ebp), %esi
+# __________swap needed_______________________________________________
+          movl %esi, 4(%esp)
+          popl %esi
+          popl %edi
           # Emitting 7
-          movl $7, %ecx
-        cmpl $0, %edx
+          pushl $0
+          pushl %esi
+          pushl %edi
+          movl $7, %edi
+# __________swap needed_______________________________________________
+          movl %edi, 8(%esp)
+          popl %edi
+          popl %esi
+          popl %edx
+        cmpl $0, %edi
         jne .L3
         movl $4, %eax
         jmp .ERROR_EXIT
 .L3:
-        cmpl $0, %ecx
+        cmpl $0, %edx
         jge .L4
         movl $3, %eax
         jmp .ERROR_EXIT
 .L4:
-        cmpl 4(%edx), %ecx
+        cmpl 4(%edi), %edx
         jl .L5
         movl $3, %eax
         jmp .ERROR_EXIT
 .L5:
-        imul $4, %ecx
-        addl $8, %ecx
-        addl %ecx, %edx
-        movl %esi, (%edx)
+        imul $4, %edx
+        addl $8, %edx
+        addl %edx, %edi
+        movl %esi, (%edi)
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp

@@ -98,7 +98,7 @@ public class RegisterManager {
 	public Register getRegister() {
 		int last = registers.size() - 1;
 		if (last < 0){
-			System.out.println("no more free registers");
+			//System.out.println("no more free registers");
 			return null;
 		}
 		return registers.remove(last);
@@ -107,15 +107,15 @@ public class RegisterManager {
 	public Register getRegisterX(Register regX) {
 		int last = registers.size() - 1;
 		if (last < 0){
-			System.out.println("no more free registers");
+			//System.out.println("no more free registers");
 			return null;
 		}
 		if(!registers.remove(regX)){
-			System.out.println("getRegisterX: cannot return register "+regX.getRepr());
+			//System.out.println("getRegisterX: cannot return register "+regX.getRepr());
 			return null;
 			//throw new RuntimeException();
 		} else {
-			System.out.println("getRegisterX: "+regX.getRepr());
+			//System.out.println("getRegisterX: "+regX.getRepr());
 		}
 		return regX;// .remove(last);
 	}
@@ -159,9 +159,6 @@ public class RegisterManager {
 		int nUsed = 6-registers.size(); //??????????
 		//int nUsed = registers.size();
 		
-		if (nUsed <0){
-			System.out.println("asdsad");
-		}
 
 		Register[] usedRegs;
 		if (nUsed==0){

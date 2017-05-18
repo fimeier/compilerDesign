@@ -1,7 +1,0 @@
-class Main {
-
-	void main() {
-		write(2<1);
-	}
-
-}

@@ -86,38 +86,70 @@ Main_main:
         movl 8(%ebp), %esi
         movl %edi, 4(%esi)
         # Emitting a.fun(...)
-          # Emitting a
-# __________var_______________________________________________________
-          movl 8(%ebp), %esi
-          movl 4(%esi), %esi
-        cmpl $0, %esi
-        jne .L2
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting a.fun(...)
+            # Emitting a
+            pushl $0
+            pushl %edi
+# ____________var_____________________________________________________
+            movl 8(%ebp), %edi
+            movl 4(%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          cmpl $0, %esi
+          jne .L2
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L2:
-        movl 0(%esi), %edi
-        movl 8(%edi), %edi
-        subl $4, %esp
-          # Emitting b
-# __________var_______________________________________________________
-          movl 8(%ebp), %ecx
-          movl 8(%ecx), %ecx
-        pushl %ecx
-          # Emitting b
-# __________var_______________________________________________________
-          movl 8(%ebp), %ebx
-          movl 8(%ebx), %ebx
-        pushl %ebx
-        pushl %esi
-        call %edi
-        addl $12, %esp
-        popl %edi
+          movl 0(%esi), %edi
+          movl 8(%edi), %edi
+          subl $4, %esp
+            # Emitting b
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+# ____________var_____________________________________________________
+            movl 8(%ebp), %edi
+            movl 8(%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+          pushl %ecx
+            # Emitting b
+            pushl $0
+            pushl %ecx
+            pushl %edx
+            pushl %esi
+            pushl %edi
+# ____________var_____________________________________________________
+            movl 8(%ebp), %edi
+            movl 8(%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 16(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+            popl %ebx
+          pushl %ebx
+          pushl %esi
+          call %edi
+          addl $12, %esp
+          popl %edi
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
   # Emitting class A {...}
+  pushl $0
+  pushl %ecx
+  pushl %edx
     # Emitting void prim(...) {...}
 A_prim:
     # store old ebp, set uf new ebp
@@ -140,5 +172,23 @@ A_fun:
     movl %ebp, %esp
     popl %ebp
     ret
+# __NO swap needed____________________________________________________
+  popl %edx
+  popl %ecx
+  addl $4, %esp
   # Emitting class B {...}
+  pushl $0
+  pushl %ecx
+  pushl %edx
+# __NO swap needed____________________________________________________
+  popl %edx
+  popl %ecx
+  addl $4, %esp
   # Emitting class C {...}
+  pushl $0
+  pushl %ecx
+  pushl %edx
+# __NO swap needed____________________________________________________
+  popl %edx
+  popl %ecx
+  addl $4, %esp

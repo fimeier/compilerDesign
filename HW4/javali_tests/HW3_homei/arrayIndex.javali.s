@@ -63,11 +63,25 @@ Main_main:
           # Emitting 0
           movl $0, %edi
           # Emitting a
+          pushl $0
+          pushl %edi
 # __________var_______________________________________________________
-          movl 8(%ebp), %esi
-          movl 4(%esi), %esi
+          movl 8(%ebp), %edi
+          movl 4(%edi), %edi
+# __________swap needed_______________________________________________
+          movl %edi, 4(%esp)
+          popl %edi
+          popl %esi
           # Emitting 1
-          movl $1, %edx
+          pushl $0
+          pushl %esi
+          pushl %edi
+          movl $1, %edi
+# __________swap needed_______________________________________________
+          movl %edi, 8(%esp)
+          popl %edi
+          popl %esi
+          popl %edx
         cmpl $0, %esi
         jne .L2
         movl $4, %eax

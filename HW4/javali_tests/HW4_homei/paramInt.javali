@@ -1,0 +1,16 @@
+class Main {
+    void main() {
+        int x;
+        x = 2;
+
+        if (false) {
+            write(1);
+        } else {
+            write(foo(x));
+        }
+    }
+
+    boolean foo(int x) {
+        return x+1;
+    }
+}

@@ -1,8 +1,0 @@
-// type error for assignment
-
-class Main {
-    void main() {
-        int x;
-        x = true;
-    }
-}

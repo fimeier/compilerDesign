@@ -87,6 +87,10 @@ A_foo:
 # __________var_______________________________________________________
           movl -4(%ebp), %edi
         movl %edi, 12(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp

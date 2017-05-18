@@ -1,0 +1,22 @@
+class A {
+    C c;
+}
+
+class B extends A {}
+
+class C {}
+
+class Main {
+    void main() {
+        A a;
+        B b;
+        int i;
+        i = 10;
+        if (i>10) {
+            a = new A();
+        } else {
+            a = new B();
+        }
+        b = (B) a;
+    }
+}

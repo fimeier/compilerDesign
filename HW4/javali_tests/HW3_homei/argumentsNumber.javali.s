@@ -75,34 +75,66 @@ Main_main:
         movl 8(%ebp), %esi
         movl %edi, 4(%esi)
         # Emitting a.method(...)
-          # Emitting a
-# __________var_______________________________________________________
-          movl 8(%ebp), %esi
-          movl 4(%esi), %esi
-        cmpl $0, %esi
-        jne .L2
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting a.method(...)
+            # Emitting a
+            pushl $0
+            pushl %edi
+# ____________var_____________________________________________________
+            movl 8(%ebp), %edi
+            movl 4(%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          cmpl $0, %esi
+          jne .L2
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L2:
-        movl 0(%esi), %edi
-        movl 4(%edi), %edi
-        subl $4, %esp
-          # Emitting 1
-          movl $1, %ecx
-        pushl %ecx
-          # Emitting 1
-          movl $1, %ebx
-        pushl %ebx
-        pushl %esi
-        call %edi
-        addl $12, %esp
-        popl %edi
+          movl 0(%esi), %edi
+          movl 4(%edi), %edi
+          subl $4, %esp
+            # Emitting 1
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+            movl $1, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+          pushl %ecx
+            # Emitting 1
+            pushl $0
+            pushl %ecx
+            pushl %edx
+            pushl %esi
+            pushl %edi
+            movl $1, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 16(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+            popl %ebx
+          pushl %ebx
+          pushl %esi
+          call %edi
+          addl $12, %esp
+          popl %edi
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
   # Emitting class A {...}
+  pushl $0
+  pushl %ecx
+  pushl %edx
     # Emitting void method(...) {...}
 A_method:
     # store old ebp, set uf new ebp
@@ -114,3 +146,7 @@ A_method:
     movl %ebp, %esp
     popl %ebp
     ret
+# __NO swap needed____________________________________________________
+  popl %edx
+  popl %ecx
+  addl $4, %esp

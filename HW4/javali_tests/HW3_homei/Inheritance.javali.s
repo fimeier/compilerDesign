@@ -82,6 +82,10 @@ D_fun:
 # __________var_______________________________________________________
           movl -4(%ebp), %edi
         movl %edi, 12(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp
@@ -100,14 +104,20 @@ Main_main:
           # Emitting this.d.fun(...).foo
             # Emitting this.d.fun(...)
               # Emitting this.d
+              pushl $0
+              pushl %edi
                 # Emitting this
-                movl 8(%ebp), %esi
-              cmpl $0, %esi
+                movl 8(%ebp), %edi
+              cmpl $0, %edi
               jne .L2
               movl $4, %eax
               jmp .ERROR_EXIT
 .L2:
-              movl 4(%esi), %esi
+              movl 4(%edi), %edi
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
             cmpl $0, %esi
             jne .L3
             movl $4, %eax

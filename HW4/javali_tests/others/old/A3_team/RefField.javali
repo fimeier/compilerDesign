@@ -1,7 +1,0 @@
-// all references fields must exist
-
-class Main {
-    void main() {
-        b = 7;
-    }
-}

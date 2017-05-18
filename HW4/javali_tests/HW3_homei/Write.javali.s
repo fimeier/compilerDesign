@@ -61,7 +61,13 @@ Main_main:
             # Emitting 4
             movl $4, %edi
             # Emitting 2
-            movl $2, %esi
+            pushl $0
+            pushl %edi
+            movl $2, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           add %edi, %esi
         sub $16, %esp
         movl %esi, 4(%esp)

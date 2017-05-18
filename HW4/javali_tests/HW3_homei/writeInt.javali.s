@@ -70,7 +70,13 @@ Main_main:
         # Emitting write(this.foo(...))
           # Emitting this.foo(...)
             # Emitting this
-            movl 8(%ebp), %esi
+            pushl $0
+            pushl %edi
+            movl 8(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl $0, %esi
           jne .L2
           movl $4, %eax
@@ -104,6 +110,10 @@ Main_foo:
           # Emitting 1
           movl $1, %edi
         movl %edi, 12(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

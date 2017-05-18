@@ -73,7 +73,13 @@ Main_main:
             movl 8(%ebp), %edi
             movl 12(%edi), %edi
             # Emitting true
-            movl $1, %esi
+            pushl $0
+            pushl %edi
+            movl $1, %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           orl %edi, %esi
           cmpl $0, %esi
         movl 8(%ebp), %edi
@@ -97,9 +103,15 @@ Main_main:
               movl 8(%ebp), %esi
               movl 8(%esi), %esi
               # Emitting b2
+              pushl $0
+              pushl %esi
 # ______________var___________________________________________________
-              movl 8(%ebp), %edi
-              movl 12(%edi), %edi
+              movl 8(%ebp), %esi
+              movl 12(%esi), %esi
+# ______________swap needed___________________________________________
+              movl %esi, 4(%esp)
+              popl %esi
+              popl %edi
             andl %esi, %edi
             cmpl $0, %edi
           negl %edi

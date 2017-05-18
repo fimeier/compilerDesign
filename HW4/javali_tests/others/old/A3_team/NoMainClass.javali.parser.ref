@@ -1,8 +1,0 @@
-ClassDecl (name: Foo, superClass: Object)
-| VarDecl (name: x, type: int)
-| MethodDecl (argumentNames: [], argumentTypes: [], name: bar, returnType: void)
-| | Seq ()
-| | Seq ()
-| | | BuiltInWrite ()
-| | | | IntConst (value: 17)
-| | | BuiltInWriteln ()

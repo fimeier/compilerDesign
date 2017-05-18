@@ -102,8 +102,14 @@ Main_main:
             # Emitting 2
             movl $2, %edi
             # Emitting d
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl -16(%ebp), %esi
+            movl -16(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           sub %edi, %esi
         movl %esi, -16(%ebp)
         # Emitting write(d)

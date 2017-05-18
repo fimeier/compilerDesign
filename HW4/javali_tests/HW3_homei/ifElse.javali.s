@@ -69,9 +69,15 @@ Main_main:
             # Emitting 2
             movl $2, %edi
             # Emitting i
+            pushl $0
+            pushl %edi
 # ____________var_____________________________________________________
-            movl 8(%ebp), %esi
-            movl 4(%esi), %esi
+            movl 8(%ebp), %edi
+            movl 4(%edi), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
           cmpl %edi, %esi
           setl %al
           movzbl %al, %esi

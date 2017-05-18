@@ -1,0 +1,20 @@
+class A {
+  int x;
+}
+
+class B extends A {
+  int x;
+}
+
+class Main {
+    A[] a;
+    B b;
+
+    void main() {
+        a = new A[1];
+        a[0] = new B();
+        a[0].x = 5
+        b = (B) a[0];
+        write(b.x);
+    }
+}

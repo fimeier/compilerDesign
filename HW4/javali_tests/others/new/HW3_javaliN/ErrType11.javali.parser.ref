@@ -1,8 +1,0 @@
-ClassDecl (name: Main, superClass: Object)
-| VarDecl (name: m, type: Main)
-| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
-| | Seq ()
-| | Seq ()
-| | | Assign ()
-| | | | Var (name: m)
-| | | | ThisRef ()

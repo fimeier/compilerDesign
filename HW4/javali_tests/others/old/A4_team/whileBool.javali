@@ -1,8 +1,0 @@
-class Main {
-    void main() {
-        while ((false && true) || false) {
-            write(1);
-        }
-        write(0);
-    }
-}

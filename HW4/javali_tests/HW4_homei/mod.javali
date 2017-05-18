@@ -1,0 +1,9 @@
+class Main {
+    void main() {
+        int a,b;
+        a = 10;
+        b = 3;
+        write(a % b);
+        write(100 % 4);
+    }
+}

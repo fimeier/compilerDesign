@@ -74,10 +74,11 @@ Main_main:
           call calloc
           addl $8, %esp
           movl $vtable_Object, (%eax)
+          subl $2, %edi
           movl %edi, 4(%eax)
           movl %eax, %esi
-        movl 8(%ebp), %edx
-        movl %esi, 4(%edx)
+        movl 8(%ebp), %edi
+        movl %esi, 4(%edi)
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

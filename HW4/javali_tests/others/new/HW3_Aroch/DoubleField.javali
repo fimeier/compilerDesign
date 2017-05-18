@@ -1,9 +1,0 @@
-class A {
-   int foo;
-   int bar;
-   A foo;
-}
-
-class Main{
-	void main(){}
-}

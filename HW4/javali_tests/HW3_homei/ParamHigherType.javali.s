@@ -96,31 +96,50 @@ Main_main:
           movl %eax, %edi
         movl %edi, -4(%ebp)
         # Emitting a1.foo(...)
-          # Emitting a1
-# __________var_______________________________________________________
-          movl -4(%ebp), %esi
-        cmpl $0, %esi
-        jne .L2
-        movl $4, %eax
-        jmp .ERROR_EXIT
+          # Emitting a1.foo(...)
+            # Emitting a1
+            pushl $0
+            pushl %edi
+# ____________var_____________________________________________________
+            movl -4(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 4(%esp)
+            popl %edi
+            popl %esi
+          cmpl $0, %esi
+          jne .L2
+          movl $4, %eax
+          jmp .ERROR_EXIT
 .L2:
-        movl 0(%esi), %edi
-        movl 4(%edi), %edi
-        subl $4, %esp
-          # Emitting b
-# __________var_______________________________________________________
-          movl -8(%ebp), %ecx
-        pushl %ecx
-        pushl %esi
-        call %edi
-        addl $8, %esp
-        popl %edi
+          movl 0(%esi), %edi
+          movl 4(%edi), %edi
+          subl $4, %esp
+            # Emitting b
+            pushl $0
+            pushl %edx
+            pushl %esi
+            pushl %edi
+# ____________var_____________________________________________________
+            movl -8(%ebp), %edi
+# ____________swap needed_____________________________________________
+            movl %edi, 12(%esp)
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+          pushl %ecx
+          pushl %esi
+          call %edi
+          addl $8, %esp
+          popl %edi
     addl $8, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
   # Emitting class A1 {...}
+  pushl $0
+  pushl %edx
     # Emitting void foo(...) {...}
 A1_foo:
     # store old ebp, set uf new ebp
@@ -132,5 +151,18 @@ A1_foo:
     movl %ebp, %esp
     popl %ebp
     ret
+# __NO swap needed____________________________________________________
+  popl %edx
+  addl $4, %esp
   # Emitting class A {...}
+  pushl $0
+  pushl %edx
+# __NO swap needed____________________________________________________
+  popl %edx
+  addl $4, %esp
   # Emitting class B {...}
+  pushl $0
+  pushl %edx
+# __NO swap needed____________________________________________________
+  popl %edx
+  addl $4, %esp

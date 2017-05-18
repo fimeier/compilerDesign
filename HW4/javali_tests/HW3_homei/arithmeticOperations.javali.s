@@ -87,9 +87,15 @@ Main_main:
                 # Emitting 1
                 movl $1, %edi
                 # Emitting b
+                pushl $0
+                pushl %edi
 # ________________var_________________________________________________
-                movl 8(%ebp), %esi
-                movl 8(%esi), %esi
+                movl 8(%ebp), %edi
+                movl 8(%edi), %edi
+# ________________swap needed_________________________________________
+                movl %edi, 4(%esp)
+                popl %edi
+                popl %esi
               cmpl $0, %edi
               jne .L2
               movl $7, %eax
@@ -103,43 +109,63 @@ Main_main:
               idivl %ebx
               movl %eax, %esi
               # Emitting (c * a)
+              pushl $0
+              pushl %esi
                 # Emitting a
 # ________________var_________________________________________________
-                movl 8(%ebp), %edi
-                movl 4(%edi), %edi
+                movl 8(%ebp), %esi
+                movl 4(%esi), %esi
                 # Emitting c
+                pushl $0
+                pushl %esi
 # ________________var_________________________________________________
-                movl 8(%ebp), %edx
-                movl 12(%edx), %edx
-              imul %edi, %edx
+                movl 8(%ebp), %esi
+                movl 12(%esi), %esi
+# ________________swap needed_________________________________________
+                movl %esi, 4(%esp)
+                popl %esi
+                popl %edi
+              imul %esi, %edi
+              popl %esi
+              addl $4, %esp
             cmpl $0, %esi
             jne .L3
             movl $7, %eax
             jmp .ERROR_EXIT
 .L3:
             pushl %esi
-            pushl %edx
+            pushl %edi
             popl %eax
             popl %ebx
             cltd
             idivl %ebx
-            movl %edx, %edx
+            movl %edx, %edi
             # Emitting (-(a) + +(b))
+            pushl $0
+            pushl %edi
               # Emitting +(b)
                 # Emitting b
 # ________________var_________________________________________________
-                movl 8(%ebp), %esi
-                movl 8(%esi), %esi
+                movl 8(%ebp), %edi
+                movl 8(%edi), %edi
               # Emitting -(a)
+              pushl $0
+              pushl %edi
                 # Emitting a
 # ________________var_________________________________________________
                 movl 8(%ebp), %edi
                 movl 4(%edi), %edi
               negl %edi
-            add %esi, %edi
-          sub %edx, %edi
-        movl 8(%ebp), %edx
-        movl %edi, 16(%edx)
+# ______________swap needed___________________________________________
+              movl %edi, 4(%esp)
+              popl %edi
+              popl %esi
+            add %edi, %esi
+            popl %edi
+            addl $4, %esp
+          sub %edi, %esi
+        movl 8(%ebp), %edi
+        movl %esi, 16(%edi)
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

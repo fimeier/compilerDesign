@@ -90,6 +90,10 @@ Main_foo1:
 # __________var_______________________________________________________
           movl -4(%ebp), %edi
         movl %edi, 12(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp
@@ -109,6 +113,10 @@ Main_foo2:
 # __________var_______________________________________________________
           movl -4(%ebp), %edi
         movl %edi, 12(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $4, %esp
     # restore old ebp
     movl %ebp, %esp
@@ -125,6 +133,10 @@ Main_foo3:
           # Emitting null
           movl $0, %edi
         movl %edi, 12(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
@@ -138,6 +150,10 @@ Main_foo4:
     # set local variables:
       # Emitting (...)
         # Emitting return
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

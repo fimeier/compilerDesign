@@ -1,8 +1,0 @@
-// boolean operators must take arguments of boolean type
-
-class Main {
-    void main() {
-        boolean x;
-        x = 5 || 5;
-    }
-}
