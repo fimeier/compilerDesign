@@ -97,10 +97,14 @@ Main_main:
         movl 8(%ebp), %edx
         movl %esi, 16(%edx)
         # Emitting iarr = new int[][10]
+        pushl %edi
 # ________assign______________________________________________________
           # Emitting new int[][10]
+          pushl %edi
             # Emitting 10
+            pushl %edi
             movl $10, %esi
+            popl %edi
           cmpl $0, %esi
           jge .L3
           movl $5, %eax
@@ -114,33 +118,104 @@ Main_main:
           movl $vtable_Object, (%eax)
           movl %esi, 4(%eax)
           movl %eax, %edx
+          popl %edi
         movl 8(%ebp), %ecx
         movl %edx, 8(%ecx)
+        popl %edi
         # Emitting a = arr[(arr[arr[(iarr[2] + i)].xs[i]].x * i)]
+        pushl %esi
+        pushl %edi
 # ________assign______________________________________________________
           # Emitting arr[(arr[arr[(iarr[2] + i)].xs[i]].x * i)]
+          pushl %esi
+          pushl %edi
             # Emitting arr
+            pushl %esi
+            pushl %edi
 # ____________var_____________________________________________________
             movl 8(%ebp), %edx
             movl 16(%edx), %edx
+            popl %edi
+            popl %esi
             # Emitting (arr[arr[(iarr[2] + i)].xs[i]].x * i)
+            pushl %edx
+            pushl %esi
+            pushl %edi
               # Emitting arr[arr[(iarr[2] + i)].xs[i]].x
+              pushl %edx
+              pushl %esi
+              pushl %edi
                 # Emitting arr[arr[(iarr[2] + i)].xs[i]]
+                pushl %edx
+                pushl %esi
+                pushl %edi
                   # Emitting arr
+                  pushl %edx
+                  pushl %esi
+                  pushl %edi
 # __________________var_______________________________________________
                   movl 8(%ebp), %ecx
                   movl 16(%ecx), %ecx
+                  popl %edi
+                  popl %esi
+                  popl %edx
                   # Emitting arr[(iarr[2] + i)].xs[i]
+                  pushl %ecx
+                  pushl %edx
+                  pushl %esi
+                  pushl %edi
                     # Emitting arr[(iarr[2] + i)].xs
+                    pushl %ecx
+                    pushl %edx
+                    pushl %esi
+                    pushl %edi
                       # Emitting arr[(iarr[2] + i)]
+                      pushl %ecx
+                      pushl %edx
+                      pushl %esi
+                      pushl %edi
                         # Emitting arr
+                        pushl %ecx
+                        pushl %edx
+                        pushl %esi
+                        pushl %edi
 # ________________________var_________________________________________
                         movl 8(%ebp), %ebx
                         movl 16(%ebx), %ebx
+                        popl %edi
+                        popl %esi
+                        popl %edx
+                        popl %ecx
                         # Emitting (iarr[2] + i)
+                        pushl %ebx
+                        pushl %ecx
+                        pushl %edx
+                        pushl %esi
+                        pushl %edi
                           # Emitting iarr[2]
+                          pushl %ebx
+                          pushl %ecx
+                          pushl %edx
+                          pushl %esi
+                          pushl %edi
                             # Emitting iarr
+                            pushl %ebx
+                            pushl %ecx
+                            pushl %edx
+                            pushl %esi
+                            pushl %edi
 # ____________________________var_____________________________________
                             movl 8(%ebp), %eax
                             movl 8(%eax), %eax
+                            popl %edi
+                            popl %esi
+                            popl %edx
+                            popl %ecx
+                            popl %ebx
                             # Emitting 2
+                            pushl %eax
+                            pushl %ebx
+                            pushl %ecx
+                            pushl %edx
+                            pushl %esi
+                            pushl %edi

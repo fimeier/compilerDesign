@@ -70,8 +70,10 @@ Main_main:
             # Emitting 5
             movl $5, %edi
             # Emitting i
+            pushl %edi
 # ____________var_____________________________________________________
             movl -4(%ebp), %esi
+            popl %edi
           cmpl %edi, %esi
           setl %al
           movzbl %al, %esi
@@ -83,8 +85,10 @@ Main_main:
                 # Emitting 1
                 movl $1, %esi
                 # Emitting i
+                pushl %esi
 # ________________var_________________________________________________
                 movl -4(%ebp), %edi
+                popl %esi
               add %esi, %edi
             movl %edi, -4(%ebp)
             # Emitting write(i)

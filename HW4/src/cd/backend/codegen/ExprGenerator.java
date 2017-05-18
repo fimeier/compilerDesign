@@ -57,7 +57,37 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 	public Register visit(Expr ast, StackFrame frame) {
 		try {
 			cg.emit.increaseIndent("Emitting " + AstOneLine.toString(ast));
-			return super.visit(ast, frame);
+			
+			
+			//1. save registers
+			List<Register> dontBother = new ArrayList<>();
+			Register[] affected = cg.rm.getUsedRegisters();
+			
+			saveRegisters(dontBother, affected);
+
+			Register retReg = super.visit(ast, frame);
+
+			if (retReg!=null){
+				//2. swap retReg??
+				for (Register reg: affected){
+					if (reg.getRepr().equals(retReg.getRepr())) {
+						//swapIt = true;
+						System.out.println("*******swap Needed");
+						cg.emit.emitCommentSection("swap needed");
+
+						Register temp = cg.rm.getRegister();
+						cg.emit.emit("movl", reg.getRepr(), temp.getRepr());
+
+						cg.rm.releaseRegister(retReg);
+						retReg = temp;					
+					}
+				}
+			}
+			//3. restore
+			restoreRegisters(dontBother, affected);
+
+			
+			return retReg;
 		} finally {
 			cg.emit.decreaseIndent();
 		}

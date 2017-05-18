@@ -77,8 +77,12 @@ Main_main:
 # __________castTypeName______________________________________________
           movl $vtable_A, %edi
             # Emitting b
+            pushl %esi
+            pushl %edi
 # ____________var_____________________________________________________
             movl -12(%ebp), %edx
+            popl %edi
+            popl %esi
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
           cmpl $0, %esi

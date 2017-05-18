@@ -88,8 +88,10 @@ Main_main:
 # ____________var_____________________________________________________
             movl -16(%ebp), %edi
             # Emitting a
+            pushl %edi
 # ____________var_____________________________________________________
             movl -12(%ebp), %esi
+            popl %edi
           cmpl %edi, %esi
           je .L2
           movl $0, %esi
@@ -122,8 +124,10 @@ Main_main:
 # ____________var_____________________________________________________
             movl -16(%ebp), %esi
             # Emitting a
+            pushl %esi
 # ____________var_____________________________________________________
             movl -12(%ebp), %edi
+            popl %esi
           cmpl %esi, %edi
           jne .L4
           movl $0, %edi
@@ -139,8 +143,10 @@ Main_main:
 # ____________var_____________________________________________________
             movl -8(%ebp), %edi
             # Emitting aa
+            pushl %edi
 # ____________var_____________________________________________________
             movl -4(%ebp), %esi
+            popl %edi
           cmpl %edi, %esi
           jne .L7
           movl $0, %esi

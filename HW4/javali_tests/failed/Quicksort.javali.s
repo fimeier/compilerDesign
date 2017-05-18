@@ -122,8 +122,10 @@ Main_swap:
 .L3:
           movl 4(%edi), %edi
           # Emitting r1
+          pushl %edi
 # __________var_______________________________________________________
           movl 12(%ebp), %esi
+          popl %edi
         cmpl $0, %esi
         jne .L4
         movl $4, %eax
@@ -136,8 +138,10 @@ Main_swap:
 # __________var_______________________________________________________
           movl -4(%ebp), %edi
           # Emitting r2
+          pushl %edi
 # __________var_______________________________________________________
           movl 16(%ebp), %esi
+          popl %edi
         cmpl $0, %esi
         jne .L5
         movl $4, %eax
@@ -173,8 +177,10 @@ Main_sort:
                   movl 8(%ebp), %edi
                   movl 4(%edi), %edi
                   # Emitting right
+                  pushl %edi
 # __________________var_______________________________________________
                   movl 16(%ebp), %esi
+                  popl %edi
                 cmpl $0, %edi
                 jne .L6
                 movl $4, %eax
@@ -201,14 +207,22 @@ Main_sort:
 .L9:
               movl 4(%edi), %edi
               # Emitting a[left].a
+              pushl %edi
                 # Emitting a[left]
+                pushl %edi
                   # Emitting a
+                  pushl %edi
 # __________________var_______________________________________________
                   movl 8(%ebp), %esi
                   movl 4(%esi), %esi
+                  popl %edi
                   # Emitting left
+                  pushl %esi
+                  pushl %edi
 # __________________var_______________________________________________
                   movl 12(%ebp), %edx
+                  popl %edi
+                  popl %esi
                 cmpl $0, %esi
                 jne .L10
                 movl $4, %eax
@@ -228,15 +242,19 @@ Main_sort:
                 addl $8, %edx
                 addl %edx, %esi
                 movl (%esi), %esi
+                popl %edi
               cmpl $0, %esi
               jne .L13
               movl $4, %eax
               jmp .ERROR_EXIT
 .L13:
               movl 4(%esi), %esi
+              popl %edi
             add %edi, %esi
             # Emitting 2
+            pushl %esi
             movl $2, %edi
+            popl %esi
           cmpl $0, %edi
           jne .L14
           movl $7, %eax
@@ -270,8 +288,10 @@ Main_sort:
 # ____________var_____________________________________________________
             movl -8(%ebp), %esi
             # Emitting i
+            pushl %esi
 # ____________var_____________________________________________________
             movl -4(%ebp), %edi
+            popl %esi
           cmpl %esi, %edi
           setle %al
           movzbl %al, %edi
@@ -288,8 +308,10 @@ Main_sort:
                     movl 8(%ebp), %edi
                     movl 4(%edi), %edi
                     # Emitting i
+                    pushl %edi
 # ____________________var_____________________________________________
                     movl -4(%ebp), %esi
+                    popl %edi
                   cmpl $0, %edi
                   jne .L19
                   movl $4, %eax
@@ -316,8 +338,10 @@ Main_sort:
 .L22:
                 movl 4(%edi), %edi
                 # Emitting m
+                pushl %edi
 # ________________var_________________________________________________
                 movl -12(%ebp), %esi
+                popl %edi
               cmpl %esi, %edi
               setl %al
               movzbl %al, %edi
@@ -329,8 +353,10 @@ Main_sort:
                     # Emitting 1
                     movl $1, %edi
                     # Emitting i
+                    pushl %edi
 # ____________________var_____________________________________________
                     movl -4(%ebp), %esi
+                    popl %edi
                   add %edi, %esi
                 movl %esi, -4(%ebp)
             jmp .L18
@@ -347,8 +373,10 @@ Main_sort:
                     movl 8(%ebp), %esi
                     movl 4(%esi), %esi
                     # Emitting j
+                    pushl %esi
 # ____________________var_____________________________________________
                     movl -8(%ebp), %edi
+                    popl %esi
                   cmpl $0, %esi
                   jne .L26
                   movl $4, %eax
@@ -375,8 +403,10 @@ Main_sort:
 .L29:
                 movl 4(%esi), %esi
                 # Emitting m
+                pushl %esi
 # ________________var_________________________________________________
                 movl -12(%ebp), %edi
+                popl %esi
               cmpl %edi, %esi
               setg %al
               movzbl %al, %esi
@@ -388,8 +418,10 @@ Main_sort:
                     # Emitting 1
                     movl $1, %esi
                     # Emitting j
+                    pushl %esi
 # ____________________var_____________________________________________
                     movl -8(%ebp), %edi
+                    popl %esi
                   sub %esi, %edi
                 movl %edi, -8(%ebp)
             jmp .L25
@@ -402,8 +434,10 @@ Main_sort:
 # ________________var_________________________________________________
                 movl -8(%ebp), %edi
                 # Emitting i
+                pushl %edi
 # ________________var_________________________________________________
                 movl -4(%ebp), %esi
+                popl %edi
               cmpl %edi, %esi
               setle %al
               movzbl %al, %esi
@@ -411,7 +445,9 @@ Main_sort:
               # Emitting (...)
                 # Emitting this.swap(...)
                   # Emitting this
+                  pushl %esi
                   movl 8(%ebp), %edi
+                  popl %esi
                 cmpl $0, %edi
                 jne .L35
                 movl $4, %eax
@@ -421,13 +457,30 @@ Main_sort:
                 movl 4(%esi), %esi
                 subl $4, %esp
                   # Emitting a[j]
+                  pushl %edx
+                  pushl %esi
+                  pushl %edi
                     # Emitting a
+                    pushl %edx
+                    pushl %esi
+                    pushl %edi
 # ____________________var_____________________________________________
                     movl 8(%ebp), %ecx
                     movl 4(%ecx), %ecx
+                    popl %edi
+                    popl %esi
+                    popl %edx
                     # Emitting j
+                    pushl %ecx
+                    pushl %edx
+                    pushl %esi
+                    pushl %edi
 # ____________________var_____________________________________________
                     movl -8(%ebp), %ebx
+                    popl %edi
+                    popl %esi
+                    popl %edx
+                    popl %ecx
                   cmpl $0, %ecx
                   jne .L36
                   movl $4, %eax
@@ -447,15 +500,40 @@ Main_sort:
                   addl $8, %ebx
                   addl %ebx, %ecx
                   movl (%ecx), %ecx
+                  popl %edi
+                  popl %esi
+                  popl %edx
                 pushl %ecx
                   # Emitting a[i]
+                  pushl %ecx
+                  pushl %edx
+                  pushl %esi
+                  pushl %edi
                     # Emitting a
+                    pushl %ecx
+                    pushl %edx
+                    pushl %esi
+                    pushl %edi
 # ____________________var_____________________________________________
                     movl 8(%ebp), %ebx
                     movl 4(%ebx), %ebx
+                    popl %edi
+                    popl %esi
+                    popl %edx
+                    popl %ecx
                     # Emitting i
+                    pushl %ebx
+                    pushl %ecx
+                    pushl %edx
+                    pushl %esi
+                    pushl %edi
 # ____________________var_____________________________________________
                     movl -4(%ebp), %eax
+                    popl %edi
+                    popl %esi
+                    popl %edx
+                    popl %ecx
+                    popl %ebx
                   cmpl $0, %ebx
                   jne .L39
                   movl $4, %eax
@@ -475,57 +553,123 @@ Main_sort:
                   addl $8, %eax
                   addl %eax, %ebx
                   movl (%ebx), %ebx
+                  popl %edi
+                  popl %esi
+                  popl %edx
+                  popl %ecx
                 pushl %ebx
                 pushl %edi
                 call %esi
                 addl $12, %esp
                 popl %esi
                 # Emitting i = (i + 1)
+                pushl %ecx
+                pushl %edx
 # ________________assign______________________________________________
                   # Emitting (i + 1)
+                  pushl %ecx
+                  pushl %edx
                     # Emitting 1
+                    pushl %ecx
+                    pushl %edx
                     movl $1, %esi
+                    popl %edx
+                    popl %ecx
                     # Emitting i
+                    pushl %ecx
+                    pushl %edx
+                    pushl %esi
 # ____________________var_____________________________________________
                     movl -4(%ebp), %edi
+                    popl %esi
+                    popl %edx
+                    popl %ecx
                   add %esi, %edi
+                  popl %edx
+                  popl %ecx
                 movl %edi, -4(%ebp)
+                popl %edx
+                popl %ecx
                 # Emitting j = (j - 1)
+                pushl %ecx
+                pushl %edx
 # ________________assign______________________________________________
                   # Emitting (j - 1)
+                  pushl %ecx
+                  pushl %edx
                     # Emitting 1
+                    pushl %ecx
+                    pushl %edx
                     movl $1, %edi
+                    popl %edx
+                    popl %ecx
                     # Emitting j
+                    pushl %ecx
+                    pushl %edx
+                    pushl %edi
 # ____________________var_____________________________________________
                     movl -8(%ebp), %esi
+                    popl %edi
+                    popl %edx
+                    popl %ecx
                   sub %edi, %esi
+                  popl %edx
+                  popl %ecx
                 movl %esi, -8(%ebp)
+                popl %edx
+                popl %ecx
             jmp .L34
 .L33:
               # Emitting nop
+              pushl %ecx
+              pushl %edx
+              popl %edx
+              popl %ecx
 .L34:
         jmp .L15
 .L16:
 .L17:
         # Emitting if ((left < j)) {...} else {...}
+        pushl %ecx
+        pushl %edx
 # ________ifElse______________________________________________________
           # Emitting (left < j)
+          pushl %ecx
+          pushl %edx
             # Emitting j
+            pushl %ecx
+            pushl %edx
 # ____________var_____________________________________________________
             movl -8(%ebp), %esi
+            popl %edx
+            popl %ecx
             # Emitting left
+            pushl %ecx
+            pushl %edx
+            pushl %esi
 # ____________var_____________________________________________________
             movl 12(%ebp), %edi
+            popl %esi
+            popl %edx
+            popl %ecx
           cmpl %esi, %edi
           setl %al
           movzbl %al, %edi
+          popl %edx
+          popl %ecx
         jge .L43
           # Emitting (...)
+          pushl %ecx
+          pushl %edx
             # Emitting this.sort(...)
             pushl %ecx
             pushl %edx
+            pushl %ecx
+            pushl %edx
               # Emitting this
+              pushl %edx
               movl 8(%ebp), %ecx
+              popl %edx
             cmpl $0, %ecx
             jne .L45
             movl $4, %eax
@@ -535,12 +679,26 @@ Main_sort:
             movl 8(%edx), %edx
             subl $4, %esp
               # Emitting j
+              pushl %ecx
+              pushl %edx
+              pushl %edi
 # ______________var___________________________________________________
               movl -8(%ebp), %esi
+              popl %edi
+              popl %edx
+              popl %ecx
             pushl %esi
               # Emitting left
+              pushl %ecx
+              pushl %edx
+              pushl %esi
+              pushl %edi
 # ______________var___________________________________________________
               movl 12(%ebp), %ebx
+              popl %edi
+              popl %esi
+              popl %edx
+              popl %ecx
             pushl %ebx
             pushl %ecx
             call %edx
@@ -549,24 +707,54 @@ Main_sort:
         jmp .L44
 .L43:
           # Emitting nop
+          pushl %esi
+          pushl %edi
+          popl %edi
+          popl %esi
 .L44:
         # Emitting if ((i < right)) {...} else {...}
+        pushl %esi
+        pushl %edi
 # ________ifElse______________________________________________________
           # Emitting (i < right)
+          pushl %esi
+          pushl %edi
             # Emitting right
+            pushl %esi
+            pushl %edi
 # ____________var_____________________________________________________
             movl 16(%ebp), %edx
+            popl %edi
+            popl %esi
             # Emitting i
+            pushl %edx
+            pushl %esi
+            pushl %edi
 # ____________var_____________________________________________________
             movl -4(%ebp), %ecx
+            popl %edi
+            popl %esi
+            popl %edx
           cmpl %edx, %ecx
           setl %al
           movzbl %al, %ecx
+          popl %edi
+          popl %esi
         jge .L47
           # Emitting (...)
+          pushl %esi
+          pushl %edi
             # Emitting this.sort(...)
+            pushl %esi
+            pushl %edi
               # Emitting this
+              pushl %ecx
+              pushl %esi
+              pushl %edi
               movl 8(%ebp), %edx
+              popl %edi
+              popl %esi
+              popl %ecx
             cmpl $0, %edx
             jne .L49
             movl $4, %eax
@@ -576,8 +764,24 @@ Main_sort:
             movl 8(%ecx), %ecx
             subl $4, %esp
               # Emitting right
+              pushl %ebx
+              pushl %ecx
+              pushl %edx
+              pushl %esi
+              pushl %edi
 # ______________var___________________________________________________
               movl 16(%ebp), %eax
+              popl %edi
+              popl %esi
+              popl %edx
+              popl %ecx
+              popl %ebx
             pushl %eax
               # Emitting i
+              pushl %eax
+              pushl %ebx
+              pushl %ecx
+              pushl %edx
+              pushl %esi
+              pushl %edi
 # ______________var___________________________________________________

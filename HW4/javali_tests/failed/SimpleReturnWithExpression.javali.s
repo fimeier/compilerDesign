@@ -64,13 +64,21 @@ Main_m:
 # ______________var___________________________________________________
               movl 16(%ebp), %edi
               # Emitting a
+              pushl %edi
 # ______________var___________________________________________________
               movl 12(%ebp), %esi
+              popl %edi
             add %edi, %esi
             # Emitting 1
+            pushl %esi
             movl $1, %edi
+            popl %esi
           add %edi, %esi
         movl %esi, 20(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
@@ -96,7 +104,9 @@ Main_main:
 # ________assign______________________________________________________
           # Emitting this.m(...)
             # Emitting this
+            pushl %esi
             movl 8(%ebp), %edi
+            popl %esi
           cmpl $0, %edi
           jne .L2
           movl $4, %eax
@@ -106,10 +116,24 @@ Main_main:
           movl 4(%esi), %esi
           subl $4, %esp
             # Emitting 2
+            pushl %edx
+            pushl %esi
+            pushl %edi
             movl $2, %ecx
+            popl %edi
+            popl %esi
+            popl %edx
           pushl %ecx
             # Emitting 1
+            pushl %ecx
+            pushl %edx
+            pushl %esi
+            pushl %edi
             movl $1, %ebx
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
           pushl %ebx
           pushl %edi
           call %esi
@@ -117,26 +141,44 @@ Main_main:
           popl %esi
         movl %esi, -4(%ebp)
         # Emitting write(res)
+        pushl %ecx
+        pushl %edx
           # Emitting res
+          pushl %ecx
+          pushl %edx
 # __________var_______________________________________________________
           movl -4(%ebp), %esi
+          popl %edx
+          popl %ecx
         sub $16, %esp
         movl %esi, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp
+        popl %edx
+        popl %ecx
         # Emitting writeln()
+        pushl %ecx
+        pushl %edx
         sub $16, %esp
         movl $STR_NL, 0(%esp)
         call printf
         add $16, %esp
+        popl %edx
+        popl %ecx
         # Emitting res = this.m(...)
+        pushl %ecx
+        pushl %edx
 # ________assign______________________________________________________
           # Emitting this.m(...)
           pushl %ecx
           pushl %edx
+          pushl %ecx
+          pushl %edx
             # Emitting this
+            pushl %edx
             movl 8(%ebp), %ecx
+            popl %edx
           cmpl $0, %ecx
           jne .L3
           movl $4, %eax
@@ -146,43 +188,98 @@ Main_main:
           movl 4(%edx), %edx
           subl $4, %esp
             # Emitting 2
+            pushl %ecx
+            pushl %edx
+            pushl %esi
             movl $2, %edi
+            popl %esi
+            popl %edx
+            popl %ecx
           pushl %edi
             # Emitting 1
+            pushl %ecx
+            pushl %edx
+            pushl %esi
+            pushl %edi
             movl $1, %ebx
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
           pushl %ebx
           pushl %ecx
           call %edx
           addl $12, %esp
           popl %edx
-        movl %edx, -4(%ebp)
+# __________swap needed_______________________________________________
+          movl %edx, %ecx
+          popl %ecx
+        movl %ecx, -4(%ebp)
         # Emitting write(res)
+        pushl %esi
+        pushl %edi
           # Emitting res
+          pushl %esi
+          pushl %edi
 # __________var_______________________________________________________
-          movl -4(%ebp), %edx
+          movl -4(%ebp), %ecx
+          popl %edi
+          popl %esi
         sub $16, %esp
-        movl %edx, 4(%esp)
+        movl %ecx, 4(%esp)
         movl $STR_D, 0(%esp)
         call printf
         add $16, %esp
+        popl %edi
+        popl %esi
         # Emitting writeln()
+        pushl %esi
+        pushl %edi
         sub $16, %esp
         movl $STR_NL, 0(%esp)
         call printf
         add $16, %esp
+        popl %edi
+        popl %esi
         # Emitting write(this.m(...))
+        pushl %esi
+        pushl %edi
           # Emitting this.m(...)
+          pushl %esi
+          pushl %edi
             # Emitting this
-            movl 8(%ebp), %ecx
-          cmpl $0, %ecx
+            pushl %ecx
+            pushl %esi
+            pushl %edi
+            movl 8(%ebp), %edx
+            popl %edi
+            popl %esi
+            popl %ecx
+          cmpl $0, %edx
           jne .L4
           movl $4, %eax
           jmp .ERROR_EXIT
 .L4:
-          movl 0(%ecx), %edx
-          movl 4(%edx), %edx
+          movl 0(%edx), %ecx
+          movl 4(%ecx), %ecx
           subl $4, %esp
             # Emitting 2
+            pushl %ebx
+            pushl %ecx
+            pushl %edx
+            pushl %esi
+            pushl %edi
             movl $2, %eax
+            popl %edi
+            popl %esi
+            popl %edx
+            popl %ecx
+            popl %ebx
           pushl %eax
             # Emitting 1
+            pushl %eax
+            pushl %ebx
+            pushl %ecx
+            pushl %edx
+            pushl %esi
+            pushl %edi

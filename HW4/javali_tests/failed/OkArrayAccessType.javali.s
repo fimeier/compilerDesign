@@ -75,7 +75,9 @@ Main_main:
 # ____________var_____________________________________________________
             movl -8(%ebp), %edi
             # Emitting 0
+            pushl %edi
             movl $0, %esi
+            popl %edi
           cmpl $0, %edi
           jne .L2
           movl $4, %eax

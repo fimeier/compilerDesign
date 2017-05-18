@@ -71,7 +71,9 @@ Main_main:
             # Emitting 3
             movl $3, %edi
             # Emitting 3
+            pushl %edi
             movl $3, %esi
+            popl %edi
           cmpl %edi, %esi
           je .L3
           movl $0, %esi

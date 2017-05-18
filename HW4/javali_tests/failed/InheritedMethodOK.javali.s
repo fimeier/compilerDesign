@@ -74,8 +74,10 @@ Main_main:
 # ________assign______________________________________________________
           # Emitting b.foo(...)
             # Emitting b
+            pushl %edi
 # ____________var_____________________________________________________
             movl -8(%ebp), %esi
+            popl %edi
           cmpl $0, %esi
           jne .L2
           movl $4, %eax
@@ -85,8 +87,14 @@ Main_main:
           movl 4(%edi), %edi
           subl $4, %esp
             # Emitting a
+            pushl %edx
+            pushl %esi
+            pushl %edi
 # ____________var_____________________________________________________
             movl -4(%ebp), %ecx
+            popl %edi
+            popl %esi
+            popl %edx
           pushl %ecx
           pushl %esi
           call %edi
@@ -99,21 +107,37 @@ Main_main:
     popl %ebp
     ret
   # Emitting class A {...}
+  pushl %edx
     # Emitting A foo(...) {...}
+    pushl %edx
 A_foo:
     # store old ebp, set uf new ebp
     pushl %ebp
     movl %esp, %ebp
     # set local variables:
       # Emitting (...)
+      pushl %edx
         # Emitting return arg
+        pushl %edx
           # Emitting arg
+          pushl %edx
 # __________var_______________________________________________________
           movl 12(%ebp), %edi
+          popl %edx
         movl %edi, 16(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
+        popl %edx
+      popl %edx
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
+    popl %edx
+  popl %edx
   # Emitting class B {...}
+  pushl %edx
+  popl %edx

@@ -85,8 +85,10 @@ Main_main:
             # Emitting 0
             movl $0, %edi
             # Emitting a
+            pushl %edi
 # ____________var_____________________________________________________
             movl -4(%ebp), %esi
+            popl %edi
           cmpl %edi, %esi
           setg %al
           movzbl %al, %esi
@@ -98,8 +100,10 @@ Main_main:
                 # Emitting 1
                 movl $1, %esi
                 # Emitting a
+                pushl %esi
 # ________________var_________________________________________________
                 movl -4(%ebp), %edi
+                popl %esi
               sub %esi, %edi
             movl %edi, -4(%ebp)
             # Emitting b = (b + 1)
@@ -108,8 +112,10 @@ Main_main:
                 # Emitting 1
                 movl $1, %edi
                 # Emitting b
+                pushl %edi
 # ________________var_________________________________________________
                 movl -8(%ebp), %esi
+                popl %edi
               add %edi, %esi
             movl %esi, -8(%ebp)
             # Emitting if ((b != 0)) {...} else {...}
@@ -118,8 +124,10 @@ Main_main:
                 # Emitting 0
                 movl $0, %esi
                 # Emitting b
+                pushl %esi
 # ________________var_________________________________________________
                 movl -8(%ebp), %edi
+                popl %esi
               cmpl %esi, %edi
               jne .L6
               movl $0, %edi
@@ -149,7 +157,9 @@ Main_main:
 # ____________________var_____________________________________________
                     movl -12(%ebp), %edi
                     # Emitting 25
+                    pushl %edi
                     movl $25, %esi
+                    popl %edi
                   add %edi, %esi
                 movl %esi, -12(%ebp)
                 # Emitting e = 37
@@ -164,14 +174,20 @@ Main_main:
                 # Emitting 0
                 movl $0, %esi
                 # Emitting a
+                pushl %esi
 # ________________var_________________________________________________
                 movl -4(%ebp), %edi
+                popl %esi
               cmpl %esi, %edi
               setle %al
               movzbl %al, %edi
             jg .L11
               # Emitting (...)
                 # Emitting return
+                # restore old ebp
+                movl %ebp, %esp
+                popl %ebp
+                ret
             jmp .L12
 .L11:
               # Emitting nop

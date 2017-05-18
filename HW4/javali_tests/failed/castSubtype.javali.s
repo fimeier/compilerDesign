@@ -97,9 +97,13 @@ Main_main:
 # __________castTypeName______________________________________________
           movl $vtable_R, %edi
             # Emitting c
+            pushl %esi
+            pushl %edi
 # ____________var_____________________________________________________
             movl 8(%ebp), %edx
             movl 4(%edx), %edx
+            popl %edi
+            popl %esi
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
           cmpl $0, %esi
@@ -128,9 +132,13 @@ Main_main:
 # __________castTypeName______________________________________________
           movl $vtable_C, %edx
             # Emitting r
+            pushl %edx
+            pushl %esi
 # ____________var_____________________________________________________
             movl 8(%ebp), %edi
             movl 8(%edi), %edi
+            popl %esi
+            popl %edx
 # __________rTypeRegister_____________________________________________
           movl %edi, %esi
           cmpl $0, %esi

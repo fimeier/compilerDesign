@@ -2,7 +2,10 @@ package cd.backend.codegen;
 
 import static cd.backend.codegen.AssemblyEmitter.constant;
 import static cd.backend.codegen.RegisterManager.STACK_REG;
+import static cd.backend.codegen.RegisterManager.BASE_REG;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,6 +45,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	public void gen(Ast ast) {
 		visit(ast, null);
 	}
+	/*
 	@Override
 	public Register visit(Ast ast, StackFrame frame) {
 		try {
@@ -51,6 +55,47 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.decreaseIndent();
 		}
 	}
+	 */
+
+	public Register visit(Ast ast, StackFrame frame) {
+		try {
+			cg.emit.increaseIndent("Emitting " + AstOneLine.toString(ast));
+
+
+			//1. save registers
+			List<Register> dontBother = new ArrayList<>();
+			Register[] affected = cg.rm.getUsedRegisters();
+			cg.eg.saveRegisters(dontBother, affected);
+
+			Register retReg = super.visit(ast, frame);
+
+			if (retReg!=null){
+				//2. swap retReg??
+				for (Register reg: affected){
+					if (reg.getRepr().equals(retReg.getRepr())) {
+						//swapIt = true;
+						System.out.println("*******swap Needed");
+						cg.emit.emitCommentSection("swap needed");
+
+						Register temp = cg.rm.getRegister();
+						cg.emit.emit("movl", reg.getRepr(), temp.getRepr());
+
+						cg.rm.releaseRegister(retReg);
+						retReg = temp;					
+					}
+				}
+			}
+			//3. restore
+			cg.eg.restoreRegisters(dontBother, affected);
+
+
+			return retReg;
+		} finally {
+			cg.emit.decreaseIndent();
+		}
+
+	}
+
 
 	@Override
 	public Register methodCall(MethodCall ast, StackFrame frame) {
@@ -101,7 +146,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	public Register ifElse(IfElse ast, StackFrame frame) {
 
 		jumpHelper(ast, frame, "IfElse");
-		
+
 		return null;
 	}
 
@@ -116,7 +161,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 	/*
 	 * for IfElse, WhileLoop,...
 	 */
-	
+
 	//Fehler: WhileLoop muss an den Anfang springen
 	private void jumpHelper(Stmt astTemp, StackFrame frame, String condType) {
 		Register conditionValue;
@@ -176,7 +221,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 				cg.emit.emit("je", lableElse);
 				break;
 			}
-			
+
 			case B_EQUAL:{ 
 				cg.emit.emit("jne", lableElse);
 				break;
@@ -185,7 +230,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 				cg.emit.emit("je", lableElse);
 				break;
 			}
-			
+
 			default: {
 				System.out.println("JumpHelper(case BinaryOp:) implement: "+((Ast.BinaryOp) cond).operator.repr);
 				throw new ToDoException();				
@@ -209,7 +254,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.emit("je", lableElse);
 			break;
 		}
-		
+
 		default: {
 			System.out.println("public Register jumpHelper(..) implement: ????????");
 			throw new ToDoException();		
@@ -270,7 +315,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.emit("jge",  elseIfLabel);   // if size >= 0 jump to elseLabel
 			// throw error 3: negative array index
 			cg.eg.throwError(3);
-			
+
 			// else jump here when (index > 0)
 			cg.emit.emitLabel(elseIfLabel);
 			String elseLabel =  cg.eg.getNewLabel();
@@ -280,7 +325,7 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			cg.emit.emit("jl",  elseLabel);   // if index >= size jump to elseLabel
 			// throw error 3: index out of bounds
 			cg.eg.throwError(3);
-			
+
 			// jumpt here when index correct
 			cg.emit.emitLabel(elseLabel);
 
@@ -355,17 +400,26 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 			return null;
 		}
 	}
+	
 	@Override
 	public Register returnStmt(ReturnStmt ast, StackFrame frame) {
 		{
-			if (ast.arg() == null){
-				return null;
+			// save return value if any
+			if (ast.arg() != null){
+				Register reg = cg.eg.visit(ast.arg(), frame);
+				frame.setReturn(reg);
+				frame.releaseRegister(reg);
 			}
-			Register reg = cg.eg.visit(ast.arg(), frame);
-			frame.setReturn(reg);
-			frame.releaseRegister(reg);
+
+			// restore old ebp
+			cg.emit.emitComment("restore old ebp");
+			cg.emit.emit("movl", BASE_REG, STACK_REG);
+			cg.emit.emit("popl", BASE_REG);
+			cg.emit.emitRaw("ret");
+
 			return null;
 		}
 	}
+
 
 }

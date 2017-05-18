@@ -83,8 +83,10 @@ Main_main:
             # Emitting false
             movl $0, %edi
             # Emitting b
+            pushl %edi
 # ____________var_____________________________________________________
             movl -4(%ebp), %esi
+            popl %edi
           cmpl %edi, %esi
           je .L6
           movl $0, %esi

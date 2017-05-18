@@ -75,12 +75,24 @@ Main_main:
 # __________castTypeName______________________________________________
           movl $vtable_B, %edi
             # Emitting a[0]
+            pushl %esi
+            pushl %edi
               # Emitting a
+              pushl %esi
+              pushl %edi
 # ______________var___________________________________________________
               movl 8(%ebp), %edx
               movl 4(%edx), %edx
+              popl %edi
+              popl %esi
               # Emitting 0
+              pushl %edx
+              pushl %esi
+              pushl %edi
               movl $0, %ecx
+              popl %edi
+              popl %esi
+              popl %edx
             cmpl $0, %edx
             jne .L6
             movl $4, %eax
@@ -100,6 +112,8 @@ Main_main:
             addl $8, %ecx
             addl %ecx, %edx
             movl (%edx), %edx
+            popl %edi
+            popl %esi
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
           cmpl $0, %esi

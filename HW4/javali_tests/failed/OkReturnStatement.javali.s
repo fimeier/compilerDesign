@@ -89,6 +89,10 @@ Main_method:
               # Emitting 1
               movl $1, %edi
             movl %edi, 12(%ebp)
+            # restore old ebp
+            movl %ebp, %esp
+            popl %ebp
+            ret
         jmp .L4
 .L3:
           # Emitting (...)
@@ -103,6 +107,10 @@ Main_method:
                   # Emitting 1
                   movl $1, %edi
                 movl %edi, 12(%ebp)
+                # restore old ebp
+                movl %ebp, %esp
+                popl %ebp
+                ret
             jmp .L7
 .L6:
               # Emitting (...)
@@ -112,6 +120,10 @@ Main_method:
           # Emitting 1
           movl $1, %edi
         movl %edi, 12(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

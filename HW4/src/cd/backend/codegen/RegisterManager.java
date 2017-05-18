@@ -133,4 +133,19 @@ public class RegisterManager {
 	public int availableRegisters() {
 		return registers.size();
 	}
+	
+	public Register[] getUsedRegisters(){
+		int nUsed = 6-registers.size();
+		Register[] usedRegs = new Register[nUsed];
+		int i = 0;
+		for (Register r: GPR){
+			if (!registers.contains(r)){
+				usedRegs[i] = r;
+				i++;
+			}
+		}
+		return usedRegs;
+		
+		
+	}
 }

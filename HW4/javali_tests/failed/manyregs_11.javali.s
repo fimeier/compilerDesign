@@ -7239,304 +7239,925 @@ Main_main:
 # ______________________________var___________________________________
                               movl -4096(%ebp), %edi
                               # Emitting x1022
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -4092(%ebp), %esi
+                              popl %edi
                             add %edi, %esi
                             # Emitting (x1020 + x1021)
+                            pushl %esi
                               # Emitting x1021
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -4088(%ebp), %edi
+                              popl %esi
                               # Emitting x1020
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -4084(%ebp), %edx
+                              popl %edi
+                              popl %esi
                             add %edi, %edx
+                            popl %esi
                           add %esi, %edx
                           # Emitting ((x1016 + x1017) + (x1018 + x1019))
+                          pushl %edx
                             # Emitting (x1018 + x1019)
+                            pushl %edx
                               # Emitting x1019
+                              pushl %edx
 # ______________________________var___________________________________
                               movl -4080(%ebp), %esi
+                              popl %edx
                               # Emitting x1018
+                              pushl %edx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -4076(%ebp), %edi
+                              popl %esi
+                              popl %edx
                             add %esi, %edi
+                            popl %edx
                             # Emitting (x1016 + x1017)
+                            pushl %edx
+                            pushl %edi
                               # Emitting x1017
+                              pushl %edx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -4072(%ebp), %esi
+                              popl %edi
+                              popl %edx
                               # Emitting x1016
+                              pushl %edx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -4068(%ebp), %ecx
+                              popl %edi
+                              popl %esi
+                              popl %edx
                             add %esi, %ecx
+                            popl %edi
+                            popl %edx
                           add %edi, %ecx
+                          popl %edx
                         add %edx, %ecx
                         # Emitting (((x1008 + x1009) + (x1010 + x1011)) + ((x1012 + x1013) + (x1014 + x1015)))
+                        pushl %ecx
                           # Emitting ((x1012 + x1013) + (x1014 + x1015))
+                          pushl %ecx
                             # Emitting (x1014 + x1015)
+                            pushl %ecx
                               # Emitting x1015
+                              pushl %ecx
 # ______________________________var___________________________________
                               movl -4064(%ebp), %edx
+                              popl %ecx
                               # Emitting x1014
+                              pushl %ecx
+                              pushl %edx
 # ______________________________var___________________________________
                               movl -4060(%ebp), %edi
+                              popl %edx
+                              popl %ecx
                             add %edx, %edi
+                            popl %ecx
                             # Emitting (x1012 + x1013)
+                            pushl %ecx
+                            pushl %edi
                               # Emitting x1013
+                              pushl %ecx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -4056(%ebp), %edx
+                              popl %edi
+                              popl %ecx
                               # Emitting x1012
+                              pushl %ecx
+                              pushl %edx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -4052(%ebp), %esi
+                              popl %edi
+                              popl %edx
+                              popl %ecx
                             add %edx, %esi
+                            popl %edi
+                            popl %ecx
                           add %edi, %esi
+                          popl %ecx
                           # Emitting ((x1008 + x1009) + (x1010 + x1011))
+                          pushl %ecx
+                          pushl %esi
                             # Emitting (x1010 + x1011)
+                            pushl %ecx
+                            pushl %esi
                               # Emitting x1011
+                              pushl %ecx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -4048(%ebp), %edi
+                              popl %esi
+                              popl %ecx
                               # Emitting x1010
+                              pushl %ecx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -4044(%ebp), %edx
+                              popl %edi
+                              popl %esi
+                              popl %ecx
                             add %edi, %edx
+                            popl %esi
+                            popl %ecx
                             # Emitting (x1008 + x1009)
+                            pushl %ecx
+                            pushl %edx
+                            pushl %esi
                               # Emitting x1009
+                              pushl %ecx
+                              pushl %edx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -4040(%ebp), %edi
+                              popl %esi
+                              popl %edx
+                              popl %ecx
                               # Emitting x1008
+                              pushl %ecx
+                              pushl %edx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -4036(%ebp), %ebx
+                              popl %edi
+                              popl %esi
+                              popl %edx
+                              popl %ecx
                             add %edi, %ebx
+                            popl %esi
+                            popl %edx
+                            popl %ecx
                           add %edx, %ebx
+                          popl %esi
+                          popl %ecx
                         add %esi, %ebx
+                        popl %ecx
                       add %ecx, %ebx
                       # Emitting ((((x992 + x993) + (x994 + x995)) + ((x996 + x997) + (x998 + x999))) + (((x1000 + x1001) + (x1002 + x1003)) + ((x1004 + x1005) + (x1006 + x1007))))
+                      pushl %ebx
                         # Emitting (((x1000 + x1001) + (x1002 + x1003)) + ((x1004 + x1005) + (x1006 + x1007)))
+                        pushl %ebx
                           # Emitting ((x1004 + x1005) + (x1006 + x1007))
+                          pushl %ebx
                             # Emitting (x1006 + x1007)
+                            pushl %ebx
                               # Emitting x1007
+                              pushl %ebx
 # ______________________________var___________________________________
                               movl -4032(%ebp), %ecx
+                              popl %ebx
                               # Emitting x1006
+                              pushl %ebx
+                              pushl %ecx
 # ______________________________var___________________________________
                               movl -4028(%ebp), %esi
+                              popl %ecx
+                              popl %ebx
                             add %ecx, %esi
+                            popl %ebx
                             # Emitting (x1004 + x1005)
+                            pushl %ebx
+                            pushl %esi
                               # Emitting x1005
+                              pushl %ebx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -4024(%ebp), %ecx
+                              popl %esi
+                              popl %ebx
                               # Emitting x1004
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -4020(%ebp), %edx
+                              popl %esi
+                              popl %ecx
+                              popl %ebx
                             add %ecx, %edx
+                            popl %esi
+                            popl %ebx
                           add %esi, %edx
+                          popl %ebx
                           # Emitting ((x1000 + x1001) + (x1002 + x1003))
+                          pushl %ebx
+                          pushl %edx
                             # Emitting (x1002 + x1003)
+                            pushl %ebx
+                            pushl %edx
                               # Emitting x1003
+                              pushl %ebx
+                              pushl %edx
 # ______________________________var___________________________________
                               movl -4016(%ebp), %esi
+                              popl %edx
+                              popl %ebx
                               # Emitting x1002
+                              pushl %ebx
+                              pushl %edx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -4012(%ebp), %ecx
+                              popl %esi
+                              popl %edx
+                              popl %ebx
                             add %esi, %ecx
+                            popl %edx
+                            popl %ebx
                             # Emitting (x1000 + x1001)
+                            pushl %ebx
+                            pushl %ecx
+                            pushl %edx
                               # Emitting x1001
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %edx
 # ______________________________var___________________________________
                               movl -4008(%ebp), %esi
+                              popl %edx
+                              popl %ecx
+                              popl %ebx
                               # Emitting x1000
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %edx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -4004(%ebp), %edi
+                              popl %esi
+                              popl %edx
+                              popl %ecx
+                              popl %ebx
                             add %esi, %edi
+                            popl %edx
+                            popl %ecx
+                            popl %ebx
                           add %ecx, %edi
+                          popl %edx
+                          popl %ebx
                         add %edx, %edi
+                        popl %ebx
                         # Emitting (((x992 + x993) + (x994 + x995)) + ((x996 + x997) + (x998 + x999)))
+                        pushl %ebx
+                        pushl %edi
                           # Emitting ((x996 + x997) + (x998 + x999))
+                          pushl %ebx
+                          pushl %edi
                             # Emitting (x998 + x999)
+                            pushl %ebx
+                            pushl %edi
                               # Emitting x999
+                              pushl %ebx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -4000(%ebp), %edx
+                              popl %edi
+                              popl %ebx
                               # Emitting x998
+                              pushl %ebx
+                              pushl %edx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3996(%ebp), %ecx
+                              popl %edi
+                              popl %edx
+                              popl %ebx
                             add %edx, %ecx
+                            popl %edi
+                            popl %ebx
                             # Emitting (x996 + x997)
+                            pushl %ebx
+                            pushl %ecx
+                            pushl %edi
                               # Emitting x997
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3992(%ebp), %edx
+                              popl %edi
+                              popl %ecx
+                              popl %ebx
                               # Emitting x996
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %edx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3988(%ebp), %esi
+                              popl %edi
+                              popl %edx
+                              popl %ecx
+                              popl %ebx
                             add %edx, %esi
+                            popl %edi
+                            popl %ecx
+                            popl %ebx
                           add %ecx, %esi
+                          popl %edi
+                          popl %ebx
                           # Emitting ((x992 + x993) + (x994 + x995))
+                          pushl %ebx
+                          pushl %esi
+                          pushl %edi
                             # Emitting (x994 + x995)
+                            pushl %ebx
+                            pushl %esi
+                            pushl %edi
                               # Emitting x995
+                              pushl %ebx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3984(%ebp), %ecx
+                              popl %edi
+                              popl %esi
+                              popl %ebx
                               # Emitting x994
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3980(%ebp), %edx
+                              popl %edi
+                              popl %esi
+                              popl %ecx
+                              popl %ebx
                             add %ecx, %edx
+                            popl %edi
+                            popl %esi
+                            popl %ebx
                             # Emitting (x992 + x993)
+                            pushl %ebx
+                            pushl %edx
+                            pushl %esi
+                            pushl %edi
                               # Emitting x993
+                              pushl %ebx
+                              pushl %edx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3976(%ebp), %ecx
+                              popl %edi
+                              popl %esi
+                              popl %edx
+                              popl %ebx
                               # Emitting x992
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %edx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3972(%ebp), %eax
+                              popl %edi
+                              popl %esi
+                              popl %edx
+                              popl %ecx
+                              popl %ebx
                             add %ecx, %eax
+                            popl %edi
+                            popl %esi
+                            popl %edx
+                            popl %ebx
                           add %edx, %eax
+                          popl %edi
+                          popl %esi
+                          popl %ebx
                         add %esi, %eax
+                        popl %edi
+                        popl %ebx
                       add %edi, %eax
+                      popl %ebx
                     add %ebx, %eax
                     # Emitting (((((x960 + x961) + (x962 + x963)) + ((x964 + x965) + (x966 + x967))) + (((x968 + x969) + (x970 + x971)) + ((x972 + x973) + (x974 + x975)))) + ((((x976 + x977) + (x978 + x979)) + ((x980 + x981) + (x982 + x983))) + (((x984 + x985) + (x986 + x987)) + ((x988 + x989) + (x990 + x991)))))
+                    pushl %eax
                       # Emitting ((((x976 + x977) + (x978 + x979)) + ((x980 + x981) + (x982 + x983))) + (((x984 + x985) + (x986 + x987)) + ((x988 + x989) + (x990 + x991))))
+                      pushl %eax
                         # Emitting (((x984 + x985) + (x986 + x987)) + ((x988 + x989) + (x990 + x991)))
+                        pushl %eax
                           # Emitting ((x988 + x989) + (x990 + x991))
+                          pushl %eax
                             # Emitting (x990 + x991)
+                            pushl %eax
                               # Emitting x991
+                              pushl %eax
 # ______________________________var___________________________________
                               movl -3968(%ebp), %ebx
+                              popl %eax
                               # Emitting x990
+                              pushl %eax
+                              pushl %ebx
 # ______________________________var___________________________________
                               movl -3964(%ebp), %edi
+                              popl %ebx
+                              popl %eax
                             add %ebx, %edi
+                            popl %eax
                             # Emitting (x988 + x989)
+                            pushl %eax
+                            pushl %edi
                               # Emitting x989
+                              pushl %eax
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3960(%ebp), %ebx
+                              popl %edi
+                              popl %eax
                               # Emitting x988
+                              pushl %eax
+                              pushl %ebx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3956(%ebp), %esi
+                              popl %edi
+                              popl %ebx
+                              popl %eax
                             add %ebx, %esi
+                            popl %edi
+                            popl %eax
                           add %edi, %esi
+                          popl %eax
                           # Emitting ((x984 + x985) + (x986 + x987))
+                          pushl %eax
+                          pushl %esi
                             # Emitting (x986 + x987)
+                            pushl %eax
+                            pushl %esi
                               # Emitting x987
+                              pushl %eax
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -3952(%ebp), %edi
+                              popl %esi
+                              popl %eax
                               # Emitting x986
+                              pushl %eax
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3948(%ebp), %ebx
+                              popl %edi
+                              popl %esi
+                              popl %eax
                             add %edi, %ebx
+                            popl %esi
+                            popl %eax
                             # Emitting (x984 + x985)
+                            pushl %eax
+                            pushl %ebx
+                            pushl %esi
                               # Emitting x985
+                              pushl %eax
+                              pushl %ebx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -3944(%ebp), %edi
+                              popl %esi
+                              popl %ebx
+                              popl %eax
                               # Emitting x984
+                              pushl %eax
+                              pushl %ebx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3940(%ebp), %edx
+                              popl %edi
+                              popl %esi
+                              popl %ebx
+                              popl %eax
                             add %edi, %edx
+                            popl %esi
+                            popl %ebx
+                            popl %eax
                           add %ebx, %edx
+                          popl %esi
+                          popl %eax
                         add %esi, %edx
+                        popl %eax
                         # Emitting (((x976 + x977) + (x978 + x979)) + ((x980 + x981) + (x982 + x983)))
+                        pushl %eax
+                        pushl %edx
                           # Emitting ((x980 + x981) + (x982 + x983))
+                          pushl %eax
+                          pushl %edx
                             # Emitting (x982 + x983)
+                            pushl %eax
+                            pushl %edx
                               # Emitting x983
+                              pushl %eax
+                              pushl %edx
 # ______________________________var___________________________________
                               movl -3936(%ebp), %esi
+                              popl %edx
+                              popl %eax
                               # Emitting x982
+                              pushl %eax
+                              pushl %edx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -3932(%ebp), %ebx
+                              popl %esi
+                              popl %edx
+                              popl %eax
                             add %esi, %ebx
+                            popl %edx
+                            popl %eax
                             # Emitting (x980 + x981)
+                            pushl %eax
+                            pushl %ebx
+                            pushl %edx
                               # Emitting x981
+                              pushl %eax
+                              pushl %ebx
+                              pushl %edx
 # ______________________________var___________________________________
                               movl -3928(%ebp), %esi
+                              popl %edx
+                              popl %ebx
+                              popl %eax
                               # Emitting x980
+                              pushl %eax
+                              pushl %ebx
+                              pushl %edx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -3924(%ebp), %edi
+                              popl %esi
+                              popl %edx
+                              popl %ebx
+                              popl %eax
                             add %esi, %edi
+                            popl %edx
+                            popl %ebx
+                            popl %eax
                           add %ebx, %edi
+                          popl %edx
+                          popl %eax
                           # Emitting ((x976 + x977) + (x978 + x979))
+                          pushl %eax
+                          pushl %edx
+                          pushl %edi
                             # Emitting (x978 + x979)
+                            pushl %eax
+                            pushl %edx
+                            pushl %edi
                               # Emitting x979
+                              pushl %eax
+                              pushl %edx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3920(%ebp), %ebx
+                              popl %edi
+                              popl %edx
+                              popl %eax
                               # Emitting x978
+                              pushl %eax
+                              pushl %ebx
+                              pushl %edx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3916(%ebp), %esi
+                              popl %edi
+                              popl %edx
+                              popl %ebx
+                              popl %eax
                             add %ebx, %esi
+                            popl %edi
+                            popl %edx
+                            popl %eax
                             # Emitting (x976 + x977)
+                            pushl %eax
+                            pushl %edx
+                            pushl %esi
+                            pushl %edi
                               # Emitting x977
+                              pushl %eax
+                              pushl %edx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3912(%ebp), %ebx
+                              popl %edi
+                              popl %esi
+                              popl %edx
+                              popl %eax
                               # Emitting x976
+                              pushl %eax
+                              pushl %ebx
+                              pushl %edx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3908(%ebp), %ecx
+                              popl %edi
+                              popl %esi
+                              popl %edx
+                              popl %ebx
+                              popl %eax
                             add %ebx, %ecx
+                            popl %edi
+                            popl %esi
+                            popl %edx
+                            popl %eax
                           add %esi, %ecx
+                          popl %edi
+                          popl %edx
+                          popl %eax
                         add %edi, %ecx
+                        popl %edx
+                        popl %eax
                       add %edx, %ecx
+                      popl %eax
                       # Emitting ((((x960 + x961) + (x962 + x963)) + ((x964 + x965) + (x966 + x967))) + (((x968 + x969) + (x970 + x971)) + ((x972 + x973) + (x974 + x975))))
+                      pushl %eax
+                      pushl %ecx
                         # Emitting (((x968 + x969) + (x970 + x971)) + ((x972 + x973) + (x974 + x975)))
+                        pushl %eax
+                        pushl %ecx
                           # Emitting ((x972 + x973) + (x974 + x975))
+                          pushl %eax
+                          pushl %ecx
                             # Emitting (x974 + x975)
+                            pushl %eax
+                            pushl %ecx
                               # Emitting x975
+                              pushl %eax
+                              pushl %ecx
 # ______________________________var___________________________________
                               movl -3904(%ebp), %edx
+                              popl %ecx
+                              popl %eax
                               # Emitting x974
+                              pushl %eax
+                              pushl %ecx
+                              pushl %edx
 # ______________________________var___________________________________
                               movl -3900(%ebp), %edi
+                              popl %edx
+                              popl %ecx
+                              popl %eax
                             add %edx, %edi
+                            popl %ecx
+                            popl %eax
                             # Emitting (x972 + x973)
+                            pushl %eax
+                            pushl %ecx
+                            pushl %edi
                               # Emitting x973
+                              pushl %eax
+                              pushl %ecx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3896(%ebp), %edx
+                              popl %edi
+                              popl %ecx
+                              popl %eax
                               # Emitting x972
+                              pushl %eax
+                              pushl %ecx
+                              pushl %edx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3892(%ebp), %esi
+                              popl %edi
+                              popl %edx
+                              popl %ecx
+                              popl %eax
                             add %edx, %esi
+                            popl %edi
+                            popl %ecx
+                            popl %eax
                           add %edi, %esi
+                          popl %ecx
+                          popl %eax
                           # Emitting ((x968 + x969) + (x970 + x971))
+                          pushl %eax
+                          pushl %ecx
+                          pushl %esi
                             # Emitting (x970 + x971)
+                            pushl %eax
+                            pushl %ecx
+                            pushl %esi
                               # Emitting x971
+                              pushl %eax
+                              pushl %ecx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -3888(%ebp), %edi
+                              popl %esi
+                              popl %ecx
+                              popl %eax
                               # Emitting x970
+                              pushl %eax
+                              pushl %ecx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3884(%ebp), %edx
+                              popl %edi
+                              popl %esi
+                              popl %ecx
+                              popl %eax
                             add %edi, %edx
+                            popl %esi
+                            popl %ecx
+                            popl %eax
                             # Emitting (x968 + x969)
+                            pushl %eax
+                            pushl %ecx
+                            pushl %edx
+                            pushl %esi
                               # Emitting x969
+                              pushl %eax
+                              pushl %ecx
+                              pushl %edx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -3880(%ebp), %edi
+                              popl %esi
+                              popl %edx
+                              popl %ecx
+                              popl %eax
                               # Emitting x968
+                              pushl %eax
+                              pushl %ecx
+                              pushl %edx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3876(%ebp), %ebx
+                              popl %edi
+                              popl %esi
+                              popl %edx
+                              popl %ecx
+                              popl %eax
                             add %edi, %ebx
+                            popl %esi
+                            popl %edx
+                            popl %ecx
+                            popl %eax
                           add %edx, %ebx
+                          popl %esi
+                          popl %ecx
+                          popl %eax
                         add %esi, %ebx
+                        popl %ecx
+                        popl %eax
                         # Emitting (((x960 + x961) + (x962 + x963)) + ((x964 + x965) + (x966 + x967)))
+                        pushl %eax
+                        pushl %ebx
+                        pushl %ecx
                           # Emitting ((x964 + x965) + (x966 + x967))
+                          pushl %eax
+                          pushl %ebx
+                          pushl %ecx
                             # Emitting (x966 + x967)
+                            pushl %eax
+                            pushl %ebx
+                            pushl %ecx
                               # Emitting x967
+                              pushl %eax
+                              pushl %ebx
+                              pushl %ecx
 # ______________________________var___________________________________
                               movl -3872(%ebp), %esi
+                              popl %ecx
+                              popl %ebx
+                              popl %eax
                               # Emitting x966
+                              pushl %eax
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -3868(%ebp), %edx
+                              popl %esi
+                              popl %ecx
+                              popl %ebx
+                              popl %eax
                             add %esi, %edx
+                            popl %ecx
+                            popl %ebx
+                            popl %eax
                             # Emitting (x964 + x965)
+                            pushl %eax
+                            pushl %ebx
+                            pushl %ecx
+                            pushl %edx
                               # Emitting x965
+                              pushl %eax
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %edx
 # ______________________________var___________________________________
                               movl -3864(%ebp), %esi
+                              popl %edx
+                              popl %ecx
+                              popl %ebx
+                              popl %eax
                               # Emitting x964
+                              pushl %eax
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %edx
+                              pushl %esi
 # ______________________________var___________________________________
                               movl -3860(%ebp), %edi
+                              popl %esi
+                              popl %edx
+                              popl %ecx
+                              popl %ebx
+                              popl %eax
                             add %esi, %edi
+                            popl %edx
+                            popl %ecx
+                            popl %ebx
+                            popl %eax
                           add %edx, %edi
+                          popl %ecx
+                          popl %ebx
+                          popl %eax
                           # Emitting ((x960 + x961) + (x962 + x963))
+                          pushl %eax
+                          pushl %ebx
+                          pushl %ecx
+                          pushl %edi
                             # Emitting (x962 + x963)
+                            pushl %eax
+                            pushl %ebx
+                            pushl %ecx
+                            pushl %edi
                               # Emitting x963
+                              pushl %eax
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3856(%ebp), %edx
+                              popl %edi
+                              popl %ecx
+                              popl %ebx
+                              popl %eax
                               # Emitting x962
+                              pushl %eax
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %edx
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3852(%ebp), %esi
+                              popl %edi
+                              popl %edx
+                              popl %ecx
+                              popl %ebx
+                              popl %eax
                             add %edx, %esi
+                            popl %edi
+                            popl %ecx
+                            popl %ebx
+                            popl %eax
                             # Emitting (x960 + x961)
+                            pushl %eax
+                            pushl %ebx
+                            pushl %ecx
+                            pushl %esi
+                            pushl %edi
                               # Emitting x961
+                              pushl %eax
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________
                               movl -3848(%ebp), %edx
+                              popl %edi
+                              popl %esi
+                              popl %ecx
+                              popl %ebx
+                              popl %eax
                               # Emitting x960
+                              pushl %eax
+                              pushl %ebx
+                              pushl %ecx
+                              pushl %edx
+                              pushl %esi
+                              pushl %edi
 # ______________________________var___________________________________

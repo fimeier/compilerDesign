@@ -98,7 +98,9 @@ Main_main:
             movl 8(%ebp), %edi
             movl 20(%edi), %edi
             # Emitting 1
+            pushl %edi
             movl $1, %esi
+            popl %edi
           cmpl $0, %edi
           jne .L3
           movl $4, %eax
@@ -124,9 +126,11 @@ Main_main:
 # ________assign______________________________________________________
           # Emitting a.fun(...)
             # Emitting a
+            pushl %edi
 # ____________var_____________________________________________________
             movl 8(%ebp), %esi
             movl 16(%esi), %esi
+            popl %edi
           cmpl $0, %esi
           jne .L6
           movl $4, %eax
@@ -145,7 +149,9 @@ Main_main:
 # ________assign______________________________________________________
           # Emitting this.foo(...)
             # Emitting this
+            pushl %edi
             movl 8(%ebp), %esi
+            popl %edi
           cmpl $0, %esi
           jne .L7
           movl $4, %eax
@@ -194,7 +200,9 @@ Main_main:
             movl 8(%ebp), %edi
             movl 20(%edi), %edi
             # Emitting 1
+            pushl %edi
             movl $1, %esi
+            popl %edi
           cmpl $0, %edi
           jne .L9
           movl $4, %eax
@@ -222,9 +230,11 @@ Main_main:
         # Emitting write(a.fun(...))
           # Emitting a.fun(...)
             # Emitting a
+            pushl %edi
 # ____________var_____________________________________________________
             movl 8(%ebp), %esi
             movl 16(%esi), %esi
+            popl %edi
           cmpl $0, %esi
           jne .L12
           movl $4, %eax
@@ -245,7 +255,9 @@ Main_main:
         # Emitting write(this.foo(...))
           # Emitting this.foo(...)
             # Emitting this
+            pushl %edi
             movl 8(%ebp), %esi
+            popl %edi
           cmpl $0, %esi
           jne .L13
           movl $4, %eax
@@ -270,9 +282,11 @@ Main_main:
           movl 8(%ebp), %edi
           movl 4(%edi), %edi
           # Emitting a
+          pushl %edi
 # __________var_______________________________________________________
           movl 8(%ebp), %esi
           movl 16(%esi), %esi
+          popl %edi
         cmpl $0, %esi
         jne .L14
         movl $4, %eax
@@ -286,11 +300,17 @@ Main_main:
           movl 8(%ebp), %edi
           movl 8(%edi), %edi
           # Emitting arr
+          pushl %edi
 # __________var_______________________________________________________
           movl 8(%ebp), %esi
           movl 20(%esi), %esi
+          popl %edi
           # Emitting 1
+          pushl %esi
+          pushl %edi
           movl $1, %edx
+          popl %edi
+          popl %esi
         cmpl $0, %esi
         jne .L15
         movl $4, %eax
@@ -326,6 +346,10 @@ Main_foo:
           # Emitting 1
           movl $1, %edi
         movl %edi, 12(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
@@ -344,6 +368,10 @@ A_fun:
           # Emitting 1
           movl $1, %edi
         movl %edi, 12(%ebp)
+        # restore old ebp
+        movl %ebp, %esp
+        popl %ebp
+        ret
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp

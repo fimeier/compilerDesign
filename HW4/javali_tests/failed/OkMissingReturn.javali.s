@@ -68,6 +68,10 @@ Main_test:
               # Emitting 1
               movl $1, %edi
             movl %edi, 12(%ebp)
+            # restore old ebp
+            movl %ebp, %esp
+            popl %ebp
+            ret
         jmp .L4
 .L3:
           # Emitting (...)
@@ -75,6 +79,10 @@ Main_test:
               # Emitting 2
               movl $2, %edi
             movl %edi, 12(%ebp)
+            # restore old ebp
+            movl %ebp, %esp
+            popl %ebp
+            ret
 .L4:
     addl $0, %esp
     # restore old ebp

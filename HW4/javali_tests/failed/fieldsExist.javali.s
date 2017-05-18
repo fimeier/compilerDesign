@@ -116,9 +116,11 @@ Main_main:
         movl %edi, 4(%esi)
         # Emitting a.fun1(...)
           # Emitting a
+          pushl %edi
 # __________var_______________________________________________________
           movl 8(%ebp), %esi
           movl 8(%esi), %esi
+          popl %edi
         cmpl $0, %esi
         jne .L5
         movl $4, %eax
@@ -128,7 +130,13 @@ Main_main:
         movl 4(%edi), %edi
         subl $4, %esp
           # Emitting 1
+          pushl %edx
+          pushl %esi
+          pushl %edi
           movl $1, %ecx
+          popl %edi
+          popl %esi
+          popl %edx
         pushl %ecx
         pushl %esi
         call %edi
@@ -136,10 +144,13 @@ Main_main:
         popl %edi
         # Emitting s.fun1(...)
         pushl %edx
+        pushl %edx
           # Emitting s
+          pushl %edx
 # __________var_______________________________________________________
           movl 8(%ebp), %edi
           movl 12(%edi), %edi
+          popl %edx
         cmpl $0, %edi
         jne .L6
         movl $4, %eax
@@ -149,51 +160,75 @@ Main_main:
         movl 4(%edx), %edx
         subl $4, %esp
           # Emitting 2
+          pushl %edx
+          pushl %esi
+          pushl %edi
           movl $2, %ecx
+          popl %edi
+          popl %esi
+          popl %edx
         pushl %ecx
         pushl %edi
         call %edx
         addl $8, %esp
         popl %edx
         # Emitting x = a.h
+        pushl %esi
 # ________assign______________________________________________________
           # Emitting a.h
+          pushl %esi
             # Emitting a
+            pushl %esi
 # ____________var_____________________________________________________
             movl 8(%ebp), %edx
             movl 8(%edx), %edx
+            popl %esi
           cmpl $0, %edx
           jne .L7
           movl $4, %eax
           jmp .ERROR_EXIT
 .L7:
           movl 8(%edx), %edx
+          popl %esi
         movl 8(%ebp), %edi
         movl %edx, 4(%edi)
+        popl %esi
         # Emitting x = s.h
+        pushl %esi
 # ________assign______________________________________________________
           # Emitting s.h
+          pushl %esi
             # Emitting s
+            pushl %esi
 # ____________var_____________________________________________________
             movl 8(%ebp), %edx
             movl 12(%edx), %edx
+            popl %esi
           cmpl $0, %edx
           jne .L8
           movl $4, %eax
           jmp .ERROR_EXIT
 .L8:
           movl 8(%edx), %edx
+          popl %esi
         movl 8(%ebp), %edi
         movl %edx, 4(%edi)
+        popl %esi
     addl $0, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp
     ret
   # Emitting class A {...}
+  pushl %esi
     # Emitting int i
+    pushl %esi
+    popl %esi
     # Emitting int h
+    pushl %esi
+    popl %esi
     # Emitting void fun1(...) {...}
+    pushl %esi
 A_fun1:
     # store old ebp, set uf new ebp
     pushl %ebp

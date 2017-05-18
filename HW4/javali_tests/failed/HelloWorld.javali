@@ -29,7 +29,7 @@ class Main {
 		 	//return true;//2. missing return;
 		}
 		
-//**************************************** Return macht nichts....		
+**************************************** Return macht nichts....		
 		while(true){
 			return true;
 		}
