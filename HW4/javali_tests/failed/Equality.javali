@@ -1,6 +1,16 @@
 // Test returning in branches
+
+
+class A{
+
+
+}
+
 class Main{
 	void main(){
+	
+		A aa;
+		A bb;
 	
 		int a;
 		int b;
@@ -11,7 +21,20 @@ class Main{
 		
 		c = a==b;
 		
-		if(c) {
+		aa = new A();
+		bb = aa;
+		//bb = new A();
+		
+		
+		//c = aa!=bb;
+		
+		c = a!=b;
+		
+		
+		if(aa!=bb) {
+		
+		
+		//if(c) {
 		
 		//if(a == b) {
 			write(1);writeln();

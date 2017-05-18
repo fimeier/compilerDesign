@@ -1,5 +1,9 @@
 .section .data
+	vtable_A:
+		.int vtable_Object
 	vtable_Main_array:
+		.int vtable_Object
+	vtable_A_array:
 		.int vtable_Object
 	vtable_int_array:
 		.int vtable_Object
@@ -48,6 +52,7 @@ ret
 movl STACK_PT, %esp
 movl BASE_PT, %ebp
 ret
+  # Emitting class A {...}
   # Emitting class Main {...}
     # Emitting void main(...) {...}
 Main_main:
@@ -55,6 +60,10 @@ Main_main:
     pushl %ebp
     movl %esp, %ebp
     # set local variables:
+    # variable aa
+    pushl $0
+    # variable bb
+    pushl $0
     # variable a
     pushl $0
     # variable b
@@ -66,21 +75,21 @@ Main_main:
 # ________assign______________________________________________________
           # Emitting 3
           movl $3, %edi
-        movl %edi, -4(%ebp)
+        movl %edi, -12(%ebp)
         # Emitting b = 1
 # ________assign______________________________________________________
           # Emitting 1
           movl $1, %edi
-        movl %edi, -8(%ebp)
+        movl %edi, -16(%ebp)
         # Emitting c = (a == b)
 # ________assign______________________________________________________
           # Emitting (a == b)
             # Emitting b
 # ____________var_____________________________________________________
-            movl -8(%ebp), %edi
+            movl -16(%ebp), %edi
             # Emitting a
 # ____________var_____________________________________________________
-            movl -4(%ebp), %esi
+            movl -12(%ebp), %esi
           cmpl %edi, %esi
           je .L2
           movl $0, %esi
@@ -88,14 +97,58 @@ Main_main:
 .L2:
           movl $1, %esi
 .L3:
-        movl %esi, -12(%ebp)
-        # Emitting if (c) {...} else {...}
-# ________ifElse______________________________________________________
-          # Emitting c
+        movl %esi, -20(%ebp)
+        # Emitting aa = new A()
+# ________assign______________________________________________________
+          # Emitting new A()
+# __________newObject_________________________________________________
+          pushl $4
+          pushl $1
+          call calloc
+          addl $8, %esp
+          movl $vtable_A, (%eax)
+          movl %eax, %esi
+        movl %esi, -4(%ebp)
+        # Emitting bb = aa
+# ________assign______________________________________________________
+          # Emitting aa
 # __________var_______________________________________________________
-          movl -12(%ebp), %esi
-        cmpl $0, %esi
-        je .L4
+          movl -4(%ebp), %esi
+        movl %esi, -8(%ebp)
+        # Emitting c = (a != b)
+# ________assign______________________________________________________
+          # Emitting (a != b)
+            # Emitting b
+# ____________var_____________________________________________________
+            movl -16(%ebp), %esi
+            # Emitting a
+# ____________var_____________________________________________________
+            movl -12(%ebp), %edi
+          cmpl %esi, %edi
+          jne .L4
+          movl $0, %edi
+          jmp .L5
+.L4:
+          movl $1, %edi
+.L5:
+        movl %edi, -20(%ebp)
+        # Emitting if ((aa != bb)) {...} else {...}
+# ________ifElse______________________________________________________
+          # Emitting (aa != bb)
+            # Emitting bb
+# ____________var_____________________________________________________
+            movl -8(%ebp), %edi
+            # Emitting aa
+# ____________var_____________________________________________________
+            movl -4(%ebp), %esi
+          cmpl %edi, %esi
+          jne .L6
+          movl $0, %esi
+          jmp .L7
+.L6:
+          movl $1, %esi
+.L7:
+        je .L8
           # Emitting (...)
             # Emitting write(1)
               # Emitting 1
@@ -110,8 +163,8 @@ Main_main:
             movl $STR_NL, 0(%esp)
             call printf
             add $16, %esp
-        jmp .L5
-.L4:
+        jmp .L9
+.L8:
           # Emitting (...)
             # Emitting write(0)
               # Emitting 0
@@ -126,8 +179,8 @@ Main_main:
             movl $STR_NL, 0(%esp)
             call printf
             add $16, %esp
-.L5:
-    addl $12, %esp
+.L9:
+    addl $20, %esp
     # restore old ebp
     movl %ebp, %esp
     popl %ebp

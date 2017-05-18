@@ -176,6 +176,10 @@ class StmtGenerator extends AstVisitor<Register, StackFrame> {
 				cg.emit.emit("jne", lableElse);
 				break;
 			}
+			case B_NOT_EQUAL:{ 
+				cg.emit.emit("je", lableElse);
+				break;
+			}
 			
 			default: {
 				System.out.println("JumpHelper(case BinaryOp:) implement: "+((Ast.BinaryOp) cond).operator.repr);

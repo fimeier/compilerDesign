@@ -214,12 +214,6 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 				 * sollte auch für builtintypes gehen....
 				 */
 				case B_EQUAL:{ // ==
-					/*
-					 * compare registers
-					 * return 0 or 1
-					 * if ((op==BOp.B_EQUAL)||(op==BOp.B_NOT_EQUAL)){
-					 */
-					
 					String labelIsEqual = cg.eg.getNewLabel();
 					String labelEnd = cg.eg.getNewLabel();
 
@@ -235,12 +229,23 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 					
 					cg.emit.emitLabel(labelEnd);
 
-
-
 					break;
 				}
 				case B_NOT_EQUAL: { // !=
+					String labelIsEqual = cg.eg.getNewLabel();
+					String labelEnd = cg.eg.getNewLabel();
 
+
+					cg.emit.emit("cmpl",  rightReg, leftReg);//b eq a
+					cg.emit.emit("jne", labelIsEqual); 
+					
+					cg.emit.emit("movl", "$0", leftReg); //not equal
+					cg.emit.emit("jmp", labelEnd); //jump to end
+
+					cg.emit.emitLabel(labelIsEqual);
+					cg.emit.emit("movl", "$1", leftReg);
+					
+					cg.emit.emitLabel(labelEnd);
 					break;
 				}
 				default: {
