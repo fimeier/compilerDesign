@@ -102,6 +102,8 @@ Main_main:
             movl 4(%edx), %edx
 # __________rTypeRegister_____________________________________________
           movl %edx, %esi
+          cmpl $0, %esi
+          je .L3
           cmpl %edi, %esi
           je .L3
 .L5:
@@ -131,6 +133,8 @@ Main_main:
             movl 8(%edi), %edi
 # __________rTypeRegister_____________________________________________
           movl %edi, %esi
+          cmpl $0, %esi
+          je .L7
           cmpl %edx, %esi
           je .L7
 .L9:

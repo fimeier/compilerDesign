@@ -72,7 +72,7 @@ Test failed because an exception was thrown:
 Stack trace:
 java.lang.NullPointerException
 	at cd.backend.codegen.AssemblyEmitter.emit(AssemblyEmitter.java:78)
-	at cd.backend.codegen.ExprGenerator.intConst(ExprGenerator.java:465)
+	at cd.backend.codegen.ExprGenerator.intConst(ExprGenerator.java:472)
 	at cd.backend.codegen.ExprGenerator.intConst(ExprGenerator.java:1)
 	at cd.ir.Ast$IntConst.accept(Ast.java:240)
 	at cd.ir.ExprVisitor.visit(ExprVisitor.java:15)

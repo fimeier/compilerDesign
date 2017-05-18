@@ -49,20 +49,20 @@ ClassDecl (name: Main, superClass: Object)
 | | | | | IntConst (value: 1)
 | | | | | IntConst (value: 2)
 | | | BuiltInWriteln ()
-Binary Op: ((a + b))@9a5853b (%esi,%edi)
-Binary Op: (((a + b) + 1))@791aa017 (%esi,%edi)
+Binary Op: ((a + b))@4cef2b77 (%esi,%edi)
+Binary Op: (((a + b) + 1))@3c1509bf (%esi,%edi)
 
 Test failed because an exception was thrown:
     null
 Stack trace:
 java.lang.NullPointerException
 	at cd.backend.codegen.AssemblyEmitter.emit(AssemblyEmitter.java:78)
-	at cd.backend.codegen.ExprGenerator.intConst(ExprGenerator.java:465)
+	at cd.backend.codegen.ExprGenerator.intConst(ExprGenerator.java:472)
 	at cd.backend.codegen.ExprGenerator.intConst(ExprGenerator.java:1)
 	at cd.ir.Ast$IntConst.accept(Ast.java:240)
 	at cd.ir.ExprVisitor.visit(ExprVisitor.java:15)
 	at cd.backend.codegen.ExprGenerator.visit(ExprGenerator.java:60)
-	at cd.backend.codegen.ExprGenerator.methodCall(ExprGenerator.java:629)
+	at cd.backend.codegen.ExprGenerator.methodCall(ExprGenerator.java:636)
 	at cd.backend.codegen.ExprGenerator.methodCall(ExprGenerator.java:1)
 	at cd.ir.Ast$MethodCallExpr.accept(Ast.java:460)
 	at cd.ir.ExprVisitor.visit(ExprVisitor.java:15)

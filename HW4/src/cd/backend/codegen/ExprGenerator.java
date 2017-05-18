@@ -341,6 +341,13 @@ class ExprGenerator extends ExprVisitor<Register, StackFrame> {
 
 			
 			/*
+			 * null Pointer always io
+			 */
+			cg.emit.emit("cmpl", "$0", reg2);
+			cg.emit.emit("je", labelIsSubtype); //wenn reg2 vom TypObject => nicht gefunden
+			
+			
+			/*
 			 * Test (A) b; is b already of Typ A?
 			 */
 
