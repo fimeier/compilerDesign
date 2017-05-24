@@ -78,156 +78,27 @@ ClassDecl (name: Main, superClass: Object)
 | | | | MethodCallExpr (methodName: sub)
 | | | | | Var (name: b)
 
-Phase cfg failed because we expected to see:
-digraph G {
-  graph [ rankdir = "LR" ];
-  subgraph cluster_0 {
-    label = "A.override"
-    M0_BB0 [
-      shape="record"
-      label="BB0|write(0)|writeln()"
-    ];
-    M0_BB0 -> M0_BB1;
-    M0_BB1 [
-      shape="record"
-      label="BB1"
-    ];
-  }
-  subgraph cluster_1 {
-    label = "A.base"
-    M1_BB0 [
-      shape="record"
-      label="BB0|write(1)|writeln()"
-    ];
-    M1_BB0 -> M1_BB1;
-    M1_BB1 [
-      shape="record"
-      label="BB1"
-    ];
-  }
-  subgraph cluster_2 {
-    label = "B.override"
-    M2_BB0 [
-      shape="record"
-      label="BB0|write(2)|writeln()"
-    ];
-    M2_BB0 -> M2_BB1;
-    M2_BB1 [
-      shape="record"
-      label="BB1"
-    ];
-  }
-  subgraph cluster_3 {
-    label = "B.sub"
-    M3_BB0 [
-      shape="record"
-      label="BB0|write(3)|writeln()"
-    ];
-    M3_BB0 -> M3_BB1;
-    M3_BB1 [
-      shape="record"
-      label="BB1"
-    ];
-  }
-  subgraph cluster_4 {
-    label = "Main.main"
-    M4_BB0 [
-      shape="record"
-      label="BB0|a = null|b = null|a = new A()|a.base(...)|a.override(...)|b = new B()|b.base(...)|b.override(...)|b.sub(...)|a = b|a.base(...)|a.override(...)|b.base(...)|b.override(...)|b.sub(...)"
-    ];
-    M4_BB0 -> M4_BB1;
-    M4_BB1 [
-      shape="record"
-      label="BB1"
-    ];
-  }
-}
-
-But we actually saw:
-digraph G {
-  graph [ rankdir = "LR" ];
-  subgraph cluster_0 {
-    label = "A.override"
-    M0_BB0 [
-      shape="record"
-      label="BB0"
-    ];
-    M0_BB1 [
-      shape="record"
-      label="BB1"
-    ];
-  }
-  subgraph cluster_1 {
-    label = "A.base"
-    M1_BB0 [
-      shape="record"
-      label="BB0"
-    ];
-    M1_BB1 [
-      shape="record"
-      label="BB1"
-    ];
-  }
-  subgraph cluster_2 {
-    label = "B.override"
-    M2_BB0 [
-      shape="record"
-      label="BB0"
-    ];
-    M2_BB1 [
-      shape="record"
-      label="BB1"
-    ];
-  }
-  subgraph cluster_3 {
-    label = "B.sub"
-    M3_BB0 [
-      shape="record"
-      label="BB0"
-    ];
-    M3_BB1 [
-      shape="record"
-      label="BB1"
-    ];
-  }
-  subgraph cluster_4 {
-    label = "Main.main"
-    M4_BB0 [
-      shape="record"
-      label="BB0"
-    ];
-    M4_BB1 [
-      shape="record"
-      label="BB1"
-    ];
-  }
-}
-
-The difference is:
-At line   7 /   7:
-<       label="BB0|write(0)|writeln()"
->       label="BB0"
-At line   9 /   9:
-<     M0_BB0 -> M0_BB1;
-At line  19 /  18:
-<       label="BB0|write(1)|writeln()"
->       label="BB0"
-At line  21 /  20:
-<     M1_BB0 -> M1_BB1;
-At line  31 /  29:
-<       label="BB0|write(2)|writeln()"
->       label="BB0"
-At line  33 /  31:
-<     M2_BB0 -> M2_BB1;
-At line  43 /  40:
-<       label="BB0|write(3)|writeln()"
->       label="BB0"
-At line  45 /  42:
-<     M3_BB0 -> M3_BB1;
-At line  55 /  51:
-<       label="BB0|a = null|b = null|a = new A()|a.base(...)|a.override(...)|b = new B()|b.base(...)|b.override(...)|b.sub(...)|a = b|a.base(...)|a.override(...)|b.base(...)|b.override(...)|b.sub(...)"
->       label="BB0"
-At line  57 /  53:
-<     M4_BB0 -> M4_BB1;
-Line  64 /  59:
-
+Test failed because an exception was thrown:
+    null
+Stack trace:
+java.lang.NullPointerException
+	at cd.transform.CfgStmtVisitor.assign(CfgStmtVisitor.java:58)
+	at cd.transform.CfgStmtVisitor.assign(CfgStmtVisitor.java:1)
+	at cd.ir.Ast$Assign.accept(Ast.java:600)
+	at cd.ir.AstVisitor.visit(AstVisitor.java:16)
+	at cd.transform.CfgStmtVisitor.cfg(CfgStmtVisitor.java:36)
+	at cd.transform.CfgBuilder.build(CfgBuilder.java:35)
+	at cd.Main.semanticCheck(Main.java:136)
+	at cd.AbstractTestAgainstFrozenReference.testSemanticAnalyzer(AbstractTestAgainstFrozenReference.java:168)
+	at cd.AbstractTestAgainstFrozenReference.test(AbstractTestAgainstFrozenReference.java:54)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:298)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:292)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)

@@ -128,10 +128,13 @@ public class Main {
 		}
 		
 		{
+			//Cfg wird jeweils in Ast Node mdecl.cfg gespeichert (in jede Methode)
 			// Build control flow graph:
 			for (ClassDecl cd : astRoots)
-				for (MethodDecl md : cd.methods())
+				for (MethodDecl md : cd.methods()){
+					System.out.println("Build CFG for: "+cd.name+"::"+md.name);
 					new CfgBuilder().build(md);
+				}
 			CfgDump.toString(astRoots, ".cfg", cfgdumpbase, false);
 		}
 	}

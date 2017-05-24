@@ -15,6 +15,7 @@ public class ControlFlowGraph {
 	}
 	
 	public BasicBlock newBlock() {
+		//count wird zu index
 		BasicBlock blk = new BasicBlock(count());
 		allBlocks.add(blk);
 		return blk;

@@ -1,0 +1,29 @@
+Main.main
+  BB0 out:
+    a = 1
+    b = 2
+  BB1 out:
+    a = 3
+    b = 2
+    b = 2
+  BB2 out:
+    a = 1
+    b = 2
+  BB3 out:
+    a = 1
+    b = 2
+  BB4 out:
+    a = 1
+    b = 2
+  BB5 out:
+    a = 1
+    b = 2
+  BB6 out:
+    a = 1
+    b = 2
+  BB7 out:
+    a = 3
+    b = 2
+    b = 2
+
+
