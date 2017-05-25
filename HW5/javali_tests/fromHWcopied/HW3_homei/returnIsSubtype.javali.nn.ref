@@ -1,0 +1,29 @@
+Main.foo1
+  BB0 out: []
+    return s: []
+  BB1 out: []
+
+
+Main.foo2
+  BB0 out: []
+    return s: []
+  BB1 out: []
+
+
+Main.foo3
+  BB0 out: []
+    return null: []
+  BB1 out: []
+
+
+Main.foo4
+  BB0 out: []
+    return: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: []
+  BB1 out: []
+
+

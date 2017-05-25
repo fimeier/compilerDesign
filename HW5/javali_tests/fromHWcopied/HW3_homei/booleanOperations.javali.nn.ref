@@ -1,0 +1,9 @@
+Main.main
+  BB0 out: []
+    this.b2 = false: []
+    this.b1 = (true || this.b2): []
+    this.b1 = !(true): []
+    this.b1 = !((this.b2 && this.b1)): []
+  BB1 out: []
+
+

@@ -1,0 +1,14 @@
+class Main {
+    void main() {
+        int b;
+        b = foo();
+        while (b < 10) {
+            b = b +1;
+            write(b);
+        }
+    }
+
+    int foo() {
+        return 3;
+    }
+}

@@ -1,0 +1,28 @@
+A.m
+  BB0 out: [ret]
+    this.aga = new A[][50]: []
+    this.k = new int[][(4 + 5)]: []
+    this.k = new int[][(this.aga[7].m(...).k[4] + 4)]: []
+    ret = new A(): []
+    return ret: [ret]
+  BB1 out: [ret]
+
+
+Main.k
+  BB0 out: []
+    return 5: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: []
+    this.k(...): []
+    ab = new A(): []
+    this.arr = new A[][15]: [ab]
+    this.k(...): [ab]
+    ab = this.arr[4]: [ab]
+    this.arr[+(((5 * 3) + 2))].aga[1].m(...): []
+    this.arr[4].aga[0].m(...).aga[2].aba.k[this.arr[3].aba.k[3]] = this.arr[3].m(...).aba.k[7]: []
+  BB1 out: []
+
+

@@ -1,0 +1,31 @@
+A.print
+  BB0 out: []
+    this.a = 5: []
+    this.b = 5: []
+    write(this.a): []
+    write(this.b): []
+    writeln(): []
+  BB1 out: []
+
+
+B.print
+  BB0 out: []
+    this.a = 6: []
+    this.b = 6: []
+    write(this.a): []
+    write(this.b): []
+    writeln(): []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: [a, b]
+    a = new B(): []
+    b = (B)(a): [a]
+    write(0): [a, b]
+    writeln(): [a, b]
+    a.print(...): [a, b]
+    b.print(...): [a, b]
+  BB1 out: [a, b]
+
+

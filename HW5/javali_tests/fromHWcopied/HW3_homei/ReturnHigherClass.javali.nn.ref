@@ -1,0 +1,12 @@
+A.foo
+  BB0 out: [a]
+    a = new A1(): []
+    return a: [a]
+  BB1 out: [a]
+
+
+Main.main
+  BB0 out: []
+  BB1 out: []
+
+

@@ -1,0 +1,13 @@
+Main.main
+  BB0 out:
+    a = 100
+    b = read()
+    c = 0
+    d = -(1000000000)
+  BB1 out:
+    a = 100
+    b = read()
+    c = 0
+    d = -(1000000000)
+
+

@@ -1,0 +1,27 @@
+class Main {
+
+   int m(int a, int b) {
+      return a + b + 1;
+   }
+	
+	void main() {
+		int a;
+	   int res;
+	   res = -1;
+
+      res = m(a, a);
+      write(res);
+      writeln();
+      
+      res = this.m(1, 2);
+      write(res);
+      writeln();
+	   
+      write(m(1, 2));
+      writeln();
+      
+      write(this.m(1, 2));
+      writeln();
+	
+	}
+}

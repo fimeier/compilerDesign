@@ -1,0 +1,18 @@
+Main.foo
+  BB0 out: []
+    return 1: []
+  BB1 out: []
+
+
+Main.foo1
+  BB0 out: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: []
+    write(1): []
+    write(this.foo(...)): []
+  BB1 out: []
+
+

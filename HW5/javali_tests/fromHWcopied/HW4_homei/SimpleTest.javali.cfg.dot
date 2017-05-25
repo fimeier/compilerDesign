@@ -1,0 +1,75 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "A.foo"
+    M0_BB0 [
+      shape="record"
+      label="BB0|write(this.x)"
+    ];
+    M0_BB0 -> M0_BB1;
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_1 {
+    label = "A.funA"
+    M1_BB0 [
+      shape="record"
+      label="BB0"
+    ];
+    M1_BB0 -> M1_BB1;
+    M1_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_2 {
+    label = "B.funB"
+    M2_BB0 [
+      shape="record"
+      label="BB0"
+    ];
+    M2_BB0 -> M2_BB1;
+    M2_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_3 {
+    label = "B.foo"
+    M3_BB0 [
+      shape="record"
+      label="BB0"
+    ];
+    M3_BB0 -> M3_BB1;
+    M3_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_4 {
+    label = "Main.main"
+    M4_BB0 [
+      shape="record"
+      label="BB0|c = new int[][3]|this.a = new A()|this.b = new B()|this.a.x = 5|this.g = this.a.x|c[0] = this.loc(...)|write(c[0])"
+    ];
+    M4_BB0 -> M4_BB1;
+    M4_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_5 {
+    label = "Main.loc"
+    M5_BB0 [
+      shape="record"
+      label="BB0|arg = (arg + 2)|return arg"
+    ];
+    M5_BB0 -> M5_BB1;
+    M5_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+}

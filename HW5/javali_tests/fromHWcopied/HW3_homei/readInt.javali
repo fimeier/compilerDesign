@@ -1,0 +1,10 @@
+// TEST: read() produces int
+class Main {
+	void main() {
+		// could not find parser .ref
+		int i;
+		boolean b;
+		i = read();
+		b = read();
+	}
+}

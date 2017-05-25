@@ -1,0 +1,13 @@
+class A {
+    int a;
+}
+
+class Main {
+    void main() {
+        A a;
+        int[] b;
+        a = null;
+        b = null;
+        
+    }
+}

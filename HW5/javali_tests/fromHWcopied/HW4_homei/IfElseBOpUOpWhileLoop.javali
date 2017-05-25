@@ -1,0 +1,164 @@
+/* some test */
+
+class Main {
+	int b;
+	void main() {
+		boolean bt;
+		boolean bf;
+		int a;
+		b = 300;
+		a = 200;
+		
+		bt = true;
+		bf = false;
+		
+		/*
+		write(a);
+		writeln();
+		write(b);
+		writeln();
+		write(666);
+		writeln();
+		*/
+		
+		//<
+		if (a<b){
+			write(a);
+		} else {
+			write(666);
+		}
+		//<=
+		if (a<=b){
+			write(a);
+		} else {
+			write(666);
+		}
+		//>
+		if (a>b){
+			write(a);
+		} else {
+			write(666);
+		}
+		//>=
+		if (a>b){
+			write(a);
+		} else {
+			write(666);
+		}
+		
+		if (!true){
+			write(a);
+		} else {
+			write(666);
+		}
+		
+		if (!false){
+			write(a);
+		} else {
+			write(666);
+		}
+		
+		writeln();
+		//&&
+		if (false && true){
+			write(a);
+		} else {
+			write(666);
+		}
+		
+			
+		writeln();
+		//||
+		if (bt || bf){
+			write(1);
+		} else {
+			write(0);
+		}
+		
+		
+		//BOp tests
+		write(3*4);writeln();
+		write(3+4);writeln();
+		write(3-4);writeln();
+		write(13%7);writeln();
+		write(17/7);
+		
+		//assign tests with <, <=, >, >=
+		bt = 3 < 4;
+		bt = 4 < 3;
+		bt = 4 < 4;
+		bt = 3<=4;
+		bt = 4<=3;
+		bt = 4<=4;
+		bt = 3>4;
+		bt = 4>3;
+		bt = 4>4;
+		bt = 3>=4;
+		bt = 4>=3;
+		bt = 4>=4;
+		
+		//assign tests with &&, ||
+		bt = true && true;
+		bt = true && false;
+		bt = false && false;
+		bt = true || true;
+		bt = true || false;
+		bt = false || false;
+		
+		//assign test with !
+		bt = ! bf;
+		bt = ! true;
+		
+
+		writeln();
+		if (bt){
+			write(1);
+		} else {
+			write(0);
+		}
+		
+		//unary ops with +,-
+		writeln();
+		write(+1);writeln();
+		write(-0);writeln();
+		
+		bt = true;
+		//while(true&&true)
+		//while(true&&false)
+		//while(false&&false)
+		//while((true||true) && bt)
+	//	while((true||false) && bt)
+	//	while((false||false) && bt)
+		//while(!true)
+		while(!false && bt)
+		
+		{
+			write(1);
+			bt = ! bt;
+		}
+		write(0);writeln();
+		
+		
+		//assign tests with ==, !=
+		
+		bt = true == true;
+	
+		writeln();
+		if (bt){
+			write(1);
+		} else {
+			write(0);
+		}
+		
+		
+		
+		
+			
+		
+		
+		
+		
+		
+		
+	}
+}

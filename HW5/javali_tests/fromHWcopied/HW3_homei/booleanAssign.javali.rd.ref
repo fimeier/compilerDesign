@@ -1,0 +1,28 @@
+Main.main
+  BB0 out:
+    a = 2
+    b = 1
+    c = 6
+    k = ((b < a) && (a < c))
+  BB1 out:
+    a = 2
+    b = 1
+    c = 6
+    k = ((b < a) && (a < c))
+  BB2 out:
+    a = 2
+    b = 1
+    c = 6
+    k = ((b < a) && (a < c))
+  BB3 out:
+    a = 2
+    b = 1
+    c = 6
+    k = ((b < a) && (a < c))
+  BB4 out:
+    a = 2
+    b = 1
+    c = 6
+    k = ((b < a) && (a < c))
+
+

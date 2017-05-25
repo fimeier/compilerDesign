@@ -1,0 +1,8 @@
+Main.main
+  BB0 out: []
+    write(0): []
+    write(-(1)): []
+    write((2 + 4)): []
+  BB1 out: []
+
+

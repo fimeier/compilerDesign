@@ -1,0 +1,18 @@
+A.print
+  BB0 out: []
+    write(1): []
+  BB1 out: []
+
+
+D.fun
+  BB0 out: []
+    return a: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: []
+    write(this.d.fun(...).foo): []
+  BB1 out: []
+
+

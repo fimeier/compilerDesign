@@ -1,0 +1,18 @@
+// may not override funcs with different params.
+
+class Main {
+    void main() {
+    }
+
+}
+       
+class A {
+    // void foo(){} //wrong arg count
+   // void foo(boolean x){} //wrong parameter type
+   int foo(int x){return 3;} //wrong return type
+    
+}
+
+class B extends A {
+     void foo(int x){}
+}

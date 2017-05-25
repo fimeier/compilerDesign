@@ -1,0 +1,9 @@
+Main.main
+  BB0 out: []
+    this.a = 1: []
+    this.b = 2: []
+    this.c = 3: []
+    this.res = ((-(this.a) + +(this.b)) - ((this.c * this.a) % (this.b / 1))): []
+  BB1 out: []
+
+

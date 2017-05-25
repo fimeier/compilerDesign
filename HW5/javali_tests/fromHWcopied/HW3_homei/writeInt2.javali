@@ -1,0 +1,14 @@
+// TEST: write takes integer type
+class Main {
+	boolean b;
+	void main() {
+		write(1);
+		write(foo());
+		// TYPE_ERROR
+		//write(foo1());
+		write(b);
+
+	}
+	int foo(){return 1;}
+	void foo1(){}
+}

@@ -1,0 +1,9 @@
+Main.main
+  BB0 out:
+    a = 0
+    b = 2
+  BB1 out:
+    a = 0
+    b = 2
+
+

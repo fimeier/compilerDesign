@@ -1,0 +1,127 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "Main.main"
+    M0_BB0 [
+      shape="record"
+      label="BB0|this.b = 300|a = 200|bt = true|bf = false|If: (a \< this.b)"
+    ];
+    M0_BB0 -> M0_BB2;
+    M0_BB0 -> M0_BB3 [label="False"];
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M0_BB2 [
+      shape="record"
+      label="BB2|write(a)"
+    ];
+    M0_BB2 -> M0_BB4;
+    M0_BB3 [
+      shape="record"
+      label="BB3|write(666)"
+    ];
+    M0_BB3 -> M0_BB4;
+    M0_BB4 [
+      shape="record"
+      label="BB4|If: (a \<= this.b)"
+    ];
+    M0_BB4 -> M0_BB5;
+    M0_BB4 -> M0_BB6 [label="False"];
+    M0_BB5 [
+      shape="record"
+      label="BB5|write(a)"
+    ];
+    M0_BB5 -> M0_BB7;
+    M0_BB6 [
+      shape="record"
+      label="BB6|write(666)"
+    ];
+    M0_BB6 -> M0_BB7;
+    M0_BB7 [
+      shape="record"
+      label="BB7|If: (a \> this.b)"
+    ];
+    M0_BB7 -> M0_BB8;
+    M0_BB7 -> M0_BB9 [label="False"];
+    M0_BB8 [
+      shape="record"
+      label="BB8|write(a)"
+    ];
+    M0_BB8 -> M0_BB10;
+    M0_BB9 [
+      shape="record"
+      label="BB9|write(666)"
+    ];
+    M0_BB9 -> M0_BB10;
+    M0_BB10 [
+      shape="record"
+      label="BB10|If: (a \> this.b)"
+    ];
+    M0_BB10 -> M0_BB11;
+    M0_BB10 -> M0_BB12 [label="False"];
+    M0_BB11 [
+      shape="record"
+      label="BB11|write(a)"
+    ];
+    M0_BB11 -> M0_BB13;
+    M0_BB12 [
+      shape="record"
+      label="BB12|write(666)"
+    ];
+    M0_BB12 -> M0_BB13;
+    M0_BB13 [
+      shape="record"
+      label="BB13|writeln()|If: (false && true)"
+    ];
+    M0_BB13 -> M0_BB14;
+    M0_BB13 -> M0_BB15 [label="False"];
+    M0_BB14 [
+      shape="record"
+      label="BB14|write(a)"
+    ];
+    M0_BB14 -> M0_BB16;
+    M0_BB15 [
+      shape="record"
+      label="BB15|write(666)"
+    ];
+    M0_BB15 -> M0_BB16;
+    M0_BB16 [
+      shape="record"
+      label="BB16|writeln()|If: (bt \|\| bf)"
+    ];
+    M0_BB16 -> M0_BB17;
+    M0_BB16 -> M0_BB18 [label="False"];
+    M0_BB17 [
+      shape="record"
+      label="BB17|write(1)"
+    ];
+    M0_BB17 -> M0_BB19;
+    M0_BB18 [
+      shape="record"
+      label="BB18|write(0)"
+    ];
+    M0_BB18 -> M0_BB19;
+    M0_BB19 [
+      shape="record"
+      label="BB19|write((3 * 4))|writeln()|write((3 + 4))|writeln()|write((3 - 4))|writeln()|write((13 % 7))|writeln()|write((17 / 7))|bt = (3 \< 4)|bt = (4 \< 3)|bt = (4 \< 4)|bt = (3 \<= 4)|bt = (4 \<= 3)|bt = (4 \<= 4)|bt = (3 \> 4)|bt = (4 \> 3)|bt = (4 \> 4)|bt = (3 \>= 4)|bt = (4 \>= 3)|bt = (4 \>= 4)|bt = (true && true)|bt = (true && false)|bt = (false && false)|bt = (true \|\| true)|bt = (true \|\| false)|bt = (false \|\| false)|writeln()|If: bt"
+    ];
+    M0_BB19 -> M0_BB20;
+    M0_BB19 -> M0_BB21 [label="False"];
+    M0_BB20 [
+      shape="record"
+      label="BB20|write(1)"
+    ];
+    M0_BB20 -> M0_BB22;
+    M0_BB21 [
+      shape="record"
+      label="BB21|write(0)"
+    ];
+    M0_BB21 -> M0_BB22;
+    M0_BB22 [
+      shape="record"
+      label="BB22"
+    ];
+    M0_BB22 -> M0_BB1;
+  }
+}

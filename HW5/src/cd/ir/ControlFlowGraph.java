@@ -9,18 +9,18 @@ import cd.ir.Ast.Expr;
 public class ControlFlowGraph {
 	public BasicBlock start, end;
 	public final List<BasicBlock> allBlocks = new ArrayList<BasicBlock>();
-	
+
 	public int count() {
 		return allBlocks.size();
 	}
-	
+
 	public BasicBlock newBlock() {
 		//count wird zu index
 		BasicBlock blk = new BasicBlock(count());
 		allBlocks.add(blk);
 		return blk;
 	}
-	
+
 	/**
 	 * Given a list of basic blocks that do not yet have successors,
 	 * merges their control flows into a single successor and returns
@@ -36,7 +36,7 @@ public class ControlFlowGraph {
 		}
 		return result;
 	}
-	
+
 	/** 
 	 * Terminates {@code blk} so that it evaluates {@code cond},
 	 * and creates two new basic blocks, one for the case where
@@ -54,6 +54,13 @@ public class ControlFlowGraph {
 	}
 
 	public void connect(BasicBlock from, BasicBlock to) {
+		System.out.println("CONNECT: "+from.index +" -> " +to.index);
+		//IF returnStmt-> not END => don't do it
+		if(from.stmts.size()>=1){
+			if ( from.stmts.get(from.stmts.size()-1).getClass().getSimpleName().equals("ReturnStmt") && !to.equals(end)){
+				return;
+			}
+		}
 		to.predecessors.add(from);
 		from.successors.add(to);
 	}

@@ -1,0 +1,11 @@
+Main.main
+  BB0 out: []
+    this.i1 = 1: []
+    this.i2 = 0: []
+    this.b1 = (this.i1 < this.i2): []
+    this.b2 = (10 <= 5): []
+    this.b1 = (this.i1 > 0): []
+    this.b2 = (-(5) >= this.i2): []
+  BB1 out: []
+
+

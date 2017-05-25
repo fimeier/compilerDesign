@@ -1,0 +1,16 @@
+Main.m
+  BB0 out:
+    a = 3
+  BB1 out:
+    a = 3
+
+
+Main.main
+  BB0 out:
+    a = 3
+    b = 4
+  BB1 out:
+    a = 3
+    b = 4
+
+

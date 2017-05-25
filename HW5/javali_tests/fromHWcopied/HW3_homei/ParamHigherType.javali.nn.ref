@@ -1,0 +1,13 @@
+A1.foo
+  BB0 out: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: [a1, b]
+    b = new B(): []
+    a1 = new A1(): [b]
+    a1.foo(...): [a1, b]
+  BB1 out: [a1, b]
+
+

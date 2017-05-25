@@ -1,0 +1,11 @@
+Main.main
+  BB0 out:
+    a = 8
+    b = (a * c)
+    c = 9
+  BB1 out:
+    a = 8
+    b = (a * c)
+    c = 9
+
+

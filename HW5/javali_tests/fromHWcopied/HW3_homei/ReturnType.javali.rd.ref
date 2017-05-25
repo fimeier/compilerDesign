@@ -1,0 +1,12 @@
+Main.foo
+  BB0 out:
+  BB1 out:
+
+
+Main.main
+  BB0 out:
+    x = this.foo(...)
+  BB1 out:
+    x = this.foo(...)
+
+

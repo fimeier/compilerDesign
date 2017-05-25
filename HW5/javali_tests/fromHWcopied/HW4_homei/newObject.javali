@@ -1,0 +1,41 @@
+class A {
+    int k;
+    int foo() {
+        return 0;
+    }
+}
+
+class B extends A{
+    int j;
+    int boo(int i) {
+        return i;
+    }
+    int foo() {
+        return 1;
+    }
+}
+
+class C extends B {
+    int h;
+    int boo(int i) {return i+1;}
+}
+
+class Main {
+    int k;
+    void main() {
+        A a;
+        B b;
+        A[] arr;
+        arr = new A[1];
+        arr[0] = new A();
+        arr[0].k = 10;
+        write(arr[0].k);
+        k = 6;
+        a = new A();
+        write(a.foo());
+        b = new B();
+        write(b.foo());
+        write(k);
+        write(b.boo(k));
+    }
+}

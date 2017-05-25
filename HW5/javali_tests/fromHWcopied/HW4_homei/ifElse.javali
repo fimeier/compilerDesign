@@ -1,0 +1,16 @@
+class Main {
+    void main() {
+        int a;
+        a = 8;
+        if (1 < 4) {
+            if (1 < 7) {
+                a = 2;
+            } else {
+                a = 9;
+            }
+        } else {
+            a = 7;
+        }
+        write(a);
+    }
+}

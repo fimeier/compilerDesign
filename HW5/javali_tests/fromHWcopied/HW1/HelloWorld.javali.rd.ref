@@ -1,0 +1,34 @@
+Main.bla
+  BB0 out:
+  BB1 out:
+  BB2 out:
+  BB3 out:
+  BB4 out:
+
+
+Main.main
+  BB0 out:
+    a = 6
+    b = this.ok(...)
+  BB1 out:
+    a = 6
+    b = this.ok(...)
+
+
+Main.ok
+  BB0 out:
+  BB1 out:
+    a = 4
+    b = 3
+  BB2 out:
+    b = 3
+  BB3 out:
+  BB4 out:
+  BB5 out:
+    a = 4
+  BB6 out:
+    a = 4
+  BB7 out:
+    a = 4
+
+

@@ -1,0 +1,15 @@
+// TEST: INVALID_OVERRIDE
+// Overridden method fun1 has 0 parameters, but original has 1
+class Main {
+	void main() {}
+}
+class A {
+	int i;
+	int h;
+	void fun1(int i1){}
+}
+class S extends A {
+	int h;
+	int s;
+	void fun1(){}
+}

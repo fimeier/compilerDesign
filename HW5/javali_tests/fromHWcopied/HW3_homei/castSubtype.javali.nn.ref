@@ -1,0 +1,8 @@
+Main.main
+  BB0 out: []
+    this.c = this.r: []
+    this.r = (R)(this.c): []
+    this.c = (C)(this.r): []
+  BB1 out: []
+
+

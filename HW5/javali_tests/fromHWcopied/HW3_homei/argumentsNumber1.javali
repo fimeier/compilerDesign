@@ -1,0 +1,14 @@
+// TEST: number of arguments correct
+class Main {
+	A a;
+	void main() {
+		a = new A();
+		a.method(1,1);
+		// WRONG_NUMBER_OF_ARGUMENTS
+		a.method(1);
+
+	}
+}
+class A {
+	void method(int a, int b){}
+}

@@ -1,0 +1,13 @@
+Main.main
+  BB0 out:
+    a = 30
+    b = -(20)
+    c = +(c)
+    d = (d - 2)
+  BB1 out:
+    a = 30
+    b = -(20)
+    c = +(c)
+    d = (d - 2)
+
+

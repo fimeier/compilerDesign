@@ -1,0 +1,39 @@
+/* test */
+
+
+class A { 
+	int x;
+	void foo(){
+	write(x);
+	}
+	void funA(){}
+}
+class B extends A { 
+	void funB(){}
+	void foo(){}
+}
+
+
+class Main { 
+	A a;
+	B b;
+	int g;
+   	void main() {
+   		int[] c;
+   		c = new int[3];
+   		
+   		
+   		a = new A();
+   		b = new B();
+  		a.x = 5;
+   		g = a.x; 
+   		c[0] = loc(g+1);
+   		
+   		write(c[0]);
+	}
+	
+	int loc(int arg){
+		arg = arg +2;
+		return arg;
+	}
+}

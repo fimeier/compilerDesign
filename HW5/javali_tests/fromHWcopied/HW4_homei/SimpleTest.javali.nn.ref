@@ -1,0 +1,40 @@
+A.foo
+  BB0 out: []
+    write(this.x): []
+  BB1 out: []
+
+
+A.funA
+  BB0 out: []
+  BB1 out: []
+
+
+B.foo
+  BB0 out: []
+  BB1 out: []
+
+
+B.funB
+  BB0 out: []
+  BB1 out: []
+
+
+Main.loc
+  BB0 out: []
+    arg = (arg + 2): []
+    return arg: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: [c]
+    c = new int[][3]: []
+    this.a = new A(): [c]
+    this.b = new B(): [c]
+    this.a.x = 5: [c]
+    this.g = this.a.x: [c]
+    c[0] = this.loc(...): [c]
+    write(c[0]): [c]
+  BB1 out: [c]
+
+

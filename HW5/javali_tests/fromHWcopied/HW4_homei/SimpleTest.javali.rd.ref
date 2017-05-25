@@ -1,0 +1,34 @@
+A.foo
+  BB0 out:
+  BB1 out:
+
+
+A.funA
+  BB0 out:
+  BB1 out:
+
+
+B.foo
+  BB0 out:
+  BB1 out:
+
+
+B.funB
+  BB0 out:
+  BB1 out:
+
+
+Main.loc
+  BB0 out:
+    arg = (arg + 2)
+  BB1 out:
+    arg = (arg + 2)
+
+
+Main.main
+  BB0 out:
+    c = new int[][3]
+  BB1 out:
+    c = new int[][3]
+
+

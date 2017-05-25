@@ -1,0 +1,7 @@
+Main.main
+  BB0 out:
+    b = (this.a == this.s)
+  BB1 out:
+    b = (this.a == this.s)
+
+

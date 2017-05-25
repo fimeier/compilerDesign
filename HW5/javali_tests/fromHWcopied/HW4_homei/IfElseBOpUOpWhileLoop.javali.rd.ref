@@ -1,0 +1,144 @@
+Main.main
+  BB0 out:
+    a = 200
+    bf = false
+    bt = true
+  BB1 out:
+    a = 200
+    bf = false
+    bt = (true == true)
+  BB2 out:
+    a = 200
+    bf = false
+    bt = true
+  BB3 out:
+    a = 200
+    bf = false
+    bt = true
+  BB4 out:
+    a = 200
+    bf = false
+    bt = true
+  BB5 out:
+    a = 200
+    bf = false
+    bt = true
+  BB6 out:
+    a = 200
+    bf = false
+    bt = true
+  BB7 out:
+    a = 200
+    bf = false
+    bt = true
+  BB8 out:
+    a = 200
+    bf = false
+    bt = true
+  BB9 out:
+    a = 200
+    bf = false
+    bt = true
+  BB10 out:
+    a = 200
+    bf = false
+    bt = true
+  BB11 out:
+    a = 200
+    bf = false
+    bt = true
+  BB12 out:
+    a = 200
+    bf = false
+    bt = true
+  BB13 out:
+    a = 200
+    bf = false
+    bt = true
+  BB14 out:
+    a = 200
+    bf = false
+    bt = true
+  BB15 out:
+    a = 200
+    bf = false
+    bt = true
+  BB16 out:
+    a = 200
+    bf = false
+    bt = true
+  BB17 out:
+    a = 200
+    bf = false
+    bt = true
+  BB18 out:
+    a = 200
+    bf = false
+    bt = true
+  BB19 out:
+    a = 200
+    bf = false
+    bt = true
+  BB20 out:
+    a = 200
+    bf = false
+    bt = true
+  BB21 out:
+    a = 200
+    bf = false
+    bt = true
+  BB22 out:
+    a = 200
+    bf = false
+    bt = true
+  BB23 out:
+    a = 200
+    bf = false
+    bt = true
+  BB24 out:
+    a = 200
+    bf = false
+    bt = true
+  BB25 out:
+    a = 200
+    bf = false
+    bt = !(true)
+  BB26 out:
+    a = 200
+    bf = false
+    bt = !(true)
+  BB27 out:
+    a = 200
+    bf = false
+    bt = !(true)
+  BB28 out:
+    a = 200
+    bf = false
+    bt = true
+  BB29 out:
+    a = 200
+    bf = false
+    bt = !(bt)
+    bt = true
+  BB30 out:
+    a = 200
+    bf = false
+    bt = !(bt)
+  BB31 out:
+    a = 200
+    bf = false
+    bt = (true == true)
+  BB32 out:
+    a = 200
+    bf = false
+    bt = (true == true)
+  BB33 out:
+    a = 200
+    bf = false
+    bt = (true == true)
+  BB34 out:
+    a = 200
+    bf = false
+    bt = (true == true)
+
+

@@ -1,0 +1,16 @@
+Main.foo
+  BB0 out: []
+    this.c = new C(): []
+    x = this.c.b.i: []
+    x = i: []
+    i = this.i: []
+    this.b = (B)(this.a): []
+    this.i = this.b.x: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: []
+  BB1 out: []
+
+

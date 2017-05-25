@@ -1,0 +1,22 @@
+A.fun1
+  BB0 out: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: []
+    this.x = this.a.i: []
+    this.x = this.s.s: []
+    this.x = this.s.i: []
+    this.a.fun1(...): []
+    this.s.fun1(...): []
+    this.x = this.a.h: []
+    this.x = this.s.h: []
+  BB1 out: []
+
+
+S.fun1
+  BB0 out: []
+  BB1 out: []
+
+

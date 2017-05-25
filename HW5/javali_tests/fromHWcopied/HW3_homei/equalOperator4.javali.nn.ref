@@ -1,0 +1,6 @@
+Main.main
+  BB0 out: []
+    b = (this.s != this.s): []
+  BB1 out: []
+
+

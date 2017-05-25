@@ -1,0 +1,19 @@
+A.print
+  BB0 out:
+  BB1 out:
+
+
+B.print
+  BB0 out:
+  BB1 out:
+
+
+Main.main
+  BB0 out:
+    a = new B()
+    b = (B)(a)
+  BB1 out:
+    a = new B()
+    b = (B)(a)
+
+

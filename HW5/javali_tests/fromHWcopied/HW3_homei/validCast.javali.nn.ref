@@ -1,0 +1,9 @@
+Main.main
+  BB0 out: []
+    this.a = new A(): []
+    this.s = new S(): []
+    this.a = new S(): []
+    this.a = (A)(this.s): []
+  BB1 out: []
+
+

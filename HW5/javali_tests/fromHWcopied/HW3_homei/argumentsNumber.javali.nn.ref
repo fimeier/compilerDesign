@@ -1,0 +1,12 @@
+A.method
+  BB0 out: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: []
+    this.a = new A(): []
+    this.a.method(...): []
+  BB1 out: []
+
+

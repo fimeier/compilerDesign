@@ -1,0 +1,23 @@
+// there is no Main class
+
+/*
+class Main {
+	int main(){
+	
+	
+	
+	return 0;
+	
+	}
+
+
+}*/
+
+class Foo {
+    int x;
+    
+    void bar() {
+        write(17);
+        writeln();
+    }
+}

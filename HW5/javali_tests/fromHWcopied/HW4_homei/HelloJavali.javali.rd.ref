@@ -1,0 +1,95 @@
+Main.main
+  BB0 out:
+    a = 200
+    bf = false
+    bt = true
+  BB1 out:
+    a = 200
+    bf = false
+    bt = (false || false)
+  BB2 out:
+    a = 200
+    bf = false
+    bt = true
+  BB3 out:
+    a = 200
+    bf = false
+    bt = true
+  BB4 out:
+    a = 200
+    bf = false
+    bt = true
+  BB5 out:
+    a = 200
+    bf = false
+    bt = true
+  BB6 out:
+    a = 200
+    bf = false
+    bt = true
+  BB7 out:
+    a = 200
+    bf = false
+    bt = true
+  BB8 out:
+    a = 200
+    bf = false
+    bt = true
+  BB9 out:
+    a = 200
+    bf = false
+    bt = true
+  BB10 out:
+    a = 200
+    bf = false
+    bt = true
+  BB11 out:
+    a = 200
+    bf = false
+    bt = true
+  BB12 out:
+    a = 200
+    bf = false
+    bt = true
+  BB13 out:
+    a = 200
+    bf = false
+    bt = true
+  BB14 out:
+    a = 200
+    bf = false
+    bt = true
+  BB15 out:
+    a = 200
+    bf = false
+    bt = true
+  BB16 out:
+    a = 200
+    bf = false
+    bt = true
+  BB17 out:
+    a = 200
+    bf = false
+    bt = true
+  BB18 out:
+    a = 200
+    bf = false
+    bt = true
+  BB19 out:
+    a = 200
+    bf = false
+    bt = (false || false)
+  BB20 out:
+    a = 200
+    bf = false
+    bt = (false || false)
+  BB21 out:
+    a = 200
+    bf = false
+    bt = (false || false)
+  BB22 out:
+    a = 200
+    bf = false
+    bt = (false || false)
+
+

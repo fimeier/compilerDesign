@@ -1,0 +1,15 @@
+// correct override
+
+class Main {
+    void main() {
+    }
+
+}
+       
+class A {
+     void foo(int x){}
+}
+
+class B extends A {
+     void foo(int x){}
+}

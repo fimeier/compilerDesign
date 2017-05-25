@@ -1,0 +1,8 @@
+Main.main
+  BB0 out: []
+    this.a = 3: []
+    this.b = 0: []
+    write((this.a / this.b)): []
+  BB1 out: []
+
+

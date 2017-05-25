@@ -1,0 +1,17 @@
+// test read and see whether the allocation on the stack does not get messed up.
+class Main {
+	void main() {
+		int r1, r2;
+		int i0,  i1,  i2;
+
+		i0 = 6;
+		i1 = read();
+		write(i1);
+		i2 = read();
+		writeln();
+		write(i2);
+		writeln();
+		r1 = read();
+		write(r1);
+	}
+}

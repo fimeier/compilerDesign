@@ -1,0 +1,19 @@
+class Main {
+
+	void main() {
+		int a, b;
+		
+		a = 3;
+		b = 4;
+		
+		write(a);
+		writeln();
+		m();
+	}
+	
+	int m() {
+		int a;
+		a = 3;
+		return a;
+	}
+}

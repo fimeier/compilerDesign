@@ -1,0 +1,19 @@
+// TEST: assign null
+class Main {
+	int i;
+	boolean b;
+	A a;
+	S s;
+	void main() {
+		// OK
+		s = null;
+		a = null;
+		//TYPE_ERROR
+		//i = null;
+		b = null;
+
+
+	}
+}
+class A{}
+class S extends A{}

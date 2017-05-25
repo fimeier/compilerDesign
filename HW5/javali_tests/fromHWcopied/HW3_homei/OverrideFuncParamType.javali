@@ -1,0 +1,15 @@
+// may not override funcs with different params
+
+class Main {
+    void main() {
+    }
+
+}
+       
+class A {
+     void foo(int x){}
+}
+
+class B extends A {
+     void foo(float x){}
+}

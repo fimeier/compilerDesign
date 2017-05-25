@@ -1,0 +1,29 @@
+A.fun
+  BB0 out: []
+    return 1: []
+  BB1 out: []
+
+
+Main.foo
+  BB0 out: []
+    return 1: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: []
+    this.i1 = this.i2: []
+    this.i1 = this.a.a: []
+    this.i2 = this.arr[1]: []
+    this.i1 = this.a.fun(...): []
+    this.i1 = this.foo(...): []
+    write(this.i2): []
+    write(this.a.a): []
+    write(this.arr[1]): []
+    write(this.a.fun(...)): []
+    write(this.foo(...)): []
+    this.a.a = this.i1: []
+    this.arr[1] = this.i2: []
+  BB1 out: []
+
+
