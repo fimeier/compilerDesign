@@ -10,6 +10,8 @@ import java.util.Set;
 import cd.ir.Ast.Assign;
 import cd.ir.Ast.Expr;
 import cd.ir.Ast.Stmt;
+import cd.ir.Ast.Var;
+import cd.ir.Symbol.VariableSymbol.Kind;
 import cd.transform.analysis.ReachingDefsAnalysis.Def;
 
 /** Represents the control flow graph of a single method. */
@@ -100,26 +102,32 @@ public class ControlFlowGraph {
 
 			//alle Stmts des Blocks
 			for (Stmt stmt: block.stmts){
+				//Assign assign
+
 				if (stmt.getClass().getSimpleName().equals("Assign")){
+					Assign assign = (Assign) stmt;
+					//!(stmt.left() instanceof Var) || ((Var) assign.left()).sym.kind == Kind.FIELD
+					if (assign.left() instanceof Var && !(((Var) assign.left()).sym.kind == Kind.FIELD)){
 
-					//create Def for stmt in this block
-					Def newDef = new Def((Assign)stmt);
-					String target = newDef.target;
-					defInBlock.add(newDef);
+						//create Def for stmt in this block
+						Def newDef = new Def((Assign)stmt);
+						String target = newDef.target;
+						defInBlock.add(newDef);
 
-					/*
-					 * add it to defSet
-					 */
-					//get Set from Map or create it if needed
-					Set<Def> definitionSet = getDefSet(target);
-					if (definitionSet==null){
-						definitionSet = new HashSet<>();
+						/*
+						 * add it to defSet
+						 */
+						//get Set from Map or create it if needed
+						Set<Def> definitionSet = getDefSet(target);
+						if (definitionSet==null){
+							definitionSet = new HashSet<>();
+						}
+						definitionSet.add(newDef);
+						defSet.put(newDef.target, definitionSet);
+
+
+						Def oldGenDef = tempGenSet.put(target,newDef);
 					}
-					definitionSet.add(newDef);
-					defSet.put(newDef.target, definitionSet);
-
-
-					Def oldGenDef = tempGenSet.put(target,newDef);
 
 				}
 			}
@@ -141,24 +149,24 @@ public class ControlFlowGraph {
 			Set<Def> defInBlock = defInAllBlocks.get(block.index);
 			for (Def entry: defInBlock){
 				Boolean removeEntry = !block.killSet.contains(entry);
-				
+
 				Set<Def> definitionSet = getDefSet(entry.target);
 				//definitionSet.remove(entry);
 				block.killSet.addAll(definitionSet);
-				
+
 				if (removeEntry){
 					block.killSet.remove(entry);
 				}
 			}
-			
+
 			System.out.println("killSet Block "+block.index+": "+block.killSet.toString());
 		}
 
-	//Debug
-	System.out.println("Gefundene target's: "+defSet.keySet().toString());
-}
+		//Debug
+		System.out.println("Gefundene target's: "+defSet.keySet().toString());
+	}
 
-/*
+	/*
 	public void generateGenSet(){
 		for(BasicBlock block: allBlocks){
 			block.generateGenSet(this);
