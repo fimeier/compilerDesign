@@ -23,13 +23,13 @@ import cd.util.debug.NonNullDump;
 import cd.util.debug.ReachingDefsDump;
 
 abstract public class AbstractTestAgainstFrozenReference {
-    
+
 	public static final String SEMANTIC_OK = "OK";
-    public static final String PARSE_FAILURE = "ParseFailure";
-	
-    public File file, sfile, binfile, infile;
+	public static final String PARSE_FAILURE = "ParseFailure";
+
+	public File file, sfile, binfile, infile;
 	public File parserreffile, semanticreffile, execreffile, cfgreffile, rdreffile,
-	        nnreffile, optreffile;
+	nnreffile, optreffile;
 	public File errfile;
 	public Main main;
 
@@ -38,7 +38,7 @@ abstract public class AbstractTestAgainstFrozenReference {
 	@Test(timeout=10000000)
 	public void test() throws Throwable {
 		System.err.println("[" + counter++ + " = " + file + "]");
-		
+
 		try {
 			// Delete intermediate files from previous runs:
 			if (sfile.exists())
@@ -47,21 +47,23 @@ abstract public class AbstractTestAgainstFrozenReference {
 				binfile.delete();
 
 			runReference();
-			
+
 			List<ClassDecl> astRoots = testParser();
 			if (astRoots != null) {
 				{
 					boolean passedSemanticAnalysis = testSemanticAnalyzer(astRoots);
-					
+
 					{
-						if (passedSemanticAnalysis) {						
+						if (passedSemanticAnalysis) {
+							//Task 1
 							testControlFlowGraph(astRoots);
-							//TODO uncomment for task 2,3,...
+							//Task 2
 							testReachingDefsAnalysis(astRoots);
-				//			testNonNullAnalysis(astRoots);
+							//Task 3
+							//			testNonNullAnalysis(astRoots);
 						}
 					}
-					
+
 					{
 						if (passedSemanticAnalysis) {
 							testCodeGenerator(astRoots);
@@ -90,30 +92,30 @@ abstract public class AbstractTestAgainstFrozenReference {
 	}
 
 	private void runReference() throws IOException, InterruptedException {
-        String slash = File.separator;
-        String colon = File.pathSeparator;
-        String javaExe = System.getProperty("java.home") + slash + "bin" + slash + Config.JAVA_EXE;
-        
-        ProcessBuilder pb = new ProcessBuilder(
-                javaExe, "-Dcd.meta_hidden.Version=" + referenceVersion(),
-                "-cp", "lib/frozenReferenceObf.jar" + colon + " lib/junit-4.12.jar" + colon + "lib/antlr-4.4-complete.jar",
-                "cd.FrozenReferenceMain", file.getAbsolutePath());
-	        
-        Process proc = pb.start();
-        proc.waitFor();
-        try (InputStream err = proc.getErrorStream()) {
-            if (err.available() > 0) {
-                byte b[] = new byte[err.available()];
-                err.read(b, 0, b.length);
-                System.err.println(new String(b));
-            }
-        }
+		String slash = File.separator;
+		String colon = File.pathSeparator;
+		String javaExe = System.getProperty("java.home") + slash + "bin" + slash + Config.JAVA_EXE;
+
+		ProcessBuilder pb = new ProcessBuilder(
+				javaExe, "-Dcd.meta_hidden.Version=" + referenceVersion(),
+				"-cp", "lib/frozenReferenceObf.jar" + colon + " lib/junit-4.12.jar" + colon + "lib/antlr-4.4-complete.jar",
+				"cd.FrozenReferenceMain", file.getAbsolutePath());
+
+		Process proc = pb.start();
+		proc.waitFor();
+		try (InputStream err = proc.getErrorStream()) {
+			if (err.available() > 0) {
+				byte b[] = new byte[err.available()];
+				err.read(b, 0, b.length);
+				System.err.println(new String(b));
+			}
+		}
 	}
-	
+
 	private static String referenceVersion() {
-        {
-            return "CD_HW_CFG_SOL";
-        }
+		{
+			return "CD_HW_CFG_SOL";
+		}
 	}
 
 	private String tryReadRefFile(File fileToFind) {
@@ -126,7 +128,7 @@ abstract public class AbstractTestAgainstFrozenReference {
 		}
 		throw new RuntimeException("ERROR: could not find file " + fileToFind.getPath());
 	}
-	
+
 	/** Run the parser and compare the output against the reference results */
 	private List<ClassDecl> testParser() throws Exception {
 		String parserRef = tryReadRefFile(parserreffile);
@@ -177,15 +179,15 @@ abstract public class AbstractTestAgainstFrozenReference {
 		assertEquals("semantic", semanticRef, result);
 		return passed;
 	}
-	
+
 	private String findSemanticRef() throws IOException {
 		// Semantic ref file is a little different. It consists
 		// of 2 lines, but only the first line is significant.
 		// The second one contains additional information that we log
 		// to the debug file.
-	
+
 		String res = tryReadRefFile(semanticreffile);
-	
+
 		// Extract the first line: there should always be multiple lines,
 		// but someone may have tinkered with the file or something
 		if (res.contains("\n")) {
@@ -200,21 +202,22 @@ abstract public class AbstractTestAgainstFrozenReference {
 	}
 
 	private void testControlFlowGraph(List<ClassDecl> astRoots)
-	throws IOException {
+			throws IOException {
 		String cfgRef = tryReadRefFile(cfgreffile);
 
 		/* CFG is built during semantic analysis. We expect CFG testing to
 		 * happen after the semantic analysis. */
-	
+
 		assertEquals("cfg", cfgRef, CfgDump.toString(astRoots, false));
 	}
-	
+
 	private void testReachingDefsAnalysis(List<ClassDecl> astRoots)
-	        throws IOException {
+			throws IOException {
 		String rdRef = tryReadRefFile(rdreffile);
 		assertEquals("rd", rdRef, ReachingDefsDump.toString(astRoots));
 	}
-	
+
+	@SuppressWarnings("unused")
 	private void testNonNullAnalysis(List<ClassDecl> astRoots)
 			throws IOException {
 		String nnRef = tryReadRefFile(nnreffile);
@@ -260,7 +263,7 @@ abstract public class AbstractTestAgainstFrozenReference {
 
 		// Compute the output to what we expected to see.
 		if (!execRef.equals(execOut))
-		    assertEqualOutput("exec", execRef, execOut);
+			assertEqualOutput("exec", execRef, execOut);
 	}
 
 	private void assertEquals(String phase, String exp, String act_) {
@@ -269,7 +272,7 @@ abstract public class AbstractTestAgainstFrozenReference {
 			warnAboutDiff(phase, exp, act);
 		}
 	}
-	
+
 	/**
 	 * Compare the output of two executions
 	 */
@@ -302,5 +305,5 @@ abstract public class AbstractTestAgainstFrozenReference {
 				String.format("Phase %s for %s failed!", phase,
 						file.getPath()), exp, act);
 	}
-	
+
 }

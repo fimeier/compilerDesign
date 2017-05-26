@@ -106,7 +106,6 @@ public class ControlFlowGraph {
 
 				if (stmt.getClass().getSimpleName().equals("Assign")){
 					Assign assign = (Assign) stmt;
-					//!(stmt.left() instanceof Var) || ((Var) assign.left()).sym.kind == Kind.FIELD
 					if (assign.left() instanceof Var && !(((Var) assign.left()).sym.kind == Kind.FIELD)){
 
 						//create Def for stmt in this block
@@ -125,8 +124,7 @@ public class ControlFlowGraph {
 						definitionSet.add(newDef);
 						defSet.put(newDef.target, definitionSet);
 
-
-						Def oldGenDef = tempGenSet.put(target,newDef);
+						tempGenSet.put(target,newDef);
 					}
 
 				}
@@ -165,18 +163,5 @@ public class ControlFlowGraph {
 		//Debug
 		System.out.println("Gefundene target's: "+defSet.keySet().toString());
 	}
-
-	/*
-	public void generateGenSet(){
-		for(BasicBlock block: allBlocks){
-			block.generateGenSet(this);
-		}
-	}
-
-	public void generateKillSet(){
-		for(BasicBlock block: allBlocks){
-			block.generateKillSet();
-		}
-	}*/
 
 }

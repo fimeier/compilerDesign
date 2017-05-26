@@ -1,12 +1,8 @@
 package cd.transform.analysis;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import cd.ToDoException;
 import cd.ir.Ast;
 import cd.ir.Ast.Assign;
 import cd.ir.Ast.MethodDecl;
@@ -37,9 +33,6 @@ public class ReachingDefsAnalysis extends DataFlowAnalysis<Set<Def>> {
 		 */
 		cfg.generateGenKillDefSet();
 
-		//TODO Initialization
-
-
 		/* 
 		 * set initial state
 		 * 
@@ -50,24 +43,18 @@ public class ReachingDefsAnalysis extends DataFlowAnalysis<Set<Def>> {
 			outStates.put(block, initialState());
 		}
 
-
-
-
-		//TODO call iterate
 		super.iterate();
 
 	}
 
 	@Override
 	protected Set<Def> initialState() {
-		//throw new ToDoException();
 		return new HashSet<Def>();
 	}
 
 	@Override
 	protected Set<Def> startState() {
 		return new HashSet<Def>();
-		//throw new ToDoException();
 	}
 
 	@Override
@@ -81,10 +68,9 @@ public class ReachingDefsAnalysis extends DataFlowAnalysis<Set<Def>> {
 		newOutState.addAll(block.genSet);
 		inState.removeAll(block.killSet);
 		newOutState.addAll(inState);
-		
+
 
 		return newOutState;
-		//outStates.put(block, oldOutState);
 	}
 
 	@Override
@@ -93,7 +79,6 @@ public class ReachingDefsAnalysis extends DataFlowAnalysis<Set<Def>> {
 		for (Set<Def> stat: states){
 			newInState.addAll(stat);
 		}
-		//newInState.addAll((Collection<? extends Def>) states);
 		return newInState;
 	}
 

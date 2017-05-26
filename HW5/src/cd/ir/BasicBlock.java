@@ -22,7 +22,7 @@ import cd.transform.analysis.ReachingDefsAnalysis.Def;
  * Your team will have to write code that builds the control flow graph and computes the
  * relevant dominator information. */
 public class BasicBlock{
-	
+
 	/** 
 	 * Unique numerical index assigned by CFG builder between 0 and the total number of
 	 * basic blocks.  Useful for indexing into arrays and the like. 
@@ -34,7 +34,7 @@ public class BasicBlock{
 	 * which {@code this} is a successor). 
 	 */
 	public final List<BasicBlock> predecessors = new ArrayList<BasicBlock>();
-	
+
 	/** 
 	 * List of successor blocks in the flow graph (those that come after the
 	 * current block).  This list is always either of size 0, 1 or 2: 1 indicates
@@ -47,12 +47,12 @@ public class BasicBlock{
 	 * @see #falseSuccessor()
 	 */
 	public final List<BasicBlock> successors = new ArrayList<BasicBlock>();
-	
+
 	/**
 	 * List of statements in this basic block.
 	 */
 	public final List<Stmt> stmts = new ArrayList<>();
-	
+
 	/** 
 	 * If non-null, indicates that this basic block should have
 	 * two successors.  Control flows to the first successor if
@@ -61,11 +61,11 @@ public class BasicBlock{
 	 * only one successor. 
 	 */
 	public Expr condition;
-	
+
 	public BasicBlock(int index) {
 		this.index = index;
 	}
-	
+
 	public BasicBlock trueSuccessor() {
 		assert this.condition != null;
 		return this.successors.get(0);
@@ -75,20 +75,19 @@ public class BasicBlock{
 		assert this.condition != null;
 		return this.successors.get(1);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "BB"+index;
 	}
-		
+
 	/*
 	 * KILL and GEN sets
 	 */
 	public Set<Def> killSet;
-	
+
 	public Set<Def> genSet;
-	
-	
-	
+
+
 
 }

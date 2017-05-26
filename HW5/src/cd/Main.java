@@ -97,6 +97,7 @@ public class Main {
 	
 	/** Parses an input stream into an AST 
 	 * @throws IOException */
+	@SuppressWarnings("unchecked")
 	public List<ClassDecl> parse(Reader reader) throws IOException {
 		List<ClassDecl> result = new ArrayList<ClassDecl>();
 		
