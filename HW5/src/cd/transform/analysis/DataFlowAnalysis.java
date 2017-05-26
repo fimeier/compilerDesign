@@ -1,11 +1,15 @@
 package cd.transform.analysis;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import cd.ToDoException;
 import cd.ir.BasicBlock;
 import cd.ir.ControlFlowGraph;
+import cd.transform.analysis.ReachingDefsAnalysis.Def;
 
 /**
  * The abstract superclass of all data-flow analyses. This class provides a framework to
@@ -20,11 +24,13 @@ import cd.ir.ControlFlowGraph;
 public abstract class DataFlowAnalysis<State> {
 
 	protected final ControlFlowGraph cfg;
-	private Map<BasicBlock, State> inStates;
-	private Map<BasicBlock, State> outStates;
+	protected Map<BasicBlock, State> inStates;
+	protected Map<BasicBlock, State> outStates;
 	
 	public DataFlowAnalysis(ControlFlowGraph cfg) {
 		this.cfg = cfg;
+		inStates = new HashMap<BasicBlock, State>();
+		outStates = new HashMap<BasicBlock, State>();
 	}
 	
 	/**
@@ -41,13 +47,49 @@ public abstract class DataFlowAnalysis<State> {
 		return outStates.get(block);
 	}
 	
+	//TODO Aufteilen auf transferFunction und iterate
 	/**
 	 * Do forward flow fixed-point iteration until out-states do not change anymore.
 	 * Subclasses should call this method in their constructor after the required
 	 * initialization.
 	 */
 	protected void iterate() {
-		throw new ToDoException();
+		
+		int x = 0;
+		boolean changes = true;
+		while(changes){
+			
+			changes = false;
+			
+			//TODO unklar ob IN(B)/OUT(B) jeweils gespeichert werden muss....
+			for(BasicBlock block: cfg.allBlocks){
+				Set<State> predOutStates = new HashSet<>();
+
+				for (BasicBlock pred: block.predecessors){
+					predOutStates.add(outStateOf(pred));
+				}
+				
+				//set new IN(B)
+			//	inStates.put(block, join(predOutStates));
+				
+				State oldOutState = outStateOf(block);
+				State newOutState = transferFunction(block,join(predOutStates));
+				
+				
+				outStates.put(block, newOutState);	
+				
+				//TODO remove
+				changes = true;
+				
+			}
+			
+			x++;
+			if (x==10){
+				changes = false;
+			}
+			
+			
+		}
 	}
 	
 	/**

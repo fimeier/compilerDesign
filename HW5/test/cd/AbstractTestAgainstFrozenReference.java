@@ -57,7 +57,7 @@ abstract public class AbstractTestAgainstFrozenReference {
 						if (passedSemanticAnalysis) {						
 							testControlFlowGraph(astRoots);
 							//TODO uncomment for task 2,3,...
-				//			testReachingDefsAnalysis(astRoots);
+							testReachingDefsAnalysis(astRoots);
 				//			testNonNullAnalysis(astRoots);
 						}
 					}

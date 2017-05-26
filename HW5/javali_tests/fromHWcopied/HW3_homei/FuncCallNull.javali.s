@@ -180,6 +180,37 @@ and $-16, %esp
 movl $0, %eax
 leave
 ret
+# Class A_____________________________________________________________
+  # 
+# Class A1____________________________________________________________
+  # 
+  .section .text
+# __Method A1.foo_____________________________________________________
+  .globl A1_foo
+A1_foo:
+  # Variable     Offset
+  # implicit=8 localSlot=12 sum=20
+  enter $24, $0
+  and $-16, %esp
+  push %esi
+  push %edi
+  push %ebx
+  jmp label7
+# __Basic block 0_____________________________________________________
+label7:
+  # Exit to block 1
+  jmp label8
+# __Basic block 1_____________________________________________________
+label8:
+  # Return
+  jmp label9
+label9:
+  movl $0, %eax
+  pop %ebx
+  pop %edi
+  pop %esi
+  leave
+  ret
 # Class Main__________________________________________________________
   # 
   .section .text
@@ -195,9 +226,9 @@ Main_main:
   push %edi
   push %ebx
   movl $0, -12(%ebp)
-  jmp label7
+  jmp label10
 # __Basic block 0_____________________________________________________
-label7:
+label10:
     # Emitting a1 = new A1()
       # Emitting new A1()
       push $4
@@ -227,35 +258,6 @@ label7:
       add $20, %esp
       movl %eax, %edi
   # Exit to block 1
-  jmp label8
-# __Basic block 1_____________________________________________________
-label8:
-  # Return
-  jmp label9
-label9:
-  movl $0, %eax
-  pop %ebx
-  pop %edi
-  pop %esi
-  leave
-  ret
-# Class A1____________________________________________________________
-  # 
-  .section .text
-# __Method A1.foo_____________________________________________________
-  .globl A1_foo
-A1_foo:
-  # Variable     Offset
-  # implicit=8 localSlot=12 sum=20
-  enter $24, $0
-  and $-16, %esp
-  push %esi
-  push %edi
-  push %ebx
-  jmp label10
-# __Basic block 0_____________________________________________________
-label10:
-  # Exit to block 1
   jmp label11
 # __Basic block 1_____________________________________________________
 label11:
@@ -268,5 +270,3 @@ label12:
   pop %esi
   leave
   ret
-# Class A_____________________________________________________________
-  # 

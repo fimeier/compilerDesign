@@ -181,12 +181,12 @@ and $-16, %esp
 movl $0, %eax
 leave
 ret
-# Class Main__________________________________________________________
+# Class A_____________________________________________________________
   # 
   .section .text
-# __Method Main.main__________________________________________________
-  .globl Main_main
-Main_main:
+# __Method A.foo______________________________________________________
+  .globl A_foo
+A_foo:
   # Variable     Offset
   # implicit=8 localSlot=12 sum=20
   enter $24, $0
@@ -210,12 +210,12 @@ label9:
   pop %esi
   leave
   ret
-# Class A_____________________________________________________________
+# Class B_____________________________________________________________
   # 
   .section .text
-# __Method A.foo______________________________________________________
-  .globl A_foo
-A_foo:
+# __Method B.foo______________________________________________________
+  .globl B_foo
+B_foo:
   # Variable     Offset
   # implicit=8 localSlot=12 sum=20
   enter $24, $0
@@ -239,12 +239,12 @@ label12:
   pop %esi
   leave
   ret
-# Class B_____________________________________________________________
+# Class Main__________________________________________________________
   # 
   .section .text
-# __Method B.foo______________________________________________________
-  .globl B_foo
-B_foo:
+# __Method Main.main__________________________________________________
+  .globl Main_main
+Main_main:
   # Variable     Offset
   # implicit=8 localSlot=12 sum=20
   enter $24, $0

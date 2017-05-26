@@ -1,32 +1,13 @@
-vtable_A:
-.int vtable_B
-.int A_print
-vtable_B:
-.int vtable_C
-vtable_C:
-.int vtable_Object
-vtablearr_A:
-.int vtable_Object
-vtable_D:
-.int vtable_Object
-.int D_fun
-vtablearr_C:
-.int vtable_Object
-vtablearr_B:
-.int vtable_Object
-vtablearr_D:
-.int vtable_Object
-vtablearr_int:
-.int vtable_Object
 vtablearr_Main:
 .int vtable_Object
 vtable_Object:
 .int 0
+vtablearr_int:
+.int vtable_Object
 vtablearr_boolean:
 .int vtable_Object
 vtable_Main:
-.int vtable_D
-.int D_fun
+.int vtable_Object
 .int Main_main
 vtablearr_Object:
 .int vtable_Object
@@ -170,7 +151,7 @@ and $-16, %esp
     # Emitting new Main().main(...)
     sub $12, %esp
       # Emitting new Main()
-      push $8
+      push $4
       call Javali$Alloc
       add $4, %esp
       movl %eax, %edi
@@ -183,92 +164,13 @@ and $-16, %esp
     call Javali$CheckNull
     add $16, %esp
     movl 0(%edi), %edi
-    movl 8(%edi), %edi
+    movl 4(%edi), %edi
     call *%edi
     add $16, %esp
     movl %eax, %edi
 movl $0, %eax
 leave
 ret
-# Class A_____________________________________________________________
-  # 
-  .section .text
-# __Method A.print____________________________________________________
-  .globl A_print
-A_print:
-  # Variable     Offset
-  # implicit=8 localSlot=12 sum=20
-  enter $24, $0
-  and $-16, %esp
-  push %esi
-  push %edi
-  push %ebx
-  jmp label7
-# __Basic block 0_____________________________________________________
-label7:
-    # Emitting write(1)
-      # Emitting 1
-      movl $1, %edi
-    push %edi
-    call Javali$PrintInteger
-    add $4, %esp
-  # Exit to block 1
-  jmp label8
-# __Basic block 1_____________________________________________________
-label8:
-  # Return
-  jmp label9
-label9:
-  movl $0, %eax
-  pop %ebx
-  pop %edi
-  pop %esi
-  leave
-  ret
-# Class B_____________________________________________________________
-  # 
-# Class C_____________________________________________________________
-  # 
-# Class D_____________________________________________________________
-  # 
-  .section .text
-# __Method D.fun______________________________________________________
-  .globl D_fun
-D_fun:
-  # Variable     Offset
-  # a            -12
-  # implicit=8 localSlot=16 sum=24
-  enter $24, $0
-  and $-16, %esp
-  push %esi
-  push %edi
-  push %ebx
-  movl $0, -12(%ebp)
-  jmp label10
-# __Basic block 0_____________________________________________________
-label10:
-    # Emitting return a
-      # Emitting a
-      movl -12(%ebp), %edi
-    movl %edi, %eax
-    pop %ebx
-    pop %edi
-    pop %esi
-    leave
-    ret
-  # Exit to block 1
-  jmp label11
-# __Basic block 1_____________________________________________________
-label11:
-  # Return
-  jmp label12
-label12:
-  movl $0, %eax
-  pop %ebx
-  pop %edi
-  pop %esi
-  leave
-  ret
 # Class Main__________________________________________________________
   # 
   .section .text
@@ -276,51 +178,81 @@ label12:
   .globl Main_main
 Main_main:
   # Variable     Offset
-  # implicit=8 localSlot=12 sum=20
+  # a            -12
+  # b            -16
+  # c            -20
+  # implicit=8 localSlot=24 sum=32
   enter $24, $0
   and $-16, %esp
   push %esi
   push %edi
   push %ebx
-  jmp label13
+  movl $0, -12(%ebp)
+  movl $0, -16(%ebp)
+  movl $0, -20(%ebp)
+  jmp label7
 # __Basic block 0_____________________________________________________
-label13:
-    # Emitting write(this.d.fun(...).foo)
-      # Emitting this.d.fun(...).foo
-        # Emitting this.d.fun(...)
-          # Emitting this.d
-            # Emitting this
-            movl 8(%ebp), %edi
-          push %edi
-          call Javali$CheckNull
-          add $4, %esp
-          movl 4(%edi), %edi
-        push %edi
-        # Load "this" pointer
-        movl 0(%esp), %edi
-        sub $12, %esp
-        push %edi
-        call Javali$CheckNull
-        add $16, %esp
-        movl 0(%edi), %edi
-        movl 4(%edi), %edi
-        call *%edi
-        add $4, %esp
-        movl %eax, %edi
-      push %edi
-      call Javali$CheckNull
-      add $4, %esp
-      movl 4(%edi), %edi
-    push %edi
-    call Javali$PrintInteger
-    add $4, %esp
-  # Exit to block 1
-  jmp label14
+label7:
+    # Emitting a = (b + 1)
+      # Emitting (b + 1)
+        # Emitting b
+        movl -16(%ebp), %edi
+        # Emitting 1
+        movl $1, %esi
+      addl %esi, %edi
+    movl %edi, -12(%ebp)
+    # Emitting a = 5
+      # Emitting 5
+      movl $5, %edi
+    movl %edi, -12(%ebp)
+  # Exit to block 2 if true, block 3 if false
+    # Emitting (a == 7)
+      # Emitting a
+      movl -12(%ebp), %edi
+      # Emitting 7
+      movl $7, %esi
+    cmpl %esi, %edi
+    push %eax
+    movl $0, %eax
+    sete %al
+    movl %eax, %edi
+    pop %eax
+  cmpl $0, %edi
+  je label10
+  jmp label9
 # __Basic block 1_____________________________________________________
-label14:
+label8:
   # Return
-  jmp label15
-label15:
+  jmp label12
+# __Basic block 2_____________________________________________________
+label9:
+    # Emitting a = 6
+      # Emitting 6
+      movl $6, %edi
+    movl %edi, -12(%ebp)
+  # Exit to block 4
+  jmp label11
+# __Basic block 3_____________________________________________________
+label10:
+    # Emitting b = 9
+      # Emitting 9
+      movl $9, %edi
+    movl %edi, -16(%ebp)
+  # Exit to block 4
+  jmp label11
+# __Basic block 4_____________________________________________________
+label11:
+    # Emitting a = 3
+      # Emitting 3
+      movl $3, %edi
+    movl %edi, -12(%ebp)
+    # Emitting c = 7
+      # Emitting 7
+      movl $7, %edi
+    movl %edi, -20(%ebp)
+  # Exit to block 1
+  jmp label8
+label12:
   movl $0, %eax
   pop %ebx
   pop %edi

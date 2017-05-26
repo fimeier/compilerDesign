@@ -2,9 +2,11 @@ package cd.ir;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import cd.ir.Ast.Expr;
 import cd.ir.Ast.Stmt;
+import cd.transform.analysis.ReachingDefsAnalysis.Def;
 
 /** 
  * Node in a control flow graph.  New instances should be created
@@ -19,7 +21,7 @@ import cd.ir.Ast.Stmt;
  * 
  * Your team will have to write code that builds the control flow graph and computes the
  * relevant dominator information. */
-public class BasicBlock {
+public class BasicBlock{
 	
 	/** 
 	 * Unique numerical index assigned by CFG builder between 0 and the total number of
@@ -78,4 +80,15 @@ public class BasicBlock {
 	public String toString() {
 		return "BB"+index;
 	}
+		
+	/*
+	 * KILL and GEN sets
+	 */
+	public Set<Def> killSet;
+	
+	public Set<Def> genSet;
+	
+	
+	
+
 }
