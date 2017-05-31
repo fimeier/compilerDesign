@@ -77,7 +77,7 @@ public abstract class DataFlowAnalysis<State> {
 			x++;
 
 		}
-		System.out.println("#Iterations="+x);
+		//System.out.println("#Iterations="+x);
 	}
 
 	/**

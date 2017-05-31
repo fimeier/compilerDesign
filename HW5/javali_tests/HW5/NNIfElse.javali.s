@@ -201,9 +201,13 @@ label7:
       movl %eax, %edi
       movl $vtable_Main, 0(%edi)
     movl %edi, -12(%ebp)
-    # Emitting b = null
-      # Emitting null
-      movl $0, %edi
+    # Emitting b = new Main()
+      # Emitting new Main()
+      push $4
+      call Javali$Alloc
+      add $4, %esp
+      movl %eax, %edi
+      movl $vtable_Main, 0(%edi)
     movl %edi, -16(%ebp)
     # Emitting i = read()
       # Emitting read()
@@ -233,9 +237,21 @@ label8:
   jmp label12
 # __Basic block 2_____________________________________________________
 label9:
+    # Emitting b = null
+      # Emitting null
+      movl $0, %edi
+    movl %edi, -16(%ebp)
     # Emitting a = null
       # Emitting null
       movl $0, %edi
+    movl %edi, -12(%ebp)
+    # Emitting a = new Main()
+      # Emitting new Main()
+      push $4
+      call Javali$Alloc
+      add $4, %esp
+      movl %eax, %edi
+      movl $vtable_Main, 0(%edi)
     movl %edi, -12(%ebp)
   # Exit to block 4
   jmp label11

@@ -21,7 +21,7 @@ public class CfgBuilder extends AstVisitor<BasicBlock, Void > {
 		//visitor aufrufen
 		BasicBlock last = sb.cfg(mdecl.body(),cfg.start);
 
-		cfg.connect(last, cfg.end);
+		sb.connect(last, cfg.end);
 
 		// CFG and AST are not synchronized, only use CFG from now on
 		mdecl.setBody(null);

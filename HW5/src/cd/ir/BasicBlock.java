@@ -1,11 +1,13 @@
 package cd.ir;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import cd.ir.Ast.Expr;
 import cd.ir.Ast.Stmt;
+import cd.ir.Symbol.VariableSymbol;
 import cd.transform.analysis.ReachingDefsAnalysis.Def;
 
 /** 
@@ -82,11 +84,16 @@ public class BasicBlock{
 	}
 
 	/*
-	 * KILL and GEN sets
+	 * KILL and GEN sets for Def
 	 */
-	public Set<Def> killSet;
-
-	public Set<Def> genSet;
+	public Set<Def> killSetDef;
+	public Collection<Def> genSetDef;
+	
+	/*
+	 * KILL and GEN sets for Def
+	 */
+	public Set<VariableSymbol> killSetNN;
+	public Collection<VariableSymbol> genSetNN;
 
 
 

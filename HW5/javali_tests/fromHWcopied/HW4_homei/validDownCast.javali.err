@@ -1,0 +1,72 @@
+Debug information for file: javali_tests/fromHWcopied/HW4_homei/validDownCast.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: A, superClass: Object)
+| VarDecl (name: c, type: C)
+ClassDecl (name: B, superClass: A)
+ClassDecl (name: C, superClass: Object)
+ClassDecl (name: Main, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | | VarDecl (name: a, type: A)
+| | | VarDecl (name: b, type: B)
+| | | VarDecl (name: i, type: int)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: i)
+| | | | IntConst (value: 10)
+| | | IfElse ()
+| | | | BinaryOp (operator: B_GREATER_THAN)
+| | | | | Var (name: i)
+| | | | | IntConst (value: 10)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: a)
+| | | | | | NewObject (typeName: A)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: a)
+| | | | | | NewObject (typeName: B)
+| | | Assign ()
+| | | | Var (name: b)
+| | | | Cast (typeName: B)
+| | | | | Var (name: a)
+
+Phase nn failed because we expected to see:
+Main.main
+  BB0 out: []
+    i = 10: []
+    (i > 10): []
+  BB1 out: [a, b]
+  BB2 out: [a]
+    a = new A(): []
+  BB3 out: [a]
+    a = new B(): []
+  BB4 out: [a, b]
+    b = (B)(a): [a]
+
+
+
+But we actually saw:
+Main.main
+  BB0 out: []
+    i = 10: []
+    (i > 10): []
+  BB1 out: [a]
+  BB2 out: [a]
+    a = new A(): []
+  BB3 out: [a]
+    a = new B(): []
+  BB4 out: [a]
+    b = (B)(a): [a]
+
+
+
+The difference is:
+At line   5 /   5:
+<   BB1 out: [a, b]
+>   BB1 out: [a]
+At line  10 /  10:
+<   BB4 out: [a, b]
+>   BB4 out: [a]
+Line  12 /  12:
+

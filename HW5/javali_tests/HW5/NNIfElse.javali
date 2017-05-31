@@ -4,13 +4,23 @@ class Main {
         int i;
         
         a = new Main();
-        b = null;
+        
+        //b = null;
+        b = new Main();
         i = read();
         if(i >= 0) {
+     		b = null;
         	a = null;
+        	a = new Main();
+        	
         }
         else {
         	b = new Main();
         }
+        
+        // a = new Main();
+        // int x = read();
+        
+        
 	}
 }

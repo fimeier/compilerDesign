@@ -58,9 +58,9 @@ abstract public class AbstractTestAgainstFrozenReference {
 							//Task 1
 							testControlFlowGraph(astRoots);
 							//Task 2
-							testReachingDefsAnalysis(astRoots);
+							//testReachingDefsAnalysis(astRoots);
 							//Task 3
-							//			testNonNullAnalysis(astRoots);
+							testNonNullAnalysis(astRoots);
 						}
 					}
 

@@ -1,16 +1,16 @@
 Main.main
   BB0 out:
     a = new Main()
-    b = null
+    b = new Main()
     i = read()
   BB1 out:
     a = new Main()
-    a = null
+    a = new Main()
     b = new Main()
     b = null
     i = read()
   BB2 out:
-    a = null
+    a = new Main()
     b = null
     i = read()
   BB3 out:
@@ -19,7 +19,7 @@ Main.main
     i = read()
   BB4 out:
     a = new Main()
-    a = null
+    a = new Main()
     b = new Main()
     b = null
     i = read()
