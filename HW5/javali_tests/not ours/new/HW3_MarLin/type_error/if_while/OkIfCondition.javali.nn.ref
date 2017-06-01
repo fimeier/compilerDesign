@@ -1,0 +1,16 @@
+Main.main
+  BB0 out: []
+    b = true: []
+    !(false): []
+  BB1 out: []
+  BB2 out: []
+  BB3 out: []
+    nop: []
+  BB4 out: []
+    (b == false): []
+  BB5 out: []
+  BB6 out: []
+    nop: []
+  BB7 out: []
+
+

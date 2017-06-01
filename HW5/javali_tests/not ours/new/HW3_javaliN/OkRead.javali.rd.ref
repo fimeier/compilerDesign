@@ -1,0 +1,7 @@
+Main.main
+  BB0 out:
+    a = read()
+  BB1 out:
+    a = read()
+
+

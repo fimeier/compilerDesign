@@ -1,0 +1,21 @@
+Main.main
+  BB0 out: []
+  BB1 out: []
+
+
+Main.method
+  BB0 out: []
+    true: []
+  BB1 out: []
+  BB2 out: []
+    return 1: []
+  BB3 out: []
+    false: []
+  BB4 out: []
+    return 1: []
+  BB5 out: []
+  BB6 out: []
+  BB7 out: []
+    return 1: []
+
+

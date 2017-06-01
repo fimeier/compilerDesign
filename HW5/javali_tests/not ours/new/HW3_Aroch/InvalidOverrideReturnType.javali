@@ -1,0 +1,18 @@
+// Tests overriding with bad return type
+class A {
+	void foo(int arg, int arg2){}
+}
+	
+class B extends A {}
+
+class C extends B {
+	int foo(int arg, int ar2){
+		return arg;
+	}
+}
+	
+class Main {
+   void main() {
+      writeln();
+   }
+}

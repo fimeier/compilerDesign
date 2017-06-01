@@ -1,0 +1,21 @@
+Main.main
+  BB0 out: [arrayAccessLHS, arrayAccessRHS, fieldAccessLHS, fieldAccessRHS, methodAccessLHS, methodAccessRHS]
+    fieldAccessLHS.i = 3: []
+    methodAccessLHS.test(...): [fieldAccessLHS]
+    arrayAccessLHS[0] = 7: [fieldAccessLHS, methodAccessLHS]
+    write(1): [arrayAccessLHS, fieldAccessLHS, methodAccessLHS]
+    writeln(): [arrayAccessLHS, fieldAccessLHS, methodAccessLHS]
+    i = fieldAccessRHS.i: [arrayAccessLHS, fieldAccessLHS, methodAccessLHS]
+    i = methodAccessRHS.test(...): [arrayAccessLHS, fieldAccessLHS, fieldAccessRHS, methodAccessLHS]
+    i = arrayAccessRHS[0]: [arrayAccessLHS, fieldAccessLHS, fieldAccessRHS, methodAccessLHS, methodAccessRHS]
+    write(2): [arrayAccessLHS, arrayAccessRHS, fieldAccessLHS, fieldAccessRHS, methodAccessLHS, methodAccessRHS]
+    writeln(): [arrayAccessLHS, arrayAccessRHS, fieldAccessLHS, fieldAccessRHS, methodAccessLHS, methodAccessRHS]
+  BB1 out: [arrayAccessLHS, arrayAccessRHS, fieldAccessLHS, fieldAccessRHS, methodAccessLHS, methodAccessRHS]
+
+
+Test.test
+  BB0 out: []
+    return this.i: []
+  BB1 out: []
+
+

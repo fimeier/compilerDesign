@@ -1,0 +1,19 @@
+class Main {
+
+    int test()
+    {
+        if (true)
+        {
+            // missing return
+        }
+        else
+        {
+            return 1;
+        }
+
+    }
+
+   void main() {
+
+   }
+}

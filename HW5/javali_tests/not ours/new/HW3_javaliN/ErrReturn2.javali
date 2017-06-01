@@ -1,0 +1,19 @@
+/* Test that if conditions must be boolean */
+class Main {
+
+
+    int test()
+    {
+        if (true)
+        {
+
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+   void main() {
+   }
+}

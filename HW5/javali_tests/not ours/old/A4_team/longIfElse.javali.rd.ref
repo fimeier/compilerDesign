@@ -1,0 +1,65 @@
+Main.main
+  BB0 out:
+    a = 3
+    b = 17
+    c = (b % a)
+  BB1 out:
+    a = 0
+    a = 2
+    a = 3
+    a = 3
+    b = (a + c)
+    b = 17
+    b = 3
+    c = (b % a)
+    c = 7
+    c = 9
+  BB2 out:
+    a = 3
+    b = 3
+    c = (b % a)
+  BB3 out:
+    a = 2
+    b = 17
+    c = 9
+  BB4 out:
+    a = 3
+    b = 3
+    c = 7
+  BB5 out:
+    a = 0
+    b = 3
+    c = (b % a)
+  BB6 out:
+    a = 0
+    a = 3
+    b = 3
+    c = (b % a)
+    c = 7
+  BB7 out:
+    a = 3
+    b = 17
+    c = 9
+  BB8 out:
+    a = 2
+    b = (a + c)
+    c = 9
+  BB9 out:
+    a = 2
+    a = 3
+    b = (a + c)
+    b = 17
+    c = 9
+  BB10 out:
+    a = 0
+    a = 2
+    a = 3
+    a = 3
+    b = (a + c)
+    b = 17
+    b = 3
+    c = (b % a)
+    c = 7
+    c = 9
+
+

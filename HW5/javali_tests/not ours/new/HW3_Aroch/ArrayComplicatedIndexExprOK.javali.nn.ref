@@ -1,0 +1,9 @@
+Main.main
+  BB0 out: [arr]
+    a = new A(): []
+    arr = new A[][((1 + (2 * 3)) - ((4 / 5) % 6))]: [a]
+    arr[((55 + 37) - (68 / this.i))] = a: [a, arr]
+    a = arr[((this.i + 42) - (30 / 4))]: [a, arr]
+  BB1 out: [arr]
+
+

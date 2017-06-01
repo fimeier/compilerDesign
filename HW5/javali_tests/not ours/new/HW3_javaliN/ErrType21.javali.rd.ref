@@ -1,0 +1,7 @@
+Main.main
+  BB0 out:
+    x = (a != b)
+  BB1 out:
+    x = (a != b)
+
+

@@ -1,0 +1,32 @@
+Main.foo
+  BB0 out:
+  BB1 out:
+
+
+Main.main
+  BB0 out:
+    a = this.foo(...)
+    b = true
+  BB1 out:
+    a = this.foo(...)
+    b = true
+  BB2 out:
+    a = this.foo(...)
+    b = true
+  BB3 out:
+    a = this.foo(...)
+    b = true
+  BB4 out:
+    a = this.foo(...)
+    b = true
+  BB5 out:
+    a = this.foo(...)
+    b = true
+  BB6 out:
+    a = this.foo(...)
+    b = true
+  BB7 out:
+    a = this.foo(...)
+    b = true
+
+

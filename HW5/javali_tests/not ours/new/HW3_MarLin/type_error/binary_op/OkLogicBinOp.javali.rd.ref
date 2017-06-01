@@ -1,0 +1,7 @@
+Main.main
+  BB0 out:
+    b = (b && false)
+  BB1 out:
+    b = (b && false)
+
+

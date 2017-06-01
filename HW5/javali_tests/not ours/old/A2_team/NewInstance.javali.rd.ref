@@ -1,0 +1,19 @@
+A.m
+  BB0 out:
+    ret = new A()
+  BB1 out:
+    ret = new A()
+
+
+Main.k
+  BB0 out:
+  BB1 out:
+
+
+Main.main
+  BB0 out:
+    ab = this.arr[4]
+  BB1 out:
+    ab = this.arr[4]
+
+

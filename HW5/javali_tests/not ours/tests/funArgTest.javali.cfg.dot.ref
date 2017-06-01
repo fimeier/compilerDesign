@@ -1,0 +1,59 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "Main.main"
+    M0_BB0 [
+      shape="record"
+      label="BB0"
+    ];
+    M0_BB0 -> M0_BB1;
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_1 {
+    label = "Main.cellTest"
+    M1_BB0 [
+      shape="record"
+      label="BB0"
+    ];
+    M1_BB0 -> M1_BB2;
+    M1_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M1_BB2 [
+      shape="record"
+      label="BB2|If: (i \< size)"
+    ];
+    M1_BB2 -> M1_BB3;
+    M1_BB2 -> M1_BB4 [label="False"];
+    M1_BB3 [
+      shape="record"
+      label="BB3|c = new Cell()|i = (i + 1)"
+    ];
+    M1_BB3 -> M1_BB2;
+    M1_BB4 [
+      shape="record"
+      label="BB4|i = -(2)"
+    ];
+    M1_BB4 -> M1_BB5;
+    M1_BB5 [
+      shape="record"
+      label="BB5|If: (i \< (size + 2))"
+    ];
+    M1_BB5 -> M1_BB6;
+    M1_BB5 -> M1_BB7 [label="False"];
+    M1_BB6 [
+      shape="record"
+      label="BB6|write(c.k)|i = (i + 1)"
+    ];
+    M1_BB6 -> M1_BB5;
+    M1_BB7 [
+      shape="record"
+      label="BB7"
+    ];
+    M1_BB7 -> M1_BB1;
+  }
+}

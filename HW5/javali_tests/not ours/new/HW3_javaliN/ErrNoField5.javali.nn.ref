@@ -1,0 +1,11 @@
+Main.main
+  BB0 out: []
+  BB1 out: []
+
+
+Main.test
+  BB0 out: [a]
+    a.b.b.k = 5: []
+  BB1 out: [a]
+
+

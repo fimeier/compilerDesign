@@ -1,0 +1,19 @@
+Main.foo
+  BB0 out: []
+    return 3: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: []
+    a = 4: []
+    b = this.foo(...): []
+  BB1 out: []
+  BB2 out: []
+    (b > a): []
+  BB3 out: []
+    a = 3: []
+  BB4 out: []
+    write(a): []
+
+

@@ -1,0 +1,10 @@
+class Main {
+    int a;
+    void main() {
+        fun(5);
+    }
+
+    void fun(int a) {
+        this.a = a;
+    }
+}

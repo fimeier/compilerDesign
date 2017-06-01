@@ -1,0 +1,20 @@
+Main.main
+  BB0 out: []
+    a = 1: []
+    b = 2: []
+    (4 > 7): []
+  BB1 out: []
+  BB2 out: []
+    b = (a + 3): []
+  BB3 out: []
+    b = (a + (a * 3)): []
+  BB4 out: []
+    c = b: []
+    write(a): []
+    writeln(): []
+    write(b): []
+    writeln(): []
+    write(c): []
+    writeln(): []
+
+

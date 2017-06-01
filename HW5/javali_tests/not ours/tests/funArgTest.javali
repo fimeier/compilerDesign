@@ -1,0 +1,27 @@
+
+class Main {
+	 
+	void main(){}
+
+	void cellTest(int[] input, int size) {
+
+		Cell c;
+		int i;
+		
+		while( i < size ) {
+			c = new Cell();
+			i = i + 1;
+		}
+
+		i = -2;
+		while( i < size + 2 ) {
+			write(c.k);
+			i = i + 1;
+		}
+
+	}
+}
+
+class Cell { 
+	int k; 
+}

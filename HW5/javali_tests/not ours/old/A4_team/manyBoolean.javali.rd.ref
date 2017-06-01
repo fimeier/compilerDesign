@@ -1,0 +1,132 @@
+Main.main
+  BB0 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB1 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = ((a || b) || c)
+    e = (false && false)
+    e = false
+  BB2 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB3 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB4 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB5 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB6 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB7 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB8 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB9 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB10 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB11 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB12 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = false
+  BB13 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+  BB14 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+    e = false
+  BB15 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+    e = false
+  BB16 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = ((a || b) || c)
+  BB17 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = (false && false)
+    e = false
+  BB18 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = ((a || b) || c)
+    e = (false && false)
+    e = false
+  BB19 out:
+    a = (false || false)
+    b = (false || true)
+    c = (true || false)
+    d = (true && false)
+    e = ((a || b) || c)
+    e = (false && false)
+    e = false
+
+

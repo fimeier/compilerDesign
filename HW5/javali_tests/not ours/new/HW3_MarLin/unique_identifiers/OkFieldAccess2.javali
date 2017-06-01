@@ -1,0 +1,8 @@
+class Main {
+   
+   int field;
+   
+   void main() {
+      field = 1;
+   }
+}

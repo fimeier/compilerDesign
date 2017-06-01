@@ -1,0 +1,21 @@
+class Main {
+
+	void main() {
+		Sub sub;
+		Super super;
+		
+		sub = (Sub) super;	
+	
+	}
+
+}
+
+
+class Sub extends Super {
+
+}
+
+
+class Super {
+
+}

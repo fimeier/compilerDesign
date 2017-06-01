@@ -1,0 +1,11 @@
+Main.main
+  BB0 out: []
+    this.test(...): []
+  BB1 out: []
+
+
+Main.test
+  BB0 out: []
+  BB1 out: []
+
+

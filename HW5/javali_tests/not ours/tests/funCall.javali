@@ -1,0 +1,15 @@
+class A {
+   int a;
+
+   void fun(){}
+}
+
+class Main {
+
+   void main() {
+   		A a3;
+		a3.fun();
+
+   }
+
+}

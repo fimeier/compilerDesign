@@ -1,0 +1,9 @@
+Main.main
+  BB0 out:
+    aref = new A()
+    bref = new B()
+  BB1 out:
+    aref = new A()
+    bref = new B()
+
+

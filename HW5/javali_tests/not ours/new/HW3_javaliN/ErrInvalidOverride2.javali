@@ -1,0 +1,24 @@
+// this should work
+
+class Main {
+
+   void main() {
+   }
+}
+
+class A
+{
+    void test(int i, boolean j, A a)
+    {
+
+    }
+}
+
+class B extends A
+{
+    void test(int a, int b, B c) // wrong signature
+    {
+
+    }
+}
+

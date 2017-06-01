@@ -1,0 +1,11 @@
+// fields and methods may have the same name.
+
+class Main {
+    void main() {
+        int x;
+        x = 7;
+    }
+    
+    int main;
+}
+       

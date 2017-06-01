@@ -1,0 +1,7 @@
+Main.main
+  BB0 out: []
+    a = 1: []
+    write(a): []
+  BB1 out: []
+
+

@@ -1,0 +1,9 @@
+Main.main
+  BB0 out:
+    a = (a || b)
+    b = false
+  BB1 out:
+    a = (a || b)
+    b = false
+
+

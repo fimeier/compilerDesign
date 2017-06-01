@@ -1,0 +1,9 @@
+Main.main
+  BB0 out:
+    arr = new int[][55]
+    y = read()
+  BB1 out:
+    arr = new int[][55]
+    y = read()
+
+

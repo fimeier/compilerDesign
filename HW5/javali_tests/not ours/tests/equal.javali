@@ -1,0 +1,16 @@
+class Main {
+    void main() {
+        int a,b;
+        a = 1;
+        b = 10;
+        if (3 == 3) {
+            write(1);
+        }
+        if (3 > 5){
+          write(2);
+        }
+        if (a != b){
+        write(3);
+        }
+    }
+}

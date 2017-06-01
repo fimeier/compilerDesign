@@ -1,0 +1,27 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "Test.test"
+    M0_BB0 [
+      shape="record"
+      label="BB0|return this.i"
+    ];
+    M0_BB0 -> M0_BB1;
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_1 {
+    label = "Main.main"
+    M1_BB0 [
+      shape="record"
+      label="BB0|fieldAccessLHS.i = 3|methodAccessLHS.test(...)|arrayAccessLHS[0] = 7|write(1)|writeln()|i = fieldAccessRHS.i|i = methodAccessRHS.test(...)|i = arrayAccessRHS[0]|write(2)|writeln()"
+    ];
+    M1_BB0 -> M1_BB1;
+    M1_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+}

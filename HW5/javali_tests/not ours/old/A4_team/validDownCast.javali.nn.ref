@@ -1,0 +1,13 @@
+Main.main
+  BB0 out: []
+    i = 4: []
+    (i > 4): []
+  BB1 out: [a, b]
+  BB2 out: [a]
+    a = new A(): []
+  BB3 out: [a]
+    a = new B(): []
+  BB4 out: [a, b]
+    b = (B)(a): [a]
+
+

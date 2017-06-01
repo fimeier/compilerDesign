@@ -1,0 +1,12 @@
+A.foo
+  BB0 out: []
+    return arg: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: [b]
+    a = b.foo(...): []
+  BB1 out: [b]
+
+

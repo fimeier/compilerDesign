@@ -1,0 +1,8 @@
+Main.main
+  BB0 out: []
+    this.a = new A[][1]: []
+    this.a[0] = new B(): []
+    this.b = (B)(this.a[0]): []
+  BB1 out: []
+
+

@@ -1,0 +1,14 @@
+// Test not so simple expressions in array allocation and indexing
+class Main{
+	int i;
+	void main(){
+		A a;
+		A[] arr;
+		a = new A();
+		arr = new A[1+2*3-4/5%6];
+		arr[55+37-68/i] = a;
+		a = arr[i+42-30/4];
+	}
+}
+
+class A {}

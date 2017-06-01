@@ -1,0 +1,12 @@
+Main.main
+  BB0 out:
+    i = arrayAccessRHS[0]
+  BB1 out:
+    i = arrayAccessRHS[0]
+
+
+Test.test
+  BB0 out:
+  BB1 out:
+
+

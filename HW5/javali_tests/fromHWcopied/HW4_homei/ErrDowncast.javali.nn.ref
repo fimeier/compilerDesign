@@ -1,9 +1,0 @@
-Main.main
-  BB0 out: [a, b]
-    a = new A(): []
-    b = (B)(a): [a]
-    write(0): [a, b]
-    writeln(): [a, b]
-  BB1 out: [a, b]
-
-

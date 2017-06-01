@@ -1,0 +1,46 @@
+class Main{
+
+	void main(){
+	
+	}
+	
+	void foo(A a){
+		if (row() != a.rows()){
+			return;
+		}
+	}
+	
+	int row(){
+		return 1;
+	}
+}
+
+
+class A{
+
+	int rows(){
+		return 0;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+/*
+  foo mult(Matrix A, Matrix B) {
+        int i, j, k, sum;
+
+        if (null == A || null == B) {
+            return null;
+        }
+
+        if (rows() != A.rows() || columns() != B.columns()) {
+            return null;
+        }*/

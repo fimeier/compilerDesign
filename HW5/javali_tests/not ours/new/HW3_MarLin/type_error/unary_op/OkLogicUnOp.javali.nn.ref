@@ -1,0 +1,7 @@
+Main.main
+  BB0 out: []
+    b = true: []
+    b = !(b): []
+  BB1 out: []
+
+

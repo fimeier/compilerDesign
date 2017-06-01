@@ -1,0 +1,7 @@
+Main.main
+  BB0 out: []
+    write(222): []
+    writeln(): []
+  BB1 out: []
+
+

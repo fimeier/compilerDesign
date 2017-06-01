@@ -1,0 +1,15 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "Main.main"
+    M0_BB0 [
+      shape="record"
+      label="BB0|a = new A()|arr = new A[][((1 + (2 * 3)) - ((4 / 5) % 6))]|arr[((55 + 37) - (68 / this.i))] = a|a = arr[((this.i + 42) - (30 / 4))]"
+    ];
+    M0_BB0 -> M0_BB1;
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+}

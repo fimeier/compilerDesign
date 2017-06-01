@@ -1,0 +1,7 @@
+Main.main
+  BB0 out:
+    a = (A)(b)
+  BB1 out:
+    a = (A)(b)
+
+

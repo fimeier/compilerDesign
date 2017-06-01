@@ -1,0 +1,2 @@
+INVALID_OVERRIDE
+Method parameter x has type B, but corresponding base class parameter x has type A

@@ -1,0 +1,13 @@
+Main.main
+  BB0 out:
+    i0 = 5
+    i1 = read()
+    i2 = read()
+    r1 = read()
+  BB1 out:
+    i0 = 5
+    i1 = read()
+    i2 = read()
+    r1 = read()
+
+

@@ -1,0 +1,8 @@
+// there are two fields with the same name
+
+class Main {
+    int x;
+    int x;
+    
+    void main() {}
+}

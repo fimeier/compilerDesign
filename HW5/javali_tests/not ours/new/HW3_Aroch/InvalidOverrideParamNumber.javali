@@ -1,0 +1,16 @@
+// Tests overriding with bad parameter number
+class A {
+	void foo(int arg, int arg2){}
+}
+	
+class B extends A {}
+
+class C extends B {
+	void foo(int arg){}
+}
+	
+class Main {
+   void main() {
+      writeln();
+   }
+}

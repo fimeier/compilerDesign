@@ -1,0 +1,232 @@
+BinaryTree.get
+  BB0 out:
+  BB1 out:
+  BB2 out:
+  BB3 out:
+  BB4 out:
+  BB5 out:
+  BB6 out:
+  BB7 out:
+  BB8 out:
+  BB9 out:
+  BB10 out:
+  BB11 out:
+  BB12 out:
+  BB13 out:
+  BB14 out:
+  BB15 out:
+  BB16 out:
+  BB17 out:
+  BB18 out:
+  BB19 out:
+
+
+BinaryTree.insert
+  BB0 out:
+  BB1 out:
+  BB2 out:
+  BB3 out:
+  BB4 out:
+  BB5 out:
+  BB6 out:
+  BB7 out:
+  BB8 out:
+  BB9 out:
+  BB10 out:
+  BB11 out:
+  BB12 out:
+  BB13 out:
+
+
+BinaryTree.printKeys
+  BB0 out:
+  BB1 out:
+  BB2 out:
+  BB3 out:
+  BB4 out:
+  BB5 out:
+  BB6 out:
+  BB7 out:
+
+
+BinaryTreeFactory.fromArray
+  BB0 out:
+    bn = new BinaryTree()
+  BB1 out:
+    bn = new BinaryTree()
+    i = (i + 1)
+  BB2 out:
+    bn = new BinaryTree()
+    i = (i + 1)
+  BB3 out:
+    bn = new BinaryTree()
+    i = (i + 1)
+  BB4 out:
+    bn = new BinaryTree()
+    i = (i + 1)
+
+
+BinaryTreeFactory.newTree
+  BB0 out:
+    bn = new BinaryTree()
+  BB1 out:
+    bn = new BinaryTree()
+
+
+Cell.print
+  BB0 out:
+  BB1 out:
+
+
+DelayedCell.print
+  BB0 out:
+    c = (Cell)(this)
+  BB1 out:
+    c = (Cell)(this)
+
+
+Main.cellTest
+  BB0 out:
+    factory = new BinaryTreeFactory()
+    mixedCells = new Object[][size]
+    normalCells = new Object[][size]
+  BB1 out:
+    c = new Cell()
+    factory = new BinaryTreeFactory()
+    i = 0
+    mixedCells = new Object[][size]
+    normalCells = new Object[][size]
+    tree = factory.fromArray(...)
+  BB2 out:
+    c = new Cell()
+    factory = new BinaryTreeFactory()
+    i = (i + 1)
+    mixedCells = new Object[][size]
+    normalCells = new Object[][size]
+  BB3 out:
+    c = new Cell()
+    factory = new BinaryTreeFactory()
+    i = (i + 1)
+    mixedCells = new Object[][size]
+    normalCells = new Object[][size]
+  BB4 out:
+    c = new Cell()
+    factory = new BinaryTreeFactory()
+    i = -(2)
+    mixedCells = new Object[][size]
+    normalCells = new Object[][size]
+    tree = factory.fromArray(...)
+  BB5 out:
+    c = new Cell()
+    factory = new BinaryTreeFactory()
+    i = (i + 1)
+    i = -(2)
+    mixedCells = new Object[][size]
+    normalCells = new Object[][size]
+    tree = factory.fromArray(...)
+  BB6 out:
+    c = new Cell()
+    factory = new BinaryTreeFactory()
+    i = (i + 1)
+    mixedCells = new Object[][size]
+    normalCells = new Object[][size]
+    tree = factory.fromArray(...)
+  BB7 out:
+    c = new Cell()
+    factory = new BinaryTreeFactory()
+    i = 0
+    mixedCells = new Object[][size]
+    normalCells = new Object[][size]
+    tree = factory.fromArray(...)
+
+
+Main.checkpoint
+  BB0 out:
+  BB1 out:
+
+
+Main.main
+  BB0 out:
+    input = new int[][size]
+    p = read()
+    size = read()
+  BB1 out:
+    i = (i + 1)
+    input = new int[][size]
+    p = read()
+    p = read()
+    size = read()
+  BB2 out:
+    i = (i + 1)
+    input = new int[][size]
+    p = read()
+    p = read()
+    size = read()
+  BB3 out:
+    i = (i + 1)
+    input = new int[][size]
+    p = read()
+    p = read()
+    size = read()
+  BB4 out:
+    i = (i + 1)
+    input = new int[][size]
+    p = read()
+    p = read()
+    size = read()
+  BB5 out:
+    i = (i + 1)
+    input = new int[][size]
+    p = read()
+    p = read()
+    size = read()
+  BB6 out:
+    i = (i + 1)
+    input = new int[][size]
+    p = read()
+    p = read()
+    size = read()
+  BB7 out:
+    i = (i + 1)
+    input = new int[][size]
+    p = read()
+    size = read()
+
+
+Main.sortedPrint
+  BB0 out:
+    a = new Object()
+    factory = new BinaryTreeFactory()
+    tree = factory.newTree(...)
+  BB1 out:
+    a = new Object()
+    factory = new BinaryTreeFactory()
+    i = (i + 1)
+    tree = factory.newTree(...)
+  BB2 out:
+    a = new Object()
+    factory = new BinaryTreeFactory()
+    i = (i + 1)
+    tree = factory.newTree(...)
+  BB3 out:
+    a = new Object()
+    factory = new BinaryTreeFactory()
+    i = (i + 1)
+    tree = factory.newTree(...)
+  BB4 out:
+    a = new Object()
+    factory = new BinaryTreeFactory()
+    i = (i + 1)
+    tree = factory.newTree(...)
+
+
+NegativeCell.print
+  BB0 out:
+  BB1 out:
+
+
+ReadToClearCell.print
+  BB0 out:
+  BB1 out:
+
+

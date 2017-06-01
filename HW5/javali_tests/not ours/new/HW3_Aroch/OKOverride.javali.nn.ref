@@ -1,0 +1,16 @@
+A.foo
+  BB0 out: []
+  BB1 out: []
+
+
+C.foo
+  BB0 out: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: []
+    writeln(): []
+  BB1 out: []
+
+

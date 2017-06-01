@@ -1,0 +1,11 @@
+Main.main
+  BB0 out:
+    a = b
+    b = 7
+    c = a
+  BB1 out:
+    a = b
+    b = 7
+    c = a
+
+

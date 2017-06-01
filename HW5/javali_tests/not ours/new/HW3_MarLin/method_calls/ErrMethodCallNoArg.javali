@@ -1,0 +1,9 @@
+class Main {
+   void main() {
+      method();
+   }
+   
+   void method(int i) {
+   
+   }
+}

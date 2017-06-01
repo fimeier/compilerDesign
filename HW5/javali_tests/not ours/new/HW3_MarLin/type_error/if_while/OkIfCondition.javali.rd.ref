@@ -1,0 +1,19 @@
+Main.main
+  BB0 out:
+    b = true
+  BB1 out:
+    b = true
+  BB2 out:
+    b = true
+  BB3 out:
+    b = true
+  BB4 out:
+    b = true
+  BB5 out:
+    b = true
+  BB6 out:
+    b = true
+  BB7 out:
+    b = true
+
+

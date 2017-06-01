@@ -1,0 +1,16 @@
+A.foo
+  BB0 out: []
+  BB1 out: []
+  BB2 out: []
+    (arg1 == arg2): []
+  BB3 out: []
+  BB4 out: []
+    return arg2: []
+
+
+Main.main
+  BB0 out: [b]
+    a = b.foo(...): []
+  BB1 out: [b]
+
+

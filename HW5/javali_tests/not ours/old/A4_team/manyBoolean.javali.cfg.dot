@@ -1,0 +1,111 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "Main.main"
+    M0_BB0 [
+      shape="record"
+      label="BB0|a = (false \|\| false)|b = (false \|\| true)|c = (true \|\| false)|d = (true && false)|e = (false && false)|If: a"
+    ];
+    M0_BB0 -> M0_BB2;
+    M0_BB0 -> M0_BB3 [label="False"];
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M0_BB2 [
+      shape="record"
+      label="BB2|If: ((b \|\| a) \|\| c)"
+    ];
+    M0_BB2 -> M0_BB4;
+    M0_BB2 -> M0_BB5 [label="False"];
+    M0_BB3 [
+      shape="record"
+      label="BB3|If: ((d && d) \|\| d)"
+    ];
+    M0_BB3 -> M0_BB7;
+    M0_BB3 -> M0_BB8 [label="False"];
+    M0_BB4 [
+      shape="record"
+      label="BB4|write(0)"
+    ];
+    M0_BB4 -> M0_BB6;
+    M0_BB5 [
+      shape="record"
+      label="BB5|write(1)"
+    ];
+    M0_BB5 -> M0_BB6;
+    M0_BB6 [
+      shape="record"
+      label="BB6"
+    ];
+    M0_BB6 -> M0_BB19;
+    M0_BB7 [
+      shape="record"
+      label="BB7|write(2)"
+    ];
+    M0_BB7 -> M0_BB9;
+    M0_BB8 [
+      shape="record"
+      label="BB8|nop"
+    ];
+    M0_BB8 -> M0_BB9;
+    M0_BB9 [
+      shape="record"
+      label="BB9|If: (e && false)"
+    ];
+    M0_BB9 -> M0_BB10;
+    M0_BB9 -> M0_BB11 [label="False"];
+    M0_BB10 [
+      shape="record"
+      label="BB10|write(3)"
+    ];
+    M0_BB10 -> M0_BB15;
+    M0_BB11 [
+      shape="record"
+      label="BB11|If: (true \|\| e)"
+    ];
+    M0_BB11 -> M0_BB12;
+    M0_BB11 -> M0_BB13 [label="False"];
+    M0_BB12 [
+      shape="record"
+      label="BB12|e = false|write(4)"
+    ];
+    M0_BB12 -> M0_BB14;
+    M0_BB13 [
+      shape="record"
+      label="BB13|nop"
+    ];
+    M0_BB13 -> M0_BB14;
+    M0_BB14 [
+      shape="record"
+      label="BB14"
+    ];
+    M0_BB14 -> M0_BB15;
+    M0_BB15 [
+      shape="record"
+      label="BB15|If: !(e)"
+    ];
+    M0_BB15 -> M0_BB16;
+    M0_BB15 -> M0_BB17 [label="False"];
+    M0_BB16 [
+      shape="record"
+      label="BB16|e = ((a \|\| b) \|\| c)|write(7)"
+    ];
+    M0_BB16 -> M0_BB18;
+    M0_BB17 [
+      shape="record"
+      label="BB17|nop"
+    ];
+    M0_BB17 -> M0_BB18;
+    M0_BB18 [
+      shape="record"
+      label="BB18"
+    ];
+    M0_BB18 -> M0_BB19;
+    M0_BB19 [
+      shape="record"
+      label="BB19"
+    ];
+    M0_BB19 -> M0_BB1;
+  }
+}

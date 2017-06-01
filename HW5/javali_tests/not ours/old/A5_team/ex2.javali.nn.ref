@@ -1,0 +1,17 @@
+Main.main
+  BB0 out: []
+    a = 1: []
+    (3 == 3): []
+  BB1 out: []
+  BB2 out: []
+    a = 4: []
+  BB3 out: []
+    a = 5: []
+  BB4 out: []
+    b = a: []
+    write(a): []
+    writeln(): []
+    write(b): []
+    writeln(): []
+
+

@@ -1,0 +1,437 @@
+ActionLambda.apply
+  BB0 out:
+  BB1 out:
+
+
+CmpLambda.apply
+  BB0 out:
+  BB1 out:
+
+
+CountAction.apply
+  BB0 out:
+  BB1 out:
+
+
+CountReduction.apply
+  BB0 out:
+  BB1 out:
+
+
+DepthAction.apply
+  BB0 out:
+  BB1 out:
+
+
+DepthReduction.apply
+  BB0 out:
+  BB1 out:
+  BB2 out:
+  BB3 out:
+
+
+Greater.apply
+  BB0 out:
+  BB1 out:
+  BB2 out:
+  BB3 out:
+  BB4 out:
+  BB5 out:
+  BB6 out:
+  BB7 out:
+
+
+Less.apply
+  BB0 out:
+  BB1 out:
+  BB2 out:
+  BB3 out:
+  BB4 out:
+  BB5 out:
+  BB6 out:
+  BB7 out:
+
+
+Main.fill
+  BB0 out:
+    i = 0
+  BB1 out:
+    i = (i + 1)
+    i = 0
+    key = this.r.next(...)
+    value = key
+  BB2 out:
+    i = (i + 1)
+    i = 0
+    key = this.r.next(...)
+    value = key
+  BB3 out:
+    i = (i + 1)
+    key = this.r.next(...)
+    value = key
+  BB4 out:
+    i = (i + 1)
+    i = 0
+    key = this.r.next(...)
+    value = key
+
+
+Main.init
+  BB0 out:
+    cmpOp = new Greater()
+  BB1 out:
+    cmpOp = new Greater()
+
+
+Main.main
+  BB0 out:
+  BB1 out:
+
+
+Main.print
+  BB0 out:
+  BB1 out:
+
+
+Node.Node
+  BB0 out:
+  BB1 out:
+
+
+Node.add
+  BB0 out:
+    cmp = n.compare(...)
+  BB1 out:
+    cmp = n.compare(...)
+  BB2 out:
+    cmp = n.compare(...)
+  BB3 out:
+    cmp = n.compare(...)
+  BB4 out:
+    cmp = n.compare(...)
+  BB5 out:
+    cmp = n.compare(...)
+  BB6 out:
+    cmp = n.compare(...)
+  BB7 out:
+    cmp = n.compare(...)
+  BB8 out:
+    cmp = n.compare(...)
+  BB9 out:
+    cmp = n.compare(...)
+  BB10 out:
+    cmp = n.compare(...)
+  BB11 out:
+    cmp = n.compare(...)
+  BB12 out:
+    cmp = n.compare(...)
+  BB13 out:
+    cmp = n.compare(...)
+
+
+Node.compare
+  BB0 out:
+  BB1 out:
+
+
+Node.getKey
+  BB0 out:
+  BB1 out:
+
+
+Node.getLeft
+  BB0 out:
+  BB1 out:
+
+
+Node.getRight
+  BB0 out:
+  BB1 out:
+
+
+Node.getValue
+  BB0 out:
+  BB1 out:
+
+
+Node.runInOrder
+  BB0 out:
+  BB1 out:
+    l = 0
+    l = this.left.runInOrder(...)
+    m = action.apply(...)
+    r = 0
+    r = this.right.runInOrder(...)
+  BB2 out:
+    l = this.left.runInOrder(...)
+  BB3 out:
+    l = 0
+  BB4 out:
+    l = 0
+    l = this.left.runInOrder(...)
+    m = action.apply(...)
+  BB5 out:
+    l = 0
+    l = this.left.runInOrder(...)
+    m = action.apply(...)
+    r = this.right.runInOrder(...)
+  BB6 out:
+    l = 0
+    l = this.left.runInOrder(...)
+    m = action.apply(...)
+    r = 0
+  BB7 out:
+    l = 0
+    l = this.left.runInOrder(...)
+    m = action.apply(...)
+    r = 0
+    r = this.right.runInOrder(...)
+
+
+Node.runPostOrder
+  BB0 out:
+  BB1 out:
+    l = 0
+    l = this.left.runPreOrder(...)
+    m = action.apply(...)
+    r = 0
+    r = this.right.runPreOrder(...)
+  BB2 out:
+    l = this.left.runPreOrder(...)
+  BB3 out:
+    l = 0
+  BB4 out:
+    l = 0
+    l = this.left.runPreOrder(...)
+  BB5 out:
+    l = 0
+    l = this.left.runPreOrder(...)
+    r = this.right.runPreOrder(...)
+  BB6 out:
+    l = 0
+    l = this.left.runPreOrder(...)
+    r = 0
+  BB7 out:
+    l = 0
+    l = this.left.runPreOrder(...)
+    m = action.apply(...)
+    r = 0
+    r = this.right.runPreOrder(...)
+
+
+Node.runPreOrder
+  BB0 out:
+    m = action.apply(...)
+  BB1 out:
+    l = 0
+    l = this.left.runPreOrder(...)
+    m = action.apply(...)
+    r = 0
+    r = this.right.runPreOrder(...)
+  BB2 out:
+    l = this.left.runPreOrder(...)
+    m = action.apply(...)
+  BB3 out:
+    l = 0
+    m = action.apply(...)
+  BB4 out:
+    l = 0
+    l = this.left.runPreOrder(...)
+    m = action.apply(...)
+  BB5 out:
+    l = 0
+    l = this.left.runPreOrder(...)
+    m = action.apply(...)
+    r = this.right.runPreOrder(...)
+  BB6 out:
+    l = 0
+    l = this.left.runPreOrder(...)
+    m = action.apply(...)
+    r = 0
+  BB7 out:
+    l = 0
+    l = this.left.runPreOrder(...)
+    m = action.apply(...)
+    r = 0
+    r = this.right.runPreOrder(...)
+
+
+PrintBothAction.apply
+  BB0 out:
+  BB1 out:
+
+
+PrintKeyAction.apply
+  BB0 out:
+  BB1 out:
+
+
+PrintValueAction.apply
+  BB0 out:
+  BB1 out:
+
+
+Random.Random
+  BB0 out:
+  BB1 out:
+
+
+Random.next
+  BB0 out:
+  BB1 out:
+
+
+ReductionLambda.apply
+  BB0 out:
+  BB1 out:
+
+
+Tree.Tree
+  BB0 out:
+  BB1 out:
+
+
+Tree.add
+  BB0 out:
+    n = new Node()
+  BB1 out:
+    n = new Node()
+  BB2 out:
+    n = new Node()
+  BB3 out:
+    n = new Node()
+  BB4 out:
+    n = new Node()
+
+
+Tree.getCount
+  BB0 out:
+  BB1 out:
+  BB2 out:
+  BB3 out:
+
+
+Tree.getDepth
+  BB0 out:
+  BB1 out:
+  BB2 out:
+  BB3 out:
+
+
+Tree.prepareCountLambdas
+  BB0 out:
+  BB1 out:
+
+
+Tree.prepareDepthLambdas
+  BB0 out:
+  BB1 out:
+
+
+Tree.preparePrintLambdas
+  BB0 out:
+  BB1 out:
+
+
+Tree.printInOrder
+  BB0 out:
+  BB1 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB2 out:
+    action = this.printKeyAction
+  BB3 out:
+  BB4 out:
+    action = this.printValueAction
+  BB5 out:
+    action = this.printBothAction
+  BB6 out:
+    action = this.printBothAction
+    action = this.printValueAction
+  BB7 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB8 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB9 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB10 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+
+
+Tree.printPostOrder
+  BB0 out:
+  BB1 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB2 out:
+    action = this.printKeyAction
+  BB3 out:
+  BB4 out:
+    action = this.printValueAction
+  BB5 out:
+    action = this.printBothAction
+  BB6 out:
+    action = this.printBothAction
+    action = this.printValueAction
+  BB7 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB8 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB9 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB10 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+
+
+Tree.printPreOrder
+  BB0 out:
+  BB1 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB2 out:
+    action = this.printKeyAction
+  BB3 out:
+  BB4 out:
+    action = this.printValueAction
+  BB5 out:
+    action = this.printBothAction
+  BB6 out:
+    action = this.printBothAction
+    action = this.printValueAction
+  BB7 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB8 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB9 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+  BB10 out:
+    action = this.printBothAction
+    action = this.printKeyAction
+    action = this.printValueAction
+
+

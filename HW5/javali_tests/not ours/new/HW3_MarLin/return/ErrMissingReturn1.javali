@@ -1,0 +1,17 @@
+class A {
+
+}
+
+class B extends A {
+
+}
+
+class Main {
+	void main() {
+		
+	}
+	
+	int method() {
+		
+	}
+}

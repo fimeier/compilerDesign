@@ -1,0 +1,14 @@
+class Main {
+
+	void main() {
+		foo(field);
+	}
+
+	void foo(int a, boolean b) {
+	
+	
+	}
+	
+	int field;
+}
+

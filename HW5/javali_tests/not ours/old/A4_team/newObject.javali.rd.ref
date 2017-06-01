@@ -1,0 +1,31 @@
+A.foo
+  BB0 out:
+  BB1 out:
+
+
+B.boo
+  BB0 out:
+  BB1 out:
+
+
+B.foo
+  BB0 out:
+  BB1 out:
+
+
+C.boo
+  BB0 out:
+  BB1 out:
+
+
+Main.main
+  BB0 out:
+    a = new A()
+    arr = new A[][1]
+    b = new B()
+  BB1 out:
+    a = new A()
+    arr = new A[][1]
+    b = new B()
+
+

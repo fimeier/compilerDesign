@@ -1,0 +1,2585 @@
+Debug information for file: javali_tests/not ours/tests/OkTreeAndLambdaFunctions.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: Random, superClass: Object)
+| VarDecl (name: im, type: int)
+| VarDecl (name: ia, type: int)
+| VarDecl (name: ic, type: int)
+| VarDecl (name: jran, type: int)
+| MethodDecl (argumentNames: [seed], argumentTypes: [int], name: Random, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: im)
+| | | | IntConst (value: 134456)
+| | | Assign ()
+| | | | Var (name: ia)
+| | | | IntConst (value: 8121)
+| | | Assign ()
+| | | | Var (name: ic)
+| | | | IntConst (value: 28411)
+| | | Assign ()
+| | | | Var (name: jran)
+| | | | BinaryOp (operator: B_MOD)
+| | | | | Var (name: seed)
+| | | | | Var (name: im)
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: next)
+| | | | | ThisRef ()
+| MethodDecl (argumentNames: [], argumentTypes: [], name: next, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: jran)
+| | | | BinaryOp (operator: B_MOD)
+| | | | | BinaryOp (operator: B_PLUS)
+| | | | | | BinaryOp (operator: B_TIMES)
+| | | | | | | Var (name: jran)
+| | | | | | | Var (name: ia)
+| | | | | | Var (name: ic)
+| | | | | Var (name: im)
+| | | ReturnStmt ()
+| | | | Var (name: jran)
+ClassDecl (name: CmpLambda, superClass: Object)
+| MethodDecl (argumentNames: [a, b], argumentTypes: [int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | IntConst (value: 0)
+ClassDecl (name: Less, superClass: CmpLambda)
+| MethodDecl (argumentNames: [a, b], argumentTypes: [int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_LESS_THAN)
+| | | | | Var (name: a)
+| | | | | Var (name: b)
+| | | | Seq ()
+| | | | | ReturnStmt ()
+| | | | | | UnaryOp (operator: U_MINUS)
+| | | | | | | IntConst (value: 1)
+| | | | Nop ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_GREATER_THAN)
+| | | | | Var (name: a)
+| | | | | Var (name: b)
+| | | | Seq ()
+| | | | | ReturnStmt ()
+| | | | | | IntConst (value: 1)
+| | | | Nop ()
+| | | ReturnStmt ()
+| | | | IntConst (value: 0)
+ClassDecl (name: Greater, superClass: CmpLambda)
+| MethodDecl (argumentNames: [a, b], argumentTypes: [int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_GREATER_THAN)
+| | | | | Var (name: a)
+| | | | | Var (name: b)
+| | | | Seq ()
+| | | | | ReturnStmt ()
+| | | | | | UnaryOp (operator: U_MINUS)
+| | | | | | | IntConst (value: 1)
+| | | | Nop ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_LESS_THAN)
+| | | | | Var (name: a)
+| | | | | Var (name: b)
+| | | | Seq ()
+| | | | | ReturnStmt ()
+| | | | | | IntConst (value: 1)
+| | | | Nop ()
+| | | ReturnStmt ()
+| | | | IntConst (value: 0)
+ClassDecl (name: ActionLambda, superClass: Object)
+| MethodDecl (argumentNames: [key, value], argumentTypes: [int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | IntConst (value: 0)
+ClassDecl (name: CountAction, superClass: ActionLambda)
+| MethodDecl (argumentNames: [key, value], argumentTypes: [int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | IntConst (value: 1)
+ClassDecl (name: DepthAction, superClass: ActionLambda)
+| MethodDecl (argumentNames: [key, value], argumentTypes: [int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | IntConst (value: 1)
+ClassDecl (name: PrintKeyAction, superClass: ActionLambda)
+| MethodDecl (argumentNames: [key, value], argumentTypes: [int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | BuiltInWrite ()
+| | | | Var (name: key)
+| | | BuiltInWriteln ()
+| | | ReturnStmt ()
+| | | | IntConst (value: 0)
+ClassDecl (name: PrintValueAction, superClass: ActionLambda)
+| MethodDecl (argumentNames: [key, value], argumentTypes: [int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | BuiltInWrite ()
+| | | | Var (name: value)
+| | | BuiltInWriteln ()
+| | | ReturnStmt ()
+| | | | IntConst (value: 0)
+ClassDecl (name: PrintBothAction, superClass: ActionLambda)
+| MethodDecl (argumentNames: [key, value], argumentTypes: [int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | BuiltInWrite ()
+| | | | Var (name: key)
+| | | BuiltInWriteln ()
+| | | BuiltInWrite ()
+| | | | Var (name: value)
+| | | BuiltInWriteln ()
+| | | ReturnStmt ()
+| | | | IntConst (value: 0)
+ClassDecl (name: ReductionLambda, superClass: Object)
+| MethodDecl (argumentNames: [leftReturn, myReturn, rightReturn], argumentTypes: [int, int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | IntConst (value: 0)
+ClassDecl (name: NothingReduction, superClass: ReductionLambda)
+ClassDecl (name: CountReduction, superClass: ReductionLambda)
+| MethodDecl (argumentNames: [leftReturn, myReturn, rightReturn], argumentTypes: [int, int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | BinaryOp (operator: B_PLUS)
+| | | | | BinaryOp (operator: B_PLUS)
+| | | | | | Var (name: leftReturn)
+| | | | | | Var (name: myReturn)
+| | | | | Var (name: rightReturn)
+ClassDecl (name: DepthReduction, superClass: ReductionLambda)
+| MethodDecl (argumentNames: [leftReturn, myReturn, rightReturn], argumentTypes: [int, int, int], name: apply, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_GREATER_THAN)
+| | | | | Var (name: leftReturn)
+| | | | | Var (name: rightReturn)
+| | | | Seq ()
+| | | | | ReturnStmt ()
+| | | | | | BinaryOp (operator: B_PLUS)
+| | | | | | | Var (name: leftReturn)
+| | | | | | | Var (name: myReturn)
+| | | | Seq ()
+| | | | | ReturnStmt ()
+| | | | | | BinaryOp (operator: B_PLUS)
+| | | | | | | Var (name: rightReturn)
+| | | | | | | Var (name: myReturn)
+ClassDecl (name: Node, superClass: Object)
+| VarDecl (name: cmpOp, type: CmpLambda)
+| VarDecl (name: left, type: Node)
+| VarDecl (name: right, type: Node)
+| VarDecl (name: key, type: int)
+| VarDecl (name: value, type: int)
+| MethodDecl (argumentNames: [cmpOp, key, value], argumentTypes: [CmpLambda, int, int], name: Node, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | Assign ()
+| | | | Field (fieldName: cmpOp)
+| | | | | ThisRef ()
+| | | | Var (name: cmpOp)
+| | | Assign ()
+| | | | Var (name: left)
+| | | | NullConst ()
+| | | Assign ()
+| | | | Var (name: right)
+| | | | NullConst ()
+| | | Assign ()
+| | | | Field (fieldName: key)
+| | | | | ThisRef ()
+| | | | Var (name: key)
+| | | Assign ()
+| | | | Field (fieldName: value)
+| | | | | ThisRef ()
+| | | | Var (name: value)
+| MethodDecl (argumentNames: [n], argumentTypes: [Node], name: add, returnType: void)
+| | Seq ()
+| | | VarDecl (name: cmp, type: int)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: cmp)
+| | | | MethodCallExpr (methodName: compare)
+| | | | | Var (name: n)
+| | | | | ThisRef ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_EQUAL)
+| | | | | Var (name: cmp)
+| | | | | IntConst (value: 0)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: value)
+| | | | | | MethodCallExpr (methodName: getValue)
+| | | | | | | Var (name: n)
+| | | | | ReturnStmt ()
+| | | | Nop ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_LESS_THAN)
+| | | | | Var (name: cmp)
+| | | | | IntConst (value: 0)
+| | | | Seq ()
+| | | | | IfElse ()
+| | | | | | BinaryOp (operator: B_EQUAL)
+| | | | | | | Var (name: left)
+| | | | | | | NullConst ()
+| | | | | | Seq ()
+| | | | | | | Assign ()
+| | | | | | | | Var (name: left)
+| | | | | | | | Var (name: n)
+| | | | | | Seq ()
+| | | | | | | MethodCall ()
+| | | | | | | | MethodCallExpr (methodName: add)
+| | | | | | | | | Var (name: left)
+| | | | | | | | | Var (name: n)
+| | | | Seq ()
+| | | | | IfElse ()
+| | | | | | BinaryOp (operator: B_EQUAL)
+| | | | | | | Var (name: right)
+| | | | | | | NullConst ()
+| | | | | | Seq ()
+| | | | | | | Assign ()
+| | | | | | | | Var (name: right)
+| | | | | | | | Var (name: n)
+| | | | | | Seq ()
+| | | | | | | MethodCall ()
+| | | | | | | | MethodCallExpr (methodName: add)
+| | | | | | | | | Var (name: right)
+| | | | | | | | | Var (name: n)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: getLeft, returnType: Node)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | Var (name: left)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: getRight, returnType: Node)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | Var (name: right)
+| MethodDecl (argumentNames: [other], argumentTypes: [Node], name: compare, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | MethodCallExpr (methodName: apply)
+| | | | | Var (name: cmpOp)
+| | | | | Field (fieldName: key)
+| | | | | | ThisRef ()
+| | | | | MethodCallExpr (methodName: getKey)
+| | | | | | Var (name: other)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: getKey, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | Var (name: key)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: getValue, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | ReturnStmt ()
+| | | | Var (name: value)
+| MethodDecl (argumentNames: [action, reduce], argumentTypes: [ActionLambda, ReductionLambda], name: runPreOrder, returnType: int)
+| | Seq ()
+| | | VarDecl (name: l, type: int)
+| | | VarDecl (name: m, type: int)
+| | | VarDecl (name: r, type: int)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: m)
+| | | | MethodCallExpr (methodName: apply)
+| | | | | Var (name: action)
+| | | | | Var (name: key)
+| | | | | Var (name: value)
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: left)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: l)
+| | | | | | MethodCallExpr (methodName: runPreOrder)
+| | | | | | | Var (name: left)
+| | | | | | | Var (name: action)
+| | | | | | | Var (name: reduce)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: l)
+| | | | | | IntConst (value: 0)
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: right)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: r)
+| | | | | | MethodCallExpr (methodName: runPreOrder)
+| | | | | | | Var (name: right)
+| | | | | | | Var (name: action)
+| | | | | | | Var (name: reduce)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: r)
+| | | | | | IntConst (value: 0)
+| | | ReturnStmt ()
+| | | | MethodCallExpr (methodName: apply)
+| | | | | Var (name: reduce)
+| | | | | Var (name: l)
+| | | | | Var (name: m)
+| | | | | Var (name: r)
+| MethodDecl (argumentNames: [action, reduce], argumentTypes: [ActionLambda, ReductionLambda], name: runInOrder, returnType: int)
+| | Seq ()
+| | | VarDecl (name: l, type: int)
+| | | VarDecl (name: m, type: int)
+| | | VarDecl (name: r, type: int)
+| | Seq ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: left)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: l)
+| | | | | | MethodCallExpr (methodName: runInOrder)
+| | | | | | | Var (name: left)
+| | | | | | | Var (name: action)
+| | | | | | | Var (name: reduce)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: l)
+| | | | | | IntConst (value: 0)
+| | | Assign ()
+| | | | Var (name: m)
+| | | | MethodCallExpr (methodName: apply)
+| | | | | Var (name: action)
+| | | | | Var (name: key)
+| | | | | Var (name: value)
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: right)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: r)
+| | | | | | MethodCallExpr (methodName: runInOrder)
+| | | | | | | Var (name: right)
+| | | | | | | Var (name: action)
+| | | | | | | Var (name: reduce)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: r)
+| | | | | | IntConst (value: 0)
+| | | ReturnStmt ()
+| | | | MethodCallExpr (methodName: apply)
+| | | | | Var (name: reduce)
+| | | | | Var (name: l)
+| | | | | Var (name: m)
+| | | | | Var (name: r)
+| MethodDecl (argumentNames: [action, reduce], argumentTypes: [ActionLambda, ReductionLambda], name: runPostOrder, returnType: int)
+| | Seq ()
+| | | VarDecl (name: l, type: int)
+| | | VarDecl (name: m, type: int)
+| | | VarDecl (name: r, type: int)
+| | Seq ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: left)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: l)
+| | | | | | MethodCallExpr (methodName: runPreOrder)
+| | | | | | | Var (name: left)
+| | | | | | | Var (name: action)
+| | | | | | | Var (name: reduce)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: l)
+| | | | | | IntConst (value: 0)
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: right)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: r)
+| | | | | | MethodCallExpr (methodName: runPreOrder)
+| | | | | | | Var (name: right)
+| | | | | | | Var (name: action)
+| | | | | | | Var (name: reduce)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: r)
+| | | | | | IntConst (value: 0)
+| | | Assign ()
+| | | | Var (name: m)
+| | | | MethodCallExpr (methodName: apply)
+| | | | | Var (name: action)
+| | | | | Var (name: key)
+| | | | | Var (name: value)
+| | | ReturnStmt ()
+| | | | MethodCallExpr (methodName: apply)
+| | | | | Var (name: reduce)
+| | | | | Var (name: l)
+| | | | | Var (name: m)
+| | | | | Var (name: r)
+ClassDecl (name: Tree, superClass: Object)
+| VarDecl (name: cmpOp, type: CmpLambda)
+| VarDecl (name: printKeyAction, type: ActionLambda)
+| VarDecl (name: printValueAction, type: ActionLambda)
+| VarDecl (name: printBothAction, type: ActionLambda)
+| VarDecl (name: countAction, type: ActionLambda)
+| VarDecl (name: depthAction, type: ActionLambda)
+| VarDecl (name: printReduce, type: ReductionLambda)
+| VarDecl (name: countReduce, type: ReductionLambda)
+| VarDecl (name: depthReduce, type: ReductionLambda)
+| VarDecl (name: root, type: Node)
+| MethodDecl (argumentNames: [cmpOp], argumentTypes: [CmpLambda], name: Tree, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | Assign ()
+| | | | Field (fieldName: cmpOp)
+| | | | | ThisRef ()
+| | | | Var (name: cmpOp)
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: preparePrintLambdas)
+| | | | | ThisRef ()
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: prepareCountLambdas)
+| | | | | ThisRef ()
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: prepareDepthLambdas)
+| | | | | ThisRef ()
+| MethodDecl (argumentNames: [key, value], argumentTypes: [int, int], name: add, returnType: void)
+| | Seq ()
+| | | VarDecl (name: n, type: Node)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: n)
+| | | | NewObject (typeName: Node)
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: Node)
+| | | | | Var (name: n)
+| | | | | Var (name: cmpOp)
+| | | | | Var (name: key)
+| | | | | Var (name: value)
+| | | IfElse ()
+| | | | BinaryOp (operator: B_EQUAL)
+| | | | | Var (name: root)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: root)
+| | | | | | Var (name: n)
+| | | | Seq ()
+| | | | | MethodCall ()
+| | | | | | MethodCallExpr (methodName: add)
+| | | | | | | Var (name: root)
+| | | | | | | Var (name: n)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: prepareCountLambdas, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: countAction)
+| | | | NewObject (typeName: CountAction)
+| | | Assign ()
+| | | | Var (name: countReduce)
+| | | | NewObject (typeName: CountReduction)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: getCount, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: root)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | ReturnStmt ()
+| | | | | | MethodCallExpr (methodName: runPostOrder)
+| | | | | | | Var (name: root)
+| | | | | | | Var (name: countAction)
+| | | | | | | Var (name: countReduce)
+| | | | Seq ()
+| | | | | ReturnStmt ()
+| | | | | | IntConst (value: 0)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: prepareDepthLambdas, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: depthAction)
+| | | | NewObject (typeName: DepthAction)
+| | | Assign ()
+| | | | Var (name: depthReduce)
+| | | | NewObject (typeName: DepthReduction)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: getDepth, returnType: int)
+| | Seq ()
+| | Seq ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: root)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | ReturnStmt ()
+| | | | | | MethodCallExpr (methodName: runPostOrder)
+| | | | | | | Var (name: root)
+| | | | | | | Var (name: depthAction)
+| | | | | | | Var (name: depthReduce)
+| | | | Seq ()
+| | | | | ReturnStmt ()
+| | | | | | IntConst (value: 0)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: preparePrintLambdas, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: printKeyAction)
+| | | | NewObject (typeName: PrintKeyAction)
+| | | Assign ()
+| | | | Var (name: printValueAction)
+| | | | NewObject (typeName: PrintValueAction)
+| | | Assign ()
+| | | | Var (name: printBothAction)
+| | | | NewObject (typeName: PrintBothAction)
+| | | Assign ()
+| | | | Var (name: printReduce)
+| | | | NewObject (typeName: NothingReduction)
+| MethodDecl (argumentNames: [type], argumentTypes: [int], name: printPreOrder, returnType: void)
+| | Seq ()
+| | | VarDecl (name: action, type: ActionLambda)
+| | Seq ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_EQUAL)
+| | | | | Var (name: type)
+| | | | | IntConst (value: 1)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: action)
+| | | | | | Var (name: printKeyAction)
+| | | | Seq ()
+| | | | | IfElse ()
+| | | | | | BinaryOp (operator: B_EQUAL)
+| | | | | | | Var (name: type)
+| | | | | | | IntConst (value: 2)
+| | | | | | Seq ()
+| | | | | | | Assign ()
+| | | | | | | | Var (name: action)
+| | | | | | | | Var (name: printValueAction)
+| | | | | | Seq ()
+| | | | | | | Assign ()
+| | | | | | | | Var (name: action)
+| | | | | | | | Var (name: printBothAction)
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: root)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | MethodCall ()
+| | | | | | MethodCallExpr (methodName: runPreOrder)
+| | | | | | | Var (name: root)
+| | | | | | | Var (name: action)
+| | | | | | | Var (name: printReduce)
+| | | | Nop ()
+| MethodDecl (argumentNames: [type], argumentTypes: [int], name: printInOrder, returnType: void)
+| | Seq ()
+| | | VarDecl (name: action, type: ActionLambda)
+| | Seq ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_EQUAL)
+| | | | | Var (name: type)
+| | | | | IntConst (value: 1)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: action)
+| | | | | | Var (name: printKeyAction)
+| | | | Seq ()
+| | | | | IfElse ()
+| | | | | | BinaryOp (operator: B_EQUAL)
+| | | | | | | Var (name: type)
+| | | | | | | IntConst (value: 2)
+| | | | | | Seq ()
+| | | | | | | Assign ()
+| | | | | | | | Var (name: action)
+| | | | | | | | Var (name: printValueAction)
+| | | | | | Seq ()
+| | | | | | | Assign ()
+| | | | | | | | Var (name: action)
+| | | | | | | | Var (name: printBothAction)
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: root)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | MethodCall ()
+| | | | | | MethodCallExpr (methodName: runInOrder)
+| | | | | | | Var (name: root)
+| | | | | | | Var (name: action)
+| | | | | | | Var (name: printReduce)
+| | | | Nop ()
+| MethodDecl (argumentNames: [type], argumentTypes: [int], name: printPostOrder, returnType: void)
+| | Seq ()
+| | | VarDecl (name: action, type: ActionLambda)
+| | Seq ()
+| | | IfElse ()
+| | | | BinaryOp (operator: B_EQUAL)
+| | | | | Var (name: type)
+| | | | | IntConst (value: 1)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: action)
+| | | | | | Var (name: printKeyAction)
+| | | | Seq ()
+| | | | | IfElse ()
+| | | | | | BinaryOp (operator: B_EQUAL)
+| | | | | | | Var (name: type)
+| | | | | | | IntConst (value: 2)
+| | | | | | Seq ()
+| | | | | | | Assign ()
+| | | | | | | | Var (name: action)
+| | | | | | | | Var (name: printValueAction)
+| | | | | | Seq ()
+| | | | | | | Assign ()
+| | | | | | | | Var (name: action)
+| | | | | | | | Var (name: printBothAction)
+| | | IfElse ()
+| | | | BinaryOp (operator: B_NOT_EQUAL)
+| | | | | Var (name: root)
+| | | | | NullConst ()
+| | | | Seq ()
+| | | | | MethodCall ()
+| | | | | | MethodCallExpr (methodName: runPostOrder)
+| | | | | | | Var (name: root)
+| | | | | | | Var (name: action)
+| | | | | | | Var (name: printReduce)
+| | | | Nop ()
+ClassDecl (name: Main, superClass: Object)
+| VarDecl (name: r, type: Random)
+| VarDecl (name: t1, type: Tree)
+| VarDecl (name: t2, type: Tree)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: init, returnType: void)
+| | Seq ()
+| | | VarDecl (name: cmpOp, type: CmpLambda)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: r)
+| | | | NewObject (typeName: Random)
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: Random)
+| | | | | Var (name: r)
+| | | | | IntConst (value: 42)
+| | | Assign ()
+| | | | Var (name: cmpOp)
+| | | | NewObject (typeName: Less)
+| | | Assign ()
+| | | | Var (name: t1)
+| | | | NewObject (typeName: Tree)
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: Tree)
+| | | | | Var (name: t1)
+| | | | | Var (name: cmpOp)
+| | | Assign ()
+| | | | Var (name: cmpOp)
+| | | | NewObject (typeName: Greater)
+| | | Assign ()
+| | | | Var (name: t2)
+| | | | NewObject (typeName: Tree)
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: Tree)
+| | | | | Var (name: t2)
+| | | | | Var (name: cmpOp)
+| MethodDecl (argumentNames: [t, n], argumentTypes: [Tree, int], name: fill, returnType: void)
+| | Seq ()
+| | | VarDecl (name: i, type: int)
+| | | VarDecl (name: key, type: int)
+| | | VarDecl (name: value, type: int)
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: i)
+| | | | IntConst (value: 0)
+| | | WhileLoop ()
+| | | | BinaryOp (operator: B_LESS_THAN)
+| | | | | Var (name: i)
+| | | | | Var (name: n)
+| | | | Seq ()
+| | | | | Assign ()
+| | | | | | Var (name: key)
+| | | | | | MethodCallExpr (methodName: next)
+| | | | | | | Var (name: r)
+| | | | | Assign ()
+| | | | | | Var (name: value)
+| | | | | | Var (name: key)
+| | | | | MethodCall ()
+| | | | | | MethodCallExpr (methodName: add)
+| | | | | | | Var (name: t)
+| | | | | | | Var (name: key)
+| | | | | | | Var (name: value)
+| | | | | Assign ()
+| | | | | | Var (name: i)
+| | | | | | BinaryOp (operator: B_PLUS)
+| | | | | | | Var (name: i)
+| | | | | | | IntConst (value: 1)
+| MethodDecl (argumentNames: [t], argumentTypes: [Tree], name: print, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | BuiltInWrite ()
+| | | | MethodCallExpr (methodName: getCount)
+| | | | | Var (name: t)
+| | | BuiltInWriteln ()
+| | | BuiltInWrite ()
+| | | | MethodCallExpr (methodName: getDepth)
+| | | | | Var (name: t)
+| | | BuiltInWriteln ()
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: printInOrder)
+| | | | | Var (name: t)
+| | | | | IntConst (value: 1)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: init)
+| | | | | ThisRef ()
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: fill)
+| | | | | ThisRef ()
+| | | | | Var (name: t1)
+| | | | | IntConst (value: 100)
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: fill)
+| | | | | ThisRef ()
+| | | | | Var (name: t2)
+| | | | | IntConst (value: 100)
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: print)
+| | | | | ThisRef ()
+| | | | | Var (name: t1)
+| | | MethodCall ()
+| | | | MethodCallExpr (methodName: print)
+| | | | | ThisRef ()
+| | | | | Var (name: t2)
+
+Phase cfg failed because we expected to see:
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "Random.Random"
+    M0_BB0 [
+      shape="record"
+      label="BB0|this.im = 134456|this.ia = 8121|this.ic = 28411|this.jran = (seed % this.im)|this.next(...)"
+    ];
+    M0_BB0 -> M0_BB1;
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_1 {
+    label = "Random.next"
+    M1_BB0 [
+      shape="record"
+      label="BB0|this.jran = (((this.jran * this.ia) + this.ic) % this.im)|return this.jran"
+    ];
+    M1_BB0 -> M1_BB1;
+    M1_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_2 {
+    label = "CmpLambda.apply"
+    M2_BB0 [
+      shape="record"
+      label="BB0|return 0"
+    ];
+    M2_BB0 -> M2_BB1;
+    M2_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_3 {
+    label = "Less.apply"
+    M3_BB0 [
+      shape="record"
+      label="BB0|If: (a \< b)"
+    ];
+    M3_BB0 -> M3_BB2;
+    M3_BB0 -> M3_BB3 [label="False"];
+    M3_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M3_BB2 [
+      shape="record"
+      label="BB2|return -(1)"
+    ];
+    M3_BB2 -> M3_BB1;
+    M3_BB3 [
+      shape="record"
+      label="BB3|nop"
+    ];
+    M3_BB3 -> M3_BB4;
+    M3_BB4 [
+      shape="record"
+      label="BB4|If: (a \> b)"
+    ];
+    M3_BB4 -> M3_BB5;
+    M3_BB4 -> M3_BB6 [label="False"];
+    M3_BB5 [
+      shape="record"
+      label="BB5|return 1"
+    ];
+    M3_BB5 -> M3_BB1;
+    M3_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M3_BB6 -> M3_BB7;
+    M3_BB7 [
+      shape="record"
+      label="BB7|return 0"
+    ];
+    M3_BB7 -> M3_BB1;
+  }
+  subgraph cluster_4 {
+    label = "Greater.apply"
+    M4_BB0 [
+      shape="record"
+      label="BB0|If: (a \> b)"
+    ];
+    M4_BB0 -> M4_BB2;
+    M4_BB0 -> M4_BB3 [label="False"];
+    M4_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M4_BB2 [
+      shape="record"
+      label="BB2|return -(1)"
+    ];
+    M4_BB2 -> M4_BB1;
+    M4_BB3 [
+      shape="record"
+      label="BB3|nop"
+    ];
+    M4_BB3 -> M4_BB4;
+    M4_BB4 [
+      shape="record"
+      label="BB4|If: (a \< b)"
+    ];
+    M4_BB4 -> M4_BB5;
+    M4_BB4 -> M4_BB6 [label="False"];
+    M4_BB5 [
+      shape="record"
+      label="BB5|return 1"
+    ];
+    M4_BB5 -> M4_BB1;
+    M4_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M4_BB6 -> M4_BB7;
+    M4_BB7 [
+      shape="record"
+      label="BB7|return 0"
+    ];
+    M4_BB7 -> M4_BB1;
+  }
+  subgraph cluster_5 {
+    label = "ActionLambda.apply"
+    M5_BB0 [
+      shape="record"
+      label="BB0|return 0"
+    ];
+    M5_BB0 -> M5_BB1;
+    M5_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_6 {
+    label = "CountAction.apply"
+    M6_BB0 [
+      shape="record"
+      label="BB0|return 1"
+    ];
+    M6_BB0 -> M6_BB1;
+    M6_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_7 {
+    label = "DepthAction.apply"
+    M7_BB0 [
+      shape="record"
+      label="BB0|return 1"
+    ];
+    M7_BB0 -> M7_BB1;
+    M7_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_8 {
+    label = "PrintKeyAction.apply"
+    M8_BB0 [
+      shape="record"
+      label="BB0|write(key)|writeln()|return 0"
+    ];
+    M8_BB0 -> M8_BB1;
+    M8_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_9 {
+    label = "PrintValueAction.apply"
+    M9_BB0 [
+      shape="record"
+      label="BB0|write(value)|writeln()|return 0"
+    ];
+    M9_BB0 -> M9_BB1;
+    M9_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_10 {
+    label = "PrintBothAction.apply"
+    M10_BB0 [
+      shape="record"
+      label="BB0|write(key)|writeln()|write(value)|writeln()|return 0"
+    ];
+    M10_BB0 -> M10_BB1;
+    M10_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_11 {
+    label = "ReductionLambda.apply"
+    M11_BB0 [
+      shape="record"
+      label="BB0|return 0"
+    ];
+    M11_BB0 -> M11_BB1;
+    M11_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_12 {
+    label = "CountReduction.apply"
+    M12_BB0 [
+      shape="record"
+      label="BB0|return ((leftReturn + myReturn) + rightReturn)"
+    ];
+    M12_BB0 -> M12_BB1;
+    M12_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_13 {
+    label = "DepthReduction.apply"
+    M13_BB0 [
+      shape="record"
+      label="BB0|If: (leftReturn \> rightReturn)"
+    ];
+    M13_BB0 -> M13_BB2;
+    M13_BB0 -> M13_BB3 [label="False"];
+    M13_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M13_BB2 [
+      shape="record"
+      label="BB2|return (leftReturn + myReturn)"
+    ];
+    M13_BB2 -> M13_BB1;
+    M13_BB3 [
+      shape="record"
+      label="BB3|return (rightReturn + myReturn)"
+    ];
+    M13_BB3 -> M13_BB1;
+  }
+  subgraph cluster_14 {
+    label = "Node.Node"
+    M14_BB0 [
+      shape="record"
+      label="BB0|this.cmpOp = cmpOp|this.left = null|this.right = null|this.key = key|this.value = value"
+    ];
+    M14_BB0 -> M14_BB1;
+    M14_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_15 {
+    label = "Node.add"
+    M15_BB0 [
+      shape="record"
+      label="BB0|cmp = n.compare(...)|If: (cmp == 0)"
+    ];
+    M15_BB0 -> M15_BB2;
+    M15_BB0 -> M15_BB3 [label="False"];
+    M15_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M15_BB2 [
+      shape="record"
+      label="BB2|this.value = n.getValue(...)|return"
+    ];
+    M15_BB2 -> M15_BB1;
+    M15_BB3 [
+      shape="record"
+      label="BB3|nop"
+    ];
+    M15_BB3 -> M15_BB4;
+    M15_BB4 [
+      shape="record"
+      label="BB4|If: (cmp \< 0)"
+    ];
+    M15_BB4 -> M15_BB5;
+    M15_BB4 -> M15_BB6 [label="False"];
+    M15_BB5 [
+      shape="record"
+      label="BB5|If: (this.left == null)"
+    ];
+    M15_BB5 -> M15_BB7;
+    M15_BB5 -> M15_BB8 [label="False"];
+    M15_BB6 [
+      shape="record"
+      label="BB6|If: (this.right == null)"
+    ];
+    M15_BB6 -> M15_BB10;
+    M15_BB6 -> M15_BB11 [label="False"];
+    M15_BB7 [
+      shape="record"
+      label="BB7|this.left = n"
+    ];
+    M15_BB7 -> M15_BB9;
+    M15_BB8 [
+      shape="record"
+      label="BB8|this.left.add(...)"
+    ];
+    M15_BB8 -> M15_BB9;
+    M15_BB9 [
+      shape="record"
+      label="BB9"
+    ];
+    M15_BB9 -> M15_BB13;
+    M15_BB10 [
+      shape="record"
+      label="BB10|this.right = n"
+    ];
+    M15_BB10 -> M15_BB12;
+    M15_BB11 [
+      shape="record"
+      label="BB11|this.right.add(...)"
+    ];
+    M15_BB11 -> M15_BB12;
+    M15_BB12 [
+      shape="record"
+      label="BB12"
+    ];
+    M15_BB12 -> M15_BB13;
+    M15_BB13 [
+      shape="record"
+      label="BB13"
+    ];
+    M15_BB13 -> M15_BB1;
+  }
+  subgraph cluster_16 {
+    label = "Node.getLeft"
+    M16_BB0 [
+      shape="record"
+      label="BB0|return this.left"
+    ];
+    M16_BB0 -> M16_BB1;
+    M16_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_17 {
+    label = "Node.getRight"
+    M17_BB0 [
+      shape="record"
+      label="BB0|return this.right"
+    ];
+    M17_BB0 -> M17_BB1;
+    M17_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_18 {
+    label = "Node.compare"
+    M18_BB0 [
+      shape="record"
+      label="BB0|return this.cmpOp.apply(...)"
+    ];
+    M18_BB0 -> M18_BB1;
+    M18_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_19 {
+    label = "Node.getKey"
+    M19_BB0 [
+      shape="record"
+      label="BB0|return this.key"
+    ];
+    M19_BB0 -> M19_BB1;
+    M19_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_20 {
+    label = "Node.getValue"
+    M20_BB0 [
+      shape="record"
+      label="BB0|return this.value"
+    ];
+    M20_BB0 -> M20_BB1;
+    M20_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_21 {
+    label = "Node.runPreOrder"
+    M21_BB0 [
+      shape="record"
+      label="BB0|m = action.apply(...)|If: (this.left != null)"
+    ];
+    M21_BB0 -> M21_BB2;
+    M21_BB0 -> M21_BB3 [label="False"];
+    M21_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M21_BB2 [
+      shape="record"
+      label="BB2|l = this.left.runPreOrder(...)"
+    ];
+    M21_BB2 -> M21_BB4;
+    M21_BB3 [
+      shape="record"
+      label="BB3|l = 0"
+    ];
+    M21_BB3 -> M21_BB4;
+    M21_BB4 [
+      shape="record"
+      label="BB4|If: (this.right != null)"
+    ];
+    M21_BB4 -> M21_BB5;
+    M21_BB4 -> M21_BB6 [label="False"];
+    M21_BB5 [
+      shape="record"
+      label="BB5|r = this.right.runPreOrder(...)"
+    ];
+    M21_BB5 -> M21_BB7;
+    M21_BB6 [
+      shape="record"
+      label="BB6|r = 0"
+    ];
+    M21_BB6 -> M21_BB7;
+    M21_BB7 [
+      shape="record"
+      label="BB7|return reduce.apply(...)"
+    ];
+    M21_BB7 -> M21_BB1;
+  }
+  subgraph cluster_22 {
+    label = "Node.runInOrder"
+    M22_BB0 [
+      shape="record"
+      label="BB0|If: (this.left != null)"
+    ];
+    M22_BB0 -> M22_BB2;
+    M22_BB0 -> M22_BB3 [label="False"];
+    M22_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M22_BB2 [
+      shape="record"
+      label="BB2|l = this.left.runInOrder(...)"
+    ];
+    M22_BB2 -> M22_BB4;
+    M22_BB3 [
+      shape="record"
+      label="BB3|l = 0"
+    ];
+    M22_BB3 -> M22_BB4;
+    M22_BB4 [
+      shape="record"
+      label="BB4|m = action.apply(...)|If: (this.right != null)"
+    ];
+    M22_BB4 -> M22_BB5;
+    M22_BB4 -> M22_BB6 [label="False"];
+    M22_BB5 [
+      shape="record"
+      label="BB5|r = this.right.runInOrder(...)"
+    ];
+    M22_BB5 -> M22_BB7;
+    M22_BB6 [
+      shape="record"
+      label="BB6|r = 0"
+    ];
+    M22_BB6 -> M22_BB7;
+    M22_BB7 [
+      shape="record"
+      label="BB7|return reduce.apply(...)"
+    ];
+    M22_BB7 -> M22_BB1;
+  }
+  subgraph cluster_23 {
+    label = "Node.runPostOrder"
+    M23_BB0 [
+      shape="record"
+      label="BB0|If: (this.left != null)"
+    ];
+    M23_BB0 -> M23_BB2;
+    M23_BB0 -> M23_BB3 [label="False"];
+    M23_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M23_BB2 [
+      shape="record"
+      label="BB2|l = this.left.runPreOrder(...)"
+    ];
+    M23_BB2 -> M23_BB4;
+    M23_BB3 [
+      shape="record"
+      label="BB3|l = 0"
+    ];
+    M23_BB3 -> M23_BB4;
+    M23_BB4 [
+      shape="record"
+      label="BB4|If: (this.right != null)"
+    ];
+    M23_BB4 -> M23_BB5;
+    M23_BB4 -> M23_BB6 [label="False"];
+    M23_BB5 [
+      shape="record"
+      label="BB5|r = this.right.runPreOrder(...)"
+    ];
+    M23_BB5 -> M23_BB7;
+    M23_BB6 [
+      shape="record"
+      label="BB6|r = 0"
+    ];
+    M23_BB6 -> M23_BB7;
+    M23_BB7 [
+      shape="record"
+      label="BB7|m = action.apply(...)|return reduce.apply(...)"
+    ];
+    M23_BB7 -> M23_BB1;
+  }
+  subgraph cluster_24 {
+    label = "Tree.Tree"
+    M24_BB0 [
+      shape="record"
+      label="BB0|this.cmpOp = cmpOp|this.preparePrintLambdas(...)|this.prepareCountLambdas(...)|this.prepareDepthLambdas(...)"
+    ];
+    M24_BB0 -> M24_BB1;
+    M24_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_25 {
+    label = "Tree.add"
+    M25_BB0 [
+      shape="record"
+      label="BB0|n = new Node()|n.Node(...)|If: (this.root == null)"
+    ];
+    M25_BB0 -> M25_BB2;
+    M25_BB0 -> M25_BB3 [label="False"];
+    M25_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M25_BB2 [
+      shape="record"
+      label="BB2|this.root = n"
+    ];
+    M25_BB2 -> M25_BB4;
+    M25_BB3 [
+      shape="record"
+      label="BB3|this.root.add(...)"
+    ];
+    M25_BB3 -> M25_BB4;
+    M25_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M25_BB4 -> M25_BB1;
+  }
+  subgraph cluster_26 {
+    label = "Tree.prepareCountLambdas"
+    M26_BB0 [
+      shape="record"
+      label="BB0|this.countAction = new CountAction()|this.countReduce = new CountReduction()"
+    ];
+    M26_BB0 -> M26_BB1;
+    M26_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_27 {
+    label = "Tree.getCount"
+    M27_BB0 [
+      shape="record"
+      label="BB0|If: (this.root != null)"
+    ];
+    M27_BB0 -> M27_BB2;
+    M27_BB0 -> M27_BB3 [label="False"];
+    M27_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M27_BB2 [
+      shape="record"
+      label="BB2|return this.root.runPostOrder(...)"
+    ];
+    M27_BB2 -> M27_BB1;
+    M27_BB3 [
+      shape="record"
+      label="BB3|return 0"
+    ];
+    M27_BB3 -> M27_BB1;
+  }
+  subgraph cluster_28 {
+    label = "Tree.prepareDepthLambdas"
+    M28_BB0 [
+      shape="record"
+      label="BB0|this.depthAction = new DepthAction()|this.depthReduce = new DepthReduction()"
+    ];
+    M28_BB0 -> M28_BB1;
+    M28_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_29 {
+    label = "Tree.getDepth"
+    M29_BB0 [
+      shape="record"
+      label="BB0|If: (this.root != null)"
+    ];
+    M29_BB0 -> M29_BB2;
+    M29_BB0 -> M29_BB3 [label="False"];
+    M29_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M29_BB2 [
+      shape="record"
+      label="BB2|return this.root.runPostOrder(...)"
+    ];
+    M29_BB2 -> M29_BB1;
+    M29_BB3 [
+      shape="record"
+      label="BB3|return 0"
+    ];
+    M29_BB3 -> M29_BB1;
+  }
+  subgraph cluster_30 {
+    label = "Tree.preparePrintLambdas"
+    M30_BB0 [
+      shape="record"
+      label="BB0|this.printKeyAction = new PrintKeyAction()|this.printValueAction = new PrintValueAction()|this.printBothAction = new PrintBothAction()|this.printReduce = new NothingReduction()"
+    ];
+    M30_BB0 -> M30_BB1;
+    M30_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_31 {
+    label = "Tree.printPreOrder"
+    M31_BB0 [
+      shape="record"
+      label="BB0|If: (type == 1)"
+    ];
+    M31_BB0 -> M31_BB2;
+    M31_BB0 -> M31_BB3 [label="False"];
+    M31_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M31_BB2 [
+      shape="record"
+      label="BB2|action = this.printKeyAction"
+    ];
+    M31_BB2 -> M31_BB7;
+    M31_BB3 [
+      shape="record"
+      label="BB3|If: (type == 2)"
+    ];
+    M31_BB3 -> M31_BB4;
+    M31_BB3 -> M31_BB5 [label="False"];
+    M31_BB4 [
+      shape="record"
+      label="BB4|action = this.printValueAction"
+    ];
+    M31_BB4 -> M31_BB6;
+    M31_BB5 [
+      shape="record"
+      label="BB5|action = this.printBothAction"
+    ];
+    M31_BB5 -> M31_BB6;
+    M31_BB6 [
+      shape="record"
+      label="BB6"
+    ];
+    M31_BB6 -> M31_BB7;
+    M31_BB7 [
+      shape="record"
+      label="BB7|If: (this.root != null)"
+    ];
+    M31_BB7 -> M31_BB8;
+    M31_BB7 -> M31_BB9 [label="False"];
+    M31_BB8 [
+      shape="record"
+      label="BB8|this.root.runPreOrder(...)"
+    ];
+    M31_BB8 -> M31_BB10;
+    M31_BB9 [
+      shape="record"
+      label="BB9|nop"
+    ];
+    M31_BB9 -> M31_BB10;
+    M31_BB10 [
+      shape="record"
+      label="BB10"
+    ];
+    M31_BB10 -> M31_BB1;
+  }
+  subgraph cluster_32 {
+    label = "Tree.printInOrder"
+    M32_BB0 [
+      shape="record"
+      label="BB0|If: (type == 1)"
+    ];
+    M32_BB0 -> M32_BB2;
+    M32_BB0 -> M32_BB3 [label="False"];
+    M32_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M32_BB2 [
+      shape="record"
+      label="BB2|action = this.printKeyAction"
+    ];
+    M32_BB2 -> M32_BB7;
+    M32_BB3 [
+      shape="record"
+      label="BB3|If: (type == 2)"
+    ];
+    M32_BB3 -> M32_BB4;
+    M32_BB3 -> M32_BB5 [label="False"];
+    M32_BB4 [
+      shape="record"
+      label="BB4|action = this.printValueAction"
+    ];
+    M32_BB4 -> M32_BB6;
+    M32_BB5 [
+      shape="record"
+      label="BB5|action = this.printBothAction"
+    ];
+    M32_BB5 -> M32_BB6;
+    M32_BB6 [
+      shape="record"
+      label="BB6"
+    ];
+    M32_BB6 -> M32_BB7;
+    M32_BB7 [
+      shape="record"
+      label="BB7|If: (this.root != null)"
+    ];
+    M32_BB7 -> M32_BB8;
+    M32_BB7 -> M32_BB9 [label="False"];
+    M32_BB8 [
+      shape="record"
+      label="BB8|this.root.runInOrder(...)"
+    ];
+    M32_BB8 -> M32_BB10;
+    M32_BB9 [
+      shape="record"
+      label="BB9|nop"
+    ];
+    M32_BB9 -> M32_BB10;
+    M32_BB10 [
+      shape="record"
+      label="BB10"
+    ];
+    M32_BB10 -> M32_BB1;
+  }
+  subgraph cluster_33 {
+    label = "Tree.printPostOrder"
+    M33_BB0 [
+      shape="record"
+      label="BB0|If: (type == 1)"
+    ];
+    M33_BB0 -> M33_BB2;
+    M33_BB0 -> M33_BB3 [label="False"];
+    M33_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M33_BB2 [
+      shape="record"
+      label="BB2|action = this.printKeyAction"
+    ];
+    M33_BB2 -> M33_BB7;
+    M33_BB3 [
+      shape="record"
+      label="BB3|If: (type == 2)"
+    ];
+    M33_BB3 -> M33_BB4;
+    M33_BB3 -> M33_BB5 [label="False"];
+    M33_BB4 [
+      shape="record"
+      label="BB4|action = this.printValueAction"
+    ];
+    M33_BB4 -> M33_BB6;
+    M33_BB5 [
+      shape="record"
+      label="BB5|action = this.printBothAction"
+    ];
+    M33_BB5 -> M33_BB6;
+    M33_BB6 [
+      shape="record"
+      label="BB6"
+    ];
+    M33_BB6 -> M33_BB7;
+    M33_BB7 [
+      shape="record"
+      label="BB7|If: (this.root != null)"
+    ];
+    M33_BB7 -> M33_BB8;
+    M33_BB7 -> M33_BB9 [label="False"];
+    M33_BB8 [
+      shape="record"
+      label="BB8|this.root.runPostOrder(...)"
+    ];
+    M33_BB8 -> M33_BB10;
+    M33_BB9 [
+      shape="record"
+      label="BB9|nop"
+    ];
+    M33_BB9 -> M33_BB10;
+    M33_BB10 [
+      shape="record"
+      label="BB10"
+    ];
+    M33_BB10 -> M33_BB1;
+  }
+  subgraph cluster_34 {
+    label = "Main.init"
+    M34_BB0 [
+      shape="record"
+      label="BB0|this.r = new Random()|this.r.Random(...)|cmpOp = new Less()|this.t1 = new Tree()|this.t1.Tree(...)|cmpOp = new Greater()|this.t2 = new Tree()|this.t2.Tree(...)"
+    ];
+    M34_BB0 -> M34_BB1;
+    M34_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_35 {
+    label = "Main.fill"
+    M35_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M35_BB0 -> M35_BB2;
+    M35_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M35_BB2 [
+      shape="record"
+      label="BB2|If: (i \< n)"
+    ];
+    M35_BB2 -> M35_BB3;
+    M35_BB2 -> M35_BB4 [label="False"];
+    M35_BB3 [
+      shape="record"
+      label="BB3|key = this.r.next(...)|value = key|t.add(...)|i = (i + 1)"
+    ];
+    M35_BB3 -> M35_BB2;
+    M35_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M35_BB4 -> M35_BB1;
+  }
+  subgraph cluster_36 {
+    label = "Main.print"
+    M36_BB0 [
+      shape="record"
+      label="BB0|write(t.getCount(...))|writeln()|write(t.getDepth(...))|writeln()|t.printInOrder(...)"
+    ];
+    M36_BB0 -> M36_BB1;
+    M36_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_37 {
+    label = "Main.main"
+    M37_BB0 [
+      shape="record"
+      label="BB0|this.init(...)|this.fill(...)|this.fill(...)|this.print(...)|this.print(...)"
+    ];
+    M37_BB0 -> M37_BB1;
+    M37_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+}
+
+But we actually saw:
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "Random.Random"
+    M0_BB0 [
+      shape="record"
+      label="BB0|this.im = 134456|this.ia = 8121|this.ic = 28411|this.jran = (seed % this.im)|this.next(...)"
+    ];
+    M0_BB0 -> M0_BB1;
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_1 {
+    label = "Random.next"
+    M1_BB0 [
+      shape="record"
+      label="BB0|this.jran = (((this.jran * this.ia) + this.ic) % this.im)|return this.jran"
+    ];
+    M1_BB0 -> M1_BB1;
+    M1_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_2 {
+    label = "CmpLambda.apply"
+    M2_BB0 [
+      shape="record"
+      label="BB0|return 0"
+    ];
+    M2_BB0 -> M2_BB1;
+    M2_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_3 {
+    label = "Less.apply"
+    M3_BB0 [
+      shape="record"
+      label="BB0|If: (a \< b)"
+    ];
+    M3_BB0 -> M3_BB2;
+    M3_BB0 -> M3_BB3 [label="False"];
+    M3_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M3_BB2 [
+      shape="record"
+      label="BB2|return -(1)"
+    ];
+    M3_BB2 -> M3_BB1;
+    M3_BB3 [
+      shape="record"
+      label="BB3|nop"
+    ];
+    M3_BB3 -> M3_BB4;
+    M3_BB4 [
+      shape="record"
+      label="BB4|If: (a \> b)"
+    ];
+    M3_BB4 -> M3_BB5;
+    M3_BB4 -> M3_BB6 [label="False"];
+    M3_BB5 [
+      shape="record"
+      label="BB5|return 1"
+    ];
+    M3_BB5 -> M3_BB1;
+    M3_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M3_BB6 -> M3_BB7;
+    M3_BB7 [
+      shape="record"
+      label="BB7|return 0"
+    ];
+    M3_BB7 -> M3_BB1;
+  }
+  subgraph cluster_4 {
+    label = "Greater.apply"
+    M4_BB0 [
+      shape="record"
+      label="BB0|If: (a \> b)"
+    ];
+    M4_BB0 -> M4_BB2;
+    M4_BB0 -> M4_BB3 [label="False"];
+    M4_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M4_BB2 [
+      shape="record"
+      label="BB2|return -(1)"
+    ];
+    M4_BB2 -> M4_BB1;
+    M4_BB3 [
+      shape="record"
+      label="BB3|nop"
+    ];
+    M4_BB3 -> M4_BB4;
+    M4_BB4 [
+      shape="record"
+      label="BB4|If: (a \< b)"
+    ];
+    M4_BB4 -> M4_BB5;
+    M4_BB4 -> M4_BB6 [label="False"];
+    M4_BB5 [
+      shape="record"
+      label="BB5|return 1"
+    ];
+    M4_BB5 -> M4_BB1;
+    M4_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M4_BB6 -> M4_BB7;
+    M4_BB7 [
+      shape="record"
+      label="BB7|return 0"
+    ];
+    M4_BB7 -> M4_BB1;
+  }
+  subgraph cluster_5 {
+    label = "ActionLambda.apply"
+    M5_BB0 [
+      shape="record"
+      label="BB0|return 0"
+    ];
+    M5_BB0 -> M5_BB1;
+    M5_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_6 {
+    label = "CountAction.apply"
+    M6_BB0 [
+      shape="record"
+      label="BB0|return 1"
+    ];
+    M6_BB0 -> M6_BB1;
+    M6_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_7 {
+    label = "DepthAction.apply"
+    M7_BB0 [
+      shape="record"
+      label="BB0|return 1"
+    ];
+    M7_BB0 -> M7_BB1;
+    M7_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_8 {
+    label = "PrintKeyAction.apply"
+    M8_BB0 [
+      shape="record"
+      label="BB0|write(key)|writeln()|return 0"
+    ];
+    M8_BB0 -> M8_BB1;
+    M8_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_9 {
+    label = "PrintValueAction.apply"
+    M9_BB0 [
+      shape="record"
+      label="BB0|write(value)|writeln()|return 0"
+    ];
+    M9_BB0 -> M9_BB1;
+    M9_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_10 {
+    label = "PrintBothAction.apply"
+    M10_BB0 [
+      shape="record"
+      label="BB0|write(key)|writeln()|write(value)|writeln()|return 0"
+    ];
+    M10_BB0 -> M10_BB1;
+    M10_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_11 {
+    label = "ReductionLambda.apply"
+    M11_BB0 [
+      shape="record"
+      label="BB0|return 0"
+    ];
+    M11_BB0 -> M11_BB1;
+    M11_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_12 {
+    label = "CountReduction.apply"
+    M12_BB0 [
+      shape="record"
+      label="BB0|return ((leftReturn + myReturn) + rightReturn)"
+    ];
+    M12_BB0 -> M12_BB1;
+    M12_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_13 {
+    label = "DepthReduction.apply"
+    M13_BB0 [
+      shape="record"
+      label="BB0|If: (leftReturn \> rightReturn)"
+    ];
+    M13_BB0 -> M13_BB2;
+    M13_BB0 -> M13_BB3 [label="False"];
+    M13_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M13_BB2 [
+      shape="record"
+      label="BB2|return (leftReturn + myReturn)"
+    ];
+    M13_BB2 -> M13_BB1;
+    M13_BB3 [
+      shape="record"
+      label="BB3|return (rightReturn + myReturn)"
+    ];
+    M13_BB3 -> M13_BB1;
+    M13_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M13_BB4 -> M13_BB1;
+  }
+  subgraph cluster_14 {
+    label = "Node.Node"
+    M14_BB0 [
+      shape="record"
+      label="BB0|this.cmpOp = cmpOp|this.left = null|this.right = null|this.key = key|this.value = value"
+    ];
+    M14_BB0 -> M14_BB1;
+    M14_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_15 {
+    label = "Node.add"
+    M15_BB0 [
+      shape="record"
+      label="BB0|cmp = n.compare(...)|If: (cmp == 0)"
+    ];
+    M15_BB0 -> M15_BB2;
+    M15_BB0 -> M15_BB3 [label="False"];
+    M15_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M15_BB2 [
+      shape="record"
+      label="BB2|this.value = n.getValue(...)|return"
+    ];
+    M15_BB2 -> M15_BB1;
+    M15_BB3 [
+      shape="record"
+      label="BB3|nop"
+    ];
+    M15_BB3 -> M15_BB4;
+    M15_BB4 [
+      shape="record"
+      label="BB4|If: (cmp \< 0)"
+    ];
+    M15_BB4 -> M15_BB5;
+    M15_BB4 -> M15_BB6 [label="False"];
+    M15_BB5 [
+      shape="record"
+      label="BB5|If: (this.left == null)"
+    ];
+    M15_BB5 -> M15_BB7;
+    M15_BB5 -> M15_BB8 [label="False"];
+    M15_BB6 [
+      shape="record"
+      label="BB6|If: (this.right == null)"
+    ];
+    M15_BB6 -> M15_BB10;
+    M15_BB6 -> M15_BB11 [label="False"];
+    M15_BB7 [
+      shape="record"
+      label="BB7|this.left = n"
+    ];
+    M15_BB7 -> M15_BB9;
+    M15_BB8 [
+      shape="record"
+      label="BB8|this.left.add(...)"
+    ];
+    M15_BB8 -> M15_BB9;
+    M15_BB9 [
+      shape="record"
+      label="BB9"
+    ];
+    M15_BB9 -> M15_BB13;
+    M15_BB10 [
+      shape="record"
+      label="BB10|this.right = n"
+    ];
+    M15_BB10 -> M15_BB12;
+    M15_BB11 [
+      shape="record"
+      label="BB11|this.right.add(...)"
+    ];
+    M15_BB11 -> M15_BB12;
+    M15_BB12 [
+      shape="record"
+      label="BB12"
+    ];
+    M15_BB12 -> M15_BB13;
+    M15_BB13 [
+      shape="record"
+      label="BB13"
+    ];
+    M15_BB13 -> M15_BB1;
+  }
+  subgraph cluster_16 {
+    label = "Node.getLeft"
+    M16_BB0 [
+      shape="record"
+      label="BB0|return this.left"
+    ];
+    M16_BB0 -> M16_BB1;
+    M16_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_17 {
+    label = "Node.getRight"
+    M17_BB0 [
+      shape="record"
+      label="BB0|return this.right"
+    ];
+    M17_BB0 -> M17_BB1;
+    M17_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_18 {
+    label = "Node.compare"
+    M18_BB0 [
+      shape="record"
+      label="BB0|return this.cmpOp.apply(...)"
+    ];
+    M18_BB0 -> M18_BB1;
+    M18_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_19 {
+    label = "Node.getKey"
+    M19_BB0 [
+      shape="record"
+      label="BB0|return this.key"
+    ];
+    M19_BB0 -> M19_BB1;
+    M19_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_20 {
+    label = "Node.getValue"
+    M20_BB0 [
+      shape="record"
+      label="BB0|return this.value"
+    ];
+    M20_BB0 -> M20_BB1;
+    M20_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_21 {
+    label = "Node.runPreOrder"
+    M21_BB0 [
+      shape="record"
+      label="BB0|m = action.apply(...)|If: (this.left != null)"
+    ];
+    M21_BB0 -> M21_BB2;
+    M21_BB0 -> M21_BB3 [label="False"];
+    M21_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M21_BB2 [
+      shape="record"
+      label="BB2|l = this.left.runPreOrder(...)"
+    ];
+    M21_BB2 -> M21_BB4;
+    M21_BB3 [
+      shape="record"
+      label="BB3|l = 0"
+    ];
+    M21_BB3 -> M21_BB4;
+    M21_BB4 [
+      shape="record"
+      label="BB4|If: (this.right != null)"
+    ];
+    M21_BB4 -> M21_BB5;
+    M21_BB4 -> M21_BB6 [label="False"];
+    M21_BB5 [
+      shape="record"
+      label="BB5|r = this.right.runPreOrder(...)"
+    ];
+    M21_BB5 -> M21_BB7;
+    M21_BB6 [
+      shape="record"
+      label="BB6|r = 0"
+    ];
+    M21_BB6 -> M21_BB7;
+    M21_BB7 [
+      shape="record"
+      label="BB7|return reduce.apply(...)"
+    ];
+    M21_BB7 -> M21_BB1;
+  }
+  subgraph cluster_22 {
+    label = "Node.runInOrder"
+    M22_BB0 [
+      shape="record"
+      label="BB0|If: (this.left != null)"
+    ];
+    M22_BB0 -> M22_BB2;
+    M22_BB0 -> M22_BB3 [label="False"];
+    M22_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M22_BB2 [
+      shape="record"
+      label="BB2|l = this.left.runInOrder(...)"
+    ];
+    M22_BB2 -> M22_BB4;
+    M22_BB3 [
+      shape="record"
+      label="BB3|l = 0"
+    ];
+    M22_BB3 -> M22_BB4;
+    M22_BB4 [
+      shape="record"
+      label="BB4|m = action.apply(...)|If: (this.right != null)"
+    ];
+    M22_BB4 -> M22_BB5;
+    M22_BB4 -> M22_BB6 [label="False"];
+    M22_BB5 [
+      shape="record"
+      label="BB5|r = this.right.runInOrder(...)"
+    ];
+    M22_BB5 -> M22_BB7;
+    M22_BB6 [
+      shape="record"
+      label="BB6|r = 0"
+    ];
+    M22_BB6 -> M22_BB7;
+    M22_BB7 [
+      shape="record"
+      label="BB7|return reduce.apply(...)"
+    ];
+    M22_BB7 -> M22_BB1;
+  }
+  subgraph cluster_23 {
+    label = "Node.runPostOrder"
+    M23_BB0 [
+      shape="record"
+      label="BB0|If: (this.left != null)"
+    ];
+    M23_BB0 -> M23_BB2;
+    M23_BB0 -> M23_BB3 [label="False"];
+    M23_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M23_BB2 [
+      shape="record"
+      label="BB2|l = this.left.runPreOrder(...)"
+    ];
+    M23_BB2 -> M23_BB4;
+    M23_BB3 [
+      shape="record"
+      label="BB3|l = 0"
+    ];
+    M23_BB3 -> M23_BB4;
+    M23_BB4 [
+      shape="record"
+      label="BB4|If: (this.right != null)"
+    ];
+    M23_BB4 -> M23_BB5;
+    M23_BB4 -> M23_BB6 [label="False"];
+    M23_BB5 [
+      shape="record"
+      label="BB5|r = this.right.runPreOrder(...)"
+    ];
+    M23_BB5 -> M23_BB7;
+    M23_BB6 [
+      shape="record"
+      label="BB6|r = 0"
+    ];
+    M23_BB6 -> M23_BB7;
+    M23_BB7 [
+      shape="record"
+      label="BB7|m = action.apply(...)|return reduce.apply(...)"
+    ];
+    M23_BB7 -> M23_BB1;
+  }
+  subgraph cluster_24 {
+    label = "Tree.Tree"
+    M24_BB0 [
+      shape="record"
+      label="BB0|this.cmpOp = cmpOp|this.preparePrintLambdas(...)|this.prepareCountLambdas(...)|this.prepareDepthLambdas(...)"
+    ];
+    M24_BB0 -> M24_BB1;
+    M24_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_25 {
+    label = "Tree.add"
+    M25_BB0 [
+      shape="record"
+      label="BB0|n = new Node()|n.Node(...)|If: (this.root == null)"
+    ];
+    M25_BB0 -> M25_BB2;
+    M25_BB0 -> M25_BB3 [label="False"];
+    M25_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M25_BB2 [
+      shape="record"
+      label="BB2|this.root = n"
+    ];
+    M25_BB2 -> M25_BB4;
+    M25_BB3 [
+      shape="record"
+      label="BB3|this.root.add(...)"
+    ];
+    M25_BB3 -> M25_BB4;
+    M25_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M25_BB4 -> M25_BB1;
+  }
+  subgraph cluster_26 {
+    label = "Tree.prepareCountLambdas"
+    M26_BB0 [
+      shape="record"
+      label="BB0|this.countAction = new CountAction()|this.countReduce = new CountReduction()"
+    ];
+    M26_BB0 -> M26_BB1;
+    M26_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_27 {
+    label = "Tree.getCount"
+    M27_BB0 [
+      shape="record"
+      label="BB0|If: (this.root != null)"
+    ];
+    M27_BB0 -> M27_BB2;
+    M27_BB0 -> M27_BB3 [label="False"];
+    M27_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M27_BB2 [
+      shape="record"
+      label="BB2|return this.root.runPostOrder(...)"
+    ];
+    M27_BB2 -> M27_BB1;
+    M27_BB3 [
+      shape="record"
+      label="BB3|return 0"
+    ];
+    M27_BB3 -> M27_BB1;
+    M27_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M27_BB4 -> M27_BB1;
+  }
+  subgraph cluster_28 {
+    label = "Tree.prepareDepthLambdas"
+    M28_BB0 [
+      shape="record"
+      label="BB0|this.depthAction = new DepthAction()|this.depthReduce = new DepthReduction()"
+    ];
+    M28_BB0 -> M28_BB1;
+    M28_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_29 {
+    label = "Tree.getDepth"
+    M29_BB0 [
+      shape="record"
+      label="BB0|If: (this.root != null)"
+    ];
+    M29_BB0 -> M29_BB2;
+    M29_BB0 -> M29_BB3 [label="False"];
+    M29_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M29_BB2 [
+      shape="record"
+      label="BB2|return this.root.runPostOrder(...)"
+    ];
+    M29_BB2 -> M29_BB1;
+    M29_BB3 [
+      shape="record"
+      label="BB3|return 0"
+    ];
+    M29_BB3 -> M29_BB1;
+    M29_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M29_BB4 -> M29_BB1;
+  }
+  subgraph cluster_30 {
+    label = "Tree.preparePrintLambdas"
+    M30_BB0 [
+      shape="record"
+      label="BB0|this.printKeyAction = new PrintKeyAction()|this.printValueAction = new PrintValueAction()|this.printBothAction = new PrintBothAction()|this.printReduce = new NothingReduction()"
+    ];
+    M30_BB0 -> M30_BB1;
+    M30_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_31 {
+    label = "Tree.printPreOrder"
+    M31_BB0 [
+      shape="record"
+      label="BB0|If: (type == 1)"
+    ];
+    M31_BB0 -> M31_BB2;
+    M31_BB0 -> M31_BB3 [label="False"];
+    M31_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M31_BB2 [
+      shape="record"
+      label="BB2|action = this.printKeyAction"
+    ];
+    M31_BB2 -> M31_BB7;
+    M31_BB3 [
+      shape="record"
+      label="BB3|If: (type == 2)"
+    ];
+    M31_BB3 -> M31_BB4;
+    M31_BB3 -> M31_BB5 [label="False"];
+    M31_BB4 [
+      shape="record"
+      label="BB4|action = this.printValueAction"
+    ];
+    M31_BB4 -> M31_BB6;
+    M31_BB5 [
+      shape="record"
+      label="BB5|action = this.printBothAction"
+    ];
+    M31_BB5 -> M31_BB6;
+    M31_BB6 [
+      shape="record"
+      label="BB6"
+    ];
+    M31_BB6 -> M31_BB7;
+    M31_BB7 [
+      shape="record"
+      label="BB7|If: (this.root != null)"
+    ];
+    M31_BB7 -> M31_BB8;
+    M31_BB7 -> M31_BB9 [label="False"];
+    M31_BB8 [
+      shape="record"
+      label="BB8|this.root.runPreOrder(...)"
+    ];
+    M31_BB8 -> M31_BB10;
+    M31_BB9 [
+      shape="record"
+      label="BB9|nop"
+    ];
+    M31_BB9 -> M31_BB10;
+    M31_BB10 [
+      shape="record"
+      label="BB10"
+    ];
+    M31_BB10 -> M31_BB1;
+  }
+  subgraph cluster_32 {
+    label = "Tree.printInOrder"
+    M32_BB0 [
+      shape="record"
+      label="BB0|If: (type == 1)"
+    ];
+    M32_BB0 -> M32_BB2;
+    M32_BB0 -> M32_BB3 [label="False"];
+    M32_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M32_BB2 [
+      shape="record"
+      label="BB2|action = this.printKeyAction"
+    ];
+    M32_BB2 -> M32_BB7;
+    M32_BB3 [
+      shape="record"
+      label="BB3|If: (type == 2)"
+    ];
+    M32_BB3 -> M32_BB4;
+    M32_BB3 -> M32_BB5 [label="False"];
+    M32_BB4 [
+      shape="record"
+      label="BB4|action = this.printValueAction"
+    ];
+    M32_BB4 -> M32_BB6;
+    M32_BB5 [
+      shape="record"
+      label="BB5|action = this.printBothAction"
+    ];
+    M32_BB5 -> M32_BB6;
+    M32_BB6 [
+      shape="record"
+      label="BB6"
+    ];
+    M32_BB6 -> M32_BB7;
+    M32_BB7 [
+      shape="record"
+      label="BB7|If: (this.root != null)"
+    ];
+    M32_BB7 -> M32_BB8;
+    M32_BB7 -> M32_BB9 [label="False"];
+    M32_BB8 [
+      shape="record"
+      label="BB8|this.root.runInOrder(...)"
+    ];
+    M32_BB8 -> M32_BB10;
+    M32_BB9 [
+      shape="record"
+      label="BB9|nop"
+    ];
+    M32_BB9 -> M32_BB10;
+    M32_BB10 [
+      shape="record"
+      label="BB10"
+    ];
+    M32_BB10 -> M32_BB1;
+  }
+  subgraph cluster_33 {
+    label = "Tree.printPostOrder"
+    M33_BB0 [
+      shape="record"
+      label="BB0|If: (type == 1)"
+    ];
+    M33_BB0 -> M33_BB2;
+    M33_BB0 -> M33_BB3 [label="False"];
+    M33_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M33_BB2 [
+      shape="record"
+      label="BB2|action = this.printKeyAction"
+    ];
+    M33_BB2 -> M33_BB7;
+    M33_BB3 [
+      shape="record"
+      label="BB3|If: (type == 2)"
+    ];
+    M33_BB3 -> M33_BB4;
+    M33_BB3 -> M33_BB5 [label="False"];
+    M33_BB4 [
+      shape="record"
+      label="BB4|action = this.printValueAction"
+    ];
+    M33_BB4 -> M33_BB6;
+    M33_BB5 [
+      shape="record"
+      label="BB5|action = this.printBothAction"
+    ];
+    M33_BB5 -> M33_BB6;
+    M33_BB6 [
+      shape="record"
+      label="BB6"
+    ];
+    M33_BB6 -> M33_BB7;
+    M33_BB7 [
+      shape="record"
+      label="BB7|If: (this.root != null)"
+    ];
+    M33_BB7 -> M33_BB8;
+    M33_BB7 -> M33_BB9 [label="False"];
+    M33_BB8 [
+      shape="record"
+      label="BB8|this.root.runPostOrder(...)"
+    ];
+    M33_BB8 -> M33_BB10;
+    M33_BB9 [
+      shape="record"
+      label="BB9|nop"
+    ];
+    M33_BB9 -> M33_BB10;
+    M33_BB10 [
+      shape="record"
+      label="BB10"
+    ];
+    M33_BB10 -> M33_BB1;
+  }
+  subgraph cluster_34 {
+    label = "Main.init"
+    M34_BB0 [
+      shape="record"
+      label="BB0|this.r = new Random()|this.r.Random(...)|cmpOp = new Less()|this.t1 = new Tree()|this.t1.Tree(...)|cmpOp = new Greater()|this.t2 = new Tree()|this.t2.Tree(...)"
+    ];
+    M34_BB0 -> M34_BB1;
+    M34_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_35 {
+    label = "Main.fill"
+    M35_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M35_BB0 -> M35_BB2;
+    M35_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M35_BB2 [
+      shape="record"
+      label="BB2|If: (i \< n)"
+    ];
+    M35_BB2 -> M35_BB3;
+    M35_BB2 -> M35_BB4 [label="False"];
+    M35_BB3 [
+      shape="record"
+      label="BB3|key = this.r.next(...)|value = key|t.add(...)|i = (i + 1)"
+    ];
+    M35_BB3 -> M35_BB2;
+    M35_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M35_BB4 -> M35_BB1;
+  }
+  subgraph cluster_36 {
+    label = "Main.print"
+    M36_BB0 [
+      shape="record"
+      label="BB0|write(t.getCount(...))|writeln()|write(t.getDepth(...))|writeln()|t.printInOrder(...)"
+    ];
+    M36_BB0 -> M36_BB1;
+    M36_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_37 {
+    label = "Main.main"
+    M37_BB0 [
+      shape="record"
+      label="BB0|this.init(...)|this.fill(...)|this.fill(...)|this.print(...)|this.print(...)"
+    ];
+    M37_BB0 -> M37_BB1;
+    M37_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+}
+
+The difference is:
+At line 245 / 245:
+>     M13_BB4 [
+>       shape="record"
+>       label="BB4"
+>     ];
+>     M13_BB4 -> M13_BB1;
+At line 600 / 605:
+>     M27_BB4 [
+>       shape="record"
+>       label="BB4"
+>     ];
+>     M27_BB4 -> M27_BB1;
+At line 635 / 645:
+>     M29_BB4 [
+>       shape="record"
+>       label="BB4"
+>     ];
+>     M29_BB4 -> M29_BB1;
+Line 893 / 908:
+

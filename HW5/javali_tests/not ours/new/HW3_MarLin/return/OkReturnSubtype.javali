@@ -1,0 +1,19 @@
+class A {
+
+}
+
+class B extends A {
+
+}
+
+class Main {
+	void main() {
+		
+	}
+	
+	A method() {
+	   B b;
+	   b = new B();
+	   return b;
+	}
+}

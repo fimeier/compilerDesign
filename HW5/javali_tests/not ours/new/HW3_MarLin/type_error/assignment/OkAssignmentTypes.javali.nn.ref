@@ -1,0 +1,13 @@
+Main.main
+  BB0 out: [a2, b]
+    j = 1: []
+    i = (j + 1): []
+    a1 = new A(): []
+    a2 = new A(): [a1]
+    b = new B(): [a1, a2]
+    a1 = a2: [a1, a2, b]
+    a1 = b: [a1, a2, b]
+    a1 = null: [a1, a2, b]
+  BB1 out: [a2, b]
+
+

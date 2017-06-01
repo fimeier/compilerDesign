@@ -1,0 +1,18 @@
+
+class Main
+{
+    int j;
+    A a;
+
+    void test()
+    {
+        int i;
+        int j;
+        (i+j).j = 5;
+    }
+
+    void main()
+    {
+    }
+
+}

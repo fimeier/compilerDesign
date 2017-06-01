@@ -1,0 +1,39 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "Main.main"
+    M0_BB0 [
+      shape="record"
+      label="BB0|a = new A()|a = a.foo(...)"
+    ];
+    M0_BB0 -> M0_BB1;
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_1 {
+    label = "A.foo"
+    M1_BB0 [
+      shape="record"
+      label="BB0|this.x = 1|write(this.bar(...))|return this"
+    ];
+    M1_BB0 -> M1_BB1;
+    M1_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_2 {
+    label = "A.bar"
+    M2_BB0 [
+      shape="record"
+      label="BB0|return (i + this.x)"
+    ];
+    M2_BB0 -> M2_BB1;
+    M2_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+}

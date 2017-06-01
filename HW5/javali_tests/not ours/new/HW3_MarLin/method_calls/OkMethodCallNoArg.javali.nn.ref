@@ -1,0 +1,11 @@
+Main.main
+  BB0 out: []
+    this.method(...): []
+  BB1 out: []
+
+
+Main.method
+  BB0 out: []
+  BB1 out: []
+
+

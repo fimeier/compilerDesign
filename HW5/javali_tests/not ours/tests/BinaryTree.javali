@@ -1,0 +1,242 @@
+/*
+ * Advanced test case: Implementation and use of a binary search tree using keys at then nodes
+ *
+ * Author: Jakob Meier (jakmeier)
+ * Group: Robert
+ */
+
+class BinaryTree {
+	int key;
+	Object value;
+	BinaryTree left;
+	BinaryTree right;
+
+	void insert(Object obj, int w) {
+		if ( value == null) {
+			value = obj;
+			key = w;
+		} else { if ( w < key) {
+			if ( left == null ) {
+				left = new BinaryTree();
+			}
+			left.insert(obj, w);
+		}
+		else {
+			if ( right == null ) {
+				right = new BinaryTree();
+			}
+			right.insert(obj, w);
+		}}
+	}
+	
+	void printKeys() {
+		if( left != null) {
+			left.printKeys();
+		}
+		write(key);
+		if( right != null) {
+			right.printKeys();
+		}
+	}
+
+	Object get( int i) {
+		if ( i == key ) { 
+			return value;
+		}
+		if ( left == null && right == null) {
+			return value;
+		}
+		if ( left == null && i < key) {
+			return value;
+		}
+		if ( right == null && i > key) {
+			return value;
+		}
+		if ( i < key) {
+			return left.get(i);
+		}
+		if ( i > key) {
+			return right.get(i);
+		}
+		return null; // Should never be executed
+	}
+}
+
+// Constructors for the BinaryTree
+class BinaryTreeFactory {
+	BinaryTree newTree() {
+		BinaryTree bn;
+		bn = new BinaryTree();
+		return bn;
+	}
+	BinaryTree fromArray(Object[] values, int size){	
+		BinaryTree bn;
+		int i;
+		bn = new BinaryTree();
+		while( i < size) {
+			bn.insert(values[i], i);
+			i = i + 1;
+		}
+		return bn;
+	}
+}
+
+// Some tests that take an input file
+class Main {
+	int t;
+	void checkpoint() { writeln(); write(t); writeln(); t = t+1;}
+	void main() {	
+		int i, p, size;
+		int[] input;
+
+		checkpoint();
+
+		/* Read input into array */
+		/* EOF: -1
+		 * First number: upper limit on size
+		 */
+		size = read();
+		input = new int[size];
+		
+		checkpoint();
+
+		p = read();
+		while( p != -1 && i < size) {
+			if ( p > 0 ) {
+				input[i] = p;
+			}	
+			p = read();
+			i = i + 1;
+		}
+		
+		checkpoint();
+
+		sortedPrint(input, i);
+		
+		writeln();
+		checkpoint();
+
+		cellTest(input, i);
+	}
+
+	void sortedPrint(int[] input, int size) {
+		BinaryTreeFactory factory;
+		BinaryTree tree;
+		Object a;
+		int i;
+
+		factory = new BinaryTreeFactory();
+		tree = factory.newTree();
+		a = new Object();
+
+
+		while( i < size) {
+			tree.insert(a, input[i]);
+			i = i + 1;
+		}
+		
+		tree.printKeys();
+	}
+
+	void cellTest(int[] input, int size) {
+		BinaryTreeFactory factory;
+		BinaryTree tree;
+		Cell c;
+		Object[] normalCells;
+		Object[] mixedCells;
+		int i;
+		
+		checkpoint();
+
+		factory = new BinaryTreeFactory();
+		normalCells = new Object[size];
+		mixedCells = new Object[size];
+
+		while( i < size ) {
+			c = new Cell();
+			c.k = input[i];
+			normalCells[i] = (Object) c;
+			i = i + 1;
+		}
+
+		checkpoint();
+
+		//factory.fromArray(normalCells, size).printKeys();
+		tree = factory.fromArray(normalCells, size);
+		tree.printKeys(); // BUG: Error: 139	
+		i = -2;
+		while( i < size + 2 ) {
+			//c = (Cell) tree.get(i); //  BUG: Error: 139
+			//c.print();
+			//c.print();
+			write(c.k);
+			i = i + 1;
+		}
+
+		writeln();
+		checkpoint();
+
+		i = 0;
+/*		while( i < size ) {
+			
+			if( i % 4 == 0 ) {
+				c = new Cell();
+			}
+			if( i % 4 == 1 ) {
+				c = new NegativeCell();
+			}
+			if( i % 4 == 2 ) {
+				c = new ReadToClearCell();
+			}
+			if( i % 4 == 3 ) {
+				c = new DelayedCell();
+			}
+			c.k = input[i];
+			mixedCells[i] = (Object) c;
+
+			i = i + 1;
+		}
+*/
+
+/*
+		tree = factory.fromArray(mixedCells, size);
+		tree.printKeys();	
+		i = -2;
+		while( i < size + 2 ) {
+			writeln();
+			c = (Cell) tree.get(i);
+			c.print();
+			c.print();
+			c.print();
+			i = i + 1;
+		}*/
+	}
+}
+
+class Cell { 
+	int k; 
+	void print() {
+		write(k);
+	}
+}
+class NegativeCell extends Cell {	
+	void print() {
+		write(-k);
+	}
+}
+class ReadToClearCell extends Cell {	
+	void print() {
+		write(k);
+		k = 0;
+	}
+}
+class DelayedCell extends Cell {
+	int k; // Does not overwrite k from Cell in Javali!!!
+	void print() {
+		Cell c;
+		write(k);  // will be 0 the first time
+		c = (Cell)this;
+		k = c.k;
+	}
+}
+

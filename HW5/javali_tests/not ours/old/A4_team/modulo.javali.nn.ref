@@ -1,0 +1,8 @@
+Main.main
+  BB0 out: []
+    i = 5: []
+    j = 2: []
+    write((i % j)): []
+  BB1 out: []
+
+

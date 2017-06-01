@@ -1,0 +1,9 @@
+Main.main
+  BB0 out: [x]
+    x = new X(): []
+    x.field = 1: [x]
+    this.field = 1: [x]
+    this.field = 1: [x]
+  BB1 out: [x]
+
+

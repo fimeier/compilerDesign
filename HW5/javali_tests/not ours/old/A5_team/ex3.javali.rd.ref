@@ -1,0 +1,11 @@
+Main.main
+  BB0 out:
+    a = 1
+    b = 3
+    c = (b + 1)
+  BB1 out:
+    a = 1
+    b = 3
+    c = (b + 1)
+
+

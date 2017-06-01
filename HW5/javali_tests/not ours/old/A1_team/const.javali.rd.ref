@@ -1,0 +1,13 @@
+Main.main
+  BB0 out:
+    a = 10
+    b = -(10)
+    c = +(c)
+    d = (d - 2)
+  BB1 out:
+    a = 10
+    b = -(10)
+    c = +(c)
+    d = (d - 2)
+
+

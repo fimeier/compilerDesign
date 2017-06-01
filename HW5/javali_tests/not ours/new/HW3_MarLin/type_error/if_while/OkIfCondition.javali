@@ -1,0 +1,13 @@
+/* Test that if conditions must be boolean */
+class Main {
+   void main() {
+      boolean b;
+      b = true;
+      if (!false) {
+         
+      }
+      if (b == false/* && b || !b && 1 >= 10*/) {
+         
+      }
+   }
+}

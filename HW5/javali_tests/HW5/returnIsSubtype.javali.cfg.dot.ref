@@ -1,0 +1,63 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "Main.main"
+    M0_BB0 [
+      shape="record"
+      label="BB0"
+    ];
+    M0_BB0 -> M0_BB1;
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_1 {
+    label = "Main.foo1"
+    M1_BB0 [
+      shape="record"
+      label="BB0|return s"
+    ];
+    M1_BB0 -> M1_BB1;
+    M1_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_2 {
+    label = "Main.foo2"
+    M2_BB0 [
+      shape="record"
+      label="BB0|return s"
+    ];
+    M2_BB0 -> M2_BB1;
+    M2_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_3 {
+    label = "Main.foo3"
+    M3_BB0 [
+      shape="record"
+      label="BB0|return null"
+    ];
+    M3_BB0 -> M3_BB1;
+    M3_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_4 {
+    label = "Main.foo4"
+    M4_BB0 [
+      shape="record"
+      label="BB0|return"
+    ];
+    M4_BB0 -> M4_BB1;
+    M4_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+}

@@ -1,0 +1,27 @@
+class A
+{
+    int k()
+    {
+        return 1;
+    }
+}
+
+class B
+{
+    A a;
+}
+
+class Main
+{
+    int j;
+    B b2;
+
+    void main()
+    {
+        B b;
+        int c;
+        c = b2.a.j();
+    }
+
+}
+

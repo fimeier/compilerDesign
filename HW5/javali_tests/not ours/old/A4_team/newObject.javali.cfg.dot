@@ -1,0 +1,63 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "A.foo"
+    M0_BB0 [
+      shape="record"
+      label="BB0|return 0"
+    ];
+    M0_BB0 -> M0_BB1;
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_1 {
+    label = "B.boo"
+    M1_BB0 [
+      shape="record"
+      label="BB0|return i"
+    ];
+    M1_BB0 -> M1_BB1;
+    M1_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_2 {
+    label = "B.foo"
+    M2_BB0 [
+      shape="record"
+      label="BB0|return 1"
+    ];
+    M2_BB0 -> M2_BB1;
+    M2_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_3 {
+    label = "C.boo"
+    M3_BB0 [
+      shape="record"
+      label="BB0|return (i + 1)"
+    ];
+    M3_BB0 -> M3_BB1;
+    M3_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_4 {
+    label = "Main.main"
+    M4_BB0 [
+      shape="record"
+      label="BB0|arr = new A[][1]|arr[0] = new A()|arr[0].k = 5|write(arr[0].k)|this.k = 5|a = new A()|write(a.foo(...))|writeln()|b = new B()|write(b.foo(...))|writeln()|write(this.k)|writeln()|write(b.boo(...))"
+    ];
+    M4_BB0 -> M4_BB1;
+    M4_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+}

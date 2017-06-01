@@ -1,0 +1,18 @@
+Main.main
+  BB0 out:
+    a = true
+    b = false
+  BB1 out:
+    a = true
+    b = false
+  BB2 out:
+    a = true
+    b = false
+  BB3 out:
+    a = true
+    b = false
+  BB4 out:
+    a = true
+    b = false
+
+

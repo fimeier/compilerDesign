@@ -1,0 +1,7 @@
+Main.main
+  BB0 out:
+    super = sub
+  BB1 out:
+    super = sub
+
+

@@ -1,0 +1,16 @@
+// Two local variables with same name
+class A {
+   int foo;
+   B bar(){
+   	int x;
+   	B x;
+   }
+}
+
+class B extends A {
+   int bar;
+}
+
+class Main{
+	void main(){}
+}

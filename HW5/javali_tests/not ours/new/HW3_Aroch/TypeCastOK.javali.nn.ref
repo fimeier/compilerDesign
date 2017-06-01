@@ -1,0 +1,7 @@
+Main.main
+  BB0 out: [aref, bref]
+    aref = new A(): []
+    bref = (B)(aref): [aref]
+  BB1 out: [aref, bref]
+
+

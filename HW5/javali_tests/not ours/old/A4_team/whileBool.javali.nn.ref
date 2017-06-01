@@ -1,0 +1,11 @@
+Main.main
+  BB0 out: []
+  BB1 out: []
+  BB2 out: []
+    ((false && true) || false): []
+  BB3 out: []
+    write(1): []
+  BB4 out: []
+    write(0): []
+
+

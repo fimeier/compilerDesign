@@ -1,0 +1,447 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "BinaryTree.insert"
+    M0_BB0 [
+      shape="record"
+      label="BB0|If: (this.value == null)"
+    ];
+    M0_BB0 -> M0_BB2;
+    M0_BB0 -> M0_BB3 [label="False"];
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M0_BB2 [
+      shape="record"
+      label="BB2|this.value = obj|this.key = w"
+    ];
+    M0_BB2 -> M0_BB13;
+    M0_BB3 [
+      shape="record"
+      label="BB3|If: (w \< this.key)"
+    ];
+    M0_BB3 -> M0_BB4;
+    M0_BB3 -> M0_BB5 [label="False"];
+    M0_BB4 [
+      shape="record"
+      label="BB4|If: (this.left == null)"
+    ];
+    M0_BB4 -> M0_BB6;
+    M0_BB4 -> M0_BB7 [label="False"];
+    M0_BB5 [
+      shape="record"
+      label="BB5|If: (this.right == null)"
+    ];
+    M0_BB5 -> M0_BB9;
+    M0_BB5 -> M0_BB10 [label="False"];
+    M0_BB6 [
+      shape="record"
+      label="BB6|this.left = new BinaryTree()"
+    ];
+    M0_BB6 -> M0_BB8;
+    M0_BB7 [
+      shape="record"
+      label="BB7|nop"
+    ];
+    M0_BB7 -> M0_BB8;
+    M0_BB8 [
+      shape="record"
+      label="BB8|this.left.insert(...)"
+    ];
+    M0_BB8 -> M0_BB12;
+    M0_BB9 [
+      shape="record"
+      label="BB9|this.right = new BinaryTree()"
+    ];
+    M0_BB9 -> M0_BB11;
+    M0_BB10 [
+      shape="record"
+      label="BB10|nop"
+    ];
+    M0_BB10 -> M0_BB11;
+    M0_BB11 [
+      shape="record"
+      label="BB11|this.right.insert(...)"
+    ];
+    M0_BB11 -> M0_BB12;
+    M0_BB12 [
+      shape="record"
+      label="BB12"
+    ];
+    M0_BB12 -> M0_BB13;
+    M0_BB13 [
+      shape="record"
+      label="BB13"
+    ];
+    M0_BB13 -> M0_BB1;
+  }
+  subgraph cluster_1 {
+    label = "BinaryTree.printKeys"
+    M1_BB0 [
+      shape="record"
+      label="BB0|If: (this.left != null)"
+    ];
+    M1_BB0 -> M1_BB2;
+    M1_BB0 -> M1_BB3 [label="False"];
+    M1_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M1_BB2 [
+      shape="record"
+      label="BB2|this.left.printKeys(...)"
+    ];
+    M1_BB2 -> M1_BB4;
+    M1_BB3 [
+      shape="record"
+      label="BB3|nop"
+    ];
+    M1_BB3 -> M1_BB4;
+    M1_BB4 [
+      shape="record"
+      label="BB4|write(this.key)|If: (this.right != null)"
+    ];
+    M1_BB4 -> M1_BB5;
+    M1_BB4 -> M1_BB6 [label="False"];
+    M1_BB5 [
+      shape="record"
+      label="BB5|this.right.printKeys(...)"
+    ];
+    M1_BB5 -> M1_BB7;
+    M1_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M1_BB6 -> M1_BB7;
+    M1_BB7 [
+      shape="record"
+      label="BB7"
+    ];
+    M1_BB7 -> M1_BB1;
+  }
+  subgraph cluster_2 {
+    label = "BinaryTree.get"
+    M2_BB0 [
+      shape="record"
+      label="BB0|If: (i == this.key)"
+    ];
+    M2_BB0 -> M2_BB2;
+    M2_BB0 -> M2_BB3 [label="False"];
+    M2_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M2_BB2 [
+      shape="record"
+      label="BB2|return this.value"
+    ];
+    M2_BB2 -> M2_BB1;
+    M2_BB3 [
+      shape="record"
+      label="BB3|nop"
+    ];
+    M2_BB3 -> M2_BB4;
+    M2_BB4 [
+      shape="record"
+      label="BB4|If: ((this.left == null) && (this.right == null))"
+    ];
+    M2_BB4 -> M2_BB5;
+    M2_BB4 -> M2_BB6 [label="False"];
+    M2_BB5 [
+      shape="record"
+      label="BB5|return this.value"
+    ];
+    M2_BB5 -> M2_BB1;
+    M2_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M2_BB6 -> M2_BB7;
+    M2_BB7 [
+      shape="record"
+      label="BB7|If: ((this.left == null) && (i \< this.key))"
+    ];
+    M2_BB7 -> M2_BB8;
+    M2_BB7 -> M2_BB9 [label="False"];
+    M2_BB8 [
+      shape="record"
+      label="BB8|return this.value"
+    ];
+    M2_BB8 -> M2_BB1;
+    M2_BB9 [
+      shape="record"
+      label="BB9|nop"
+    ];
+    M2_BB9 -> M2_BB10;
+    M2_BB10 [
+      shape="record"
+      label="BB10|If: ((this.right == null) && (i \> this.key))"
+    ];
+    M2_BB10 -> M2_BB11;
+    M2_BB10 -> M2_BB12 [label="False"];
+    M2_BB11 [
+      shape="record"
+      label="BB11|return this.value"
+    ];
+    M2_BB11 -> M2_BB1;
+    M2_BB12 [
+      shape="record"
+      label="BB12|nop"
+    ];
+    M2_BB12 -> M2_BB13;
+    M2_BB13 [
+      shape="record"
+      label="BB13|If: (i \< this.key)"
+    ];
+    M2_BB13 -> M2_BB14;
+    M2_BB13 -> M2_BB15 [label="False"];
+    M2_BB14 [
+      shape="record"
+      label="BB14|return this.left.get(...)"
+    ];
+    M2_BB14 -> M2_BB1;
+    M2_BB15 [
+      shape="record"
+      label="BB15|nop"
+    ];
+    M2_BB15 -> M2_BB16;
+    M2_BB16 [
+      shape="record"
+      label="BB16|If: (i \> this.key)"
+    ];
+    M2_BB16 -> M2_BB17;
+    M2_BB16 -> M2_BB18 [label="False"];
+    M2_BB17 [
+      shape="record"
+      label="BB17|return this.right.get(...)"
+    ];
+    M2_BB17 -> M2_BB1;
+    M2_BB18 [
+      shape="record"
+      label="BB18|nop"
+    ];
+    M2_BB18 -> M2_BB19;
+    M2_BB19 [
+      shape="record"
+      label="BB19|return null"
+    ];
+    M2_BB19 -> M2_BB1;
+  }
+  subgraph cluster_3 {
+    label = "BinaryTreeFactory.newTree"
+    M3_BB0 [
+      shape="record"
+      label="BB0|bn = new BinaryTree()|return bn"
+    ];
+    M3_BB0 -> M3_BB1;
+    M3_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_4 {
+    label = "BinaryTreeFactory.fromArray"
+    M4_BB0 [
+      shape="record"
+      label="BB0|bn = new BinaryTree()"
+    ];
+    M4_BB0 -> M4_BB2;
+    M4_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M4_BB2 [
+      shape="record"
+      label="BB2|If: (i \< size)"
+    ];
+    M4_BB2 -> M4_BB3;
+    M4_BB2 -> M4_BB4 [label="False"];
+    M4_BB3 [
+      shape="record"
+      label="BB3|bn.insert(...)|i = (i + 1)"
+    ];
+    M4_BB3 -> M4_BB2;
+    M4_BB4 [
+      shape="record"
+      label="BB4|return bn"
+    ];
+    M4_BB4 -> M4_BB1;
+  }
+  subgraph cluster_5 {
+    label = "Main.checkpoint"
+    M5_BB0 [
+      shape="record"
+      label="BB0|writeln()|write(this.t)|writeln()|this.t = (this.t + 1)"
+    ];
+    M5_BB0 -> M5_BB1;
+    M5_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_6 {
+    label = "Main.main"
+    M6_BB0 [
+      shape="record"
+      label="BB0|this.checkpoint(...)|size = read()|input = new int[][size]|this.checkpoint(...)|p = read()"
+    ];
+    M6_BB0 -> M6_BB2;
+    M6_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M6_BB2 [
+      shape="record"
+      label="BB2|If: ((p != -(1)) && (i \< size))"
+    ];
+    M6_BB2 -> M6_BB3;
+    M6_BB2 -> M6_BB4 [label="False"];
+    M6_BB3 [
+      shape="record"
+      label="BB3|If: (p \> 0)"
+    ];
+    M6_BB3 -> M6_BB5;
+    M6_BB3 -> M6_BB6 [label="False"];
+    M6_BB4 [
+      shape="record"
+      label="BB4|this.checkpoint(...)|this.sortedPrint(...)|writeln()|this.checkpoint(...)|this.cellTest(...)"
+    ];
+    M6_BB4 -> M6_BB1;
+    M6_BB5 [
+      shape="record"
+      label="BB5|input[i] = p"
+    ];
+    M6_BB5 -> M6_BB7;
+    M6_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M6_BB6 -> M6_BB7;
+    M6_BB7 [
+      shape="record"
+      label="BB7|p = read()|i = (i + 1)"
+    ];
+    M6_BB7 -> M6_BB2;
+  }
+  subgraph cluster_7 {
+    label = "Main.sortedPrint"
+    M7_BB0 [
+      shape="record"
+      label="BB0|factory = new BinaryTreeFactory()|tree = factory.newTree(...)|a = new Object()"
+    ];
+    M7_BB0 -> M7_BB2;
+    M7_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M7_BB2 [
+      shape="record"
+      label="BB2|If: (i \< size)"
+    ];
+    M7_BB2 -> M7_BB3;
+    M7_BB2 -> M7_BB4 [label="False"];
+    M7_BB3 [
+      shape="record"
+      label="BB3|tree.insert(...)|i = (i + 1)"
+    ];
+    M7_BB3 -> M7_BB2;
+    M7_BB4 [
+      shape="record"
+      label="BB4|tree.printKeys(...)"
+    ];
+    M7_BB4 -> M7_BB1;
+  }
+  subgraph cluster_8 {
+    label = "Main.cellTest"
+    M8_BB0 [
+      shape="record"
+      label="BB0|this.checkpoint(...)|factory = new BinaryTreeFactory()|normalCells = new Object[][size]|mixedCells = new Object[][size]"
+    ];
+    M8_BB0 -> M8_BB2;
+    M8_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M8_BB2 [
+      shape="record"
+      label="BB2|If: (i \< size)"
+    ];
+    M8_BB2 -> M8_BB3;
+    M8_BB2 -> M8_BB4 [label="False"];
+    M8_BB3 [
+      shape="record"
+      label="BB3|c = new Cell()|c.k = input[i]|normalCells[i] = (Object)(c)|i = (i + 1)"
+    ];
+    M8_BB3 -> M8_BB2;
+    M8_BB4 [
+      shape="record"
+      label="BB4|this.checkpoint(...)|tree = factory.fromArray(...)|tree.printKeys(...)|i = -(2)"
+    ];
+    M8_BB4 -> M8_BB5;
+    M8_BB5 [
+      shape="record"
+      label="BB5|If: (i \< (size + 2))"
+    ];
+    M8_BB5 -> M8_BB6;
+    M8_BB5 -> M8_BB7 [label="False"];
+    M8_BB6 [
+      shape="record"
+      label="BB6|write(c.k)|i = (i + 1)"
+    ];
+    M8_BB6 -> M8_BB5;
+    M8_BB7 [
+      shape="record"
+      label="BB7|writeln()|this.checkpoint(...)|i = 0"
+    ];
+    M8_BB7 -> M8_BB1;
+  }
+  subgraph cluster_9 {
+    label = "Cell.print"
+    M9_BB0 [
+      shape="record"
+      label="BB0|write(this.k)"
+    ];
+    M9_BB0 -> M9_BB1;
+    M9_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_10 {
+    label = "NegativeCell.print"
+    M10_BB0 [
+      shape="record"
+      label="BB0|write(-(this.k))"
+    ];
+    M10_BB0 -> M10_BB1;
+    M10_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_11 {
+    label = "ReadToClearCell.print"
+    M11_BB0 [
+      shape="record"
+      label="BB0|write(this.k)|this.k = 0"
+    ];
+    M11_BB0 -> M11_BB1;
+    M11_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_12 {
+    label = "DelayedCell.print"
+    M12_BB0 [
+      shape="record"
+      label="BB0|write(this.k)|c = (Cell)(this)|this.k = c.k"
+    ];
+    M12_BB0 -> M12_BB1;
+    M12_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+}

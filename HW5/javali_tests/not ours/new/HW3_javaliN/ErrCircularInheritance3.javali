@@ -1,0 +1,15 @@
+/* Test that the circular inheritance between Foo and Bar is detected */
+// should have no error
+class A { }
+class Foo extends A { }
+class Bar extends A { }
+class B extends A { }
+class C extends B { }
+class D extends C { }
+class E extends D { }
+
+class Main {
+   void main() {
+      writeln();
+   }
+}

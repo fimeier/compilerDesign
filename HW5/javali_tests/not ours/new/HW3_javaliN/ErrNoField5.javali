@@ -1,0 +1,24 @@
+class A
+{
+}
+
+class B extends A
+{
+    int k;
+    B b;
+}
+
+class Main
+{
+    int j;
+
+    void test(B a)
+    {
+        a.b.b.k = 5;
+    }
+
+    void main()
+    {
+    }
+
+}

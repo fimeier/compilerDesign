@@ -1,0 +1,7 @@
+Main.main
+  BB0 out:
+    x = new X()
+  BB1 out:
+    x = new X()
+
+

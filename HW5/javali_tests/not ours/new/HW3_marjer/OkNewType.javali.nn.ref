@@ -1,0 +1,6 @@
+Main.main
+  BB0 out: [blob]
+    blob = new Blob(): []
+  BB1 out: [blob]
+
+

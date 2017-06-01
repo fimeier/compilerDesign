@@ -1,0 +1,9 @@
+Main.main
+  BB0 out:
+    a = new int[][100]
+    i = a[0]
+  BB1 out:
+    a = new int[][100]
+    i = a[0]
+
+

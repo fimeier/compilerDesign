@@ -1,0 +1,10 @@
+Main.main
+  BB0 out: [a, b]
+    a = new A(): []
+    b = new B(): [a]
+    a = b: [a, b]
+    a = (A)(b): [a, b]
+    b = (B)(a): [a, b]
+  BB1 out: [a, b]
+
+

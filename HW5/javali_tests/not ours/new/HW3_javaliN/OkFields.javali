@@ -1,0 +1,14 @@
+class Main
+{
+    void main()
+    {
+
+    }
+
+    int test(int j)
+    {
+        int i;
+
+        return i;
+    }
+}

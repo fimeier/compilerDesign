@@ -1,0 +1,9 @@
+class A extends A {
+
+}
+ 
+class Main {
+	void main() {
+	
+	}
+}

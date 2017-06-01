@@ -1,0 +1,7 @@
+Main.main
+  BB0 out:
+    blob = new Blob()
+  BB1 out:
+    blob = new Blob()
+
+

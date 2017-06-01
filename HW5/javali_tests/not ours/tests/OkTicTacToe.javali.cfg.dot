@@ -1,0 +1,1015 @@
+digraph G {
+  graph [ rankdir = "LR" ];
+  subgraph cluster_0 {
+    label = "Vector.Vector"
+    M0_BB0 [
+      shape="record"
+      label="BB0|this.n = n|this.v = new int[][n]|this.fill(...)"
+    ];
+    M0_BB0 -> M0_BB1;
+    M0_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_1 {
+    label = "Vector.fill"
+    M1_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M1_BB0 -> M1_BB2;
+    M1_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M1_BB2 [
+      shape="record"
+      label="BB2|If: (i \< this.n)"
+    ];
+    M1_BB2 -> M1_BB3;
+    M1_BB2 -> M1_BB4 [label="False"];
+    M1_BB3 [
+      shape="record"
+      label="BB3|this.v[i] = value|i = (i + 1)"
+    ];
+    M1_BB3 -> M1_BB2;
+    M1_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M1_BB4 -> M1_BB1;
+  }
+  subgraph cluster_2 {
+    label = "Vector.contains"
+    M2_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M2_BB0 -> M2_BB2;
+    M2_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M2_BB2 [
+      shape="record"
+      label="BB2|If: (i \< this.n)"
+    ];
+    M2_BB2 -> M2_BB3;
+    M2_BB2 -> M2_BB4 [label="False"];
+    M2_BB3 [
+      shape="record"
+      label="BB3|If: (this.v[i] == value)"
+    ];
+    M2_BB3 -> M2_BB5;
+    M2_BB3 -> M2_BB6 [label="False"];
+    M2_BB4 [
+      shape="record"
+      label="BB4|return false"
+    ];
+    M2_BB4 -> M2_BB1;
+    M2_BB5 [
+      shape="record"
+      label="BB5|return true"
+    ];
+    M2_BB5 -> M2_BB1;
+    M2_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M2_BB6 -> M2_BB7;
+    M2_BB7 [
+      shape="record"
+      label="BB7|i = (i + 1)"
+    ];
+    M2_BB7 -> M2_BB2;
+  }
+  subgraph cluster_3 {
+    label = "Vector.compactOK"
+    M3_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M3_BB0 -> M3_BB2;
+    M3_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M3_BB2 [
+      shape="record"
+      label="BB2|If: (i \< this.n)"
+    ];
+    M3_BB2 -> M3_BB3;
+    M3_BB2 -> M3_BB4 [label="False"];
+    M3_BB3 [
+      shape="record"
+      label="BB3|value = this.v[i]|If: ((value \< 0) \|\| (9 \< value))"
+    ];
+    M3_BB3 -> M3_BB5;
+    M3_BB3 -> M3_BB6 [label="False"];
+    M3_BB4 [
+      shape="record"
+      label="BB4|return true"
+    ];
+    M3_BB4 -> M3_BB1;
+    M3_BB5 [
+      shape="record"
+      label="BB5|return false"
+    ];
+    M3_BB5 -> M3_BB1;
+    M3_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M3_BB6 -> M3_BB7;
+    M3_BB7 [
+      shape="record"
+      label="BB7|i = (i + 1)"
+    ];
+    M3_BB7 -> M3_BB2;
+  }
+  subgraph cluster_4 {
+    label = "Vector.print"
+    M4_BB0 [
+      shape="record"
+      label="BB0|this.print2(...)"
+    ];
+    M4_BB0 -> M4_BB1;
+    M4_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_5 {
+    label = "Vector.print2"
+    M5_BB0 [
+      shape="record"
+      label="BB0|nc = !(compact)|i = 0"
+    ];
+    M5_BB0 -> M5_BB2;
+    M5_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M5_BB2 [
+      shape="record"
+      label="BB2|If: (i \< this.n)"
+    ];
+    M5_BB2 -> M5_BB3;
+    M5_BB2 -> M5_BB4 [label="False"];
+    M5_BB3 [
+      shape="record"
+      label="BB3|write(this.v[i])|If: nc"
+    ];
+    M5_BB3 -> M5_BB5;
+    M5_BB3 -> M5_BB6 [label="False"];
+    M5_BB4 [
+      shape="record"
+      label="BB4|writeln()"
+    ];
+    M5_BB4 -> M5_BB1;
+    M5_BB5 [
+      shape="record"
+      label="BB5|writeln()"
+    ];
+    M5_BB5 -> M5_BB7;
+    M5_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M5_BB6 -> M5_BB7;
+    M5_BB7 [
+      shape="record"
+      label="BB7|i = (i + 1)"
+    ];
+    M5_BB7 -> M5_BB2;
+  }
+  subgraph cluster_6 {
+    label = "Vector.set"
+    M6_BB0 [
+      shape="record"
+      label="BB0|this.v[i] = value"
+    ];
+    M6_BB0 -> M6_BB1;
+    M6_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_7 {
+    label = "Vector.get"
+    M7_BB0 [
+      shape="record"
+      label="BB0|return this.v[i]"
+    ];
+    M7_BB0 -> M7_BB1;
+    M7_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_8 {
+    label = "Matrix.Matrix"
+    M8_BB0 [
+      shape="record"
+      label="BB0|this.m = m|this.vectors = new Vector[][n]|i = 0"
+    ];
+    M8_BB0 -> M8_BB2;
+    M8_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M8_BB2 [
+      shape="record"
+      label="BB2|If: (i \< m)"
+    ];
+    M8_BB2 -> M8_BB3;
+    M8_BB2 -> M8_BB4 [label="False"];
+    M8_BB3 [
+      shape="record"
+      label="BB3|temp = new Vector()|temp.Vector(...)|this.vectors[i] = temp|i = (i + 1)"
+    ];
+    M8_BB3 -> M8_BB2;
+    M8_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M8_BB4 -> M8_BB1;
+  }
+  subgraph cluster_9 {
+    label = "Matrix.fill"
+    M9_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M9_BB0 -> M9_BB2;
+    M9_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M9_BB2 [
+      shape="record"
+      label="BB2|If: (i \< this.m)"
+    ];
+    M9_BB2 -> M9_BB3;
+    M9_BB2 -> M9_BB4 [label="False"];
+    M9_BB3 [
+      shape="record"
+      label="BB3|this.vectors[i].fill(...)|i = (i + 1)"
+    ];
+    M9_BB3 -> M9_BB2;
+    M9_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M9_BB4 -> M9_BB1;
+  }
+  subgraph cluster_10 {
+    label = "Matrix.contains"
+    M10_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M10_BB0 -> M10_BB2;
+    M10_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M10_BB2 [
+      shape="record"
+      label="BB2|If: (i \< this.m)"
+    ];
+    M10_BB2 -> M10_BB3;
+    M10_BB2 -> M10_BB4 [label="False"];
+    M10_BB3 [
+      shape="record"
+      label="BB3|If: this.vectors[i].contains(...)"
+    ];
+    M10_BB3 -> M10_BB5;
+    M10_BB3 -> M10_BB6 [label="False"];
+    M10_BB4 [
+      shape="record"
+      label="BB4|return false"
+    ];
+    M10_BB4 -> M10_BB1;
+    M10_BB5 [
+      shape="record"
+      label="BB5|return true"
+    ];
+    M10_BB5 -> M10_BB1;
+    M10_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M10_BB6 -> M10_BB7;
+    M10_BB7 [
+      shape="record"
+      label="BB7|i = (i + 1)"
+    ];
+    M10_BB7 -> M10_BB2;
+  }
+  subgraph cluster_11 {
+    label = "Matrix.compactOK"
+    M11_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M11_BB0 -> M11_BB2;
+    M11_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M11_BB2 [
+      shape="record"
+      label="BB2|If: (i \< this.m)"
+    ];
+    M11_BB2 -> M11_BB3;
+    M11_BB2 -> M11_BB4 [label="False"];
+    M11_BB3 [
+      shape="record"
+      label="BB3|If: !(this.vectors[i].compactOK(...))"
+    ];
+    M11_BB3 -> M11_BB5;
+    M11_BB3 -> M11_BB6 [label="False"];
+    M11_BB4 [
+      shape="record"
+      label="BB4|return true"
+    ];
+    M11_BB4 -> M11_BB1;
+    M11_BB5 [
+      shape="record"
+      label="BB5|return false"
+    ];
+    M11_BB5 -> M11_BB1;
+    M11_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M11_BB6 -> M11_BB7;
+    M11_BB7 [
+      shape="record"
+      label="BB7|i = (i + 1)"
+    ];
+    M11_BB7 -> M11_BB2;
+  }
+  subgraph cluster_12 {
+    label = "Matrix.print"
+    M12_BB0 [
+      shape="record"
+      label="BB0|compact = this.compactOK(...)|i = 0"
+    ];
+    M12_BB0 -> M12_BB2;
+    M12_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M12_BB2 [
+      shape="record"
+      label="BB2|If: (i \< this.m)"
+    ];
+    M12_BB2 -> M12_BB3;
+    M12_BB2 -> M12_BB4 [label="False"];
+    M12_BB3 [
+      shape="record"
+      label="BB3|this.vectors[i].print2(...)|i = (i + 1)"
+    ];
+    M12_BB3 -> M12_BB2;
+    M12_BB4 [
+      shape="record"
+      label="BB4|writeln()"
+    ];
+    M12_BB4 -> M12_BB1;
+  }
+  subgraph cluster_13 {
+    label = "Matrix.set"
+    M13_BB0 [
+      shape="record"
+      label="BB0|this.vectors[i].set(...)"
+    ];
+    M13_BB0 -> M13_BB1;
+    M13_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_14 {
+    label = "Matrix.get"
+    M14_BB0 [
+      shape="record"
+      label="BB0|return this.vectors[i].get(...)"
+    ];
+    M14_BB0 -> M14_BB1;
+    M14_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_15 {
+    label = "Matrix.rows"
+    M15_BB0 [
+      shape="record"
+      label="BB0|return this.m"
+    ];
+    M15_BB0 -> M15_BB1;
+    M15_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_16 {
+    label = "Matrix.columns"
+    M16_BB0 [
+      shape="record"
+      label="BB0|return this.vectors[0].n"
+    ];
+    M16_BB0 -> M16_BB1;
+    M16_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_17 {
+    label = "Matrix.mult"
+    M17_BB0 [
+      shape="record"
+      label="BB0|If: ((null == A) \|\| (null == B))"
+    ];
+    M17_BB0 -> M17_BB2;
+    M17_BB0 -> M17_BB3 [label="False"];
+    M17_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M17_BB2 [
+      shape="record"
+      label="BB2|return null"
+    ];
+    M17_BB2 -> M17_BB1;
+    M17_BB3 [
+      shape="record"
+      label="BB3|nop"
+    ];
+    M17_BB3 -> M17_BB4;
+    M17_BB4 [
+      shape="record"
+      label="BB4|If: ((this.rows(...) != A.rows(...)) \|\| (this.columns(...) != B.columns(...)))"
+    ];
+    M17_BB4 -> M17_BB5;
+    M17_BB4 -> M17_BB6 [label="False"];
+    M17_BB5 [
+      shape="record"
+      label="BB5|return null"
+    ];
+    M17_BB5 -> M17_BB1;
+    M17_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M17_BB6 -> M17_BB7;
+    M17_BB7 [
+      shape="record"
+      label="BB7|If: (A.columns(...) != B.rows(...))"
+    ];
+    M17_BB7 -> M17_BB8;
+    M17_BB7 -> M17_BB9 [label="False"];
+    M17_BB8 [
+      shape="record"
+      label="BB8|return null"
+    ];
+    M17_BB8 -> M17_BB1;
+    M17_BB9 [
+      shape="record"
+      label="BB9|nop"
+    ];
+    M17_BB9 -> M17_BB10;
+    M17_BB10 [
+      shape="record"
+      label="BB10|i = 0"
+    ];
+    M17_BB10 -> M17_BB11;
+    M17_BB11 [
+      shape="record"
+      label="BB11|If: (i \< this.rows(...))"
+    ];
+    M17_BB11 -> M17_BB12;
+    M17_BB11 -> M17_BB13 [label="False"];
+    M17_BB12 [
+      shape="record"
+      label="BB12|j = 0"
+    ];
+    M17_BB12 -> M17_BB14;
+    M17_BB13 [
+      shape="record"
+      label="BB13|return this"
+    ];
+    M17_BB13 -> M17_BB1;
+    M17_BB14 [
+      shape="record"
+      label="BB14|If: (j \< this.columns(...))"
+    ];
+    M17_BB14 -> M17_BB15;
+    M17_BB14 -> M17_BB16 [label="False"];
+    M17_BB15 [
+      shape="record"
+      label="BB15|sum = 0|k = 0"
+    ];
+    M17_BB15 -> M17_BB17;
+    M17_BB16 [
+      shape="record"
+      label="BB16|i = (i + 1)"
+    ];
+    M17_BB16 -> M17_BB11;
+    M17_BB17 [
+      shape="record"
+      label="BB17|If: (k \< this.columns(...))"
+    ];
+    M17_BB17 -> M17_BB18;
+    M17_BB17 -> M17_BB19 [label="False"];
+    M17_BB18 [
+      shape="record"
+      label="BB18|sum = (sum + (A.get(...) * B.get(...)))|k = (k + 1)"
+    ];
+    M17_BB18 -> M17_BB17;
+    M17_BB19 [
+      shape="record"
+      label="BB19|this.set(...)|j = (j + 1)"
+    ];
+    M17_BB19 -> M17_BB14;
+  }
+  subgraph cluster_18 {
+    label = "SquareMatrix.SquareMatrix"
+    M18_BB0 [
+      shape="record"
+      label="BB0|this.Matrix(...)"
+    ];
+    M18_BB0 -> M18_BB1;
+    M18_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_19 {
+    label = "SquareMatrix.fillIdentity"
+    M19_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M19_BB0 -> M19_BB2;
+    M19_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M19_BB2 [
+      shape="record"
+      label="BB2|If: (i \< this.m)"
+    ];
+    M19_BB2 -> M19_BB3;
+    M19_BB2 -> M19_BB4 [label="False"];
+    M19_BB3 [
+      shape="record"
+      label="BB3|this.set(...)|i = (i + 1)"
+    ];
+    M19_BB3 -> M19_BB2;
+    M19_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M19_BB4 -> M19_BB1;
+  }
+  subgraph cluster_20 {
+    label = "Board.Board"
+    M20_BB0 [
+      shape="record"
+      label="BB0|this.SquareMatrix(...)"
+    ];
+    M20_BB0 -> M20_BB1;
+    M20_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_21 {
+    label = "Board.hasWon"
+    M21_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M21_BB0 -> M21_BB2;
+    M21_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M21_BB2 [
+      shape="record"
+      label="BB2|If: (i \< 3)"
+    ];
+    M21_BB2 -> M21_BB3;
+    M21_BB2 -> M21_BB4 [label="False"];
+    M21_BB3 [
+      shape="record"
+      label="BB3|If: this.rowComplete(...)"
+    ];
+    M21_BB3 -> M21_BB5;
+    M21_BB3 -> M21_BB6 [label="False"];
+    M21_BB4 [
+      shape="record"
+      label="BB4|i = 0"
+    ];
+    M21_BB4 -> M21_BB8;
+    M21_BB5 [
+      shape="record"
+      label="BB5|return true"
+    ];
+    M21_BB5 -> M21_BB1;
+    M21_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M21_BB6 -> M21_BB7;
+    M21_BB7 [
+      shape="record"
+      label="BB7|i = (i + 1)"
+    ];
+    M21_BB7 -> M21_BB2;
+    M21_BB8 [
+      shape="record"
+      label="BB8|If: (i \< 3)"
+    ];
+    M21_BB8 -> M21_BB9;
+    M21_BB8 -> M21_BB10 [label="False"];
+    M21_BB9 [
+      shape="record"
+      label="BB9|If: this.columnComplete(...)"
+    ];
+    M21_BB9 -> M21_BB11;
+    M21_BB9 -> M21_BB12 [label="False"];
+    M21_BB10 [
+      shape="record"
+      label="BB10|return (this.diagonal1Complete(...) \|\| this.diagonal2Complete(...))"
+    ];
+    M21_BB10 -> M21_BB1;
+    M21_BB11 [
+      shape="record"
+      label="BB11|return true"
+    ];
+    M21_BB11 -> M21_BB1;
+    M21_BB12 [
+      shape="record"
+      label="BB12|nop"
+    ];
+    M21_BB12 -> M21_BB13;
+    M21_BB13 [
+      shape="record"
+      label="BB13|i = (i + 1)"
+    ];
+    M21_BB13 -> M21_BB8;
+  }
+  subgraph cluster_22 {
+    label = "Board.rowComplete"
+    M22_BB0 [
+      shape="record"
+      label="BB0|j = 0"
+    ];
+    M22_BB0 -> M22_BB2;
+    M22_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M22_BB2 [
+      shape="record"
+      label="BB2|If: (j \< 3)"
+    ];
+    M22_BB2 -> M22_BB3;
+    M22_BB2 -> M22_BB4 [label="False"];
+    M22_BB3 [
+      shape="record"
+      label="BB3|If: (this.get(...) != player)"
+    ];
+    M22_BB3 -> M22_BB5;
+    M22_BB3 -> M22_BB6 [label="False"];
+    M22_BB4 [
+      shape="record"
+      label="BB4|return true"
+    ];
+    M22_BB4 -> M22_BB1;
+    M22_BB5 [
+      shape="record"
+      label="BB5|return false"
+    ];
+    M22_BB5 -> M22_BB1;
+    M22_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M22_BB6 -> M22_BB7;
+    M22_BB7 [
+      shape="record"
+      label="BB7|j = (j + 1)"
+    ];
+    M22_BB7 -> M22_BB2;
+  }
+  subgraph cluster_23 {
+    label = "Board.columnComplete"
+    M23_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M23_BB0 -> M23_BB2;
+    M23_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M23_BB2 [
+      shape="record"
+      label="BB2|If: (i \< 3)"
+    ];
+    M23_BB2 -> M23_BB3;
+    M23_BB2 -> M23_BB4 [label="False"];
+    M23_BB3 [
+      shape="record"
+      label="BB3|If: (this.get(...) != player)"
+    ];
+    M23_BB3 -> M23_BB5;
+    M23_BB3 -> M23_BB6 [label="False"];
+    M23_BB4 [
+      shape="record"
+      label="BB4|return true"
+    ];
+    M23_BB4 -> M23_BB1;
+    M23_BB5 [
+      shape="record"
+      label="BB5|return false"
+    ];
+    M23_BB5 -> M23_BB1;
+    M23_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M23_BB6 -> M23_BB7;
+    M23_BB7 [
+      shape="record"
+      label="BB7|i = (i + 1)"
+    ];
+    M23_BB7 -> M23_BB2;
+  }
+  subgraph cluster_24 {
+    label = "Board.diagonal1Complete"
+    M24_BB0 [
+      shape="record"
+      label="BB0|return (((this.get(...) == player) && (this.get(...) == player)) && (this.get(...) == player))"
+    ];
+    M24_BB0 -> M24_BB1;
+    M24_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_25 {
+    label = "Board.diagonal2Complete"
+    M25_BB0 [
+      shape="record"
+      label="BB0|return (((this.get(...) == player) && (this.get(...) == player)) && (this.get(...) == player))"
+    ];
+    M25_BB0 -> M25_BB1;
+    M25_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+  }
+  subgraph cluster_26 {
+    label = "Board.full"
+    M26_BB0 [
+      shape="record"
+      label="BB0|i = 0"
+    ];
+    M26_BB0 -> M26_BB2;
+    M26_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M26_BB2 [
+      shape="record"
+      label="BB2|If: (i \< 3)"
+    ];
+    M26_BB2 -> M26_BB3;
+    M26_BB2 -> M26_BB4 [label="False"];
+    M26_BB3 [
+      shape="record"
+      label="BB3|j = 0"
+    ];
+    M26_BB3 -> M26_BB5;
+    M26_BB4 [
+      shape="record"
+      label="BB4|return true"
+    ];
+    M26_BB4 -> M26_BB1;
+    M26_BB5 [
+      shape="record"
+      label="BB5|If: (j \< 3)"
+    ];
+    M26_BB5 -> M26_BB6;
+    M26_BB5 -> M26_BB7 [label="False"];
+    M26_BB6 [
+      shape="record"
+      label="BB6|If: (0 == this.get(...))"
+    ];
+    M26_BB6 -> M26_BB8;
+    M26_BB6 -> M26_BB9 [label="False"];
+    M26_BB7 [
+      shape="record"
+      label="BB7|i = (i + 1)"
+    ];
+    M26_BB7 -> M26_BB2;
+    M26_BB8 [
+      shape="record"
+      label="BB8|return false"
+    ];
+    M26_BB8 -> M26_BB1;
+    M26_BB9 [
+      shape="record"
+      label="BB9|nop"
+    ];
+    M26_BB9 -> M26_BB10;
+    M26_BB10 [
+      shape="record"
+      label="BB10|j = (j + 1)"
+    ];
+    M26_BB10 -> M26_BB5;
+  }
+  subgraph cluster_27 {
+    label = "Board.set"
+    M27_BB0 [
+      shape="record"
+      label="BB0|If: (0 == this.get(...))"
+    ];
+    M27_BB0 -> M27_BB2;
+    M27_BB0 -> M27_BB3 [label="False"];
+    M27_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M27_BB2 [
+      shape="record"
+      label="BB2|this.vectors[i].set(...)"
+    ];
+    M27_BB2 -> M27_BB4;
+    M27_BB3 [
+      shape="record"
+      label="BB3|this.vectors[i].set(...)"
+    ];
+    M27_BB3 -> M27_BB4;
+    M27_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M27_BB4 -> M27_BB1;
+  }
+  subgraph cluster_28 {
+    label = "Main.runPlayer"
+    M28_BB0 [
+      shape="record"
+      label="BB0|m = this.b|n = 3|pos = read()|pos = (pos - 1)|row = (pos / n)|column = (pos % n)|If: (1 == player)"
+    ];
+    M28_BB0 -> M28_BB2;
+    M28_BB0 -> M28_BB3 [label="False"];
+    M28_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M28_BB2 [
+      shape="record"
+      label="BB2|this.b.set(...)"
+    ];
+    M28_BB2 -> M28_BB4;
+    M28_BB3 [
+      shape="record"
+      label="BB3|m.set(...)"
+    ];
+    M28_BB3 -> M28_BB4;
+    M28_BB4 [
+      shape="record"
+      label="BB4|this.b = (Board)(m)|this.b.print(...)|return this.b.hasWon(...)"
+    ];
+    M28_BB4 -> M28_BB1;
+  }
+  subgraph cluster_29 {
+    label = "Main.runGame"
+    M29_BB0 [
+      shape="record"
+      label="BB0|this.b.fill(...)|this.b.print(...)|winner = 0|currentPlayer = 1"
+    ];
+    M29_BB0 -> M29_BB2;
+    M29_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M29_BB2 [
+      shape="record"
+      label="BB2|If: (((0 == winner) && !(this.b.full(...))) && !(this.b.contains(...)))"
+    ];
+    M29_BB2 -> M29_BB3;
+    M29_BB2 -> M29_BB4 [label="False"];
+    M29_BB3 [
+      shape="record"
+      label="BB3|If: this.runPlayer(...)"
+    ];
+    M29_BB3 -> M29_BB5;
+    M29_BB3 -> M29_BB6 [label="False"];
+    M29_BB4 [
+      shape="record"
+      label="BB4|If: (1 == winner)"
+    ];
+    M29_BB4 -> M29_BB8;
+    M29_BB4 -> M29_BB9 [label="False"];
+    M29_BB5 [
+      shape="record"
+      label="BB5|winner = currentPlayer"
+    ];
+    M29_BB5 -> M29_BB7;
+    M29_BB6 [
+      shape="record"
+      label="BB6|nop"
+    ];
+    M29_BB6 -> M29_BB7;
+    M29_BB7 [
+      shape="record"
+      label="BB7|currentPlayer = (3 - currentPlayer)"
+    ];
+    M29_BB7 -> M29_BB2;
+    M29_BB8 [
+      shape="record"
+      label="BB8|this.b.fill(...)"
+    ];
+    M29_BB8 -> M29_BB16;
+    M29_BB9 [
+      shape="record"
+      label="BB9|If: (2 == winner)"
+    ];
+    M29_BB9 -> M29_BB10;
+    M29_BB9 -> M29_BB11 [label="False"];
+    M29_BB10 [
+      shape="record"
+      label="BB10|this.b.fill(...)"
+    ];
+    M29_BB10 -> M29_BB15;
+    M29_BB11 [
+      shape="record"
+      label="BB11|If: this.b.contains(...)"
+    ];
+    M29_BB11 -> M29_BB12;
+    M29_BB11 -> M29_BB13 [label="False"];
+    M29_BB12 [
+      shape="record"
+      label="BB12|this.b.fill(...)"
+    ];
+    M29_BB12 -> M29_BB14;
+    M29_BB13 [
+      shape="record"
+      label="BB13|this.b.fill(...)"
+    ];
+    M29_BB13 -> M29_BB14;
+    M29_BB14 [
+      shape="record"
+      label="BB14"
+    ];
+    M29_BB14 -> M29_BB15;
+    M29_BB15 [
+      shape="record"
+      label="BB15"
+    ];
+    M29_BB15 -> M29_BB16;
+    M29_BB16 [
+      shape="record"
+      label="BB16"
+    ];
+    M29_BB16 -> M29_BB1;
+  }
+  subgraph cluster_30 {
+    label = "Main.main"
+    M30_BB0 [
+      shape="record"
+      label="BB0|this.b = new Board()|this.b.Board(...)|n = read()|i = 0"
+    ];
+    M30_BB0 -> M30_BB2;
+    M30_BB1 [
+      shape="record"
+      label="BB1"
+    ];
+    M30_BB2 [
+      shape="record"
+      label="BB2|If: (i \< n)"
+    ];
+    M30_BB2 -> M30_BB3;
+    M30_BB2 -> M30_BB4 [label="False"];
+    M30_BB3 [
+      shape="record"
+      label="BB3|this.runGame(...)|this.b.print(...)|i = (i + 1)"
+    ];
+    M30_BB3 -> M30_BB2;
+    M30_BB4 [
+      shape="record"
+      label="BB4"
+    ];
+    M30_BB4 -> M30_BB1;
+  }
+}

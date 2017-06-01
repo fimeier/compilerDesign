@@ -1,0 +1,7 @@
+Main.main
+  BB0 out:
+    m = !(true)
+  BB1 out:
+    m = !(true)
+
+

@@ -1,0 +1,6 @@
+Main.main
+  BB0 out: [arr]
+    arr = new A[][5]: []
+  BB1 out: [arr]
+
+

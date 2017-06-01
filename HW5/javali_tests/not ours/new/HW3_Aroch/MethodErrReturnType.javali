@@ -1,0 +1,15 @@
+// Test returning something that is not subtype of return type
+class Main{
+	void main(){
+	A a;
+	B b;
+	a = foo(a,a,b);		
+	}
+	
+	A foo (A arg1, A arg2, B arg3) {
+		return arg3;
+	}
+}
+
+class A {}
+class B {}

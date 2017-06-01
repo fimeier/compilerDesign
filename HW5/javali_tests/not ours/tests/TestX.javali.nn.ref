@@ -1,0 +1,28 @@
+A.rows
+  BB0 out: []
+    return 0: []
+  BB1 out: []
+
+
+Main.foo
+  BB0 out: [a]
+    (this.row(...) != a.rows(...)): []
+  BB1 out: [a]
+  BB2 out: [a]
+    return: [a]
+  BB3 out: [a]
+    nop: [a]
+  BB4 out: [a]
+
+
+Main.main
+  BB0 out: []
+  BB1 out: []
+
+
+Main.row
+  BB0 out: []
+    return 1: []
+  BB1 out: []
+
+

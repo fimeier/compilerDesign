@@ -1,0 +1,18 @@
+class X {
+   void method(int x) {
+   
+   }
+}
+
+class Y extends X {
+   void method(int x, int y) {
+   
+   }
+}
+
+class Main {
+
+   void main() {
+      
+   }
+}

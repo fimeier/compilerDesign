@@ -1,0 +1,12 @@
+/* Test that if conditions must be boolean */
+class Main {
+
+
+    int test()
+    {
+
+    }
+
+   void main() {
+   }
+}

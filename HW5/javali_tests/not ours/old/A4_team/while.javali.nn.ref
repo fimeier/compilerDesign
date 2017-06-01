@@ -1,0 +1,12 @@
+Main.main
+  BB0 out: []
+    i = 0: []
+  BB1 out: []
+  BB2 out: []
+    (i < 5): []
+  BB3 out: []
+    i = (i + 1): []
+    write(i): []
+  BB4 out: []
+
+

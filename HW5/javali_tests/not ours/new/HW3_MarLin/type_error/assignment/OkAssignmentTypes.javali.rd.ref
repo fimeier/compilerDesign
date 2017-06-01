@@ -1,0 +1,15 @@
+Main.main
+  BB0 out:
+    a1 = null
+    a2 = new A()
+    b = new B()
+    i = (j + 1)
+    j = 1
+  BB1 out:
+    a1 = null
+    a2 = new A()
+    b = new B()
+    i = (j + 1)
+    j = 1
+
+

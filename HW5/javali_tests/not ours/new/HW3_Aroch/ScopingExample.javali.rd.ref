@@ -1,0 +1,24 @@
+Main.main
+  BB0 out:
+    f = new foo()
+  BB1 out:
+    f = new foo()
+
+
+bar.bar
+  BB0 out:
+  BB1 out:
+
+
+foo.bar
+  BB0 out:
+  BB1 out:
+
+
+foo.foo
+  BB0 out:
+    foo = 2
+  BB1 out:
+    foo = 2
+
+

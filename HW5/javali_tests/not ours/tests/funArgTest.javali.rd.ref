@@ -1,0 +1,33 @@
+Main.cellTest
+  BB0 out:
+  BB1 out:
+    c = new Cell()
+    i = (i + 1)
+    i = -(2)
+  BB2 out:
+    c = new Cell()
+    i = (i + 1)
+  BB3 out:
+    c = new Cell()
+    i = (i + 1)
+  BB4 out:
+    c = new Cell()
+    i = -(2)
+  BB5 out:
+    c = new Cell()
+    i = (i + 1)
+    i = -(2)
+  BB6 out:
+    c = new Cell()
+    i = (i + 1)
+  BB7 out:
+    c = new Cell()
+    i = (i + 1)
+    i = -(2)
+
+
+Main.main
+  BB0 out:
+  BB1 out:
+
+

@@ -1,0 +1,11 @@
+A.fun
+  BB0 out: []
+  BB1 out: []
+
+
+Main.main
+  BB0 out: [a3]
+    a3.fun(...): []
+  BB1 out: [a3]
+
+
