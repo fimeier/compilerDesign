@@ -1,8 +1,0 @@
-// all referenced methods must exist
-
-class Main {
-    void main() {
-        int x;
-        x = foo();
-    }
-}

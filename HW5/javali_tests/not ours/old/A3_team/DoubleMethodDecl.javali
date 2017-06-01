@@ -1,9 +1,0 @@
-// two methods have the same name
-
-class Main {
-    void main() {}
-    
-    void foo() {}
-    
-    void foo() {}
-}

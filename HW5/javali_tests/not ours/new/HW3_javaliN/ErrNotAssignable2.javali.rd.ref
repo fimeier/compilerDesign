@@ -1,7 +1,0 @@
-Main.main
-  BB0 out:
-    i = 5
-  BB1 out:
-    i = 5
-
-

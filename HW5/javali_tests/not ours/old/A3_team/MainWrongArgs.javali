@@ -1,8 +1,0 @@
-// main must not have args.
-
-class Main {
-    void main(int x) {
-        x = 7;
-    }
-}
-       

@@ -1,8 +1,0 @@
-Main.main
-  BB0 out: [aref, bref]
-    aref = new A(): []
-    bref = new B(): [aref]
-    this.b = (aref == bref): [aref, bref]
-  BB1 out: [aref, bref]
-
-

@@ -1,7 +1,0 @@
-Main.main
-  BB0 out:
-    b = !(b)
-  BB1 out:
-    b = !(b)
-
-

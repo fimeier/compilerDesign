@@ -1,6 +1,0 @@
-Main.main
-  BB0 out: []
-    m = ((true && false) || true): []
-  BB1 out: []
-
-

@@ -1,9 +1,0 @@
-Main.main
-  BB0 out: []
-    x = (a == b): []
-    x = (b == a): []
-    x = (b != a): []
-    x = (a != b): []
-  BB1 out: []
-
-

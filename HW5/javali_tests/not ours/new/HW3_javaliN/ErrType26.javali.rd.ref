@@ -1,7 +1,0 @@
-Main.main
-  BB0 out:
-    a = new int[][100]
-  BB1 out:
-    a = new int[][100]
-
-

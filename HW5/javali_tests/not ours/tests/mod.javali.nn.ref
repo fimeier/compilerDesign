@@ -1,9 +1,0 @@
-Main.main
-  BB0 out: []
-    a = 10: []
-    b = 3: []
-    write((a % b)): []
-    write((100 % 4)): []
-  BB1 out: []
-
-

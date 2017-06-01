@@ -1,7 +1,0 @@
-Main.main
-  BB0 out:
-    i = -(i)
-  BB1 out:
-    i = -(i)
-
-

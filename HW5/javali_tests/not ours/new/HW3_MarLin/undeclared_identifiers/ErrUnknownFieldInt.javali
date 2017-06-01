@@ -1,8 +1,0 @@
-class Main {
-
-   void main() {
-      int i;
-      i = 0;
-      i.notafield = 1;
-   }
-}

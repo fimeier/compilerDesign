@@ -1,7 +1,0 @@
-class Main {
-
-   void main() {
-      int local1;
-      int local1;
-   }
-}

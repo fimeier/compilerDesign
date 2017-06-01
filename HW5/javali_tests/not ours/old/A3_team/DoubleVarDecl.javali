@@ -1,9 +1,0 @@
-// there's a method with two local variables with the same name
-
-class Main {
-    void main() {
-        int x;
-        int x;
-        x = 42;
-    }
-}

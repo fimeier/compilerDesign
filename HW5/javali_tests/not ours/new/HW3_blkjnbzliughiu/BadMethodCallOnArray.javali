@@ -1,7 +1,0 @@
-class Main {
-	void main() {
-		int[] arr;
-		arr = new int[5];
-		arr.foo();
-	}
-}

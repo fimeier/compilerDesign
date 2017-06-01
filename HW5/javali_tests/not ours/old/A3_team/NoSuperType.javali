@@ -1,8 +1,0 @@
-//no such super type
-
-class A extends B{
-}
-
-class Main {
-        void main() {}
-}

@@ -1,7 +1,0 @@
-// Tries to illegally store result of read in boolean variable
-class Main{
-	boolean b;
-	void main(){
-		b = read();
-	}
-}

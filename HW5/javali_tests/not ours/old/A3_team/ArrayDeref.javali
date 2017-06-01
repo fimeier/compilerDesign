@@ -1,9 +1,0 @@
-// the index of an array dereference must be of integer type
-
-class Main {
-    void main() {
-        int[] x;
-        x = new int[5];
-        x[7] = 5;
-    }
-}

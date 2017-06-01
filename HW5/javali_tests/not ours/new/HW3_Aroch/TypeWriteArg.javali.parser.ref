@@ -1,7 +1,0 @@
-ClassDecl (name: Main, superClass: Object)
-| VarDecl (name: b, type: boolean)
-| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
-| | Seq ()
-| | Seq ()
-| | | BuiltInWrite ()
-| | | | Var (name: b)

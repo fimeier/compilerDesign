@@ -1,8 +1,0 @@
-class A {}
-
-class Main {
-    A[] a;
-    void main() {
-        a = new A[10];
-    }
-}

@@ -1,8 +1,0 @@
-// Tests Object used as class name 
-class Main{
-	void main(){}
-}
-
-class Object{
-	int x;
-}

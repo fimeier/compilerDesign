@@ -1,9 +1,0 @@
-Main.main
-  BB0 out: []
-    a = true: []
-    b = false: []
-    a = (a && b): []
-    a = (a || b): []
-  BB1 out: []
-
-

@@ -1,9 +1,0 @@
-Main.main
-  BB0 out: []
-    this.a = new A(): []
-    this.arr = new A[][42]: []
-    this.iarr = new int[][10]: []
-    this.a = this.arr[(this.arr[this.arr[(this.iarr[2] + this.i)].xs[this.i]].x * this.i)]: []
-  BB1 out: []
-
-
