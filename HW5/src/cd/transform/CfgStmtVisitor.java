@@ -138,7 +138,6 @@ public class CfgStmtVisitor extends AstVisitor<BasicBlock, BasicBlock > {
 
 	@Override
 	public BasicBlock seq(Seq ast, BasicBlock block) {
-		System.out.println("in seq......");
 		BasicBlock lastBlockInSeq = block;
 		for (int i = 0; i < ast.children().size(); i++){ // Ast child : ast.children()){
 			lastBlockInSeq = visit(ast.children().get(i), lastBlockInSeq);

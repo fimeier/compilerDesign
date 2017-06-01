@@ -51,7 +51,7 @@ public abstract class DataFlowAnalysis<State> {
 	 */
 	protected void iterate() {
 
-		int x = 1;
+		//int x = 1;
 		boolean changes = true;
 		while(changes){
 
@@ -74,7 +74,7 @@ public abstract class DataFlowAnalysis<State> {
 				outStates.put(block, newOutState);	
 			}
 
-			x++;
+		//	x++;
 
 		}
 		//System.out.println("#Iterations="+x);

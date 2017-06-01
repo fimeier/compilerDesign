@@ -1,22 +1,16 @@
 package cd.transform.analysis;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import cd.ToDoException;
 import cd.ir.Ast.Assign;
-import cd.ir.Ast.Cast;
 import cd.ir.Ast.MethodDecl;
 import cd.ir.Ast.Stmt;
-import cd.ir.Ast.ThisRef;
 import cd.ir.Ast.Var;
 import cd.ir.BasicBlock;
 import cd.ir.Symbol.VariableSymbol;
 import cd.ir.Symbol.VariableSymbol.Kind;
-import cd.transform.analysis.ReachingDefsAnalysis.Def;
 import cd.util.Tuple;
 
 /**
