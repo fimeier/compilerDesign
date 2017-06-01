@@ -1,0 +1,15 @@
+// Test main method erroneously taking an argument
+class A {
+   int foo;
+   B bar(){
+   	int x;
+   }
+}
+
+class B extends A {
+   int bar;
+}
+
+class Main{
+	void main(int x){}
+}

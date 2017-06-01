@@ -1,0 +1,11 @@
+// this should work
+
+class Main {
+
+   void main() {
+    Main m;
+    int[] arr;
+    m = null;
+    arr = null;
+   }
+}

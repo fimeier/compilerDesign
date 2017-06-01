@@ -1,0 +1,23 @@
+Debug information for file: javali_tests/others/new/HW3_javaliN/ErrArrSubtypeObj.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: Main, superClass: Object)
+| MethodDecl (argumentNames: [i], argumentTypes: [int], name: test, returnType: void)
+| | Seq ()
+| | | VarDecl (name: a, type: Object)
+| | | VarDecl (name: arr, type: int[])
+| | Seq ()
+| | | Assign ()
+| | | | Var (name: a)
+| | | | Var (name: arr)
+Error message from reference is: No Main class found
+Error message: TYPE_ERROR
+
+Phase semantic failed because we expected to see:
+INVALID_START_POINT
+But we actually saw:
+TYPE_ERROR
+The difference is:
+At line   1 /   1:
+< INVALID_START_POINT
+> TYPE_ERROR
+

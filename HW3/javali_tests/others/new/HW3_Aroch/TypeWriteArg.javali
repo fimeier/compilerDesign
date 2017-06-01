@@ -1,0 +1,7 @@
+// Tests illegal boolean argument in write
+class Main{
+	boolean b;
+	void main(){
+		write(b);
+	}
+}

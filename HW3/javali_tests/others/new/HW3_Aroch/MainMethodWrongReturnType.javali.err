@@ -1,0 +1,26 @@
+Debug information for file: javali_tests/others/new/HW3_Aroch/MainMethodWrongReturnType.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: A, superClass: Object)
+| VarDecl (name: foo, type: int)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: bar, returnType: B)
+| | Seq ()
+| | | VarDecl (name: x, type: int)
+| | Seq ()
+ClassDecl (name: B, superClass: A)
+| VarDecl (name: bar, type: int)
+ClassDecl (name: Main, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: int)
+| | Seq ()
+| | Seq ()
+Error message from reference is: No Main class found
+Error message: MISSING_RETURN
+
+Phase semantic failed because we expected to see:
+INVALID_START_POINT
+But we actually saw:
+MISSING_RETURN
+The difference is:
+At line   1 /   1:
+< INVALID_START_POINT
+> MISSING_RETURN
+

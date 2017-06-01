@@ -1,0 +1,15 @@
+// a method with a return type must have a return stmt at the end of all its paths
+
+class Main {
+    void main() {
+        int x;
+        x = foo(6);
+    }
+    
+    int foo(int y) {
+        if (y < 9) {
+            return 3;
+        }
+    }
+}
+       

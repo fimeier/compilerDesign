@@ -1,0 +1,12 @@
+//Checks that there are no attemps to access fields of bool type
+
+class Main {
+	void main(){
+	boolean a;
+	boolean b;
+	
+	a = true;
+	b = a.f;
+	
+	}
+}

@@ -1,0 +1,24 @@
+class A {
+
+}
+
+class B extends A {
+
+}
+
+class C {
+
+}
+
+class Main {
+
+   void main() {
+      A a;
+      B b;
+      
+      a = new A();
+      b = new B();
+      
+      a = (C) b;
+   }
+}

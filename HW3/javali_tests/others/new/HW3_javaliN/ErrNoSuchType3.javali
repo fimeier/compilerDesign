@@ -1,0 +1,11 @@
+class Main {
+
+    // A not defined!
+    void a(A b)
+    {
+
+    }
+
+   void main() {
+   }
+}

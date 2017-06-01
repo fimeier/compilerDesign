@@ -1,0 +1,18 @@
+class X {
+   int method() {
+      return 0;
+   }
+}
+
+class Main {
+   
+   int method() {
+      return 0;
+   }
+   
+   void main() {
+      X x;
+      x = new X();
+      x.method() = 1;
+   }
+}

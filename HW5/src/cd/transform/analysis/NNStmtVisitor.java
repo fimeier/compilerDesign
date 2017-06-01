@@ -29,11 +29,7 @@ public class NNStmtVisitor extends AstVisitor<Boolean, Tuple<Set<VariableSymbol>
 	}
 
 	@Override
-	public Boolean assign(Assign assign, Tuple<Set<VariableSymbol>, Set<VariableSymbol>> arg) {
-		
-		//visit(assign.right(), arg);
-		//visit(assign.left(), arg);
-				
+	public Boolean assign(Assign assign, Tuple<Set<VariableSymbol>, Set<VariableSymbol>> arg) {				
 		return null;
 	}
 

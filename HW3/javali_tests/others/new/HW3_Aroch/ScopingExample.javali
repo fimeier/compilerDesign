@@ -1,0 +1,27 @@
+// Tests that same names can be used in different scopes and local is picked over field. Inspired by example on recitation slides.
+class foo {
+	foo foo;
+	void foo(){
+		int foo;
+		foo = 2;
+		write(foo);
+	}
+	void bar(){
+	}
+}
+
+class bar extends foo {
+	foo foo;
+	void bar(){
+		foo();
+		bar();
+	}
+}
+
+class Main {
+	void main(){
+		foo f;
+		f = new foo();
+		f.foo();
+	}
+}

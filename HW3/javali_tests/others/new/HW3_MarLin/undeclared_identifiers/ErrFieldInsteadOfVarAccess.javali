@@ -1,0 +1,11 @@
+class X {
+   
+}
+
+class Main {
+   
+   void main() {
+      X x;
+      this.x = new X();
+   }
+}

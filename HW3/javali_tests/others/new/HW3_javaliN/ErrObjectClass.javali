@@ -1,0 +1,10 @@
+class Object
+{
+
+}
+class Main
+{
+    void main()
+    {
+    }
+}

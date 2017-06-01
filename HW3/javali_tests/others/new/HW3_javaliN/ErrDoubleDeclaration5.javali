@@ -1,0 +1,21 @@
+class Main
+{
+
+    void main()
+    {
+    }
+
+}
+
+class A
+{
+    void test();
+    {
+
+    }
+
+    void test()
+    {
+
+    }
+}

@@ -1,0 +1,25 @@
+class Main {
+
+	void main() {
+		boolean b;
+		Sub1 sub1;
+		Sub2 sub2;
+		
+		b = sub1==sub2;	
+	
+	}
+
+}
+
+
+class Sub1 extends Super {
+
+}
+
+class Sub2 extends Super {
+
+}
+
+class Super {
+
+}

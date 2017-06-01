@@ -1,0 +1,10 @@
+// Relational operators must take arguments of int or float type
+
+class Main {
+    void main() {
+        if (3 < true) {
+            write(5);
+            writeln();
+        }
+    }
+}

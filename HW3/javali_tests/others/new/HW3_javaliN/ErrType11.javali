@@ -1,0 +1,7 @@
+class Main {
+
+    Main m;
+   void main() {
+    m = this;
+   }
+}

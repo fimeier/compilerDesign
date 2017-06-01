@@ -1,0 +1,9 @@
+// Tests that extending an undefined class is detected
+class Foo extends Bar { }
+class Bar extends Blubb { }
+
+class Main {
+   void main() {
+      writeln();
+   }
+}

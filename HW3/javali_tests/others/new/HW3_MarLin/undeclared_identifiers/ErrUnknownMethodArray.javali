@@ -1,0 +1,12 @@
+class X {
+
+}
+
+class Main {
+
+   void main() {
+      X[] x;
+      x = new X[1];
+      x.notamethod();
+   }
+}

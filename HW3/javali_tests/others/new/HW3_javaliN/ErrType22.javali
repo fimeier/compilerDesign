@@ -1,0 +1,16 @@
+class Main {
+   void main() {
+    boolean x;
+    A a;
+    B b;
+    a = (A)b;
+   }
+}
+class A
+{
+}
+class B extends A
+{
+}
+
+

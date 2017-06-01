@@ -1,0 +1,20 @@
+class Main {
+
+    int i;
+    A otherA;
+
+   void main() {
+        A a;
+        int[] arr;
+        this.i = 5;
+        a.i = 5;
+        otherA.i = 5;
+        this.otherA = 5;
+        arr[5] = 10;
+   }
+}
+
+class A
+{
+    int i;
+}

@@ -1,0 +1,7 @@
+// Tries to illegally add an int and a boolean
+class Main{
+	boolean b;
+	void main(){
+		write(1 + b);
+	}
+}

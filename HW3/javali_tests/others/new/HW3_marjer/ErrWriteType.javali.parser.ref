@@ -1,0 +1,8 @@
+ClassDecl (name: Main, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | Seq ()
+| | | BuiltInWrite ()
+| | | | BinaryOp (operator: B_LESS_THAN)
+| | | | | IntConst (value: 2)
+| | | | | IntConst (value: 1)

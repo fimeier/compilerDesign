@@ -1,0 +1,26 @@
+Debug information for file: javali_tests/others/new/HW3_marjer/ErrInvalidOverride.javali
+AST Resulting From Parsing Stage:
+ClassDecl (name: Main, superClass: Object)
+| MethodDecl (argumentNames: [], argumentTypes: [], name: main, returnType: void)
+| | Seq ()
+| | Seq ()
+ClassDecl (name: Sub, superClass: Super)
+| MethodDecl (argumentNames: [a, b], argumentTypes: [int, boolean], name: foo, returnType: int)
+| | Seq ()
+| | Seq ()
+ClassDecl (name: Super, superClass: Object)
+| MethodDecl (argumentNames: [a, b], argumentTypes: [int, boolean], name: foo, returnType: void)
+| | Seq ()
+| | Seq ()
+Error message from reference is: Overridden method foo has return type int,but its superclass has void
+Error message: MISSING_RETURN
+
+Phase semantic failed because we expected to see:
+INVALID_OVERRIDE
+But we actually saw:
+MISSING_RETURN
+The difference is:
+At line   1 /   1:
+< INVALID_OVERRIDE
+> MISSING_RETURN
+

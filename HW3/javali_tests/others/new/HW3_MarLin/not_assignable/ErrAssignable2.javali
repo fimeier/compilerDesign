@@ -1,0 +1,10 @@
+class Main {
+   
+   int method() {
+      return 0;
+   }
+   
+   void main() {
+      this.method() = 1;
+   }
+}

@@ -1,0 +1,23 @@
+class A
+{
+    int k;
+}
+
+class B
+{
+    A a;
+}
+
+class Main
+{
+    int j;
+    B b2;
+
+    void main()
+    {
+        B b;
+        b.a.j = 0;
+        b2.a.j = 0;
+    }
+
+}

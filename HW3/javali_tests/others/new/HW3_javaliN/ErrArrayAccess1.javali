@@ -1,0 +1,9 @@
+class Main {
+
+   void main() {
+        boolean i;
+        boolean[] arr;
+
+        arr[i] = True;
+   }
+}

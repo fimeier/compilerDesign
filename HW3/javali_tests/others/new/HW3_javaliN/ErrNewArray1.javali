@@ -1,0 +1,9 @@
+class Main {
+
+   void main() {
+        boolean[] arr;
+        boolean j;
+
+        arr = new notExisting[100];
+   }
+}

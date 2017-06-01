@@ -1,0 +1,16 @@
+//null can be assigned to every reference type
+
+class Main{
+	void main(){
+	A a;
+	int[] b;
+	A[] c;
+	
+	a = null;
+	b = null;
+	c = null;
+	
+	}
+}
+
+class A{}

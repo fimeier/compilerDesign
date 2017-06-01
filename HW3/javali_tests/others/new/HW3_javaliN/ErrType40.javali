@@ -1,0 +1,14 @@
+class Main {
+   void main() {
+   }
+
+   Object test()
+   {
+        A a;
+        return a;
+   }
+}
+
+class A
+{
+}

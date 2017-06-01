@@ -1,0 +1,16 @@
+class Main {
+
+    int test()
+    {
+        if (true)
+        {
+            return  1;
+        }
+
+        // missing return
+    }
+
+   void main() {
+
+   }
+}
