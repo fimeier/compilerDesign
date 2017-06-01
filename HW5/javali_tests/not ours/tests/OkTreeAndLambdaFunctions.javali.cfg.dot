@@ -242,11 +242,6 @@ digraph G {
       label="BB3|return (rightReturn + myReturn)"
     ];
     M13_BB3 -> M13_BB1;
-    M13_BB4 [
-      shape="record"
-      label="BB4"
-    ];
-    M13_BB4 -> M13_BB1;
   }
   subgraph cluster_14 {
     label = "Node.Node"
@@ -602,11 +597,6 @@ digraph G {
       label="BB3|return 0"
     ];
     M27_BB3 -> M27_BB1;
-    M27_BB4 [
-      shape="record"
-      label="BB4"
-    ];
-    M27_BB4 -> M27_BB1;
   }
   subgraph cluster_28 {
     label = "Tree.prepareDepthLambdas"
@@ -642,11 +632,6 @@ digraph G {
       label="BB3|return 0"
     ];
     M29_BB3 -> M29_BB1;
-    M29_BB4 [
-      shape="record"
-      label="BB4"
-    ];
-    M29_BB4 -> M29_BB1;
   }
   subgraph cluster_30 {
     label = "Tree.preparePrintLambdas"

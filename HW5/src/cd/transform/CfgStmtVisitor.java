@@ -22,10 +22,19 @@ public class CfgStmtVisitor extends AstVisitor<BasicBlock, BasicBlock > {
 		this.builder = builder;
 	}
 
+
 	public BasicBlock cfg(Seq ast, BasicBlock block) {	
 		BasicBlock last = block;
 		for (Ast child: ast.children()){
 			last = super.visit(child, last);
+			if (last!=null){
+				if(last.stmts.size()>=1){
+
+					if ( last.stmts.get(last.stmts.size()-1).getClass().getSimpleName().equals("ReturnStmt")){
+						return last;
+					}
+				}
+			}
 		}
 		return last;
 	}
@@ -79,12 +88,31 @@ public class CfgStmtVisitor extends AstVisitor<BasicBlock, BasicBlock > {
 		//visit then
 		BasicBlock thenBlockExit = visit(ast.then(),block.trueSuccessor());
 		//visit else
-		BasicBlock ElseBlockExit =visit(ast.otherwise(),block.falseSuccessor());
+		BasicBlock elseBlockExit =visit(ast.otherwise(),block.falseSuccessor());
+
+		boolean thenReturn = false;
+		if(thenBlockExit.stmts.size()>=1){
+			if ( thenBlockExit.stmts.get(thenBlockExit.stmts.size()-1).getClass().getSimpleName().equals("ReturnStmt")){
+				thenReturn=true;
+			}
+		}
+		boolean elseReturn = false;
+		if(elseBlockExit.stmts.size()>=1){
+			if ( elseBlockExit.stmts.get(elseBlockExit.stmts.size()-1).getClass().getSimpleName().equals("ReturnStmt")){
+				elseReturn=true;
+			}
+		}
+
+		if (thenReturn&&elseReturn){
+			return null;
+
+		}
 
 		BasicBlock newBlockAfter = builder.cfg.newBlock();
+		builder.cfg.connect(thenBlockExit, newBlockAfter);
+		builder.cfg.connect(elseBlockExit, newBlockAfter);
 
-		connect(thenBlockExit, newBlockAfter);
-		connect(ElseBlockExit, newBlockAfter);
+
 
 		return newBlockAfter;
 	}
@@ -110,6 +138,7 @@ public class CfgStmtVisitor extends AstVisitor<BasicBlock, BasicBlock > {
 
 	@Override
 	public BasicBlock seq(Seq ast, BasicBlock block) {
+		System.out.println("in seq......");
 		BasicBlock lastBlockInSeq = block;
 		for (int i = 0; i < ast.children().size(); i++){ // Ast child : ast.children()){
 			lastBlockInSeq = visit(ast.children().get(i), lastBlockInSeq);
@@ -120,7 +149,7 @@ public class CfgStmtVisitor extends AstVisitor<BasicBlock, BasicBlock > {
 				 * connect it to the end-block
 				 */
 				if ( lastBlockInSeq.stmts.get(lastBlockInSeq.stmts.size()-1).getClass().getSimpleName().equals("ReturnStmt")){
-					connect(lastBlockInSeq, builder.cfg.end);
+					builder.cfg.connect(lastBlockInSeq, builder.cfg.end);
 				}
 			}
 		}
@@ -133,27 +162,16 @@ public class CfgStmtVisitor extends AstVisitor<BasicBlock, BasicBlock > {
 		//"While-Condition-BLock"
 		BasicBlock newBlockWhile = builder.cfg.newBlock();
 		//connect the block with the "While-Condition-BLock"
-		connect(block, newBlockWhile);
+		builder.cfg.connect(block, newBlockWhile);
 
 		//generates while body and block after while
 		builder.cfg.terminateInCondition(newBlockWhile, ast.condition());
 
 		BasicBlock blockWhileBodyReturn =  visit(ast.body(),newBlockWhile.trueSuccessor());
 
-		connect(blockWhileBodyReturn, newBlockWhile);
+		builder.cfg.connect(blockWhileBodyReturn, newBlockWhile);
 
 		return newBlockWhile.falseSuccessor();
-	}
-	
-	public void connect(BasicBlock from, BasicBlock to) {
-		//System.out.println("CONNECT: "+from.index +" -> " +to.index);
-		//IF returnStmt-> not END => don't do it
-		if(from.stmts.size()>=1){
-			if ( from.stmts.get(from.stmts.size()-1).getClass().getSimpleName().equals("ReturnStmt") && !to.equals(builder.cfg.end)){
-				return;
-			}
-		}
-		builder.cfg.connect(from, to);
 	}
 
 

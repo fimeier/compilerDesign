@@ -52,7 +52,21 @@ public class ControlFlowGraph {
 		blk.falseSuccessor().predecessors.add(blk);
 	}
 
+	/*
 	public void connect(BasicBlock from, BasicBlock to) {
+		to.predecessors.add(from);
+		from.successors.add(to);
+	}*/
+	
+	public void connect(BasicBlock from, BasicBlock to) {
+		System.out.println("CONNECT: "+from.index +" -> " +to.index);
+		//IF returnStmt-> not END => don't do it
+		if(from.stmts.size()>=1){
+			if ( from.stmts.get(from.stmts.size()-1).getClass().getSimpleName().equals("ReturnStmt") && !to.equals(end)){
+				System.out.println("Do not connect "+from.index +"-"+to.index);
+				return;
+			}
+		}
 		to.predecessors.add(from);
 		from.successors.add(to);
 	}

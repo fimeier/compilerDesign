@@ -50,10 +50,5 @@ digraph G {
       label="BB3|return 5"
     ];
     M1_BB3 -> M1_BB1;
-    M1_BB4 [
-      shape="record"
-      label="BB4"
-    ];
-    M1_BB4 -> M1_BB1;
   }
 }

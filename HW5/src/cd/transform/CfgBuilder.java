@@ -20,8 +20,23 @@ public class CfgBuilder extends AstVisitor<BasicBlock, Void > {
 
 		//visitor aufrufen
 		BasicBlock last = sb.cfg(mdecl.body(),cfg.start);
+		//BasicBlock last = sb.visit(mdecl.body(),cfg.start);
 
-		sb.connect(last, cfg.end);
+
+		/*
+		 * TODO HACK.... geht das so???
+		 */
+		//cfg.connect(last, cfg.end);
+		if (last!=null){
+			cfg.connect(last, cfg.end);
+		}
+
+		/*
+		if (!last.stmts.isEmpty()){
+			cfg.connect(last, cfg.end);
+		} else {
+			cfg.allBlocks.remove(last);
+		}*/
 
 		// CFG and AST are not synchronized, only use CFG from now on
 		mdecl.setBody(null);

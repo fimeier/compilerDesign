@@ -16,7 +16,7 @@ digraph G {
     label = "Main.method"
     M1_BB0 [
       shape="record"
-      label="BB0|return 1|write(1)"
+      label="BB0|return 1"
     ];
     M1_BB0 -> M1_BB1;
     M1_BB1 [

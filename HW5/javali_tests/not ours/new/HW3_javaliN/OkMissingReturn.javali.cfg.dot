@@ -22,11 +22,6 @@ digraph G {
       label="BB3|return 2"
     ];
     M0_BB3 -> M0_BB1;
-    M0_BB4 [
-      shape="record"
-      label="BB4"
-    ];
-    M0_BB4 -> M0_BB1;
   }
   subgraph cluster_1 {
     label = "Main.main"
