@@ -1,0 +1,56 @@
+Main.main
+  BB0 out:
+  BB1 out:
+
+
+Main.print
+  BB0 out:
+  BB1 out:
+
+
+Main.print2
+  BB0 out:
+    a = 5
+  BB1 out:
+    a = 5
+  BB2 out:
+    a = 5
+  BB3 out:
+    a = 5
+
+
+Main.print3
+  BB0 out:
+    a = 5
+  BB1 out:
+    a = 5
+  BB2 out:
+    a = 5
+  BB3 out:
+    a = 5
+  BB4 out:
+    a = 5
+
+
+Main.print4
+  BB0 out:
+    a = 5
+  BB1 out:
+    a = 5
+  BB2 out:
+    a = 5
+  BB3 out:
+    a = 5
+
+
+Main.print5
+  BB0 out:
+    a = 5
+  BB1 out:
+    a = 5
+  BB2 out:
+    a = 5
+  BB3 out:
+    a = 5
+
+

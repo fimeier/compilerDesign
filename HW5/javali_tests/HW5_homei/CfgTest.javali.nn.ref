@@ -1,0 +1,55 @@
+Main.main
+  BB0 out: []
+  BB1 out: []
+
+
+Main.print
+  BB0 out: []
+    return: []
+  BB1 out: []
+
+
+Main.print2
+  BB0 out: []
+    a = 5: []
+    (a != 5): []
+  BB1 out: []
+  BB2 out: []
+    return: []
+  BB3 out: []
+    return: []
+
+
+Main.print3
+  BB0 out: []
+    a = 5: []
+    (a != 5): []
+  BB1 out: []
+  BB2 out: []
+  BB3 out: []
+    return: []
+  BB4 out: []
+
+
+Main.print4
+  BB0 out: []
+    a = 5: []
+    (a != 5): []
+  BB1 out: []
+  BB2 out: []
+    return: []
+  BB3 out: []
+    return: []
+
+
+Main.print5
+  BB0 out: []
+    a = 5: []
+    (a != 5): []
+  BB1 out: []
+  BB2 out: []
+    return: []
+  BB3 out: []
+    return: []
+
+
